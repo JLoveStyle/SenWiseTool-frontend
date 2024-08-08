@@ -1,0 +1,1 @@
+# les composants comme les layouts, les templates
