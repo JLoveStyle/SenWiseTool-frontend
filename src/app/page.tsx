@@ -1,9 +1,9 @@
-import Image from "next/image";
+import { Layout } from "@/components/templates/layout";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <Layout>
       <p>hello world</p>
-    </main>
+    </Layout>
   );
 }
