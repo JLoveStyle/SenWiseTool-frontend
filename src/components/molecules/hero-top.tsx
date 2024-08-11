@@ -8,7 +8,7 @@ export const HeroTop = () => {
       full
       className="flex justify-between items-center custom-background"
     >
-      <Container className="bg-gradient-to-r from-black sm:from-neutral-50 sm:via-white to-white/0 h-screen sm:w-3/4">
+      <Container className="bg-gradient-to-br sm:bg-gradient-to-r from-black sm:from-neutral-50 sm:via-white to-white/0 h-screen sm:w-3/4">
         <div className=" flex flex-col pt-16 h-full gap-20 sm:gap-10">
           <div className="sm:hidden flex items-center justify-center w-full -my-10">
             <Image src="/images/logo.png" width={200} height={200} alt="logo" />
