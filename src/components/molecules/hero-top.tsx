@@ -8,15 +8,15 @@ export const HeroTop = () => {
       full
       className="flex justify-between items-center custom-background"
     >
-      <Container className="bg-gradient-to-r from-neutral-50 sm:via-white to-white/0 h-screen sm:w-3/4">
-        <div className=" flex flex-col pt-16 h-full gap-10">
+      <Container className="bg-gradient-to-r from-black sm:from-neutral-50 sm:via-white to-white/0 h-screen sm:w-3/4">
+        <div className=" flex flex-col pt-16 h-full gap-20 sm:gap-10">
           <div className="sm:hidden flex items-center justify-center w-full -my-10">
             <Image src="/images/logo.png" width={200} height={200} alt="logo" />
           </div>
-          <h1 className="font-extrabold text-3xl sm:text-5xl sm:max-w-xl text-center sm:text-start">
+          <h1 className="font-extrabold text-3xl text-white sm:text-black sm:text-5xl sm:max-w-xl text-center sm:text-start">
             Powerful and intuitive data collection tools to make an impact
           </h1>
-          <p className="text-xl sm:text-gray-600 text-gray-800 sm:font-normal text-center sm:text-start">
+          <p className="text-xl sm:text-gray-600 text-white sm:font-normal text-center sm:text-start">
             High quality data collection for everyone
           </p>
           <div className="flex items-center gap-10 justify-center sm:justify-start">
