@@ -1,9 +1,11 @@
+import { HeroTop } from "@/components/molecules/hero-top";
 import { Layout } from "@/components/templates/layout";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <Layout>
+      <HeroTop />
       <div className="flex items-center justify-center h-screen">
         <div className="flex flex-col items-center justify-center">
           <Image
