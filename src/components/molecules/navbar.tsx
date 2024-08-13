@@ -1,3 +1,4 @@
+"use client";
 import { Route } from "@/lib/route";
 import { AppLink } from "@/types/app-link";
 import { ActiveLink } from "../atoms/active-link";
@@ -32,9 +33,9 @@ export const Navbar = () => {
     },
   ];
 
-  // const { userId } = useAuth();
+  const { userId } = useAuth();
   // const { isSignedIn, user } = useUser();
-  // console.log(user);
+  console.log(userId);
 
   const loginButtons = (
     <div className={"login-btn flex gap-2"}>
@@ -79,7 +80,13 @@ export const Navbar = () => {
             <div className="block sm:hidden">
               <NavbarDropdown navLinks={navLinks} loginButtons={loginButtons} />
             </div>
-            <div className="hidden sm:block">{loginButtons}</div>
+            {userId ? (
+              <Link href="/dashboard">
+                <h1 className="hidden sm:block font-semibold">Dashboard</h1>
+              </Link>
+            ) : (
+              <div className="hidden sm:block">{loginButtons}</div>
+            )}
           </div>
         </div>
       </Container>

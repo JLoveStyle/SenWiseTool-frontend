@@ -8,6 +8,7 @@ import Select from "@/components/molecules/select";
 import { Button } from "@/components/ui/button";
 import CheckBox from "@/components/molecules/checkButton";
 import { FormData } from "@/types/formData";
+import { useUser } from "@clerk/nextjs";
 
 type Props = {};
 
@@ -17,6 +18,7 @@ export default function Home({}: Props) {
   const [hasAgree, setHasAgree] = useState<boolean>(false);
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
+  const [hasOtherBusiness, setHasOtherBusiness] = useState<boolean>(false);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -28,6 +30,7 @@ export default function Home({}: Props) {
     state: "",
     city: "",
     businessActivity: "",
+    otherBusiness: "",
   });
   const businessActivity: string[] = [
     "Cocoa",
@@ -37,20 +40,22 @@ export default function Home({}: Props) {
     "Bois",
     "Autre",
   ];
+
+  const { isSignedIn } = useUser();
+  console.log(isSignedIn);
+
   function handleSubmit(e: any) {
     e.preventDefault();
-    console.log('infunction')
+    setHasAgree(false);
     if (!isChecked) {
-      setHasAgree(prev => !prev)
-      return
+      setHasAgree((prev) => !prev);
+      return;
     }
-    console.log(formData)
+    console.log(formData);
   }
 
   function handleCancel(e: any) {
     e.preventDefault();
-    
-
   }
 
   const handleInputChange = (
@@ -60,20 +65,26 @@ export default function Home({}: Props) {
       ...formData,
       [event.target.name]: event.target.value,
     };
-    setFormData(data)
+    setFormData(data);
     for (const country of countries) {
       if (country.name === data.country) {
-        console.log('in fxn')
+        console.log("in fxn");
         setSelectedCountryObject(country);
       }
     }
     if (state) {
       for (const item of state) {
         if (item.name === data.state) {
-          setCity(City.getCitiesOfState(selectedCountryObject.isoCode, item.isoCode))
+          setCity(
+            City.getCitiesOfState(selectedCountryObject.isoCode, item.isoCode)
+          );
         }
       }
     }
+    if (formData.businessActivity === "Autre") {
+      setHasOtherBusiness((prev) => !prev);
+    }
+    console.log(data)
   };
 
   const handleOnCheck = () => {
@@ -157,8 +168,21 @@ export default function Home({}: Props) {
               </option>
             ))}
           </select>
+          {hasOtherBusiness && (
+            <input
+              type="text"
+              value={formData.otherBusiness}
+              name="otherBusiness"
+              placeholder="Enter the business"
+              onChange={(e) => handleInputChange(e)}
+            />
+          )}
           <CheckBox onChange={() => handleOnCheck()} />
-          {hasAgree && <span className="text-red-500">Please agree to the terms and conditions</span>}
+          {hasAgree && (
+            <span className="text-red-500">
+              Please agree to the terms and conditions
+            </span>
+          )}
           <div className="flex flex-col gap-3 pt-5">
             <Button className="" type="submit">
               Register
