@@ -5,6 +5,8 @@ import { Container } from "../atoms/container";
 import { Logo } from "../atoms/logo";
 import { NavbarDropdown } from "../atoms/navbar-dropdown";
 import { Button } from "../ui/button";
+import { useAuth, useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 export const Navbar = () => {
   const navLinks: AppLink[] = [
@@ -30,18 +32,26 @@ export const Navbar = () => {
     },
   ];
 
+  // const { userId } = useAuth();
+  // const { isSignedIn, user } = useUser();
+  // console.log(user);
+
   const loginButtons = (
-    <div className="login-btn flex gap-2">
-      <Button
-        size="sm"
-        variant="outline"
-        className="border-primary text-primary hover:bg-primary/25 hover:text-primary"
-      >
-        Login
-      </Button>
-      <Button size="sm" className="bg-primary hover:opacity-90">
-        Register
-      </Button>
+    <div className={"login-btn flex gap-2"}>
+      <Link href="/sign-in">
+        <Button
+          size="sm"
+          variant="outline"
+          className="border-primary text-primary hover:bg-primary/25 hover:text-primary"
+        >
+          Login
+        </Button>
+      </Link>
+      <Link href="/sign-up">
+        <Button size="sm" className="bg-primary hover:opacity-90">
+          Register
+        </Button>
+      </Link>
     </div>
   );
 
