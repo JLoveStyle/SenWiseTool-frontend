@@ -21,14 +21,16 @@ export default function page({}: Props) {
               />
             </Link>
           </div>
-          <img
-            // height={500}
-            // width={500}
-            src="images/Login-rafiki.png"
-            alt="signup picture"
-            loading="lazy"
-            className="h-fit"
-          />
+          <div className="flex justify-center">
+            <Image
+              height={250}
+              width={250}
+              src="/images/Login-rafiki.png"
+              alt="signup picture"
+              loading="lazy"
+              className="h-fit"
+            />
+          </div>
         </div>
         <div className="md:w-1/2 w-fit ">
           <SignIn

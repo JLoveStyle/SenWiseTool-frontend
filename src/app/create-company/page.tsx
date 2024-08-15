@@ -2,17 +2,20 @@
 import InputField from "@/components/molecules/inputField";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Country, State, City } from "country-state-city";
 import Select from "@/components/molecules/select";
 import { Button } from "@/components/ui/button";
 import CheckBox from "@/components/molecules/checkButton";
 import { FormData } from "@/types/formData";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { Logo } from "@/components/atoms/logo";
 
 type Props = {};
 
 export default function Home({}: Props) {
+  const router = useRouter();
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
@@ -56,6 +59,7 @@ export default function Home({}: Props) {
 
   function handleCancel(e: any) {
     e.preventDefault();
+    console.log('canceled')
   }
 
   const handleInputChange = (
@@ -81,14 +85,15 @@ export default function Home({}: Props) {
         }
       }
     }
-    if (formData.businessActivity === "Autre") {
-      setHasOtherBusiness((prev) => !prev);
-    }
-    console.log(data)
+    if (data.businessActivity === "Autre") {
+      setHasOtherBusiness(true);
+    } else console.log("did not enter");
+    console.log(data);
   };
 
   const handleOnCheck = () => {
     setIsChecked((prev) => !prev);
+    setHasAgree(false);
   };
 
   useEffect(() => {
@@ -96,8 +101,16 @@ export default function Home({}: Props) {
   }, [formData.country]);
 
   return (
-    <main className="">
-      <div className="sm:w-fit p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
+    <div
+      // style={{
+      //   backgroundImage: "url(https://www.fgveurope.de/wp-content/uploads/2024/06/Green-Modern-Minimalist-Agrifarm-Company-Presentation13.jpg)",
+      //   backgroundRepeat: "no-repeat",
+      //   backgroundSize: "cover",
+      //   zIndex: "-1",
+      // }}
+      className="h-full"
+    >
+      <div className=" sm:w-fit p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
         <div className="flex justify-center ">
           <Link href="/">
             <Image
@@ -107,6 +120,7 @@ export default function Home({}: Props) {
               alt="SenWiseTool logo"
               loading="lazy"
             />
+            {/* <Logo size="very-large"/> */}
           </Link>
         </div>
         <h3 className="font-semibold text-2xl text-center pb-7">
@@ -156,6 +170,7 @@ export default function Home({}: Props) {
             id="activity"
             value={formData.businessActivity}
             name="businessActivity"
+            required
             onChange={(event) => handleInputChange(event)}
             className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
@@ -171,10 +186,12 @@ export default function Home({}: Props) {
           {hasOtherBusiness && (
             <input
               type="text"
+              required
               value={formData.otherBusiness}
               name="otherBusiness"
               placeholder="Enter the business"
               onChange={(e) => handleInputChange(e)}
+              className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
             />
           )}
           <CheckBox onChange={() => handleOnCheck()} />
@@ -196,6 +213,6 @@ export default function Home({}: Props) {
           </div>
         </form>
       </div>
-    </main>
+    </div>
   );
 }

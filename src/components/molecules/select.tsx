@@ -26,6 +26,7 @@ export default function Select({
         value={value}
         name={selectName}
         onChange={onChange}
+        required
         className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
       >
         <option selected disabled>
