@@ -8,7 +8,7 @@ type Props = {};
 export default function page({}: Props) {
   return (
     <main className="">
-      <div className="md:w-1/2 w-[96%] flex justify-center mx-auto mt-10 ">
+      <div className="md:w-1/2 w-[96%] flex justify-center mx-auto items-center ">
         <div className="bg-[#d8972f98] shadow-xl md:w-1/2 hidden md:block rounded-l-[12px]">
           <div className="flex justify-center ">
             <Link href="/">

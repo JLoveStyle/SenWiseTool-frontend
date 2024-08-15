@@ -11,6 +11,8 @@ import { FormData } from "@/types/formData";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Logo } from "@/components/atoms/logo";
+import Popup from "@/components/organisms/popup";
+import CancelModal from "@/components/molecules/cancelModal";
 
 type Props = {};
 
@@ -19,6 +21,7 @@ export default function Home({}: Props) {
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [hasOtherBusiness, setHasOtherBusiness] = useState<boolean>(false);
@@ -59,7 +62,8 @@ export default function Home({}: Props) {
 
   function handleCancel(e: any) {
     e.preventDefault();
-    console.log('canceled')
+    setIsModalOpen((prev) => !prev);
+    console.log("canceled");
   }
 
   const handleInputChange = (
@@ -99,6 +103,12 @@ export default function Home({}: Props) {
   useEffect(() => {
     setState(State.getStatesOfCountry(selectedCountryObject?.isoCode));
   }, [formData.country]);
+
+  const handleCloseModal = (value: boolean) => {
+    setIsModalOpen(value)
+    console.log('value =>', value)
+    console.log('isVisible & isModalOpen', isModalOpen)
+  }
 
   return (
     <div
@@ -213,6 +223,13 @@ export default function Home({}: Props) {
           </div>
         </form>
       </div>
+
+      <Popup
+        isVisible={isModalOpen}
+        onCloseModal={() => setIsModalOpen((prev) => !prev)}
+      >
+        <CancelModal onClose={handleCloseModal}/>
+      </Popup>
     </div>
   );
 }
