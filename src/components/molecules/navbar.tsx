@@ -57,39 +57,31 @@ export const Navbar = () => {
   );
 
   return (
-    <div>
-      <Container>
-        <div className="flex items-center gap-10 justify-between py-2">
-          <div className="logo flex items-center gap-0">
-            <Logo size="large" />
-            {/* <span className="font-extrabold text-xl logo">SenWiseTool</span> */}
-          </div>
-          <div className="flex items-center gap-10">
-            <ul className="hidden sm:flex items-center gap-5 xs:gap-2">
-              {navLinks.map((navLink, index) => (
-                <li key={index}>
-                  <ActiveLink
-                    baseUrl={navLink.baseUrl}
-                    className="whitespace-nowrap py-1 px-3"
-                    style="border-b-primary font-medium border-b-4"
-                    label={navLink.label}
-                  />
-                </li>
-              ))}
-            </ul>
-            <div className="block sm:hidden">
-              <NavbarDropdown navLinks={navLinks} loginButtons={loginButtons} />
-            </div>
-            {userId ? (
-              <Link href={Route.dashboard}>
-                <h1 className="hidden sm:block font-semibold">Dashboard</h1>
-              </Link>
-            ) : (
-              <div className="hidden sm:block">{loginButtons}</div>
-            )}
-          </div>
+    <Container>
+      <div className="flex items-center gap-10 justify-between py-2">
+        <div className="logo flex items-center gap-0">
+          <Logo size="large" />
+          {/* <span className="font-extrabold text-xl logo">SenWiseTool</span> */}
         </div>
-      </Container>
-    </div>
+        <div className="flex items-center gap-10">
+          <ul className="hidden sm:flex items-center gap-5 xs:gap-2">
+            {navLinks.map((navLink, index) => (
+              <li key={index}>
+                <ActiveLink
+                  baseUrl={navLink.baseUrl}
+                  className="whitespace-nowrap py-1 px-3"
+                  style="border-b-primary font-medium border-b-4"
+                  label={navLink.label}
+                />
+              </li>
+            ))}
+          </ul>
+          <div className="block sm:hidden">
+            <NavbarDropdown navLinks={navLinks} loginButtons={loginButtons} />
+          </div>
+          <div className="hidden sm:block">{loginButtons}</div>
+        </div>
+      </div>
+    </Container>
   );
 };
