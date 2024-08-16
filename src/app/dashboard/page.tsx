@@ -1,5 +1,6 @@
 "use client";
 import NavDashboard from "@/components/molecules/navDashboard";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, UserButton, useSession, useUser } from "@clerk/nextjs";
 import React, { useEffect } from "react";
 
@@ -16,8 +17,8 @@ export default function Home({}: Props) {
   async function fetchData() {
     console.log("session =>", session);
     const token = await getToken();
-    if (token && typeof localStorage !== "undefined") {
-      localStorage.setItem("token", token);
+    if (token) {
+      LOCAL_STORAGE.save("token", token);
     }
     console.log("session =>", session);
     console.log("token =>", token);

@@ -95,7 +95,6 @@ export default function Home({}: Props) {
     setFormData(data);
     for (const country of countries) {
       if (country.name === data.country) {
-        console.log("in fxn");
         setSelectedCountryObject(country);
       }
     }
@@ -110,8 +109,7 @@ export default function Home({}: Props) {
     }
     if (data.businessActivity === "Autre") {
       setHasOtherBusiness(true);
-    } else console.log("did not enter");
-    console.log(data);
+    }
   };
 
   const handleOnCheck = () => {
