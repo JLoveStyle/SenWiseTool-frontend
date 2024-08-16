@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { Logo } from "@/components/atoms/logo";
 import Popup from "@/components/organisms/popup";
 import CancelModal from "@/components/molecules/cancelModal";
+import { createCompany } from "@/utiles/services/queries";
 
 type Props = {};
 
@@ -22,6 +23,7 @@ export default function Home({}: Props) {
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [hasOtherBusiness, setHasOtherBusiness] = useState<boolean>(false);
@@ -50,14 +52,30 @@ export default function Home({}: Props) {
   const { isSignedIn } = useUser();
   console.log(isSignedIn);
 
-  function handleSubmit(e: any) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     setHasAgree(false);
     if (!isChecked) {
       setHasAgree((prev) => !prev);
       return;
     }
-    console.log(formData);
+    setIsLoading((prev) => !prev);
+    await createCompany({
+      companyEmail: formData.companyEmail,
+      companyName: formData.companyName,
+      country: formData.country,
+      state: formData.state,
+      city: formData.city,
+      sector_of_activity: formData.businessActivity,
+    })
+      .then((response) => {
+        console.log("create company res =>", response);
+        setIsLoading((prev) => !prev);
+        router.push("/dashboard");
+      })
+      .catch((error) => {
+        console.log("An error occured", error);
+      });
   }
 
   function handleCancel(e: any) {
@@ -105,10 +123,10 @@ export default function Home({}: Props) {
   }, [formData.country]);
 
   const handleCloseModal = (value: boolean) => {
-    setIsModalOpen(value)
-    console.log('value =>', value)
-    console.log('isVisible & isModalOpen', isModalOpen)
-  }
+    setIsModalOpen(value);
+    console.log("value =>", value);
+    console.log("isVisible & isModalOpen", isModalOpen);
+  };
 
   return (
     <div
@@ -211,9 +229,19 @@ export default function Home({}: Props) {
             </span>
           )}
           <div className="flex flex-col gap-3 pt-5">
-            <Button className="" type="submit">
-              Register
-            </Button>
+            {isLoading ? (
+              <Button className="cursor-wait" >
+                <span
+                  className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."
+                ></span>
+                Processing...
+              </Button>
+            ) : (
+              <Button className="" type="submit">
+                Register
+              </Button>
+            )}
+
             <Button
               className="text-red-500 bg-white border border-red-500 hover:bg-[#ef44441e]"
               onClick={handleCancel}
@@ -228,7 +256,7 @@ export default function Home({}: Props) {
         isVisible={isModalOpen}
         onCloseModal={() => setIsModalOpen((prev) => !prev)}
       >
-        <CancelModal onClose={handleCloseModal}/>
+        <CancelModal onClose={handleCloseModal} />
       </Popup>
     </div>
   );
