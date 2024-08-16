@@ -39,7 +39,7 @@ export const Navbar = () => {
 
   const loginButtons = (
     <div className={"login-btn flex gap-2"}>
-      <Link href="/sign-in">
+      <Link href={Route.signIn}>
         <Button
           size="sm"
           variant="outline"
@@ -48,7 +48,7 @@ export const Navbar = () => {
           Login
         </Button>
       </Link>
-      <Link href="/sign-up">
+      <Link href={Route.signUp}>
         <Button size="sm" className="bg-primary hover:opacity-90">
           Register
         </Button>
@@ -81,7 +81,7 @@ export const Navbar = () => {
               <NavbarDropdown navLinks={navLinks} loginButtons={loginButtons} />
             </div>
             {userId ? (
-              <Link href="/dashboard">
+              <Link href={Route.dashboard}>
                 <h1 className="hidden sm:block font-semibold">Dashboard</h1>
               </Link>
             ) : (

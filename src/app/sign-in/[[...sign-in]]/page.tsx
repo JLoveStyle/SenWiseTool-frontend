@@ -1,3 +1,4 @@
+import { Route } from "@/lib/route";
 import { SignIn } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +12,7 @@ export default function page({}: Props) {
       <div className="md:w-1/2 w-[96%] flex justify-center mx-auto mt-10 ">
         <div className="bg-[#d8972f98] shadow-xl md:w-1/2 hidden md:block rounded-l-[12px]">
           <div className="flex justify-center ">
-            <Link href="/">
+            <Link href={Route.home}>
               <Image
                 src="/images/logo.png"
                 height={150}

@@ -3,7 +3,11 @@ export type AvailableRoute =
   | "aboutUs"
   | "features"
   | "services"
-  | "pricing";
+  | "pricing"
+  |  "signIn"
+  |  "signUp"
+  |  "createCompany"
+  |  "dashboard"
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -11,4 +15,8 @@ export const Route: Record<AvailableRoute, string> = {
   features: "/features",
   services: "/services",
   pricing: "/pricing",
+  signIn: "/sign-in",
+  signUp: "/signup",
+  dashboard: "/dashboard",
+  createCompany: "/create-compay"
 };

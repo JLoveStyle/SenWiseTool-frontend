@@ -14,6 +14,7 @@ import { Logo } from "@/components/atoms/logo";
 import Popup from "@/components/organisms/popup";
 import CancelModal from "@/components/molecules/cancelModal";
 import { createCompany } from "@/utiles/services/queries";
+import { Route } from "@/lib/route";
 
 type Props = {};
 
@@ -71,7 +72,7 @@ export default function Home({}: Props) {
       .then((response) => {
         console.log("create company res =>", response);
         setIsLoading((prev) => !prev);
-        router.push("/dashboard");
+        router.push(Route.dashboard);
       })
       .catch((error) => {
         console.log("An error occured", error);
@@ -140,7 +141,7 @@ export default function Home({}: Props) {
     >
       <div className=" sm:w-fit p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
         <div className="flex justify-center ">
-          <Link href="/">
+          <Link href={Route.home}>
             <Image
               src="/images/logo.png"
               height={150}
