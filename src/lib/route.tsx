@@ -16,7 +16,7 @@ export const Route: Record<AvailableRoute, string> = {
   services: "/services",
   pricing: "/pricing",
   signIn: "/sign-in",
-  signUp: "/signup",
+  signUp: "/sign-up",
   dashboard: "/dashboard",
   createCompany: "/create-compay"
 };

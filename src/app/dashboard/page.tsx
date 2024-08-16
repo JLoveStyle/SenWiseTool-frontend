@@ -20,8 +20,6 @@ export default function Home({}: Props) {
     if (token) {
       LOCAL_STORAGE.save("token", token);
     }
-    console.log("session =>", session);
-    console.log("token =>", token);
   }
 
   useEffect(() => {
