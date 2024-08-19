@@ -7,3 +7,9 @@ export interface cardDataType {
   image: string;
   content: React.ReactNode;
 }
+
+export interface cardDataFeatureType {
+  title: string;
+  image: string;
+  content: string[];
+}

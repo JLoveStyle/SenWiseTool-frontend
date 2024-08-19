@@ -1,4 +1,4 @@
-import { cardDataType } from "@/types/type-tools";
+import { cardDataFeatureType, cardDataType } from "@/types/type-tools";
 
 export const cardDataAboutUs: cardDataType[] = [
   {
@@ -18,5 +18,30 @@ export const cardDataAboutUs: cardDataType[] = [
     image: "/images/about-us/img3.png",
     content:
       "We develop data tools designed for and by practitioners, including next generation qualitative and quantitative methods.",
+  },
+];
+
+export const cardDataFeature: cardDataFeatureType[] = [
+  {
+    title: "Powerful form development",
+    image: "/images/features/image3.png",
+    content: [
+      "Quickly build questionnaires with our intuitive tools",
+      "Choose from 25 quantitative and qualitative question types",
+      "Edit forms in Excel for complex needs with the XLSForm standard",
+      "Use skip logic and validation for high data quality",
+      "Translate forms into multiple languages",
+    ],
+  },
+  {
+    title: "Data collection & analysis",
+    image: "/images/features/image4.png",
+    content: [
+      "Translate forms into multiple languages",
+      "Collect data using our Android app or a web browser",
+      "Review and validate data in real time",
+      "Visualize data with custom maps and reports",
+      "Download data in XLS, CSV, KML, ZIP, or GeoJSON",
+    ],
   },
 ];
