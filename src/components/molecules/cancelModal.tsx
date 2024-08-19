@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { Route } from "@/lib/route";
 
 type Props = {
   onClose: (value: boolean) => void;
@@ -18,7 +19,7 @@ export default function CancelModal({ onClose }: Props) {
       <p className="">You can still do this from your dashboard</p>
       <div className="flex py-4 gap-3">
         <Button
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push(Route.dashboard)}
           className="border w-1/2 rounded-[10px] bg-white text-red-500 border-red-500 hover:bg-[#ef44441e] "
         >
           Yes
