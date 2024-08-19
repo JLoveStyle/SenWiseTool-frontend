@@ -16,7 +16,7 @@ export function CardAboutUs() {
       {cardDataAboutUs.map((cardData, index) => (
         <Card className="w-auto mx-6 sm:mx-auto">
           <CardHeader className="p-0 m-0">
-            <CardTitle className="relative h-40 w-full m-0 p-0">
+            <CardTitle className="relative h-56 w-full m-0 p-0">
               <Image
                 src={cardData.image}
                 alt="description"
