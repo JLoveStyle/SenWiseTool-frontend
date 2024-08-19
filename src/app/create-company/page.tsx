@@ -60,23 +60,29 @@ export default function Home({}: Props) {
       setHasAgree((prev) => !prev);
       return;
     }
-    setIsLoading((prev) => !prev);
-    await createCompany({
-      companyEmail: formData.companyEmail,
-      companyName: formData.companyName,
-      country: formData.country,
-      state: formData.state,
-      city: formData.city,
-      sector_of_activity: formData.businessActivity,
-    })
-      .then((response) => {
-        console.log("create company res =>", response);
-        setIsLoading((prev) => !prev);
-        router.push(Route.dashboard);
-      })
-      .catch((error) => {
-        console.log("An error occured", error);
-      });
+    setIsLoading(prev => !prev)
+    // setIsLoading((prev) => !prev);
+    // await createCompany({
+    //   companyEmail: formData.companyEmail,
+    //   companyName: formData.companyName,
+    //   country: formData.country,
+    //   state: formData.state,
+    //   city: formData.city,
+    //   sector_of_activity: formData.businessActivity,
+    // })
+    //   .then((response) => {
+    //     console.log("create company res =>", response);
+    //     setIsLoading((prev) => !prev);
+    //     router.push(Route.dashboard);
+    //   })
+    //   .catch((error) => {
+    //     console.log("An error occured", error);
+    //   });
+    setTimeout(() => {
+      setIsLoading(prev => !prev)
+      router.push(Route.dashboard)
+    }, 6000)
+    
   }
 
   function handleCancel(e: any) {
@@ -123,18 +129,10 @@ export default function Home({}: Props) {
 
   const handleCloseModal = (value: boolean) => {
     setIsModalOpen(value);
-    console.log("value =>", value);
-    console.log("isVisible & isModalOpen", isModalOpen);
   };
 
   return (
     <div
-      // style={{
-      //   backgroundImage: "url(https://www.fgveurope.de/wp-content/uploads/2024/06/Green-Modern-Minimalist-Agrifarm-Company-Presentation13.jpg)",
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundSize: "cover",
-      //   zIndex: "-1",
-      // }}
       className="h-full"
     >
       <div className=" sm:w-fit p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">

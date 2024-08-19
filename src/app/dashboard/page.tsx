@@ -1,5 +1,6 @@
 "use client";
 import NavDashboard from "@/components/molecules/navDashboard";
+import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, UserButton, useSession, useUser } from "@clerk/nextjs";
 import React, { useEffect } from "react";
@@ -28,8 +29,11 @@ export default function Home({}: Props) {
 
   console.log(user);
   return (
-    <main className="">
-      <NavDashboard placeholder="Recherche..." />
-    </main>
+    <>
+    <LayoutDashboard>
+      <p></p>
+    </LayoutDashboard>
+
+    </>
   );
 }
