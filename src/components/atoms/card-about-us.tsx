@@ -11,8 +11,6 @@ import { MoveRight } from "lucide-react";
 import Image from "next/image";
 
 export function CardAboutUs() {
-  const cardElement = [];
-
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10 py-10 ">
       {cardDataAboutUs.map((cardData, index) => (
