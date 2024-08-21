@@ -1,6 +1,7 @@
 import { AboutUs } from "@/components/molecules/about-us";
 import { Features } from "@/components/molecules/features";
 import { HeroTop } from "@/components/molecules/hero-top";
+import { Pricing } from "@/components/molecules/pricing";
 import { Layout } from "@/components/templates/layout";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
       <HeroTop />
       <AboutUs />
       <Features />
+      <Pricing />
     </Layout>
   );
 }

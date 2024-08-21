@@ -5,7 +5,7 @@ import { Container } from "../atoms/container";
 export const Features = () => {
   return (
     <Container>
-      <div className="pb-10">
+      <div className="pb-28">
         <div className="text-4xl font-bold text-center pt-10">Features</div>
         <div className="flex justify-between items-center feature-section-image">
           <Container className="bg-gradient-to-br sm:bg-gradient-to-r from-neutral-50 sm:via-white to-white/0 h-screen sm:w-3/4">
