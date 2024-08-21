@@ -14,7 +14,7 @@ export function CardAboutUs() {
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10 py-10 ">
       {cardDataAboutUs.map((cardData, index) => (
-        <Card className="w-auto mx-6 sm:mx-auto">
+        <Card className="w-auto mx-6 sm:mx-auto border-none">
           <CardHeader className="p-0 m-0">
             <CardTitle className="relative h-56 w-full m-0 p-0">
               <Image

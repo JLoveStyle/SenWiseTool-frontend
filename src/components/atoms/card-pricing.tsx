@@ -20,7 +20,7 @@ export function PricingCard({ annualPricing }: Props) {
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 py-10">
       {cardDataPricing.map((cardData, index) => (
-        <Card className="w-auto mx-4" key={index}>
+        <Card className="w-auto mx-4 border-none" key={index}>
           <CardHeader className="p-0 m-0">
             <CardTitle className="relative h-56 w-full m-0 p-0">
               <Image
@@ -33,14 +33,14 @@ export function PricingCard({ annualPricing }: Props) {
               <span className="absolute flex items-center gap-1 z-50 text-base bg-[#FFE4C9] my-5 pl-2 pr-3 py-0.5 -left-1 space-x-0.5 shadow-2xl rounded-r-full">
                 {cardData.type} <Sparkles size={15} className="text-primary" />
               </span>
-              <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-white via-white/70 to-black/0 to-70%"></div>
+              <div className="absolute bottom-0 w-full h-20 bg-gradient-to-t from-white via-white/70 dark:from-[#020817] dark:via-[#020817]/70 to-black/0 to-70%"></div>
             </CardTitle>
             <CardTitle className="text-center pb-2 pt-3 text-primary">
               {annualPricing
                 ? `${formatPrice(cardData.annualPricing)} / Year`
                 : `${formatPrice(cardData.biannualPricing)}  /   ¹⁄₂Year`}
             </CardTitle>
-            <span className="text-center py-8 text-sm text-gray-600 italic">
+            <span className="text-center py-8 text-sm text-gray-600 dark:text-gray-300 italic">
               {cardData?.condition?.description}
             </span>
           </CardHeader>
