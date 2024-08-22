@@ -29,7 +29,7 @@ export default function page({}: Props) {
 
   async function handlePayment() {
     setIsLoading((prev) => !prev);
-    console.log("how are u")
+    console.log("how are u");
   }
 
   return (
@@ -53,6 +53,7 @@ export default function page({}: Props) {
           <Popup
             isVisible={cancel}
             onCloseModal={() => setCancel((prev) => !prev)}
+            modalOpen={() => setCancel(true)}
           >
             <main className="w-[450px] h-fit p-5 bg-white rounded-[12px] mx-3">
               <h1 className="font-semibold text-xl py-3">Cancel Payment ?</h1>
@@ -194,7 +195,6 @@ export default function page({}: Props) {
           </div>
         </div>
         <div className="md:bg-[#f8fafb] md:opacity-90 md:min-h-[100vh] text-black md:w-[45%] md:px-10 md:pt-20">
-          
           <div className="w-full md:w-[320px]">
             <h2 className="font-semibold pb-4 text-xl md:text-2xl leading-normal">
               Summary
@@ -210,11 +210,13 @@ export default function page({}: Props) {
                 Processing...
               </Button>
             ) : (
-              <Button onClick={handlePayment} className="bg-primary py-6 hover:cursor-pointer font-semibold text-white w-full">
+              <Button
+                onClick={handlePayment}
+                className="bg-primary py-6 hover:cursor-pointer font-semibold text-white w-full"
+              >
                 Complete payment
               </Button>
             )}
-            
           </div>
         </div>
       </div>

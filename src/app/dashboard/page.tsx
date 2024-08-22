@@ -12,7 +12,6 @@ export default function Home({}: Props) {
   const { session } = useSession();
   const { user } = useUser();
 
-  if (!isLoaded) return <div>Loading...</div>;
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
   async function fetchData() {
@@ -25,15 +24,15 @@ export default function Home({}: Props) {
 
   useEffect(() => {
     fetchData();
+    console.log(isLoaded);
   }, []);
 
   console.log(user);
   return (
     <>
-    <LayoutDashboard>
-      <p></p>
-    </LayoutDashboard>
-
+      <LayoutDashboard>
+        <p></p>
+      </LayoutDashboard>
     </>
   );
 }

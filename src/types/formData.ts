@@ -9,7 +9,7 @@ export interface FormData {
   otherBusiness: string
 }
 
-export type User = {
+export interface User {
   firstName: string,
   lastName: string,
   email: string,
@@ -18,5 +18,17 @@ export type User = {
   companyId?: string,
   phoneNumber?: string,
   civility?: string
+}
+
+export interface Company {
+  companyName: string,
+  companyEmail: string,
+  country: string,
+  state: string,
+  city: string,
+  sector_of_activity: string,
+  logo?: string,
+  paypal_id?: string,
+  payment_mode?: string
 }
 

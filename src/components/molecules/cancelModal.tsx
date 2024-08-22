@@ -13,7 +13,7 @@ export default function CancelModal({ onClose }: Props) {
   const [closeModal, setCloseModal] = useState<boolean>(true)
 
   return (
-    <main className="w-[450px] h-fit p-5 bg-white rounded-[12px] mx-3">
+    <main className="md:w-[450px] w-[96%] h-fit p-5 bg-white rounded-[12px] mx-auto md:mx-3">
       <h1 className="font-semibold text-xl py-3">Cancel registration ?</h1>
       <p className="">Are you sure you don't want to register your company ?</p>
       <p className="">You can still do this from your dashboard</p>

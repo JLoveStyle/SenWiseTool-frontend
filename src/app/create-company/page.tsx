@@ -252,6 +252,7 @@ export default function Home({}: Props) {
       <Popup
         isVisible={isModalOpen}
         onCloseModal={() => setIsModalOpen((prev) => !prev)}
+        modalOpen={() => setIsModalOpen(true)}
       >
         <CancelModal onClose={handleCloseModal} />
       </Popup>
