@@ -6,7 +6,7 @@ export const HeroTop = () => {
   return (
     <Container
       full
-      className="flex justify-between items-center custom-background"
+      className="flex justify-between items-center hero-top-image"
     >
       <Container className="bg-gradient-to-br sm:bg-gradient-to-r from-black sm:from-neutral-50 sm:via-white to-white/0 h-screen sm:w-3/4">
         <div className=" flex flex-col pt-16 h-full gap-20 sm:gap-10">
@@ -20,10 +20,12 @@ export const HeroTop = () => {
             High quality data collection for everyone
           </p>
           <div className="flex items-center gap-10 justify-center sm:justify-start">
-            <Button className="bg-primary hover:opacity-90">Register</Button>
+            <Button className="bg-primary hover:opacity-90 rounded-none">
+              Register
+            </Button>
             <Button
               variant="outline"
-              className="border-primary bg-transparent text-primary hover:bg-primary/25 hover:text-primary"
+              className="border-primary bg-transparent text-primary hover:bg-primary/25 hover:text-primary rounded-none"
             >
               Login
             </Button>

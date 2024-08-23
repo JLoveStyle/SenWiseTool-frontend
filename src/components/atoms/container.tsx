@@ -7,5 +7,7 @@ interface Props {
 }
 
 export const Container = ({ full = false, className, children }: Props) => {
-  return <div className={clsx(!full && "px-8", className)}>{children}</div>;
+  return (
+    <div className={clsx(!full && "sm:px-8 px-0", className)}>{children}</div>
+  );
 };

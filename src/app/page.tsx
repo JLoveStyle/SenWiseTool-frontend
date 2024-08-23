@@ -1,24 +1,18 @@
+import { AboutUs } from "@/components/molecules/about-us";
+import { Features } from "@/components/molecules/features";
+import { Footer } from "@/components/molecules/footer";
 import { HeroTop } from "@/components/molecules/hero-top";
+import { Pricing } from "@/components/molecules/pricing";
 import { Layout } from "@/components/templates/layout";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <Layout>
       <HeroTop />
-      <div className="flex items-center justify-center h-screen">
-        <div className="flex flex-col items-center justify-center">
-          <Image
-            src="/images/logo.png"
-            height={150}
-            width={150}
-            alt="SenWiseTool"
-          />
-          <h1 className="text-3xl font-extrabold text-gray-700">
-            hello SENWISETOOL{" "}
-          </h1>
-        </div>
-      </div>
+      <AboutUs />
+      <Features />
+      <Pricing />
+      <Footer />
     </Layout>
   );
 }

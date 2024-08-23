@@ -3,6 +3,7 @@ export interface AppLink {
   baseUrl: string;
   type?: "external" | "internal";
   disabled?: boolean;
+  icon?: React.ElementType;
 }
 
 export interface footerLink {

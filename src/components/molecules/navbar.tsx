@@ -35,11 +35,11 @@ export const Navbar = () => {
       <Button
         size="sm"
         variant="outline"
-        className="border-primary text-primary bg-transparent hover:bg-primary/25 hover:text-primary"
+        className="border-primary text-primary bg-transparent hover:bg-primary/25 hover:text-primary rounded-none"
       >
         Login
       </Button>
-      <Button size="sm" className="bg-primary hover:opacity-90">
+      <Button size="sm" className="bg-primary hover:opacity-90 rounded-none">
         Register
       </Button>
     </div>
