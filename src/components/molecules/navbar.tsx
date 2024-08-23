@@ -8,6 +8,7 @@ import { NavbarDropdown } from "../atoms/navbar-dropdown";
 import { Button } from "../ui/button";
 import { useAuth, useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { UserRound } from "lucide-react";
 
 export const Navbar = () => {
   const navLinks: AppLink[] = [
@@ -79,7 +80,13 @@ export const Navbar = () => {
           <div className="block sm:hidden">
             <NavbarDropdown navLinks={navLinks} loginButtons={loginButtons} />
           </div>
-          <div className="hidden sm:block">{loginButtons}</div>
+          {userId ? (
+            <Link href={Route.dashboard}>
+              <UserRound />{" "}
+            </Link>
+          ) : (
+            <div className="hidden sm:block">{loginButtons}</div>
+          )}
         </div>
       </div>
     </Container>
