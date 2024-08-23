@@ -14,7 +14,7 @@ export const Pricing = () => {
   return (
     <Container className="bg-[#FFE4C9]">
       <div className="text-4xl font-bold text-center py-5">PRICING</div>
-      <div className="toggle-pricing">
+      <div className="toggle-pricing mr-5">
         <div className="flex justify-end gap-3 font-semibold text-gray-400">
           <span className={clsx(!annualPricing && "text-gray-950")}>
             Biannual
