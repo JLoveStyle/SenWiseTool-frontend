@@ -8,6 +8,8 @@ export type AvailableRoute =
   |  "signUp"
   |  "createCompany"
   |  "dashboard"
+  | "profile"
+  | "login";
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -18,5 +20,7 @@ export const Route: Record<AvailableRoute, string> = {
   signIn: "/sign-in",
   signUp: "/sign-up",
   dashboard: "/dashboard",
-  createCompany: "/create-compay"
+  createCompany: "/create-compay",
+  profile: "/profile",
+  login: "/login",
 };

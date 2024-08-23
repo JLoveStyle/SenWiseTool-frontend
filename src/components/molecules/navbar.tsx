@@ -39,7 +39,7 @@ export const Navbar = () => {
   console.log(userId);
 
   const loginButtons = (
-    <div className={"login-btn flex gap-2"}>
+    <div className="login-btn flex gap-2">
       <Link href={Route.signIn}>
         <Button
           size="sm"
