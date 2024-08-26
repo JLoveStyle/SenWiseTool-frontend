@@ -1,3 +1,4 @@
+"use client";
 import { Route } from "@/lib/route";
 import { AppLink } from "@/types/app-link";
 import { ActiveLink } from "../atoms/active-link";
@@ -5,6 +6,9 @@ import { Container } from "../atoms/container";
 import { Logo } from "../atoms/logo";
 import { NavbarDropdown } from "../atoms/navbar-dropdown";
 import { Button } from "../ui/button";
+import { useAuth, useUser } from "@clerk/nextjs";
+import Link from "next/link";
+import { UserRound } from "lucide-react";
 
 export const Navbar = () => {
   const navLinks: AppLink[] = [
@@ -30,18 +34,26 @@ export const Navbar = () => {
     },
   ];
 
+  const { userId } = useAuth();
+  // const { isSignedIn, user } = useUser();
+  console.log(userId);
+
   const loginButtons = (
     <div className="login-btn flex gap-2">
-      <Button
-        size="sm"
-        variant="outline"
-        className="border-primary text-primary bg-transparent hover:bg-primary/25 hover:text-primary rounded-none"
-      >
-        Login
-      </Button>
-      <Button size="sm" className="bg-primary hover:opacity-90 rounded-none">
-        Register
-      </Button>
+      <Link href={Route.signIn}>
+        <Button
+          size="sm"
+          variant="outline"
+          className="border-primary text-primary hover:bg-primary/25 hover:text-primary"
+        >
+          Login
+        </Button>
+      </Link>
+      <Link href={Route.signUp}>
+        <Button size="sm" className="bg-primary hover:opacity-90">
+          Register
+        </Button>
+      </Link>
     </div>
   );
 
@@ -68,7 +80,13 @@ export const Navbar = () => {
           <div className="block sm:hidden">
             <NavbarDropdown navLinks={navLinks} loginButtons={loginButtons} />
           </div>
-          <div className="hidden sm:block">{loginButtons}</div>
+          {userId ? (
+            <Link href={Route.dashboard}>
+              <UserRound />{" "}
+            </Link>
+          ) : (
+            <div className="hidden sm:block">{loginButtons}</div>
+          )}
         </div>
       </div>
     </Container>
