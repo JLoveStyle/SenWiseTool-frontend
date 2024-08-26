@@ -4,10 +4,11 @@ export type AvailableRoute =
   | "features"
   | "services"
   | "pricing"
-  |  "signIn"
-  |  "signUp"
-  |  "createCompany"
-  |  "dashboard"
+  | "checkout"
+  | "signIn"
+  | "signUp"
+  | "createCompany"
+  | "dashboard"
   | "profile"
   | "login";
 
@@ -23,4 +24,5 @@ export const Route: Record<AvailableRoute, string> = {
   createCompany: "/create-compay",
   profile: "/profile",
   login: "/login",
+  checkout: "/checkout",
 };

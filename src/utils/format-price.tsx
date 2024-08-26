@@ -1,8 +1,8 @@
 export const formatPrice = (
-  price: number,
+  price: number | undefined,
   params?: { currency?: "$" | "€" | "FCFA" }
 ) => {
-  let priceFormated: string = `$${price}`;
+  let priceFormated: string = `$${typeof price === "number" ? price : 0}`;
 
   if ((params && params?.currency == "$") || params?.currency == "€") {
     priceFormated = `${params?.currency}${price}`;
@@ -13,7 +13,8 @@ export const formatPrice = (
   return priceFormated;
 };
 
-export const chapterList = (info: "all" | number[]) => {
-  if (info === "all") return [1, 2, 3, 4, 5, 6];
+export const chapterList = (info: "all" | number[] | undefined) => {
+  if (info === undefined) return [];
+  else if (info === "all") return [1, 2, 3, 4, 5, 6];
   else return info;
 };
