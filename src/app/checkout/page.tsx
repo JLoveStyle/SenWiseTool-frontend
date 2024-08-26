@@ -10,7 +10,7 @@ import React, { useState } from "react";
 
 type Props = {};
 
-export default function page({}: Props) {
+export default function page({ }: Props) {
   const router = useRouter();
   const [paypalActive, setPaypalActive] = useState(false);
   const [cartActive, setCartActive] = useState(false);
@@ -119,7 +119,8 @@ export default function page({}: Props) {
                   <p className=" font-bold">PayPal</p>
                 </div>
                 <hr />
-                <p className={paypalActive ? "flex p-6 bg-white" : "hidden"}>
+                {/* I have add the text color here because it is not visible at the moment: text and bg was white */}
+                <p className={paypalActive ? "flex p-6 bg-white text-muted-foreground" : "hidden"}>
                   In order to complete your transaction, we will transfer you
                   over to PayPals secure servers.
                 </p>
@@ -135,6 +136,7 @@ export default function page({}: Props) {
                         onChange={() => setCartActive((prev) => !prev)}
                       />
                       <div className="bg-white h-fit my-auto rounded">
+                        {/* why using udemy stuff here ? */}
                         <Image
                           width={40}
                           height={20}
