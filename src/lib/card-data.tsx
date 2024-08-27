@@ -5,6 +5,8 @@ import {
   chaptersType,
 } from "@/types/type-tools";
 
+export const typeOfOffers = ["Bronze", "Gold", "Silver"];
+
 export const cardDataAboutUs: cardDataType[] = [
   {
     title: "Title about card 1",

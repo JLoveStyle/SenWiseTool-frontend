@@ -7,10 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cardDataPricing, getChapterById } from "@/lib/card-data";
+import { Route } from "@/lib/route";
 import { chapterList, formatPrice } from "@/utils/format-price";
 import clsx from "clsx";
 import { MoveRight, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   annualPricing: boolean;
@@ -87,9 +89,11 @@ export function PricingCard({ annualPricing }: Props) {
             </div>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <Button className="gap-2 mt-10">
-              SUBSCRIBE PLAN <MoveRight />
-            </Button>
+            <Link href={`${Route.checkout}/${cardData.type}`}>
+              <Button className="gap-2 mt-10">
+                SUBSCRIBE PLAN <MoveRight />
+              </Button>
+            </Link>
           </CardFooter>
         </Card>
       ))}
