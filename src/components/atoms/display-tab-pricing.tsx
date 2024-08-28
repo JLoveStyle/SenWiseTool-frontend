@@ -15,6 +15,11 @@ export function DisplayTabPricing({ typeOfOffer, setChapterChoosed }: Props) {
 
   return (
     <Tabs defaultValue={typeOfOffer} className="w-full">
+      {typeOfOffer === "Bronze" && (
+        <p className="flex justify-center items-center w-full py-1 text-xs text-center text-blink">
+          You must choose a chapter from the available ones...
+        </p>
+      )}
       <TabsList className="grid w-full grid-cols-3">
         {typeOfOffers.map((type, index) => (
           <TabsTrigger
