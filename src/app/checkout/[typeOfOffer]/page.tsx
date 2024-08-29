@@ -1,6 +1,7 @@
 "use client";
 import { DisplayTabPricing } from "@/components/atoms/display-tab-pricing";
 import { Logo } from "@/components/atoms/logo";
+import PaypalPaymentComponent from "@/components/atoms/paypal-payment";
 import Popup from "@/components/organisms/popup";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -31,18 +32,8 @@ export default function page({ }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [showError, setShowError] = useState(false);
+  // set paypal options
 
-
-  useEffect(() => {
-    if (
-      typeof typeOfOffer !== "string" ||
-      !typeOfOffer ||
-      !typeOfOffers.includes(typeOfOffer)
-    ) {
-      router.push("/");
-      toast.error("Page not found");
-    }
-  }, [router]);
 
   const handlePaypal = () => {
     setPaypalActive((prev) => !prev);
