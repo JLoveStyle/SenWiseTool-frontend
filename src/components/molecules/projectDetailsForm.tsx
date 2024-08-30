@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import InputField from "./inputField";
-import { ProjectDetails } from "@/types/gestion";
+import { Project, ProjectDetails } from "@/types/gestion";
 import Select from "./select";
 import { City, Country, State } from "country-state-city";
 import { Button } from "../ui/button";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Route } from "@/lib/route";
 import { useRouter } from "next/navigation";
+import { tableRaw } from "@/utiles/services/constants";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
@@ -23,13 +24,14 @@ export default function ProjectDetailsForm({ onClick }: Props) {
   }>({});
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
-  const [projectData, setProjectData] = useState<ProjectDetails>({
-    projectTitle: "",
-    business_sector: "",
+  const [projectData, setProjectData] = useState<Project>({
+    title: "",
+    sector_activity: "",
     country: "",
     description: "",
     city: "",
     state: "",
+    status: ['DRAFT']
   });
 
   const businessActivity: string[] = [
@@ -44,7 +46,7 @@ export default function ProjectDetailsForm({ onClick }: Props) {
   const handleChangeEvent = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const data: ProjectDetails = {
+    const data: Project = {
       ...projectData,
       [e.target.name]: e.target.value,
     };
@@ -69,6 +71,7 @@ export default function ProjectDetailsForm({ onClick }: Props) {
     e.preventDefault()
     console.log(projectData)
     LOCAL_STORAGE.save('project_data', projectData)
+    tableRaw.push(projectData)
     router.push(Route.editProject+'/45')
   }
 
@@ -86,9 +89,9 @@ export default function ProjectDetailsForm({ onClick }: Props) {
       <form className="w-full flex flex-col px-6 py-4" onSubmit={handleSubmit}>
         <InputField
           label="Project title"
-          inputName="projectTitle"
+          inputName="title"
           type="text"
-          value={projectData.projectTitle}
+          value={projectData.title}
           onChange={(e) => handleChangeEvent(e)}
         />
         <InputField
@@ -104,8 +107,8 @@ export default function ProjectDetailsForm({ onClick }: Props) {
         </label>
         <select
           id="activity"
-          value={projectData.business_sector}
-          name="business_sector"
+          value={projectData.sector_activity}
+          name="sector_activity"
           required
           onChange={(event) => handleChangeEvent(event)}
           className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"

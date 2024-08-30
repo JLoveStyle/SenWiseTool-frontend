@@ -36,7 +36,7 @@ export default function ProjectSummary({ projectObject }: Props) {
     },
   ];
 
-  console.log("here =>", projectObject);
+  // console.log("here =>", projectObject);
 
   return (
     <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
@@ -54,7 +54,7 @@ export default function ProjectSummary({ projectObject }: Props) {
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
                 <span className="bg-green-200 text-sm px-2 rounded-lg">
-                  {projectObject?.status[0]}{" "}
+                  {projectObject?.status[0]}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">

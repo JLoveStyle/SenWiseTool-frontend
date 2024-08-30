@@ -18,6 +18,7 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { tableRaw } from "@/utiles/services/constants";
 import { Project } from "@/types/gestion";
 import { usePathname } from "next/navigation";
+import { Dialog, DialogContent } from "../ui/dialog";
 
 type Props = {
   placeholder: string;
@@ -28,11 +29,11 @@ export default function NavDashboard({ placeholder }: Props) {
   const [showMemberForm, setShowMemberForm] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<Project | undefined>();
-  const [id, setId] = useState<string>('')
+  const [id, setId] = useState<string>("");
   const pathname = usePathname();
 
   useEffect(() => {
-    const localId = LOCAL_STORAGE.get("projectId")
+    const localId = LOCAL_STORAGE.get("projectId");
     setId(localId);
     setSelectedProject(tableRaw.find((item) => item.id === localId));
   }, []);
@@ -55,9 +56,8 @@ export default function NavDashboard({ placeholder }: Props) {
     },
   ];
 
-  console.log('selec P => ', selectedProject)
   return (
-    <nav className="flex justify-between px-3 bg-tertiary shadow-md z-50  fixed w-screen">
+    <nav className="flex justify-between px-3 bg-tertiary shadow-md z-50 fixed w-screen">
       {/* LOGO & PROJECT NAME IF DEFINED */}
       <div className="flex justify-between md:w-[250px]">
         <Link href={Route.home}>
@@ -128,26 +128,31 @@ export default function NavDashboard({ placeholder }: Props) {
           </div>
         )}
       </div>
-      {showAdgForm && (
-        <Popup
-          isVisible={showAdgForm}
-          onCloseModal={() => setShowAdgForm((prev) => !prev)}
-          modalOpen={() => setShowAdgForm(true)}
-        >
+      <Dialog
+        onOpenChange={() => {
+          setOpenDropdown(false);
+          setShowAdgForm((prev) => !prev);
+        }}
+        open={showAdgForm}
+      >
+        <DialogContent className="sm:max-w-[400px]">
           <CreateAdgForm closeModal={() => setShowAdgForm((prev) => !prev)} />
-        </Popup>
-      )}
-      {showMemberForm && (
-        <Popup
-          isVisible={showMemberForm}
-          onCloseModal={() => setShowMemberForm((prev) => !prev)}
-          modalOpen={() => setShowMemberForm(true)}
-        >
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        onOpenChange={() => {
+          setShowMemberForm((prev) => !prev);
+          setOpenDropdown(false);
+        }}
+        open={showMemberForm}
+      >
+        <DialogContent className="sm:max-w-[400px]">
           <CreateMemeberForm
             closeModal={() => setShowMemberForm((prev) => !prev)}
           />
-        </Popup>
-      )}
+        </DialogContent>
+      </Dialog>
     </nav>
   );
 }

@@ -5,7 +5,7 @@ type Props = {};
 export default function AddFormFromLibrary({}: Props) {
   return (
     <div className="py-8 px-3">
-      <h1 className="uppercase">From style</h1>
+      <h1 className="uppercase font-bold">From style</h1>
       <p className="">choose the form style that will suit your project.</p>
       <select className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md">
         <option selected disabled>

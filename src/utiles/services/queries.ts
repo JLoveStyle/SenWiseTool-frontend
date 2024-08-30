@@ -7,11 +7,16 @@ const apiCall = new ApiCall()
 
 // CREATE User
 export async function createUser (user: Partial<User>) {
-  return apiCall.POST(BASE_URL + "/user", user)
+  return apiCall.POST(BASE_URL + "/v1/users", user)
 
 }
 
 // CREATE COMPANY
 export async function createCompany (company: Partial<Company>) {
-  return apiCall.POST(BASE_URL + "/company", company)
+  return apiCall.POST(BASE_URL + "/v1/companies", company)
 }
+
+// CREATE SUB-ACCOUNT ADG
+// export async function createADG (params:type) {
+  
+// }

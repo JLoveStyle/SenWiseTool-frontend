@@ -1,3 +1,4 @@
+import { ChapterMetaData } from "@/components/atoms/columnsProject";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
@@ -133,8 +134,11 @@ export const tableHead: string[] = [
   'Project name', "Status", "Creator", "Last update", "Deployment date", "Start date"
 ]
 
+// DIFFERENTS CHAMPTERS
+export const chapters: string[] = ["chapter 1", "chapter 2", "chapter 3"]
+
 // THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
-export const tableRaw: Project[] = [
+export let tableRaw: Project[] = [
   {
     id: "1",
     end_date: "2020-03-01",
@@ -147,7 +151,9 @@ export const tableRaw: Project[] = [
     status: ["DEPLOYED"],
     deployed_at: "2024/01/16",
     creator: "Gael",
-    updated_at: "2024/03/20"
+    updated_at: "2024/03/20",
+    city: "",
+    state: ""
   },
   {
     id: "2",
@@ -161,7 +167,9 @@ export const tableRaw: Project[] = [
     status: ["DRAFT"],
     deployed_at: "2024/01/16",
     creator: "Bigael",
-    updated_at: "2024/03/20"
+    updated_at: "2024/03/20",
+    city: "",
+    state: ""
   },
   {
     id: "3",
@@ -175,7 +183,9 @@ export const tableRaw: Project[] = [
     status: ["DRAFT"],
     deployed_at: "2024/01/16",
     creator: "Daniella",
-    updated_at: "2024/03/20"
+    updated_at: "2024/03/20",
+    city: "",
+    state: ""
   }
 ]
 
@@ -246,14 +256,108 @@ export const requirements = [
   {
     chapitre2: [
       {
-        title: "",
-        numero: "",
+        title: "Traçabilité",
+        numero: "2.1",
         content: [
           {
-            
-          }
+            text: "La production totale certifiée et la production certifiée pour chaque producteur (en kg, en tiges pour les fleurs) est estimée une fois par an. Les calculs sont basés sur une méthodologie fiable d’estimation des rendements (en kg/ha, en tiges/ha pour les fleurs) d'un échantillon représentatif d’exploitations agricoles ou d’unités agricoles. La méthodologie et les calculs sont documentés.",
+            num: "2.1.1",
+            certif_de_group: {
+              direction_du_group: "yes",
+              petite_exploitation_agricole: "no",
+              grande_exploitation_agricole: "yes"
+            }
+          },
+          {
+            text: "La direction fait annuellement le bilan de",
+            num: "2.1.2",
+            certif_de_group: {
+              direction_du_group: "yes",
+              petite_exploitation_agricole: "no",
+              grande_exploitation_agricole: "yes"
+            }
+          },
+
+        ]
+      }
+    ]
+  },
+  {
+    chapitre3: [
+      {
+        title: "Coûts de Production et Revenu Vital",
+        numero: "3.1",
+        content: [
+          {
+            text: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
+            num: "3.1.1",
+            certif_de_group: {
+              direction_du_group: "yes",
+              petite_exploitation_agricole: "no",
+              grande_exploitation_agricole: "no"
+            }
+          },
+          {
+            text: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
+            num: "3.1.2",
+            certif_de_group: {
+              direction_du_group: "yes",
+              petite_exploitation_agricole: "no",
+              grande_exploitation_agricole: "no"
+            }
+          },
+
         ]
       }
     ]
   }
 ]
+
+export const chapterData: ChapterMetaData[] = [
+  {
+    id: "1",
+    principal_requirement: "La direction se conforme aux lois applicables et aux conventions collectives (CC) au sein du champ d’application de la Norme pour l’agriculture durable de Rainforest Alliance.",
+    number: "1.1.1",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
+  {
+    id: "2",
+    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
+    number: "1.1.2",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
+
+]
+
+export const chapter2: ChapterMetaData[] = [
+  {
+    id: "1",
+    principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
+    number: "2.1.1",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
+  {
+    id: "2",
+    principal_requirement: "Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
+    number: "2.1.2",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
+
+]
+
