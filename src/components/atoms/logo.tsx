@@ -37,6 +37,7 @@ export const Logo = ({ size = "medium", className }: Props) => {
         alt="SenWiseTool logo"
         width={width}
         height={height}
+        loading="lazy"
       />
     </div>
   );

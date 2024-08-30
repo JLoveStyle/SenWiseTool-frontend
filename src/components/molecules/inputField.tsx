@@ -22,7 +22,7 @@ export default function InputField({
         <span className="text-red-600">*</span>
       </label>
       <input
-        className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+        className="border mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
         name={inputName}
         value={value}
         onChange={onChange}

@@ -1,0 +1,32 @@
+export interface Project {
+  id?: string,
+  type: ["INITIAL_INPSECTION" | "EXTERNAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"],
+  company_id?: string,
+  title: string,
+  description: string,
+  sector_activity: string,
+  country: string,
+  status: ['ARCHIVED' | 'DRAFT' | 'ACTIVE' | 'INACTIVE' | 'DEPLOYED'],
+  start_date?: string,
+  end_date?: string,
+  project_structure?: string,
+  archive?: boolean,
+  draft?: boolean,
+  archived_at?: string,
+  draft_at?: string,
+  slug?: string,
+  deleted_at?: string,
+  updated_at?: string,
+  created_at?: string,
+  creator?: string,
+  deployed_at?: string,
+}
+
+export interface ProjectDetails {
+  projectTitle: string,
+  description: string,
+  business_sector: string,
+  country: string,
+  state: string,
+  city: string,
+}

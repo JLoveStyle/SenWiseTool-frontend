@@ -54,7 +54,7 @@ export default function SideNav({}: Props) {
         <ChevronDown
           className={
             showDropDown
-              ? "rotate-180 transition-transform duration-500"
+              ? "rotate-180 transition-transform duration-500" 
               : "duration-500"
           }
         />

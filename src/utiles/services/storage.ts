@@ -17,8 +17,8 @@ export class LOCAL_STORAGE {
     }
 
     if (data) {
-      if (options.type === "STRING") return data;
-      // return JSON.parse(data);
+      // if (options.type === "STRING") return data;
+      return JSON.parse(data);
       return null;
     }
   }

@@ -17,7 +17,7 @@ export default function CreateAdgForm({ closeModal }: Props) {
   };
 
   return (
-    <div className="bg-white flex flex-col p-5 rounded-[12px] w-[96%] mx-auto">
+    <div className="bg-white flex flex-col p-5 rounded-[12px] w-[96%] mx-auto md:w-fit">
       <div className="flex justify-between">
         <p></p>
         <X onClick={closeModal} className="hover:cursor-pointer" />

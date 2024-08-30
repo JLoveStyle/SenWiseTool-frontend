@@ -135,7 +135,7 @@ export default function Home({}: Props) {
     <div
       className="h-full"
     >
-      <div className=" sm:w-fit p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
+      <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
         <div className="flex justify-center ">
           <Link href={Route.home}>
             <Image
@@ -197,7 +197,7 @@ export default function Home({}: Props) {
             name="businessActivity"
             required
             onChange={(event) => handleInputChange(event)}
-            className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+            className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
             <option selected disabled>
               -- Select --
@@ -225,7 +225,7 @@ export default function Home({}: Props) {
               Please agree to the terms and conditions
             </span>
           )}
-          <div className="flex flex-col gap-3 pt-5">
+          <div className="flex flex-col gap-3 pt-5 ">
             {isLoading ? (
               <Button className="cursor-wait" >
                 <span

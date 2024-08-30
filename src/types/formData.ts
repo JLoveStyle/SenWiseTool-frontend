@@ -10,17 +10,31 @@ export interface FormData {
 }
 
 export interface User {
+  id?: string,
+  username?: string,
+  title: ['ADG' | "MEMBER"],
+  company_id?: string,
+  status?: ['active' | 'inactive' | "banned"],
+  activity?: ['FARMER' | 'EMPLOYEE' | "AUDITOR" | "TRAINER" | "AGENT"],
+  famer_attached_contract_url?: string,
+  profileUrls?: string,
   firstName: string,
   lastName: string,
   email: string,
   password: string,
   role?: string,
   companyId?: string,
-  phoneNumber?: string,
+  phone_number?: string,
   civility?: string
 }
 
 export interface Company {
+  id?: string,
+  slug?: string,
+  address?: string,
+  description?: string,
+  website?: string,
+  phone_number?: string,
   companyName: string,
   companyEmail: string,
   country: string,

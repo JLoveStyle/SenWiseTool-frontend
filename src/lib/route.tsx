@@ -9,7 +9,9 @@ export type AvailableRoute =
   |  "createCompany"
   |  "dashboard"
   | "profile"
-  | "login";
+  | "login"
+  | "inspectionInterne"
+  | "editProject"
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -23,4 +25,6 @@ export const Route: Record<AvailableRoute, string> = {
   createCompany: "/create-compay",
   profile: "/profile",
   login: "/login",
+  inspectionInterne: "/projects/inspection-interne",
+  editProject: "/projects/edit"
 };
