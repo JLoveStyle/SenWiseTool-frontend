@@ -17,17 +17,15 @@ export default function Home({ }: Props) {
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
   async function fetchData() {
-    console.log("session =>", session);
     const token = await getToken();
     if (token) {
       LOCAL_STORAGE.save("token", token);
       // store the user in the session
-      apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
+      // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
     }
   }
 
   useEffect(() => {
-    console.log("storage", LOCAL_STORAGE.get("token"));
     fetchData();
     console.log(isLoaded);
   }, []);

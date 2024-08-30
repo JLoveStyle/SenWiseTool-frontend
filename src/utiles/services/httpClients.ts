@@ -5,9 +5,6 @@ export const Headers = {
   Authorization: `Bearer ${LOCAL_STORAGE.get("token")}`,
 };
 
-console.log("storage", LOCAL_STORAGE.get("token"));
-
-
 export default class ApiCall {
 
   async PATCH(url: string, body: any, _headers: HeadersInit = {}) {

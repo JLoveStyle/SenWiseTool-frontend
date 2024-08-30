@@ -4,16 +4,18 @@ import { useEffect } from "react";
 import {
     PayPalScriptProvider,
     PayPalButtons,
-    usePayPalScriptReducer
+    usePayPalScriptReducer,
+    DISPATCH_ACTION
 } from "@paypal/react-paypal-js";
 
 const ButtonWrapper = ({ type, plan_id }: { type: string, plan_id: string }) => {
     const [{ options }, dispatch] = usePayPalScriptReducer();
 
+    // this is for mock only!!!!!!!!!!!!!!!!!!!
     const public_url = process.env.NEXT_PUBLIC_PUBLIC_URL
     useEffect(() => {
         dispatch({
-            type: "resetOptions",
+            type: 'resetOptions' as DISPATCH_ACTION.RESET_OPTIONS,
             value: {
                 ...options,
                 intent: "subscription",
@@ -65,6 +67,7 @@ const ButtonWrapper = ({ type, plan_id }: { type: string, plan_id: string }) => 
 }
 
 export function PaypalPaypements({ plan_id }: { plan_id: string }) {
+
 
     const paypalOptions = {
         clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID as string,

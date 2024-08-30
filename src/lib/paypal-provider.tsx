@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { API_URL } from "../utiles/services/constants";
-import { PlanResultType } from '../types/api-types';
+import { PricePlanType } from '../types/api-types';
+import { fetchPricePlan } from "../utiles/services/queries";
 
 export interface IAppProps {
     plan_name: string
@@ -8,7 +8,7 @@ export interface IAppProps {
 
 export function usePricePlan({ plan_name }: IAppProps) {
 
-    const [pricePlan, setPricePlan] = React.useState<PlanResultType['data'] | null>(null);
+    const [pricePlan, setPricePlan] = React.useState<PricePlanType | null>(null);
     const [error, setError] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -16,29 +16,25 @@ export function usePricePlan({ plan_name }: IAppProps) {
     // to disable the paypal button.
 
     // TODO: handle the case the plan is not found
-    let valueTofetch: string = plan_name;
-    const fetchPricePlan = async () => {
-        setIsLoading(true);
-        const data = await fetch(`${API_URL}/v1/price_plans/${valueTofetch}`)
-
-        if (!data.ok) {
-            setIsLoading(false);
-            return;
-        }
-        const pricePlanData = await data.json();
-
-        setPricePlan(pricePlanData.data);
-        setIsLoading(false);
-        valueTofetch = "";
-    }
 
     React.useEffect(() => {
-        fetchPricePlan()
+        fetchPricePlan(plan_name)
+            .then((response) => {
+                if (response.status === 200)
+                    setPricePlan(response.data);
+                else setPricePlan(null);
+            })
+            .catch((error) => {
+                setError(error);
+                console.error(` Error: ${error}`);
+            }).finally(() => {
+                setIsLoading(false);
+            });
     }, [plan_name]);
 
     return {
         pricePlan,
-        error,
-        isLoading
+        // error,
+        // isLoading
     }
 }

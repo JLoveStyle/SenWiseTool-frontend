@@ -1,7 +1,6 @@
 "use client";
 import { DisplayTabPricing } from "@/components/atoms/display-tab-pricing";
 import { Logo } from "@/components/atoms/logo";
-import PaypalPaymentComponent from "@/components/atoms/paypal-payment";
 import Popup from "@/components/organisms/popup";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -296,7 +295,7 @@ export default function page({ }: Props) {
             ) : (// TODO: handle the case the fetching of plan id is not correct <<later>>
 
               //es-lint-disable-next-line @typescript-eslint/restrict-template-expressions
-              < PaypalPaypements plan_id={pricePlan?.id as PricePlanType['id']} />
+              < PaypalPaypements plan_id={pricePlan?.id as string} />
             )}
           </div>
         </div>
