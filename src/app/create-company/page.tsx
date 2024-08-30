@@ -18,7 +18,7 @@ import { Route } from "@/lib/route";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const router = useRouter();
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -61,28 +61,27 @@ export default function Home({}: Props) {
       return;
     }
     setIsLoading(prev => !prev)
-    // setIsLoading((prev) => !prev);
-    // await createCompany({
-    //   companyEmail: formData.companyEmail,
-    //   companyName: formData.companyName,
-    //   country: formData.country,
-    //   state: formData.state,
-    //   city: formData.city,
-    //   sector_of_activity: formData.businessActivity,
-    // })
-    //   .then((response) => {
-    //     console.log("create company res =>", response);
-    //     setIsLoading((prev) => !prev);
-    //     router.push(Route.dashboard);
-    //   })
-    //   .catch((error) => {
-    //     console.log("An error occured", error);
-    //   });
+    setIsLoading((prev) => !prev);
+    await createCompany({
+      companyEmail: formData.companyEmail,
+      companyName: formData.companyName,
+      country: formData.country,
+      state: formData.state,
+      city: formData.city,
+      sector_of_activity: formData.businessActivity,
+    })
+      .then((response) => {
+        console.log("create company res =>", response);
+        setIsLoading((prev) => !prev);
+        router.push(Route.dashboard);
+      })
+      .catch((error) => {
+        console.log("An error occured", error);
+      });
     setTimeout(() => {
       setIsLoading(prev => !prev)
       router.push(Route.dashboard)
     }, 6000)
-    
   }
 
   function handleCancel(e: any) {

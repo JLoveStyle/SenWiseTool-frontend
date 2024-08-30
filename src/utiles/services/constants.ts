@@ -121,3 +121,5 @@ export const optionsRevenu: { title: string; href: string; description: string }
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
 ]
+
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
