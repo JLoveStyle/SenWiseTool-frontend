@@ -7,7 +7,8 @@ const apiCall = new ApiCall()
 
 // CREATE User
 export async function createUser(user: Partial<User>) {
-  return apiCall.POST(BASE_URL + "/users", user)
+  return apiCall.POST(BASE_URL + "/v1/users", user)
+
 }
 
 // CREATE COMPANY

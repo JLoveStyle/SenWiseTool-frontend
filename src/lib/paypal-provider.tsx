@@ -12,10 +12,10 @@ export function usePricePlan({ plan_name }: IAppProps) {
     const [error, setError] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
 
-    // TODO: handle  the case the fetching is not working 
+    // TODO: add the bearer in the request for authentication
     // to disable the paypal button.
 
-
+    // TODO: handle the case the plan is not found
     let valueTofetch: string = plan_name;
     const fetchPricePlan = async () => {
         setIsLoading(true);

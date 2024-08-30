@@ -25,6 +25,7 @@ export default function Home({ }: Props) {
   }
 
   useEffect(() => {
+    console.log("storage", LOCAL_STORAGE.get("token"));
     fetchData();
     console.log(isLoaded);
   }, []);
