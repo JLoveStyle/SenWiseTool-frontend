@@ -1,19 +1,22 @@
 import { LOCAL_STORAGE } from "./storage";
 
-const Headers = {
+export const Headers = {
   "Content-Type": "application/json",
   Authorization: `Bearer ${LOCAL_STORAGE.get("token")}`,
 };
 
+console.log("storage", LOCAL_STORAGE.get("token"));
+
+
 export default class ApiCall {
-  
+
   async PATCH(url: string, body: any, _headers: HeadersInit = {}) {
     return fetch(url, {
       method: "PATCH",
       headers: { ...Headers, ..._headers },
       body: JSON.stringify(body)
     }).then((res) => res.json())
-      .catch((err) => console.log("An error occured while posting on "+ url, err))
+      .catch((err) => console.log("An error occured while posting on " + url, err))
   }
 
   async GET(url: string, _headers: HeadersInit = {}) {
@@ -58,3 +61,5 @@ export default class ApiCall {
     }).then((res) => res.json());
   }
 }
+
+export const apiObj = () => new ApiCall()

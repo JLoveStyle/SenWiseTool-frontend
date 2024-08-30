@@ -293,8 +293,9 @@ export default function page({ }: Props) {
                 <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
                 Processing...
               </Button>
-            ) : (
-              // TODO: handle the case the fetching of plan id is not correct <<later>>
+            ) : (// TODO: handle the case the fetching of plan id is not correct <<later>>
+
+              //es-lint-disable-next-line @typescript-eslint/restrict-template-expressions
               < PaypalPaypements plan_id={pricePlan?.id as PricePlanType['id']} />
             )}
           </div>
