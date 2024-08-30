@@ -14,6 +14,12 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+import { usePricePlan } from "@/lib/paypal-provider";
+import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
+import { PricePlanType } from "@/types/api-types";
+// paypal component
+// import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from "@paypal/react-paypal-js";
+
 type Props = {};
 
 export default function page({ }: Props) {
@@ -22,6 +28,10 @@ export default function page({ }: Props) {
   const [cartActive, setCartActive] = useState(false);
   const [cancel, setCancel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [showError, setShowError] = useState(false);
+  // set paypal options
+
 
   const handlePaypal = () => {
     setPaypalActive((prev) => !prev);
@@ -51,6 +61,10 @@ export default function page({ }: Props) {
       toast.error("Page not found");
     }
   }, [router]);
+
+  const { pricePlan } = usePricePlan({ plan_name: params.typeOfOffer.toString().toLowerCase() });
+
+  console.log("inside checkout page:", typeOfOffer, "the current plan data is ", pricePlan);
 
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
@@ -269,8 +283,8 @@ export default function page({ }: Props) {
                 {annualPricing
                   ? `${formatPrice(currentOffer?.annualPricing)} / Year`
                   : `${formatPrice(
-                      currentOffer?.biannualPricing
-                    )}  /   ¹⁄₂Year`}
+                    currentOffer?.biannualPricing
+                  )}  /   ¹⁄₂Year`}
               </span>
             </div>
             {isLoading ? (
@@ -278,13 +292,10 @@ export default function page({ }: Props) {
                 <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
                 Processing...
               </Button>
-            ) : (
-              <Button
-                onClick={handlePayment}
-                className="bg-primary py-6 hover:cursor-pointer font-semibold text-white w-full"
-              >
-                Complete payment
-              </Button>
+            ) : (// TODO: handle the case the fetching of plan id is not correct <<later>>
+
+              //es-lint-disable-next-line @typescript-eslint/restrict-template-expressions
+              < PaypalPaypements plan_id={pricePlan?.id as string} />
             )}
           </div>
         </div>

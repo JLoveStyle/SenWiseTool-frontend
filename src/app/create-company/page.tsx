@@ -18,7 +18,7 @@ import { Route } from "@/lib/route";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const router = useRouter();
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -82,7 +82,6 @@ export default function Home({}: Props) {
       setIsLoading(prev => !prev)
       router.push(Route.inspectionInterne)
     }, 6000)
-    
   }
 
   function handleCancel(e: any) {
