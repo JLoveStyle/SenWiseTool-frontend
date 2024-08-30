@@ -388,4 +388,20 @@
     width: 0;
     height: 0;
   }
+
+  @keyframes blink {
+    0%,
+    100% {
+      /* Utilisez une couleur de texte de Tailwind */
+      color: theme("colors.yellow.500");
+    }
+    50% {
+      /* Utilisez une autre couleur de texte de Tailwind */
+      color: theme("colors.yellow.800");
+    }
+  }
+
+  .text-blink {
+    animation: blink 3s infinite;
+  }
 }

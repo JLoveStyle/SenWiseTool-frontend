@@ -4,10 +4,11 @@ export type AvailableRoute =
   | "features"
   | "services"
   | "pricing"
-  |  "signIn"
-  |  "signUp"
-  |  "createCompany"
-  |  "dashboard"
+  | "checkout"
+  | "signIn"
+  | "signUp"
+  | "createCompany"
+  | "dashboard"
   | "profile"
   | "login"
   | "inspectionInterne"
@@ -26,5 +27,6 @@ export const Route: Record<AvailableRoute, string> = {
   profile: "/profile",
   login: "/login",
   inspectionInterne: "/projects/inspection-interne",
-  editProject: "/projects/edit"
+  editProject: "/projects/edit",
+  checkout: "/checkout",
 };

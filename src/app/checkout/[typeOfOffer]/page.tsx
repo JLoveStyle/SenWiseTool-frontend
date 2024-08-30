@@ -1,16 +1,22 @@
 "use client";
+import { DisplayTabPricing } from "@/components/atoms/display-tab-pricing";
 import { Logo } from "@/components/atoms/logo";
 import Popup from "@/components/organisms/popup";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { cardDataPricing, typeOfOffers } from "@/lib/card-data";
 import { Route } from "@/lib/route";
+import { formatPrice } from "@/utils/format-price";
+import clsx from "clsx";
 import { LockKeyhole } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {};
 
-export default function page({}: Props) {
+export default function page({ }: Props) {
   const router = useRouter();
   const [paypalActive, setPaypalActive] = useState(false);
   const [cartActive, setCartActive] = useState(false);
@@ -31,6 +37,30 @@ export default function page({}: Props) {
     setIsLoading((prev) => !prev);
     console.log("how are u");
   }
+
+  const params = useParams();
+  const { typeOfOffer } = params;
+
+  useEffect(() => {
+    if (
+      typeof typeOfOffer !== "string" ||
+      !typeOfOffer ||
+      !typeOfOffers.includes(typeOfOffer)
+    ) {
+      router.push("/");
+      toast.error("Page not found");
+    }
+  }, [router]);
+
+  const currentOffer = cardDataPricing.find(
+    (offer) => offer.type === typeOfOffer
+  );
+
+  const [annualPricing, setAnnualPricing] = useState(true);
+
+  const togglePricing = () => setAnnualPricing(!annualPricing);
+
+  const [chapterChoosed, setChapterChoosed] = useState(null);
 
   return (
     <main className="">
@@ -119,7 +149,8 @@ export default function page({}: Props) {
                   <p className=" font-bold">PayPal</p>
                 </div>
                 <hr />
-                <p className={paypalActive ? "flex p-6 bg-white" : "hidden"}>
+                {/* I have add the text color here because it is not visible at the moment: text and bg was white */}
+                <p className={paypalActive ? "flex p-6 bg-white text-muted-foreground" : "hidden"}>
                   In order to complete your transaction, we will transfer you
                   over to PayPals secure servers.
                 </p>
@@ -135,6 +166,7 @@ export default function page({}: Props) {
                         onChange={() => setCartActive((prev) => !prev)}
                       />
                       <div className="bg-white h-fit my-auto rounded">
+                        {/* why using udemy stuff here ? */}
                         <Image
                           width={40}
                           height={20}
@@ -192,17 +224,54 @@ export default function page({}: Props) {
                 </div>
               </div>
             </section>
+            <div>
+              {typeof typeOfOffer == "string" && (
+                <>
+                  <DisplayTabPricing
+                    typeOfOffer={typeOfOffer}
+                    setChapterChoosed={setChapterChoosed}
+                  />
+                </>
+              )}
+            </div>
           </div>
         </div>
-        <div className="md:bg-[#f8fafb] md:opacity-90 md:min-h-[100vh] text-black md:w-[45%] md:px-10 md:pt-20">
+        <div className="md:bg-[#f8fafb] md:opacity-90 md:min-h-[100vh] text-black md:w-[45%] md:px-10 md:pt-5">
           <div className="w-full md:w-[320px]">
+            <div className="flex flex-col justify-between gap-10 items-center pt-10 pb-28">
+              <div className="flex items-center gap-1 text-sm text-gray-400">
+                <span className="text-2xl font-extrabold text-gray-600">
+                  {typeOfOffer}
+                </span>
+                {chapterChoosed && <span>{` - ${chapterChoosed}`}</span>}
+              </div>
+              <div className="flex justify-end gap-3 font-semibold text-gray-400">
+                <span className={clsx(!annualPricing && "text-gray-950")}>
+                  Biannual
+                </span>
+                <Switch
+                  onCheckedChange={togglePricing}
+                  checked={annualPricing}
+                  className="outline-none"
+                />
+                <span className={clsx(annualPricing && "text-gray-950")}>
+                  Annual
+                </span>
+              </div>
+            </div>
             <h2 className="font-semibold pb-4 text-xl md:text-2xl leading-normal">
               Summary
             </h2>
             <hr />
             <div className="flex justify-between font-bold py-3">
               <p>Total: </p>
-              <span>$2800</span>
+              <span>
+                {annualPricing
+                  ? `${formatPrice(currentOffer?.annualPricing)} / Year`
+                  : `${formatPrice(
+                      currentOffer?.biannualPricing
+                    )}  /   ¹⁄₂Year`}
+              </span>
             </div>
             {isLoading ? (
               <Button className="cursor-wait py-6 bg-primary hover:cursor-pointer font-semibold text-white w-full">
