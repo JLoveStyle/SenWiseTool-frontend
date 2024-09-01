@@ -4,9 +4,11 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
-type Props = {};
+interface Props {
+  children: React.ReactNode;
+}
 
-export default function Home({}: Props) {
+export default function Layout({ children }: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
@@ -30,7 +32,8 @@ export default function Home({}: Props) {
   return (
     <>
       <LayoutDashboard>
-        <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
+        <hr className="mt-3 mb-2" />
+        {children}
       </LayoutDashboard>
     </>
   );
