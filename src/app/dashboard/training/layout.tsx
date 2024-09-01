@@ -1,14 +1,14 @@
 "use client";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
-import { API_URL } from "@/utiles/services/constants";
-import ApiCall, { apiObj, Headers } from "@/utiles/services/httpClients";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
-type Props = {};
+interface Props {
+  children: React.ReactNode;
+}
 
-export default function Home({ }: Props) {
+export default function Layout({ children }: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
@@ -16,11 +16,10 @@ export default function Home({ }: Props) {
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
   async function fetchData() {
+    console.log("session =>", session);
     const token = await getToken();
     if (token) {
       LOCAL_STORAGE.save("token", token);
-      // store the user in the session
-      // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
     }
   }
 
@@ -33,7 +32,8 @@ export default function Home({ }: Props) {
   return (
     <>
       <LayoutDashboard>
-        <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
+        <hr className="mt-3 mb-2" />
+        {children}
       </LayoutDashboard>
     </>
   );
