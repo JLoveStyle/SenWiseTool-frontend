@@ -6,8 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { TrainingProps } from "@/types/formData";
 import { RxDotFilled } from "react-icons/rx";
-import { TrainingProps } from "./form-training";
 
 interface Props {
   training: TrainingProps | undefined;
@@ -21,18 +21,20 @@ export function DetailTraining({ training }: Props) {
         <CardDescription>{training?.theme}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-10">
-        <div className="flex items-center justify-between text-lg ">
+        <div className="flex items-center justify-around text-lg ">
           <div className="flex gap-3">
-            <span className="font-bold">Debut :</span>
+            <span className="font-bold">Du :</span>
             <span>{training?.start_date}</span>
           </div>
           <div className="flex gap-3">
-            <span className="font-bold">Fin :</span>
+            <span className="font-bold">Au :</span>
             <span>{training?.end_date}</span>
           </div>
         </div>
         <div>
-          <CardTitle>Modules à dispenser</CardTitle>
+          <CardTitle className="text-gray-700 text-lg">
+            Modules à dispenser
+          </CardTitle>
           {training?.modules.map((module) => (
             <div>
               <RxDotFilled className="text-gray-800 inline" size={25} />{" "}
@@ -43,7 +45,9 @@ export function DetailTraining({ training }: Props) {
       </CardContent>
       <CardFooter>
         <div>
-          <CardTitle>Ajouter des partenaires</CardTitle>
+          <CardTitle className="text-gray-700 text-lg">
+            Ajouter des partenaires
+          </CardTitle>
           {/* @ ...todo add partners */}
           <div>Add partners ...</div>
         </div>

@@ -19,8 +19,9 @@ import { Icon } from "../icon";
 export const trainings = [
   {
     id: 1,
-    theme:
+    title:
       "Lorem 1 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
+    location: "Minton",
     start_date: "18/05/2024",
     end_date: "24/05/2024",
     modules: [
@@ -30,8 +31,9 @@ export const trainings = [
   },
   {
     id: 2,
-    theme:
+    title:
       "Lorem 2 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
+    location: "AKAK",
     start_date: "Pending",
     end_date: "$150.00",
     modules: [
@@ -41,8 +43,9 @@ export const trainings = [
   },
   {
     id: 3,
-    theme:
+    title:
       "Lorem 3 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
+    location: "Minton",
     start_date: "Unpaid",
     end_date: "$350.00",
     modules: [
@@ -52,8 +55,9 @@ export const trainings = [
   },
   {
     id: 4,
-    theme:
+    title:
       "Lorem 4 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
+    location: "Moutundu",
     start_date: "Paid",
     end_date: "$450.00",
     modules: [
@@ -63,8 +67,9 @@ export const trainings = [
   },
   {
     id: 5,
-    theme:
+    title:
       "Lorem 5 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
+    location: "Minton",
     start_date: "Paid",
     end_date: "$550.00",
     modules: [
@@ -74,8 +79,9 @@ export const trainings = [
   },
   {
     id: 6,
-    theme:
+    title:
       "Lorem 6 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
+    location: "Minton",
     start_date: "Pending",
     end_date: "$200.00",
     modules: [
@@ -85,8 +91,9 @@ export const trainings = [
   },
   {
     id: 7,
-    theme:
+    title:
       "Lorem 7 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
+    location: "Minton",
     start_date: "Unpaid",
     end_date: "$300.00",
     modules: [
@@ -99,13 +106,20 @@ export const trainings = [
 export function TrainingList() {
   const router = useRouter();
 
+  const getData = async () => {
+    // if (error) {
+    //   console.log(error);
+    // }
+    // console.log("data::::::::::: ", data);
+  };
+
   return (
     <>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">#</TableHead>
-            <TableHead>Theme</TableHead>
+            <TableHead>title</TableHead>
             <TableHead>Start</TableHead>
             <TableHead>End</TableHead>
             <TableHead className="text-right"></TableHead>
@@ -125,7 +139,7 @@ export function TrainingList() {
               <TableCell className="font-medium">{training.id}</TableCell>
               <TableCell>{training.start_date}</TableCell>
               <TableCell>{training.end_date}</TableCell>
-              <TableCell>{training.theme}</TableCell>
+              <TableCell>{training.title}</TableCell>
               <TableCell className="text-right">
                 <Button
                   variant="link"

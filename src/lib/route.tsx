@@ -27,7 +27,6 @@ export const Route: Record<AvailableRoute, string> = {
   dashboard: "/dashboard",
   formationProject: "/dashboard/trainings",
   formationProjectDetails: "/dashboard/training/project",
-  createCompany: "/create-compay",
   profile: "/profile",
   login: "/login",
   checkout: "/checkout",
@@ -35,4 +34,5 @@ export const Route: Record<AvailableRoute, string> = {
   training: "trainings",
   training_session: "training_sessions",
   user: "users",
+  companies: "companies",
 };
