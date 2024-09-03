@@ -20,11 +20,11 @@ export default function TrainingDetails() {
   const router = useRouter();
 
   const training: TrainingProps | undefined = trainings.find(
-    (training) => training.id == Number(id)
+    (training) => training.id == id
   );
 
   const [currentTraining, setCurrentTraining] = useState<TrainingProps>({
-    id: training ? training.id : 0,
+    id: training ? training.id : "",
     title: training ? training.title : "",
     location: training ? training.location : "",
     start_date: training ? training.start_date : "",

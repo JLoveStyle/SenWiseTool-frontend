@@ -18,7 +18,7 @@ import { Icon } from "../icon";
 
 export const trainings = [
   {
-    id: 1,
+    id: "1",
     title:
       "Lorem 1 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
     location: "Minton",
@@ -30,7 +30,7 @@ export const trainings = [
     ],
   },
   {
-    id: 2,
+    id: "2",
     title:
       "Lorem 2 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
     location: "AKAK",
@@ -42,7 +42,7 @@ export const trainings = [
     ],
   },
   {
-    id: 3,
+    id: "3",
     title:
       "Lorem 3 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
     location: "Minton",
@@ -54,7 +54,7 @@ export const trainings = [
     ],
   },
   {
-    id: 4,
+    id: "4",
     title:
       "Lorem 4 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
     location: "Moutundu",
@@ -66,7 +66,7 @@ export const trainings = [
     ],
   },
   {
-    id: 5,
+    id: "5",
     title:
       "Lorem 5 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
     location: "Minton",
@@ -78,7 +78,7 @@ export const trainings = [
     ],
   },
   {
-    id: 6,
+    id: "6",
     title:
       "Lorem 6 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
     location: "Minton",
@@ -90,7 +90,7 @@ export const trainings = [
     ],
   },
   {
-    id: 7,
+    id: "7",
     title:
       "Lorem 7 ipsum dolor sit amet consectetur, adipisicing elit. Itaque rem commodi culpa, sequi sunt repellendus porro et, quod libero iste provident necessitatibus illum expedita quas nobis pariatur. Aperiam, libero aspernatur!",
     location: "Minton",
