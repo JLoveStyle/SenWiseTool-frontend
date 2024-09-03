@@ -1,6 +1,12 @@
-export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL
+import { Route } from "@/lib/route";
 
-export const optionsGestions: { title: string; href: string; description: string }[] = [
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+
+export const optionsGestions: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
   {
     title: "Inspection initial",
     href: "/docs/primitives/alert-dialog",
@@ -56,7 +62,7 @@ export const optionsGestions: { title: string; href: string; description: string
   },
   {
     title: "Formation",
-    href: "/docs/primitives/tooltip",
+    href: Route.formationProject,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
@@ -65,10 +71,14 @@ export const optionsGestions: { title: string; href: string; description: string
     href: "/docs/primitives/tooltip",
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  }
-]
+  },
+];
 
-export const optionsTracabilité: { title: string; href: string; description: string }[] = [
+export const optionsTracabilité: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
   {
     title: "Reçus",
     href: "/docs/primitives/alert-dialog",
@@ -98,10 +108,14 @@ export const optionsTracabilité: { title: string; href: string; description: st
     href: "/docs/primitives/alert-dialog",
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
-  }
-]
+  },
+];
 
-export const optionsRevenu: { title: string; href: string; description: string }[] = [
+export const optionsRevenu: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
   {
     title: "Justificatifs de payement de l'investissement de durabilité",
     href: "/docs/primitives/alert-dialog",
@@ -120,4 +134,4 @@ export const optionsRevenu: { title: string; href: string; description: string }
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
-]
+];

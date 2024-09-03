@@ -1,42 +1,56 @@
-// // Ouvrir une base de données
-// const request = indexedDB.open('maBaseDeDonnées', 1);
+import { TrainingProps } from "@/components/atoms/training/form-training";
 
-// request.onupgradeneeded = function(event) {
-//   const db = (event.target as IDBOpenDBRequest).result;
-//   const objectStore = db.createObjectStore("MesObjets", { keyPath: "id", autoIncrement: true });
-//   objectStore.createIndex("nom", "nom", { unique: false });
-// };
+export function openDatabase(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("TrainingDB", 1);
 
-// request.onsuccess = function(event) {
-//   const db = (event.target as IDBOpenDBRequest).result;
-//   console.log("Base de données ouverte avec succès");
+    request.onupgradeneeded = (event) => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains("trainings")) {
+        const objectStore = db.createObjectStore("trainings", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+        objectStore.createIndex("theme", "theme", { unique: false });
+        objectStore.createIndex("start_date", "start_date", { unique: false });
+      }
+    };
 
-//   // Ajouter des données
-//   const transaction = db.transaction('maTable', 'readwrite');
-//   const objectStore = transaction.objectStore('maTable');
-//   objectStore.add({ id: 1, nom: 'Exemple' });
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
 
-//   // Lire des données
-//   const getRequest = objectStore.get(1);
-//   getRequest.onsuccess = (event) => {
-//     console.log('Données récupérées:', event.target.result);
-//   };
-// };
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}
 
-// function ajouterDonnee(data: object) {
-//   const transaction = db.transaction(["MesObjets"], "readwrite");
-//   const objectStore = transaction.objectStore("MesObjets");
-//   const request = objectStore.add(data);
+export async function addTraining(training: TrainingProps): Promise<void> {
+  const db = await openDatabase();
+  const transaction = db.transaction("trainings", "readwrite");
+  const store = transaction.objectStore("trainings");
 
-//   request.onsuccess = function(event) {
-//     console.log("Donnée ajoutée avec succès");
-//   };
+  store.add(training);
 
-//   request.onerror = function(event) {
-//     console.error("Erreur lors de l'ajout de la donnée", event);
-//   };
-// }
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
 
-// request.onerror = (event) => {
-//   console.error('Erreur IndexedDB:', event.target.errorCode);
-// };
+export async function getTrainings(): Promise<TrainingProps[]> {
+  const db = await openDatabase();
+  const transaction = db.transaction("trainings", "readonly");
+  const store = transaction.objectStore("trainings");
+
+  return new Promise((resolve, reject) => {
+    const request = store.getAll();
+    request.onsuccess = () => {
+      resolve(request.result as TrainingProps[]);
+    };
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+}

@@ -12,7 +12,8 @@ export type AvailableRoute =
   | "formationProject"
   | "formationProjectDetails"
   | "profile"
-  | "login";
+  | "login"
+  | "db_base_url";
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -23,10 +24,11 @@ export const Route: Record<AvailableRoute, string> = {
   signIn: "/sign-in",
   signUp: "/sign-up",
   dashboard: "/dashboard",
-  formationProject: "/dashboard/trainings",
+  formationProject: "/dashboard/training",
   formationProjectDetails: "/dashboard/training/project",
   createCompany: "/create-compay",
   profile: "/profile",
   login: "/login",
   checkout: "/checkout",
+  db_base_url: "https://senwisetool-project-backend.onrender.com/v1/trainings",
 };

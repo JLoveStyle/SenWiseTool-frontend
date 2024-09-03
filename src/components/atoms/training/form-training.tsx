@@ -1,34 +1,30 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ModuleProps, TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
 import { RxCross2, RxDotFilled } from "react-icons/rx";
-
-interface ModuleProps {
-  id: number;
-  value: string;
-}
-
-export interface TrainingProps {
-  id: number;
-  theme: string;
-  start_date: string;
-  end_date: string;
-  modules: ModuleProps[];
-}
+import { InputUI } from "../disign-system/form/input-ui";
 
 interface Props {
   updatedFormData: (data: TrainingProps) => void;
   initData?: TrainingProps;
+  errors: { [key: string]: any };
+  isLoading: boolean;
 }
 
-export const FormTraining = ({ updatedFormData, initData }: Props) => {
+export const FormTraining = ({
+  updatedFormData,
+  initData,
+  errors,
+  isLoading,
+}: Props) => {
   const [formData, setFormData] = useState<TrainingProps>({
-    id: initData ? initData.id : 0,
-    theme: initData ? initData.theme : "",
+    id: initData ? initData.id : "",
+    title: initData ? initData.title : "",
     start_date: initData ? initData.start_date : "",
     end_date: initData ? initData.end_date : "",
+    location: initData ? initData.location : "",
     modules: initData ? initData.modules : [],
   });
 
@@ -78,49 +74,48 @@ export const FormTraining = ({ updatedFormData, initData }: Props) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="items-center gap-4">
-        <Label htmlFor="theme" className="text-right">
-          Theme de la formation
-        </Label>
-        <Input
-          id="theme"
-          name="theme"
-          className="outline-none focus:border-blue-800/30"
-          value={formData.theme}
+      <InputUI
+        label="Titre"
+        id="title"
+        placeholder="Titre de la formation"
+        isLoading={isLoading}
+        errors={errors}
+        value={formData.title}
+        onChange={handleChange}
+      />
+      <InputUI
+        label="Lieu"
+        id="location"
+        placeholder="Lieu de la formation"
+        isLoading={isLoading}
+        errors={errors}
+        value={formData.location}
+        onChange={handleChange}
+      />
+      <div className="grid grid-cols-2 items-center gap-4">
+        <InputUI
+          label="Début de la formation"
+          id="start_date"
+          type="date"
+          isLoading={isLoading}
+          errors={errors}
+          value={formData.start_date}
+          onChange={handleChange}
+        />
+
+        <InputUI
+          label="Fin de la formation"
+          id="end_date"
+          type="date"
+          isLoading={isLoading}
+          errors={errors}
+          value={formData.end_date}
           onChange={handleChange}
         />
       </div>
-      <div className="grid grid-cols-2 items-center gap-4">
-        <div>
-          <Label htmlFor="start_date" className="text-right">
-            Du
-          </Label>
-          <Input
-            id="start_date"
-            name="start_date"
-            type="date"
-            className="outline-none focus:border-blue-800/30"
-            value={formData.start_date}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <Label htmlFor="end_date" className="text-right">
-            Au
-          </Label>
-          <Input
-            id="end_date"
-            name="end_date"
-            type="date"
-            className="outline-none focus:border-blue-800/30"
-            value={formData.end_date}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="modules">Modules à dispenser</Label>
-        <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-32 overflow-y-scroll scrool-bar-hidden">
+        <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 overflow-y-scroll scrool-bar-hidden">
           {formData.modules &&
             formData.modules.map((mod) => (
               <div
@@ -139,15 +134,16 @@ export const FormTraining = ({ updatedFormData, initData }: Props) => {
               </div>
             ))}
         </div>
-        <Input
-          type="text"
+
+        <InputUI
+          label="Modules"
+          id="modules"
+          placeholder="Entrer un nouveau module"
+          isLoading={isLoading}
+          value={module?.value}
+          errors={errors}
           onChange={handleModuleChange}
           onKeyDown={handleUpdateModules}
-          value={module?.value}
-          id="modules"
-          placeholder="Modules à dispenser"
-          className="outline-none focus:border-blue-800/30"
-          autoComplete="off"
         />
       </div>
     </div>

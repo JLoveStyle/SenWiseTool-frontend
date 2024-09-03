@@ -10,25 +10,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useToggle } from "@/hooks/use-toggle";
+import { TrainingProps } from "@/types/formData";
 import { db_update_training } from "@/utiles/services/training";
+import { isEmptyObject } from "@/utils/tool";
+import { TrainingFormVerification } from "@/utils/training-form-verification";
 import { PenLine, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "../icon";
-import { FormTraining, TrainingProps } from "./form-training";
+import { FormTraining } from "./form-training";
 
 interface Props {
   currentTaining: TrainingProps;
 }
 
 export function UpdateTraining({ currentTaining }: Props) {
-  const [initialize, setInitialize] = useState<TrainingProps>({
+  const { value: isLoading, setValue: setIsLoading } = useToggle();
+  const [errors, setErrors] = useState({});
+
+  const initialize = {
     id: currentTaining.id,
-    theme: currentTaining.theme,
+    title: currentTaining.title,
+    location: currentTaining.location,
     start_date: currentTaining.start_date,
     end_date: currentTaining.end_date,
     modules: currentTaining.modules,
-  });
+  };
 
   // Ajoutez un état pour formData
   const [formData, setFormData] = useState<TrainingProps>(initialize);
@@ -39,25 +47,47 @@ export function UpdateTraining({ currentTaining }: Props) {
   };
 
   const handleUpdateTraining = async (formData: TrainingProps) => {
-    const { error, data } = await db_update_training(formData);
+    // const { error, data } = await db_create_training(formData);
+    const dataToDB = {
+      title: formData.title,
+      start_date: formData.start_date,
+      end_date: formData.end_date,
+      location: formData.location,
+      company_id: "compagny1",
+      modules: formData.modules.map((item) => item.value),
+    };
 
-    if (error) {
-      toast.error(error.message);
-      // setIsLoading(false);
-      return;
-    }
-    console.log(data);
+    await db_update_training(dataToDB, formData.id);
 
-    toast.success("Your account are created successfull");
+    // if (error) {
+    //   toast.error(error.message);
+    //   setIsLoading(false);
+    //   return;
+    // }
+    // console.log(data);
+
+    // await db_test_add(formData);
+    // toast.success("Your project are created successfull");
     // setIsLoading(false);
+    return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    try {
+      setIsLoading(true);
+      e.preventDefault();
 
-    // ... @todo verification des variables
+      const formErrors = TrainingFormVerification(formData);
 
-    handleUpdateTraining(formData);
+      if (!isEmptyObject(formErrors)) {
+        setErrors(formErrors);
+        toast.error("Something is wrong");
+        setIsLoading(false);
+        return;
+      }
+
+      handleUpdateTraining(formData);
+    } catch (error) {}
   };
 
   return (
@@ -83,13 +113,15 @@ export function UpdateTraining({ currentTaining }: Props) {
           <FormTraining
             updatedFormData={handleUpdatedFormData}
             initData={initialize}
+            errors={errors}
+            isLoading={isLoading}
           />
           <DialogFooter>
             <Button
               type="submit"
               className="bg-green-600 hover:bg-green-500 flex gap-1"
             >
-              <Icon icon={{ icon: Plus }}>Créer</Icon>
+              <Icon icon={{ icon: Plus }}>ÉDITER</Icon>
             </Button>
           </DialogFooter>
         </form>
