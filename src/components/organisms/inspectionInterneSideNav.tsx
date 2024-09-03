@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { tableRaw } from "@/utiles/services/constants";
-import Popup from "./popup";
 import CreateProjectOptions from "../molecules/createProjectOptions";
 import ProjectDetailsForm from "../molecules/projectDetailsForm";
 import { Dialog } from "@radix-ui/react-dialog";
@@ -23,8 +22,8 @@ export default function InspectionInterneSideNav({}: Props) {
   };
 
   const handleShowProjectDetails = (value1: boolean, value2: boolean) => {
-    setShowProjectDetailsForm(value1)
-    setShowProjectOptions(value2)
+    setShowProjectDetailsForm(value1);
+    setShowProjectOptions(value2);
   };
 
   return (
@@ -33,7 +32,7 @@ export default function InspectionInterneSideNav({}: Props) {
         <Button
           onClick={() => {
             setOpenModal((prev) => !prev);
-            setShowProjectOptions((prev) => !prev);
+            setShowProjectOptions(prev => !prev);
           }}
           className="px-10"
         >
@@ -42,7 +41,7 @@ export default function InspectionInterneSideNav({}: Props) {
         <Dialog
           onOpenChange={() => {
             setOpenModal((prev) => !prev);
-            setShowProjectDetailsForm((prev) => !prev);
+            setShowProjectOptions((prev) => !prev);
           }}
           open={openModal}
         >

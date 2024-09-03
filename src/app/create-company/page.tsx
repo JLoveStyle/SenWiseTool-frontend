@@ -4,21 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Country, State, City } from "country-state-city";
-import Select from "@/components/molecules/select";
+import CustomSelectTag from "@/components/molecules/select";
 import { Button } from "@/components/ui/button";
 import CheckBox from "@/components/molecules/checkButton";
 import { FormData } from "@/types/formData";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { Logo } from "@/components/atoms/logo";
 import Popup from "@/components/organisms/popup";
 import CancelModal from "@/components/molecules/cancelModal";
 import { createCompany } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
+import { createOrganization } from "@/utiles/services/createOrg";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const router = useRouter();
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
@@ -50,38 +50,45 @@ export default function Home({ }: Props) {
     "Autre",
   ];
 
-  const { isSignedIn } = useUser();
-  console.log(isSignedIn);
+  const { isSignedIn, user } = useUser();
 
   async function handleSubmit(e: any) {
     e.preventDefault();
     setHasAgree(false);
+
     if (!isChecked) {
       setHasAgree((prev) => !prev);
       return;
     }
-    setIsLoading(prev => !prev)
     setIsLoading((prev) => !prev);
-    await createCompany({
-      companyEmail: formData.companyEmail,
-      companyName: formData.companyName,
-      country: formData.country,
-      state: formData.state,
-      city: formData.city,
-      sector_of_activity: formData.businessActivity,
-    })
-      .then((response) => {
-        console.log("create company res =>", response);
-        setIsLoading((prev) => !prev);
-        router.push(Route.dashboard);
+
+    if (user?.id) {
+      console.log("userId available");
+      const res = await createOrganization(formData, user.id);
+      console.log("res =>", res);
+
+      await createCompany({
+        companyEmail: formData.companyEmail,
+        companyName: formData.companyName,
+        country: formData.country,
+        state: formData.state,
+        city: formData.city,
+        sector_of_activity: formData.businessActivity,
       })
-      .catch((error) => {
-        console.log("An error occured", error);
-      });
-    setTimeout(() => {
-      setIsLoading(prev => !prev)
-      router.push(Route.inspectionInterne)
-    }, 6000)
+        .then((response) => {
+          console.log("create company res =>", response);
+          setIsLoading((prev) => !prev);
+          router.push(Route.inspectionInterne);
+        })
+        .catch((error) => {
+          console.log("An error occured", error);
+        });
+    }
+    // setTimeout(() => {
+    //   setIsLoading((prev) => !prev);
+    //   router.push(Route.inspectionInterne);
+    // }, 6000);
+    setIsLoading((prev) => !prev);
   }
 
   function handleCancel(e: any) {
@@ -131,9 +138,7 @@ export default function Home({ }: Props) {
   };
 
   return (
-    <div
-      className="h-full"
-    >
+    <div className="h-full">
       <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
         <div className="flex justify-center ">
           <Link href={Route.home}>
@@ -165,21 +170,21 @@ export default function Home({ }: Props) {
             value={formData.companyEmail}
             onChange={(e) => handleInputChange(e)}
           />
-          <Select
+          <CustomSelectTag
             selectName="country"
             onChange={(e) => handleInputChange(e)}
             label="Country"
             arrayOfItems={countries}
             value={formData.country}
           />
-          <Select
+          <CustomSelectTag
             selectName="state"
             onChange={(e) => handleInputChange(e)}
             label="State"
             arrayOfItems={state}
             value={formData.state}
           />
-          <Select
+          <CustomSelectTag
             selectName="city"
             onChange={(e) => handleInputChange(e)}
             label="City"
@@ -226,10 +231,8 @@ export default function Home({ }: Props) {
           )}
           <div className="flex flex-col gap-3 pt-5 ">
             {isLoading ? (
-              <Button className="cursor-wait" >
-                <span
-                  className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."
-                ></span>
+              <Button className="cursor-wait">
+                <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
                 Processing...
               </Button>
             ) : (

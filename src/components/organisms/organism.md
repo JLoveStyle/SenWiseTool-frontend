@@ -1,1 +1,0 @@
-# ici est stocker tout les composants qui ont au moins deux autres composants

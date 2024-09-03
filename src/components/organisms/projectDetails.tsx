@@ -14,7 +14,7 @@ export default function ProjectDetails({}: Props) {
   const [settingsActive, setSettingsActive] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<Project | undefined>()
 
-  let id: string = "";
+  let id: string | undefined | null = "";
 
   useEffect(() => {
     id = LOCAL_STORAGE.get("projectId");

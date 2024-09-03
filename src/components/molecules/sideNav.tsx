@@ -1,5 +1,5 @@
 "use client";
-import { UserButton } from "@clerk/nextjs";
+import { OrganizationProfile, OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { ChevronDown } from "lucide-react";
 import React, { useState } from "react";
 
@@ -54,7 +54,7 @@ export default function SideNav({}: Props) {
         <ChevronDown
           className={
             showDropDown
-              ? "rotate-180 transition-transform duration-500" 
+              ? "rotate-180 transition-transform duration-500"
               : "duration-500"
           }
         />
@@ -72,9 +72,10 @@ export default function SideNav({}: Props) {
           ))}
         </div>
       )}
-      <div className="flex justify-center absolute bottom-3 left-14 ">
+      {/* <div className="flex flex-col justify-center absolute bottom-3 left-14 ">
         <UserButton />
-      </div>
+        <OrganizationSwitcher />
+      </div> */}
     </div>
   );
 }

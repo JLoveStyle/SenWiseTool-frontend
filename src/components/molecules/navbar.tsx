@@ -82,7 +82,7 @@ export const Navbar = () => {
           </div>
           {userId ? (
             <Link href={Route.dashboard}>
-              <UserRound />{" "}
+              <UserRound />
             </Link>
           ) : (
             <div className="hidden sm:block">{loginButtons}</div>

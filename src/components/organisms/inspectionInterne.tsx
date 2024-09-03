@@ -8,8 +8,9 @@ import {
 
 import React from "react";
 import CustomHoverCard from "./hoverCard";
-import CustomTable from "./customTable";
-import { tableHead, tableRaw } from "@/utiles/services/constants";
+import { tableRaw } from "@/utiles/services/constants";
+import { DataTable } from "../molecules/data-table";
+import { columnListProjects } from "../atoms/columnsProject";
 
 type Props = {};
 
@@ -17,19 +18,7 @@ export default function InspectionInterne({}: Props) {
   return (
     <>
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <div className="flex gap-6">
-          <h1 className="text-xl font-semibold">
-            Internal inspections projects
-          </h1>
-          <div className="text-gray-500 flex gap-5">
-            <CustomHoverCard content="sort from A -Z">
-              <ArrowDownAZ className="hover:cursor-pointer" />
-            </CustomHoverCard>
-            <CustomHoverCard content="Sort form Z - A">
-              <ArrowUpAZ className="hover:cursor-pointer" />
-            </CustomHoverCard>
-          </div>
-        </div>
+        <h1 className="text-xl font-semibold">Internal inspections projects</h1>
         <div className="flex gap-4 text-gray-500">
           <CustomHoverCard content="archive project">
             <Archive className="hover:cursor-pointer" />
@@ -43,7 +32,11 @@ export default function InspectionInterne({}: Props) {
         </div>
       </div>
       <div className="px-6">
-        <CustomTable tableHead={tableHead} tableRaw={tableRaw}/>
+        <DataTable
+          onSelecteItem={() => console.log("hello")}
+          incomingColumns={columnListProjects}
+          incomingData={tableRaw}
+        />
       </div>
     </>
   );

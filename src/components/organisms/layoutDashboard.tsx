@@ -1,5 +1,5 @@
 import React from "react";
-import NavDashboard from "../molecules/navDashboard";
+import NavDashboard from "./navDashboard";
 import SideNav from "../molecules/sideNav";
 import { NavigationMenuDemo } from "./navigationMenu";
 import InspectionInterneSideNav from "./inspectionInterneSideNav";

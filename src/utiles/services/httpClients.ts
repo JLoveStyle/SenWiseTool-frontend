@@ -13,7 +13,16 @@ export default class ApiCall {
       headers: { ...Headers, ..._headers },
       body: JSON.stringify(body)
     }).then((res) => res.json())
-      .catch((err) => console.log("An error occured while posting on " + url, err))
+      .catch((err) => console.log("An error occured while doing a patch on " + url, err))
+  }
+
+  async PUT(url: string, body: any, _headers: HeadersInit = {}) {
+    return fetch(url, {
+      method: "PATCH",
+      headers: { ...Headers, ..._headers },
+      body: JSON.stringify(body)
+    }).then((res) => res.json())
+      .catch((err) => console.log("An error occured while doing a put on " + url, err))
   }
 
   async GET(url: string, _headers: HeadersInit = {}) {

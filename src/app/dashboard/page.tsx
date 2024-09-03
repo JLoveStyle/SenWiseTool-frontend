@@ -1,10 +1,10 @@
 "use client";
-import NavDashboard from "@/components/molecules/navDashboard";
+import NavDashboard from "@/components/organisms/navDashboard";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { API_URL } from "@/utiles/services/constants";
 import ApiCall, { apiObj, Headers } from "@/utiles/services/httpClients";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { useAuth, UserButton, useSession, useUser } from "@clerk/nextjs";
+import { useAuth, useSession, useUser } from "@clerk/nextjs";
 import React, { useEffect } from "react";
 
 type Props = {};
@@ -19,6 +19,7 @@ export default function Home({ }: Props) {
   async function fetchData() {
     const token = await getToken();
     if (token) {
+      console.log(token)
       LOCAL_STORAGE.save("token", token);
       // store the user in the session
       // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
@@ -30,7 +31,7 @@ export default function Home({ }: Props) {
     console.log(isLoaded);
   }, []);
 
-  console.log(user);
+  console.log(session);
   return (
     <>
       <LayoutDashboard>

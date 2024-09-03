@@ -20,15 +20,15 @@ export const HeroTop = () => {
             High quality data collection for everyone
           </p>
           <div className="flex items-center gap-10 justify-center sm:justify-start">
-            <Button className="bg-primary hover:opacity-90 rounded-none">
-              Register
+            <Button className="bg-primary hover:opacity-90 px-10">
+              Get started
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="border-primary bg-transparent text-primary hover:bg-primary/25 hover:text-primary rounded-none"
             >
               Login
-            </Button>
+            </Button> */}
           </div>
         </div>
       </Container>

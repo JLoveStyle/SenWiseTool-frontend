@@ -1,7 +1,8 @@
 export interface Project {
-  id?: string,
-  type?: ["INITIAL_INPSECTION" | "EXTERNAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"],
+  id: string,
+  type?: ["INITIAL_INPSECTION" | "INTERNAL_INSPECTION" | "AUTO_EVALUATION"],
   company_id?: string,
+  other_logo?: string,
   title: string,
   description: string,
   sector_activity: string,
@@ -22,13 +23,4 @@ export interface Project {
   created_at?: string,
   creator?: string,
   deployed_at?: string,
-}
-
-export interface ProjectDetails {
-  projectTitle: string,
-  description: string,
-  business_sector: string,
-  country: string,
-  state: string,
-  city: string,
 }

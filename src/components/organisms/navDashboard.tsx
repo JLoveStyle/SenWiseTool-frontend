@@ -8,10 +8,9 @@ import {
   Search,
   UserPlus,
 } from "lucide-react";
-import Popup from "../organisms/popup";
-import CreateAdgForm from "./createAdgForm";
-import CreateMemeberForm from "./createMemberForm";
-import CustomHoverCard from "../organisms/hoverCard";
+import CreateAdgForm from "../molecules/createAdgForm";
+import CreateMemeberForm from "../molecules/createMemberForm";
+import CustomHoverCard from "./hoverCard";
 import Link from "next/link";
 import { Route } from "@/lib/route";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
@@ -19,6 +18,7 @@ import { tableRaw } from "@/utiles/services/constants";
 import { Project } from "@/types/gestion";
 import { usePathname } from "next/navigation";
 import { Dialog, DialogContent } from "../ui/dialog";
+import { OrganizationSwitcher } from "@clerk/nextjs";
 
 type Props = {
   placeholder: string;
@@ -29,11 +29,11 @@ export default function NavDashboard({ placeholder }: Props) {
   const [showMemberForm, setShowMemberForm] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<Project | undefined>();
-  const [id, setId] = useState<string>("");
+  const [id, setId] = useState<string | undefined | null>("");
   const pathname = usePathname();
 
   useEffect(() => {
-    const localId = LOCAL_STORAGE.get("projectId");
+    const localId: string | undefined | null = LOCAL_STORAGE.get("projectId");
     setId(localId);
     setSelectedProject(tableRaw.find((item) => item.id === localId));
   }, []);
@@ -48,7 +48,7 @@ export default function NavDashboard({ placeholder }: Props) {
       },
     },
     {
-      label: "Member",
+      label: "Auditor",
       function: () => {
         setShowMemberForm((prev) => !prev);
         setOpenDropdown(false);
@@ -94,65 +94,8 @@ export default function NavDashboard({ placeholder }: Props) {
       </div>
 
       {/* CREATE SUB ACCOUNT BUTTON */}
-      <div
-        className="flex flex-col"
-        onClick={() => setOpenDropdown((prev) => !prev)}
-      >
-        <div className="my-auto">
-          <CustomHoverCard content="Create sub-account">
-            <div className="flex gap-2 rounded-[10px] font-semibold bg-white text-slate-700 p-3 hover:cursor-pointer">
-              {/* <p className="hidden md:flex">Create sub-account</p> */}
-              <UserPlus className="" />
-              <ChevronDown
-                className={
-                  openDropdown
-                    ? "rotate-180 duration-500 transition-transform"
-                    : "duration-500"
-                }
-              />
-            </div>
-          </CustomHoverCard>
-        </div>
-
-        {openDropdown && (
-          <div className="absolute top-[60px] right-0 bg-slate-50 w-[198px] rounded-b-[12px]">
-            {createdRole.map((item, idx) => (
-              <p
-                key={idx}
-                onClick={item.function}
-                className="hover:bg-tertiary w-full p-2 hover:cursor-pointer"
-              >
-                {item.label}
-              </p>
-            ))}
-          </div>
-        )}
-      </div>
-      <Dialog
-        onOpenChange={() => {
-          setOpenDropdown(false);
-          setShowAdgForm((prev) => !prev);
-        }}
-        open={showAdgForm}
-      >
-        <DialogContent className="sm:max-w-[400px]">
-          <CreateAdgForm closeModal={() => setShowAdgForm((prev) => !prev)} />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog
-        onOpenChange={() => {
-          setShowMemberForm((prev) => !prev);
-          setOpenDropdown(false);
-        }}
-        open={showMemberForm}
-      >
-        <DialogContent className="sm:max-w-[400px]">
-          <CreateMemeberForm
-            closeModal={() => setShowMemberForm((prev) => !prev)}
-          />
-        </DialogContent>
-      </Dialog>
+      <OrganizationSwitcher/>
+      
     </nav>
   );
 }

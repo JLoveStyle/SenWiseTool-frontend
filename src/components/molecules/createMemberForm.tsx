@@ -17,7 +17,7 @@ export default function CreateMemeberForm({ closeModal }: Props) {
   }>({
     username: "",
     password: "",
-    role: "MEMBER",
+    role: "AUDITOR",
   });
 
   const handleChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {

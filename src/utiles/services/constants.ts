@@ -135,7 +135,7 @@ export const tableHead: string[] = [
 ]
 
 // DIFFERENTS CHAMPTERS
-export const chapters: string[] = ["chapter 1", "chapter 2", "chapter 3"]
+export const chapters: string[] = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
 
 // THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
 export let tableRaw: Project[] = [
@@ -144,7 +144,7 @@ export let tableRaw: Project[] = [
     end_date: "2020-03-01",
     start_date: "2020-01-01",
     type: ["INITIAL_INPSECTION"],
-    title: "Projet de figil ",
+    title: "Projet de figil",
     description: "Campagn de distribtion des angraits bio pour la culture des oignions dans le village Figile",
     sector_activity: "",
     country: "Cameroon",
@@ -334,6 +334,26 @@ export const chapterData: ChapterMetaData[] = [
       grande_exp_agri: "no"
     }
   },
+  {
+    id: "3",
+    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
+    number: "1.1.2",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
+  {
+    id: "4",
+    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
+    number: "1.1.2",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
 
 ]
 
@@ -352,6 +372,26 @@ export const chapter2: ChapterMetaData[] = [
     id: "2",
     principal_requirement: "Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
     number: "2.1.2",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
+  {
+    id: "3",
+    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
+    number: "2.1.3",
+    certication_de_group: {
+      direction_de_group: "yes",
+      petit_exp_agri: "no",
+      grande_exp_agri: "no"
+    }
+  },
+  {
+    id: "4",
+    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
+    number: "2.1.4",
     certication_de_group: {
       direction_de_group: "yes",
       petit_exp_agri: "no",

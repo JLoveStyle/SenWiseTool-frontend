@@ -9,7 +9,7 @@ type Props = {
   className?: string
 };
 
-export default function Select({
+export default function CustomSelectTag({
   onChange,
   label,
   arrayOfItems,
