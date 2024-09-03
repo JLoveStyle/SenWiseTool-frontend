@@ -96,6 +96,7 @@ export type TrainingType = {
     company_id: string;
     created_at: Date;
     end_date: Date;
+    slug: string;
     id: string;
     location: string;
     modules: string[];
