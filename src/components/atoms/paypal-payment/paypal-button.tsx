@@ -8,6 +8,7 @@ import {
     DISPATCH_ACTION
 } from "@paypal/react-paypal-js";
 import { PricePlanType } from "@/types/api-types";
+import { toast } from "sonner";
 
 const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) => {
     const [{ options }, dispatch] = usePayPalScriptReducer();
@@ -28,12 +29,12 @@ const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) =>
     // TODO: handle the correct date starting for a plan.
     // to set the starting date.
     let now = new Date();
-
+    const plan_id = plan?.id;
     return (<PayPalButtons
         createSubscription={(data, actions) => {
             return actions.subscription
                 .create({
-
+                    // TODO: set correct starting date with correct lib.
                     "plan_id": plan_id ? plan_id.toString() : "undefined",
                     "start_time": new Date(now.setDate(now.getDate() + 2)).toISOString(),
                     "subscriber": {
@@ -51,7 +52,7 @@ const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) =>
                             "payer_selected": "PAYPAL",
                             "payee_preferred": "IMMEDIATE_PAYMENT_REQUIRED"
                         },
-                        "return_url": `${public_url}`,
+                        "return_url": `${server_url}/subscriptions/successPayPalPayment`,
                         "cancel_url": `${public_url}`,
                     }
 
@@ -63,7 +64,7 @@ const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) =>
             layout: "horizontal",
         }}
         onApprove={async function (data, actions) { //TODO: change this with a toast...
-            alert('You have successfully subscribed to ' + data.subscriptionID); // Optional message given to subscriber
+            toast.success(`You have successfully subscribed to ${plan?.plan_name}`); // Optional message given to subscriber
         }}
     />);
 }

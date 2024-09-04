@@ -299,7 +299,7 @@ export default function page({ }: Props) {
             ) : (// TODO: handle the case the fetching of plan id is not correct <<later>>
 
               //es-lint-disable-next-line @typescript-eslint/restrict-template-expressions
-              < PaypalPaypements plan={pricePlan} />
+              < PaypalPaypements plan={pricePlan as PricePlanType} />
             )}
           </div>
         </div>
