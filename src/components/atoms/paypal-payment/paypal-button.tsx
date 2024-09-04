@@ -5,7 +5,8 @@ import {
     PayPalScriptProvider,
     PayPalButtons,
     usePayPalScriptReducer,
-    DISPATCH_ACTION
+    DISPATCH_ACTION,
+    SCRIPT_LOADING_STATE
 } from "@paypal/react-paypal-js";
 import { PricePlanType } from "@/types/api-types";
 import { toast } from "sonner";
@@ -18,11 +19,12 @@ const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) =>
     const server_url = process.env.NEXT_PUBLIC_SERVER_API_URL
     useEffect(() => {
         dispatch({
-            type: 'resetOptions' as DISPATCH_ACTION.RESET_OPTIONS,
+            // type: 'resetOptions' as DISPATCH_ACTION.RESET_OPTIONS,
+            type: 'setLoadingStatus' as DISPATCH_ACTION.LOADING_STATUS,
             value: {
-                ...options,
-                intent: "subscription",
-            },
+                state: 'pending' as SCRIPT_LOADING_STATE.PENDING,
+                message: 'Loading...'
+            }
         });
     }, [type]);
 

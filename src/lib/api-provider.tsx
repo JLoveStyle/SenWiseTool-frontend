@@ -15,7 +15,8 @@ export function useApiFetch<T, TBase extends Partial<ApiDataResponse<T>>>({ quer
     // TODO: add the bearer in the request for authentication
     // to disable the paypal button.
 
-    // TODO: handle the case the plan is not found
+
+    console.log("hit the provider: ", query)
 
     React.useEffect(() => {
         fn()
@@ -30,7 +31,7 @@ export function useApiFetch<T, TBase extends Partial<ApiDataResponse<T>>>({ quer
             }).finally(() => {
                 setIsLoading(false);
             });
-    }, [query]);
+    }, [query, fn]);
 
     return {
         data,

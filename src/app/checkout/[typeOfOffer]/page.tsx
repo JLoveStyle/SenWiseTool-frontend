@@ -14,7 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { useApiFetch } from "@/lib/paypal-provider";
+import { useApiFetch } from "@/lib/api-provider";
 import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
 import { ApiDataResponse, PricePlanType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -68,7 +68,7 @@ export default function page({ }: Props) {
     fn: () => fetchApiData(params.typeOfOffer.toString().toLowerCase()),
   });
 
-  console.log("inside checkout page:", typeOfOffer, "the current plan data is ", pricePlan);
+  console.log("checkout page; plan name:", typeOfOffer, "the current plan data is ", pricePlan);
 
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
