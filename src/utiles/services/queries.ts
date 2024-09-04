@@ -7,8 +7,7 @@ const apiCall = new ApiCall()
 
 // CREATE User
 export async function createUser(user: Partial<User>) {
-  return apiCall.POST(BASE_URL + "/v1/users", user)
-
+  return apiCall.POST(BASE_URL + "/users", user)
 }
 
 // CREATE COMPANY
@@ -17,6 +16,7 @@ export async function createCompany(company: Partial<Company>) {
 
 }
 
+<<<<<<< HEAD
 /**
  * Fetch data from the API
  * @param valueTofetch - The value to fetch in the API
@@ -27,3 +27,8 @@ export async function createCompany(company: Partial<Company>) {
 export const fetchApiData = async (route: string, valueTofetch?: string, ...args: any[]) => {
   return await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
 }
+=======
+export const fetchApiData = async (valueTofetch: string) => {
+  return await apiCall.GET(`${API_URL}/price_plans/${valueTofetch}`)
+}
+>>>>>>> 51250b5 (update the api fetcher)
