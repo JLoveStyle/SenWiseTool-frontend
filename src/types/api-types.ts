@@ -17,14 +17,14 @@ export type PricePlanType = {
     updated_at: Date;
 }
 
-export type PlanResultType = {
+export interface ApiDataResponse<T> {
     status: number;
-    data: PricePlanType[] | PricePlanType;
+    data: T;
     message: string;
-    total?: number,
-    page?: number,
-    perPage?: number,
-    totalPages?: number,
+    total: number;
+    page: number;
+    perPage: number;
+    totalPages: number;
 }
 
 export type ProjectType = {
@@ -70,8 +70,6 @@ export type CompanyType = {
     created_at: string,
     updated_at: string
 }
-
-
 
 export type UserType = {
     id: string;
@@ -121,3 +119,4 @@ export type Training_session = {
     training_id: string;
     updated_at: Date;
 }
+

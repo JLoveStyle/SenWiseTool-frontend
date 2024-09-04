@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { PricePlanType } from '../types/api-types';
-import { fetchPricePlan } from "../utiles/services/queries";
+import { ApiDataResponse } from '../types/api-types';
 
-export interface IAppProps {
-    plan_name: string
+export interface IAppProps<Q> {
+    query: string;
+    fn: () => Promise<Q>;
 }
 
-export function usePricePlan({ plan_name }: IAppProps) {
+export function useApiFetch<T, TBase extends Partial<ApiDataResponse<T>>>({ query, fn }: IAppProps<TBase>) {
 
-    const [pricePlan, setPricePlan] = React.useState<PricePlanType | null>(null);
+    const [data, setData] = React.useState<T | undefined | null>(undefined);
     const [error, setError] = React.useState(null);
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(true);
 
     // TODO: add the bearer in the request for authentication
     // to disable the paypal button.
@@ -18,11 +18,11 @@ export function usePricePlan({ plan_name }: IAppProps) {
     // TODO: handle the case the plan is not found
 
     React.useEffect(() => {
-        fetchPricePlan(plan_name)
+        fn()
             .then((response) => {
                 if (response.status === 200)
-                    setPricePlan(response.data);
-                else setPricePlan(null);
+                    setData(response.data);
+                else setData(null);
             })
             .catch((error) => {
                 setError(error);
@@ -30,10 +30,10 @@ export function usePricePlan({ plan_name }: IAppProps) {
             }).finally(() => {
                 setIsLoading(false);
             });
-    }, [plan_name]);
+    }, [query]);
 
     return {
-        pricePlan,
+        data,
         // error,
         // isLoading
     }

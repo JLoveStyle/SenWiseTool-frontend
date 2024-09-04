@@ -7,12 +7,14 @@ import {
     usePayPalScriptReducer,
     DISPATCH_ACTION
 } from "@paypal/react-paypal-js";
+import { PricePlanType } from "@/types/api-types";
 
-const ButtonWrapper = ({ type, plan_id }: { type: string, plan_id: string }) => {
+const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) => {
     const [{ options }, dispatch] = usePayPalScriptReducer();
 
     // this is for mock only!!!!!!!!!!!!!!!!!!!
-    const public_url = process.env.NEXT_PUBLIC_PUBLIC_URL
+    const public_url = process.env.NEXT_PUBLIC_PUBLIC_URL;
+    const server_url = process.env.NEXT_PUBLIC_SERVER_API_URL
     useEffect(() => {
         dispatch({
             type: 'resetOptions' as DISPATCH_ACTION.RESET_OPTIONS,
@@ -66,7 +68,7 @@ const ButtonWrapper = ({ type, plan_id }: { type: string, plan_id: string }) => 
     />);
 }
 
-export function PaypalPaypements({ plan_id }: { plan_id: string }) {
+export function PaypalPaypements({ plan }: { plan: PricePlanType }) {
 
 
     const paypalOptions = {
@@ -80,7 +82,7 @@ export function PaypalPaypements({ plan_id }: { plan_id: string }) {
         <PayPalScriptProvider
             options={paypalOptions}
         >
-            <ButtonWrapper type="subscription" plan_id={plan_id} />
+            <ButtonWrapper type="subscription" plan={plan} />
         </PayPalScriptProvider>
     );
 }

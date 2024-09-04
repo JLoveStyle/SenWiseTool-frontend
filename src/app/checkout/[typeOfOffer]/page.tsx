@@ -14,9 +14,10 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { usePricePlan } from "@/lib/paypal-provider";
+import { useApiFetch } from "@/lib/paypal-provider";
 import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
-import { PricePlanType } from "@/types/api-types";
+import { ApiDataResponse, PricePlanType } from "@/types/api-types";
+import { fetchApiData } from "@/utiles/services/queries";
 // paypal component
 // import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from "@paypal/react-paypal-js";
 
@@ -62,7 +63,10 @@ export default function page({ }: Props) {
     }
   }, [router]);
 
-  const { pricePlan } = usePricePlan({ plan_name: params.typeOfOffer.toString().toLowerCase() });
+  const { data: pricePlan } = useApiFetch<PricePlanType, ApiDataResponse<PricePlanType>>({
+    query: params.typeOfOffer.toString().toLowerCase(),
+    fn: () => fetchApiData(params.typeOfOffer.toString().toLowerCase()),
+  });
 
   console.log("inside checkout page:", typeOfOffer, "the current plan data is ", pricePlan);
 
@@ -295,7 +299,7 @@ export default function page({ }: Props) {
             ) : (// TODO: handle the case the fetching of plan id is not correct <<later>>
 
               //es-lint-disable-next-line @typescript-eslint/restrict-template-expressions
-              < PaypalPaypements plan_id={pricePlan?.id as string} />
+              < PaypalPaypements plan={pricePlan} />
             )}
           </div>
         </div>
