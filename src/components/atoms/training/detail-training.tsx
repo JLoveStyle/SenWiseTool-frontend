@@ -8,17 +8,44 @@ import {
 } from "@/components/ui/card";
 import { TrainingProps } from "@/types/formData";
 import { RxDotFilled } from "react-icons/rx";
+import { AttendanceSheetForm } from "./attendance-sheet-form";
 
 interface Props {
   training: TrainingProps | undefined;
+  toggleDisplayForm: Function;
+  displayForm: boolean;
 }
 
-export function DetailTraining({ training }: Props) {
+interface DetailTrainingDataProps {
+  training: TrainingProps | undefined;
+}
+
+// interface AttendanceSheetProps {
+//   toggleDisplayForm: Function;
+// }
+
+export function DetailTraining({
+  training,
+  toggleDisplayForm,
+  displayForm,
+}: Props) {
+  return (
+    <>
+      {displayForm ? (
+        <AttendanceSheet />
+      ) : (
+        <DetailTrainingData training={training} />
+      )}
+    </>
+  );
+}
+
+const DetailTrainingData = ({ training }: DetailTrainingDataProps) => {
   return (
     <Card className="mr-5">
       <CardHeader>
         <CardTitle>Projet de formation</CardTitle>
-        <CardDescription>{training?.theme}</CardDescription>
+        <CardDescription>{training?.title}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-10">
         <div className="flex items-center justify-around text-lg ">
@@ -54,12 +81,12 @@ export function DetailTraining({ training }: Props) {
       </CardFooter>
     </Card>
   );
-}
-// {currentTraining && (
-//   <div>
-//     <div>
-//       <span>{currentTraining.theme}</span>
-//     </div>
-//     <div></div>
-//   </div>
-// )}
+};
+
+const AttendanceSheet = () => {
+  return (
+    <div>
+      <AttendanceSheetForm />
+    </div>
+  );
+};
