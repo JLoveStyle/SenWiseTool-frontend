@@ -75,7 +75,8 @@ export default function page({ }: Props) {
 
   const { data: pricePlan } = useApiFetch<PricePlanType, ApiDataResponse<PricePlanType>>({
     query: params.typeOfOffer.toString().toLowerCase(),
-    fn: () => fetchApiData(params.typeOfOffer.toString().toLowerCase()),
+    fn: () => fetchApiData(Route.pricing, params.typeOfOffer.toString().toLowerCase()),
+    route: Route.pricing,
   });
 
   console.log("checkout page; plan name:", typeOfOffer, "the current plan data is ", pricePlan);

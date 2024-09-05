@@ -13,10 +13,11 @@ interface ICompany {
     setCompany: (company: CompanyType) => void;
 }
 
+console.log("hit company store")
 export const useCompanyStore = create<ICompany>((set) => ({
     company: null,
     setCompany: (company) => {
-        return set((state) => ({ ...state, company }))
+        return set(() => ({ company }))
     },
 }));
 

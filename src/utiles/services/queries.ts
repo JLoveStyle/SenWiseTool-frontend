@@ -1,9 +1,6 @@
 import { Company, User } from "@/types/formData";
 import ApiCall from "./httpClients";
 import { BASE_URL, API_URL } from "./constants";
-import { useUserStore } from "@/lib/stores/user-stores";
-import { useCompanyStore } from "@/lib/stores/companie-store";
-import { usePriceStore } from "@/lib/stores/price-store";
 
 
 const apiCall = new ApiCall()
@@ -27,29 +24,5 @@ export async function createCompany(company: Partial<Company>) {
  * @returns The response from the API, or an error if the call fails
  */
 export const fetchApiData = async (route: string, valueTofetch?: string, ...args: any[]) => {
-  const data = await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
-  switch (route) {
-    case "users":
-      const setCurrentUser = useUserStore(state => state.setCurrentUser);
-
-      if (data)
-        setCurrentUser(data);
-      break
-    case "companies":
-      const setCompany = useCompanyStore(state => state.setCompany);
-
-      if (data)
-        setCompany(data);
-      break
-    case "price_plans":
-      const setPricePlan = usePriceStore(state => state.setPricePlan);
-      console.log("price plan: ", data);
-      if (data)
-        setPricePlan(data);
-      break;
-    default:
-      console.log("%c unknown route", 'red');
-  }
-
-  return data;
+  return await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
 }

@@ -13,11 +13,11 @@ interface PriceType {
     setPricePlan: (price_plan: PricePlanType) => void;
 }
 
-export const usePriceStore = create<PriceType>((set) => ({
+console.log("hit the price store")
+
+export const usePriceStore = create<PriceType>()((set) => ({
     price_plan: null,
     setPricePlan: (price_plan) => {
-        return set((state) => ({ ...state, price_plan }))
+        return set(() => ({ price_plan }))
     },
 }));
-
-
