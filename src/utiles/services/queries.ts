@@ -23,6 +23,7 @@ export async function createCompany(company: Partial<Company>) {
  * @param args - Additional arguments to pass to the API call
  * @returns The response from the API, or an error if the call fails
  */
-export const fetchApiData = async (route: string, valueTofetch?: string, ...args: any[]) => {
+export const fetchApiData = async <T = any>(route: string, valueTofetch?: string, ...args: any[]): Promise<T> => {
   return await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
 }
+

@@ -22,6 +22,11 @@ import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
 import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { mutateApiData } from "@/utiles/services/mutations";
+import { Route } from "@/lib/route";
+
+
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -36,10 +41,15 @@ export function NewTraining() {
     modules: [],
   });
 
+  // load company state
+  const company = useCompanyStore((state) => state.company);
+
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: TrainingProps) => {
     setFormData(updatedFormData);
   };
+
+
 
   const handleCreateTraining = async (formData: TrainingProps) => {
     // const { error, data } = await db_create_training(formData);
@@ -48,10 +58,10 @@ export function NewTraining() {
       start_date: formData.start_date,
       end_date: formData.end_date,
       location: formData.location,
-      company_id: "compagny1",
+      company_id: company?.id,
       modules: formData.modules.map((item) => item.value),
     };
-    await db_create_training(dataToDB);
+    await mutateApiData(Route.training, dataToDB);
 
     // if (error) {
     //   toast.error(error.message);
@@ -81,7 +91,7 @@ export function NewTraining() {
       }
 
       handleCreateTraining(formData);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (

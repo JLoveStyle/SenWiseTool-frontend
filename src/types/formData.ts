@@ -38,7 +38,7 @@ export interface ModuleProps {
 }
 
 export interface TrainingProps {
-  id: string;
+  id?: string;
   title: string;
   start_date: string;
   end_date: string;

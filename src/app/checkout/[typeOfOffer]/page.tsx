@@ -14,7 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { useApiFetch } from "@/lib/api-provider";
+import { useApiOps } from "@/lib/api-provider";
 import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
 import { ApiDataResponse, PricePlanType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -63,7 +63,7 @@ export default function page({ }: Props) {
     }
   }, [router]);
 
-  const { data: pricePlan } = useApiFetch<PricePlanType, ApiDataResponse<PricePlanType>>({
+  const { data: pricePlan } = useApiOps<PricePlanType, ApiDataResponse<PricePlanType>>({
     query: params.typeOfOffer.toString().toLowerCase(),
     fn: () => fetchApiData(Route.pricing, params.typeOfOffer.toString().toLowerCase()),
     route: Route.pricing,

@@ -1,11 +1,15 @@
 import { Route } from "@/lib/route";
 import { DBTrainingProps } from "@/types/formData";
 import ApiCall from "./httpClients";
+import { API_URL } from "./constants";
+import { mutateApiData, mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
+import { TrainingType } from "@/types/api-types";
+import { fetchApiData } from "./queries";
 
 export const db_create_training = async (data: DBTrainingProps) => {
   const db = new ApiCall();
 
-  db.POST(Route.db_base_url, data)
+  return mutateApiData<TrainingType>(Route.training, data)
     .then((response) => {
       // const result = response.json();
       // return { data: result.message };
@@ -25,9 +29,9 @@ export const db_create_training = async (data: DBTrainingProps) => {
 export const db_update_training = async (data: DBTrainingProps, id: string) => {
   const db = new ApiCall();
 
-  const url_formated = `${Route.db_base_url}/${id}`;
+  const url_formated = `${Route.training}/${id}`;
 
-  db.PATCH(url_formated, data)
+  mutateUpApiData<TrainingType>(Route.training, data, id)
     .then((response) => {
       // const result = response.json();
       // return { data: result.message };
@@ -47,7 +51,7 @@ export const db_update_training = async (data: DBTrainingProps, id: string) => {
 export const db_get_trainings = async (data: DBTrainingProps) => {
   const db = new ApiCall();
 
-  db.GET(Route.db_base_url)
+  fetchApiData<TrainingType>(Route.training)
     .then((response) => {
       // const result = response.json();
       // return { data: result.message };
@@ -67,9 +71,9 @@ export const db_get_trainings = async (data: DBTrainingProps) => {
 export const db_delete_training = async (data: DBTrainingProps, id: string) => {
   const db = new ApiCall();
 
-  const url_formated = `${Route.db_base_url}/${id}`;
+  // const url_formated = `${Route.db_base_url}/${id}`;
 
-  db.DELETE(url_formated)
+  mutateDelApiData<TrainingType>(Route.training, id)
     .then((response) => {
       // const result = response.json();
       // return { data: result.message };
