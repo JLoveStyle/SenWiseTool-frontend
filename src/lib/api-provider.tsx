@@ -49,25 +49,8 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
 
     /** TODO : REFACTOR THIS HOOK LATER */
 
-    // const fetchData = () => {
-    //     console.log("hit the provider : ", query);
-    //     fn()
-    //         .then((response) => {
-    //             // console.log("api provider", response)
-    //             // if (response?.status === 200)
-    //             //     setData(response.data);
-    //             // else setData(null);
-    //             console.log("api provider", response)
-    //         })
-    //         .catch((error) => {
-    //             setError(error);
-    //         }).finally(() => {
-    //             setIsLoading(false);
-    //         });
-    // }
+    const fetchData = () => {
 
-    useEffect(() => {
-        // fetchData();
         fn()
             .then((response) => {
                 if (response?.status?.toString().startsWith("2"))
@@ -79,9 +62,24 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
             }).finally(() => {
                 setIsLoading(false);
             });
+    };
+
+    useEffect(() => {
+        fetchData();
+        // fn()
+        //     .then((response) => {
+        //         if (response?.status?.toString().startsWith("2"))
+        //             setData(response.data);
+        //         else setData(null);
+        //     })
+        //     .catch((error) => {
+        //         setError(error);
+        //     }).finally(() => {
+        //         setIsLoading(false);
+        //     });
     }, [query, route]);
 
-    // const refetch = () => fetchData();
+    const refetch = () => fetchData();
 
     // TODO: this could be refactor later.
     if (data) {
@@ -103,6 +101,6 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
         data,
         // error,
         // isLoading
-        // refetch
+        refetch
     }
 }
