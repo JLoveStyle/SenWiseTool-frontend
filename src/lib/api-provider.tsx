@@ -16,12 +16,12 @@ export function useApiFetch<T, TBase extends Partial<ApiDataResponse<T>>>({ quer
     // to disable the paypal button.
 
 
-    console.log("hit the provider: ", query)
+    console.log("hit the provider : ", query)
 
     React.useEffect(() => {
         fn()
             .then((response) => {
-                if (response.status === 200)
+                if (response?.status === 200)
                     setData(response.data);
                 else setData(null);
             })

@@ -296,11 +296,16 @@ export default function page({ }: Props) {
                 <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
                 Processing...
               </Button>
-            ) : (// TODO: handle the case the fetching of plan id is not correct <<later>>
-
-              //es-lint-disable-next-line @typescript-eslint/restrict-template-expressions
-              < PaypalPaypements plan={pricePlan as PricePlanType} />
-            )}
+            ) :
+              pricePlan ? (
+                <PaypalPaypements plan={pricePlan as PricePlanType} />
+              ) : (
+                <Button className="cursor-wait py-6 bg-primary hover:cursor-pointer font-semibold text-white w-full">
+                  <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
+                  loading paypal checkout...
+                </Button>
+              )
+            }
           </div>
         </div>
       </div>

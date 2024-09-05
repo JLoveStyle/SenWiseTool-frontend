@@ -7,9 +7,12 @@ export type AvailableRoute =
   | "checkout"
   | "signIn"
   | "signUp"
-  | "createCompany"
+  | "companies"
   | "dashboard"
+  | "training"
   | "profile"
+  | "training_session"
+  | "user"
   | "login";
 
 export const Route: Record<AvailableRoute, string> = {
@@ -17,12 +20,15 @@ export const Route: Record<AvailableRoute, string> = {
   aboutUs: "/about-us",
   features: "/features",
   services: "/services",
-  pricing: "/pricing",
   signIn: "/sign-in",
   signUp: "/sign-up",
   dashboard: "/dashboard",
-  createCompany: "/create-compay",
+  companies: "companies",
   profile: "/profile",
   login: "/login",
   checkout: "/checkout",
+  pricing: "price_plans",
+  training: "trainings",
+  training_session: "training_sessions",
+  user: "users",
 };
