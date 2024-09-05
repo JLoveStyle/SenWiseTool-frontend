@@ -3,7 +3,9 @@ import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/depl
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
-export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'GESTION'
 export const optionsGestions: { title: string; href: string; description: string }[] = [
@@ -463,4 +465,3 @@ export const deployedPro: DeployableFormMetadata[] = [
 
 ]
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL;
