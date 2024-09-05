@@ -17,7 +17,6 @@ export function useApiFetch<T, TBase extends Partial<ApiDataResponse<T>>>({ quer
 
 
     console.log("hit the provider : ", query)
-
     React.useEffect(() => {
         fn()
             .then((response) => {
@@ -27,15 +26,17 @@ export function useApiFetch<T, TBase extends Partial<ApiDataResponse<T>>>({ quer
             })
             .catch((error) => {
                 setError(error);
-                console.error(` Error: ${error}`);
             }).finally(() => {
                 setIsLoading(false);
             });
-    }, [query, fn]);
+    }, [query]);
 
+
+    console.error(` Error: ${error}`);
     return {
         data,
         // error,
         // isLoading
+        // refetch
     }
 }

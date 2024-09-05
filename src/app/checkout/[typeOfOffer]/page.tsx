@@ -31,8 +31,18 @@ export default function page({ }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [showError, setShowError] = useState(false);
-  // set paypal options
 
+
+  useEffect(() => {
+    if (
+      typeof typeOfOffer !== "string" ||
+      !typeOfOffer ||
+      !typeOfOffers.includes(typeOfOffer)
+    ) {
+      router.push("/");
+      toast.error("Page not found");
+    }
+  }, [router]);
 
   const handlePaypal = () => {
     setPaypalActive((prev) => !prev);
@@ -298,7 +308,7 @@ export default function page({ }: Props) {
               </Button>
             ) :
               pricePlan ? (
-                <PaypalPaypements plan={pricePlan as PricePlanType} />
+                <PaypalPaypements />
               ) : (
                 <Button className="cursor-wait py-6 bg-primary hover:cursor-pointer font-semibold text-white w-full">
                   <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
