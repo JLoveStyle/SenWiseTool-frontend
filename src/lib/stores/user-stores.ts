@@ -5,7 +5,7 @@ import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 // local import
-import { UserType } from '@/types/api-types'
+import { UserType } from '../../types/api-types'
 
 // interface IUser {
 //     currentUser: UserType | null;

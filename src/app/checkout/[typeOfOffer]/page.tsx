@@ -1,7 +1,6 @@
 "use client";
 import { DisplayTabPricing } from "@/components/atoms/display-tab-pricing";
 import { Logo } from "@/components/atoms/logo";
-import PaypalPaymentComponent from "@/components/atoms/paypal-payment";
 import Popup from "@/components/organisms/popup";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";

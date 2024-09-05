@@ -5,7 +5,7 @@ import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 // local import
-import { CompanyType, } from '@/types/api-types'
+import { CompanyType } from '../../types/api-types';
 
 
 interface ICompany {
