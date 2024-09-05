@@ -70,7 +70,6 @@ export default function page({ }: Props) {
     route: Route.pricing,
   });
 
-  console.log("checkout page; plan name:", typeOfOffer, "the current plan data is ", pricePlan);
 
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
@@ -293,12 +292,7 @@ export default function page({ }: Props) {
                   )}  /   ¹⁄₂Year`}
               </span>
             </div>
-            {isLoading ? (
-              <Button className="cursor-wait py-6 bg-primary hover:cursor-pointer font-semibold text-white w-full">
-                <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
-                Processing...
-              </Button>
-            ) :
+            {
               pricePlan ? (
                 <PaypalPaypements />
               ) : (
