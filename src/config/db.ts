@@ -1,4 +1,4 @@
-import { TrainingProps } from "@/components/atoms/training/form-training";
+import { TrainingProps } from "@/types/formData";
 
 export function openDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
