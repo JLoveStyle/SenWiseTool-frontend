@@ -1,11 +1,16 @@
+"use client";
+import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 import {
   ChevronRight,
   ClipboardType,
   Eye,
   FilePenLine,
+  Router,
   UserRoundPlus,
 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Props = {
@@ -13,26 +18,37 @@ type Props = {
 };
 
 export default function ProjectSummary({ projectObject }: Props) {
+  const router = useRouter();
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
       text: "Data collection",
       secondIcon: <ChevronRight />,
+      function: () => {
+        console.log("hello1");
+      },
     },
     {
       firstIcon: <UserRoundPlus />,
       text: "Share project",
       secondIcon: <ChevronRight />,
+      function: () => {
+        console.log("hello2");
+      },
     },
     {
       firstIcon: <FilePenLine />,
       text: "Edit form",
       secondIcon: <ChevronRight />,
+      function: () => {
+        console.log("hello3");
+      },
     },
     {
       firstIcon: <Eye />,
       text: "View form",
       secondIcon: <ChevronRight />,
+      function: () => router.push(Route.editProject + "/45"),
     },
   ];
 
@@ -58,9 +74,9 @@ export default function ProjectSummary({ projectObject }: Props) {
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Questions</span>
+                <span className="text-sm text-gray-500 ">N° Questions</span>
                 <span className="bg-green-200 text-sm px-2 rounded-lg">
-                  {projectObject?.status[0]}
+                  3
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
@@ -112,6 +128,7 @@ export default function ProjectSummary({ projectObject }: Props) {
         <div className="bg-white px-5 shadow">
           {lienRapide.map((link: any, index: number) => (
             <div
+              onClick={link.function}
               key={index}
               className="hover:cursor-pointer gap-4 flex justify-between py-2 border-b hover:text-lg"
             >

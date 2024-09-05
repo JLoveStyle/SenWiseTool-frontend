@@ -405,3 +405,9 @@
     animation: blink 3s infinite;
   }
 }
+
+@layer base {
+  img {
+    display: initial;
+  }
+}

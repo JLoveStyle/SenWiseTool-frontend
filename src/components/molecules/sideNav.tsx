@@ -72,10 +72,10 @@ export default function SideNav({}: Props) {
           ))}
         </div>
       )}
-      {/* <div className="flex flex-col justify-center absolute bottom-3 left-14 ">
+      <div className="flex flex-col justify-center absolute bottom-3 left-14 ">
         <UserButton />
-        <OrganizationSwitcher />
-      </div> */}
+        {/* <OrganizationSwitcher /> */}
+      </div>
     </div>
   );
 }

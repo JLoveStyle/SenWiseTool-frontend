@@ -81,7 +81,7 @@ export function DataTable<TData, TValue>({
         // console.log(pro.original);
         return pro.original;
       });
-      // console.log("selPro", selectedPro)
+      console.log("selPro =>", selectedPro)
     onSelecteItem(selectedPro)
   }, [rowSelection]);
 

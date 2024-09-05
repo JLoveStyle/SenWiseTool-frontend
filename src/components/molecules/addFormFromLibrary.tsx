@@ -1,42 +1,47 @@
 "use client";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import React, { useEffect, useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {
   isSubmitting: boolean;
 };
 
 export default function AddFormFromLibrary({ isSubmitting }: Props) {
-  const [metaData, setMetaData] = useState<string[]>([]);
+  const [metaData, setMetaData] = useState<{[key: string]: string}[]>([]);
 
   const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked, value } = e.target;
+    const { checked, value, name } = e.target;
     if (checked) {
-      setMetaData((prev) => [...prev, value]);
+      let data: {[key: string]: string}[] = [...metaData]
+      data.push({val: e.target.name})
+      setMetaData(data);
     } else {
-      setMetaData((prev) => {
-        return [...prev.filter((data) => data !== value)];
-      });
+      const filteredData = [...metaData].filter((item) => item.val !== name)
+      setMetaData(filteredData)
     }
   };
 
   useEffect(() => {
-    if (!isSubmitting) LOCAL_STORAGE.save('formMetadata', metaData)
-  }, [isSubmitting])
+    if (!isSubmitting && metaData.length) {
+      LOCAL_STORAGE.save('formMetadata', metaData)
+      toast.success('Metadata saved', {
+        transition: Bounce,
+        autoClose: 1000
+      })
+    }
 
-  console.log(metaData);
+  }, [isSubmitting])
 
   return (
     <div className="py-5">
-      <h1 className="uppercase font-bold">Form style</h1>
-      <p className="py-5">Choose the metadata of your project form.</p>
-
       <h1 className="font-semibold uppercase pb-2">Metadata</h1>
       <fieldset className="flex gap-2 justify-between leading-loose">
         <div className="w-1/2">
           <div className="flex gap-3">
             <input
               type="checkbox"
+              name="Nom du planteur"
               value="nom_planteur"
               id="nom_planteur"
               onChange={(e) => handleCheckbox(e)}
@@ -46,6 +51,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           <div className="flex gap-3">
             <input
               type="checkbox"
+              name="Contact du planteur"
               value="contact_planteur"
               id="contact_planteur"
               onChange={(e) => handleCheckbox(e)}
@@ -55,6 +61,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           <div className="flex gap-3">
             <input
               type="checkbox"
+              name="Code du panteur"
               value="code_planteur"
               onChange={(e) => handleCheckbox(e)}
               id="code_planteur"
@@ -64,15 +71,27 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           <div className="flex gap-3">
             <input
               type="checkbox"
-              value="date_de_l'inspection"
-              id="date_de_l'inspection"
+              name="N° CNI"
+              value="cni"
+              id="cni"
               onChange={(e) => handleCheckbox(e)}
             />
-            <label htmlFor="date_de_l'inspection">Date de l'inspection</label>
+            <label htmlFor="cni">CNI°</label>
           </div>
           <div className="flex gap-3">
             <input
               type="checkbox"
+              name="Date de l'inspection"
+              value="date_de_inspection"
+              id="date_de_inspection"
+              onChange={(e) => handleCheckbox(e)}
+            />
+            <label htmlFor="date_de_inspection">Date de l'inspection</label>
+          </div>
+          <div className="flex gap-3">
+            <input
+              type="checkbox"
+              name="Village"
               value="village"
               onChange={(e) => handleCheckbox(e)}
               id="village"
@@ -84,6 +103,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           <div className="flex gap-3 align-baseline">
             <input
               type="checkbox"
+              name="Année de certification"
               value="annee_de_certification"
               id="annee_de_certification"
               onChange={(e) => handleCheckbox(e)}
@@ -92,27 +112,21 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
               Année de certification
             </label>
           </div>
+          
           <div className="flex gap-3">
             <input
               type="checkbox"
-              value="cni"
-              id="cni"
-              onChange={(e) => handleCheckbox(e)}
-            />
-            <label htmlFor="cni">CNI°</label>
-          </div>
-          <div className="flex gap-3">
-            <input
-              type="checkbox"
+              name="Nom de L'inspecteur"
               value="nom_de_inspecteur"
               id="nom_de_inspecteur"
               onChange={(e) => handleCheckbox(e)}
             />
-            <label htmlFor="nom_de_inspacteur">Nom de l'inspecteur</label>
+            <label htmlFor="nom_de_inspecteur">Nom de l'inspecteur</label>
           </div>
           <div className="flex gap-3">
             <input
               type="checkbox"
+              name="Pesticides utilisés"
               value="pesticite_utliser"
               id="pesticide_utiliser"
               onChange={(e) => handleCheckbox(e)}
@@ -124,6 +138,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           <div className="flex gap-3">
             <input
               type="checkbox"
+              name="Quantité"
               value="qte_pesticide"
               id="qte_pesticide"
               onChange={(e) => handleCheckbox(e)}

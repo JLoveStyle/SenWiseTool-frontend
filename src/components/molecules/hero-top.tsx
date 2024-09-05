@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Container } from "../atoms/container";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import { Route } from "@/lib/route";
 
 export const HeroTop = () => {
   return (
@@ -20,9 +22,11 @@ export const HeroTop = () => {
             High quality data collection for everyone
           </p>
           <div className="flex items-center gap-10 justify-center sm:justify-start">
-            <Button className="bg-primary hover:opacity-90 px-10">
-              Get started
-            </Button>
+            <Link href={Route.signUp}>
+              <Button className="bg-primary hover:opacity-90 px-10">
+                Get started
+              </Button>
+            </Link>
             {/* <Button
               variant="outline"
               className="border-primary bg-transparent text-primary hover:bg-primary/25 hover:text-primary rounded-none"

@@ -32,18 +32,17 @@ import {
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import PreviousMap from "postcss/lib/previous-map";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
   incomingData: TData[];
-  chapter: string;
+  key2localStorage: string;
 }
 
 export function ChaptersRequirements<TData, TValue>({
   incomingColumns,
   incomingData,
-  chapter
+  key2localStorage
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -74,15 +73,14 @@ export function ChaptersRequirements<TData, TValue>({
   });
 
   useEffect(() => {
-    let prev = LOCAL_STORAGE.get(chapter)
+    let prev = LOCAL_STORAGE.get(key2localStorage)
     const selectedPro = table
       .getSelectedRowModel()
       .flatRows.map((pro) => {
         return pro.original;
       });
       // console.log("selPro", selectedPro)
-      if (selectedPro.length) LOCAL_STORAGE.save(chapter, selectedPro)
-      console.log(prev)
+      if (selectedPro.length) LOCAL_STORAGE.save(key2localStorage, selectedPro)
   }, [rowSelection]);
 
 

@@ -10,7 +10,7 @@ export default function page({}: Props) {
   return (
     <main className="">
       <div className="md:w-1/2 w-[96%] flex justify-center mx-auto mt-10 ">
-        <div className="bg-[#d8972f98] shadow-xl md:w-1/2 hidden md:block rounded-l-[12px]">
+        {/* <div className="bg-[#d8972f98] shadow-xl md:w-1/2 hidden md:block rounded-l-[12px]">
           <div className="flex justify-center ">
             <Link href={Route.home}>
               <Image
@@ -29,7 +29,7 @@ export default function page({}: Props) {
             alt="signup picture"
             loading="lazy"
           />
-        </div>
+        </div> */}
         <div className="md:w-1/2 w-fit">
           <SignUp
             appearance={{

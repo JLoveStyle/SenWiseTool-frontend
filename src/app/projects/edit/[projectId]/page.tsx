@@ -1,9 +1,8 @@
 "use client";
-import useRequirement from "@/app/stores/requirements";
-import { groupedColumns } from "@/components/atoms/columnsProject";
+import { groupedColumns } from "@/components/atoms/colums-of-tables/chapter";
 import { Logo } from "@/components/atoms/logo";
-import AddFormFromLibrary from "@/components/molecules/addFormFromLibrary";
 import { ChaptersRequirements } from "@/components/molecules/chapters-table-data/chapterOne";
+import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,13 +12,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 import {
   chapter2,
-  chapterData,
   chapters,
   requirements,
 } from "@/utiles/services/constants";
@@ -29,6 +33,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
+
+const AddFormFromLibrary = dynamic(() => import('@/components/molecules/addFormFromLibrary'), {
+  ssr: false,
+});
 
 type Props = {};
 
@@ -50,6 +58,12 @@ export default function page({}: Props) {
     title: projectDetails.title,
     description: projectDetails.description,
   });
+
+  const [chap1, chap2, chap3] = requirements;
+  const chapitre1 = chap1.chapter1;
+  const chapitre2 = chap2.chapitre2;
+  const chapitre3 = chap3.chapitre3
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data: Project = {
       ...projectData,
@@ -62,8 +76,8 @@ export default function page({}: Props) {
     console.log(projectData);
   }
 
-  async function handleProjectDraft () {
-
+  async function handleProjectDraft() {
+    router.push(Route.editProject + "/45/pdf");
   }
 
   const discartProjectForm = () => {
@@ -100,7 +114,7 @@ export default function page({}: Props) {
         </div>
         <div className="flex gap-6 my-auto pr-5 md:w-[200px]">
           <Button onClick={handleProjectDraft} className=" px-6">
-            Save & print
+            Save
           </Button>
           <Dialog>
             <DialogTrigger asChild>
@@ -129,7 +143,9 @@ export default function page({}: Props) {
         </div>
       </nav>
       <div className="flex justify-between px-9 bg-[#f7f6f6] py-4 w-full">
-        <em className=" ">Click on <strong>Form metadata</strong> to select form metadata</em>
+        <em className=" ">
+          Click on <strong>Form metadata</strong> to select form metadata
+        </em>
         <div className="flex justify-between gap-10 d">
           <div className="flex gap-4 hover:cursor-pointer ">
             <Library />
@@ -148,6 +164,14 @@ export default function page({}: Props) {
             open={openSheet}
           >
             <SheetContent>
+              <SheetHeader>
+                <SheetTitle className="uppercase font-bold">
+                  Form style
+                </SheetTitle>
+                <SheetDescription className="py-3">
+                  Choose the metadata of your project form.
+                </SheetDescription>
+              </SheetHeader>
               <AddFormFromLibrary isSubmitting={openSheet} />
             </SheetContent>
           </Sheet>
@@ -167,8 +191,19 @@ export default function page({}: Props) {
                   key={index}
                   value={chap}
                   onClick={() => {
-                    setDisplayChapTwo((prev) => !prev);
-                    setDisplayChapOne((prev) => !prev);
+                    if (chap === 'Chapter 1') {
+                      setDisplayChapOne(true)
+                      setDisplayChapTwo(false)
+                      setDisplayChapThree(false)
+                    } else if (chap === 'Chapter 2') {
+                      setDisplayChapOne(false)
+                      setDisplayChapTwo(true)
+                      setDisplayChapThree(false)
+                    } else if (chap === 'Chapter 3') {
+                      setDisplayChapThree(true)
+                      setDisplayChapOne(false)
+                      setDisplayChapTwo(false)
+                    }
                   }}
                 >
                   {chap}
@@ -179,22 +214,50 @@ export default function page({}: Props) {
 
           {displayChapOne && (
             <>
-              <h1 className="font-semibold">1.1 - Gestion</h1>
-              <ChaptersRequirements
-                incomingColumns={groupedColumns}
-                incomingData={chapterData}
-                chapter="chap_one_req"
-              />
+              {chapitre1?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage="chap_one_req"
+                  />
+                </div>
+              ))}
             </>
           )}
           {displayChapTwo && (
             <>
-              <h1 className="font-semibold">2.1 - Traçabilité</h1>
-              <ChaptersRequirements
-                incomingColumns={groupedColumns}
-                incomingData={chapter2}
-                chapter="chap_two_req"
-              />
+              {chapitre2?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage="chap_two_req"
+                  />
+                </div>
+              ))}
+            </>
+          )}
+          {displayChapThree && (
+            <>
+              {chapitre3?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage="chap_three_req"
+                  />
+                </div>
+              ))}
             </>
           )}
         </div>

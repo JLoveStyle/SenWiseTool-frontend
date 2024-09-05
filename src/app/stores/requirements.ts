@@ -1,4 +1,3 @@
-import { ChapterMetaData } from '@/components/atoms/columnsProject'
 import { create } from 'zustand'
 
 interface StoreType {
