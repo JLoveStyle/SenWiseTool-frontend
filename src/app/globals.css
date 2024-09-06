@@ -404,4 +404,27 @@
   .text-blink {
     animation: blink 3s infinite;
   }
+
+  /* Animate empty image */
+  .animate-empty-image {
+    animation: empty-image-animation 2s infinite;
+    animation-delay: 5s;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes empty-image-animation {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-30px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-empty-image {
+    animation-duration: 17s;
+  }
 }

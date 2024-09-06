@@ -46,6 +46,13 @@ export interface TrainingProps {
   modules: ModuleProps[];
 }
 
+export interface AttachedFilesProps {
+  id: string;
+  title: string;
+  description: string;
+  files: File[];
+}
+
 export interface DBTrainingProps {
   title?: string;
   start_date?: string;

@@ -1,4 +1,4 @@
-import { TrainingProps } from "@/types/formData";
+import { AttachedFilesProps, TrainingProps } from "@/types/formData";
 
 export const TrainingFormVerification = (formData: TrainingProps) => {
   const errors: { [key: string]: any } = {};
@@ -21,6 +21,24 @@ export const TrainingFormVerification = (formData: TrainingProps) => {
 
   if (formData.modules.length === 0) {
     errors["modules"] = "Modules is required";
+  }
+
+  return errors;
+};
+
+export const AttachedFilesFormVerification = (formData: AttachedFilesProps) => {
+  const errors: { [key: string]: any } = {};
+
+  if (formData.title.length === 0) {
+    errors["title"] = "Title is required";
+  }
+
+  if (formData.description.length === 0) {
+    errors["description"] = "Start date is required";
+  }
+
+  if (formData.files.length === 0) {
+    errors["files"] = "You must choose at least one file";
   }
 
   return errors;

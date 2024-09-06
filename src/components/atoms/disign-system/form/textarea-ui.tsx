@@ -1,43 +1,38 @@
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { inputTypes } from "@/types/type-tools";
+import { Textarea } from "@/components/ui/textarea";
 import clsx from "clsx";
 
 interface Props {
   label?: string;
   id: string;
-  type?: inputTypes;
   placeholder?: string;
   isLoading?: boolean;
   className?: string;
   errors: { [key: string]: any };
   value?: any;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  multiple?: boolean;
+  rows?: number;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const InputUI = ({
+export const TextareaUI = ({
   label,
   id,
-  type = "text",
   placeholder,
   isLoading,
   errors,
   value,
+  rows = 4,
   onChange,
-  onKeyDown,
-  multiple,
 }: Props) => {
   return (
     <div className="items-center gap-4">
       <Label htmlFor={id} className="text-right">
         {label}
       </Label>
-      <Input
+      <Textarea
         id={id}
         name={id}
-        type={type}
+        rows={rows}
         placeholder={placeholder}
         className={clsx(
           "outline-none focus:border-blue-800/30",
@@ -46,9 +41,7 @@ export const InputUI = ({
         )}
         value={value}
         onChange={onChange}
-        onKeyDown={onKeyDown}
         disabled={isLoading}
-        multiple={multiple}
       />
       {id in errors && (
         <span className="text-red-500 text-xs">{errors[id]}</span>
