@@ -13,8 +13,8 @@ import { useRouter } from "next/navigation";
 import { Logo } from "@/components/atoms/logo";
 import Popup from "@/components/organisms/popup";
 import CancelModal from "@/components/molecules/cancelModal";
-import { createCompany } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
+import { mutateApiData } from "@/utiles/services/mutations";
 
 type Props = {};
 
@@ -62,7 +62,7 @@ export default function Home({ }: Props) {
     }
     setIsLoading(prev => !prev)
     setIsLoading((prev) => !prev);
-    await createCompany({
+    await mutateApiData(Route.companies, {
       companyEmail: formData.companyEmail,
       companyName: formData.companyName,
       country: formData.country,

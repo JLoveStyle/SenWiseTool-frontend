@@ -20,7 +20,7 @@ export default function Home({ }: Props) {
 
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
-  // create user and set him to the state
+  // create user and set him to the store
   const { data: currentUser, refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
     fn: () => mutateApiData(Route.user, "current"),
     route: Route.user,
