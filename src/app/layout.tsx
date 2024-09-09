@@ -6,7 +6,7 @@ import { Inter as FontSans } from "next/font/google";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import { Toaster } from "sonner";
+// import { Toaster } from "sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -41,7 +41,7 @@ export default function RootLayout({
             <ToastContainer position="top-center" transition={Flip} />
           </ClerkProvider>
         </ThemeProvider>
-        <Toaster richColors theme="light" closeButton position="top-right" />
+        {/* <Toaster richColors theme="light" closeButton position="top-right" /> */}
       </body>
     </html>
   );
