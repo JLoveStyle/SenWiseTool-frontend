@@ -10,10 +10,7 @@ import { fetchApiData } from "@/utiles/services/queries";
 
 
 export default function Home() {
-  // set company state
-  const { data: companyData } = useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
-    fn: () => fetchApiData(Route.companies, "current", Route.companies),
-  })
+
   return (
     <>
       <div className="flex flex-col justify-between gap-10  w-full">

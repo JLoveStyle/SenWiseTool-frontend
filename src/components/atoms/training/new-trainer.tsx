@@ -23,8 +23,6 @@ import { ButtonUI } from "../disign-system/button-ui";
 import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { mutateApiData } from "@/utiles/services/mutations";
-import { Route } from "@/lib/route";
 
 
 
@@ -61,7 +59,7 @@ export function NewTraining() {
       company_id: company?.id,
       modules: formData.modules.map((item) => item.value),
     };
-    await mutateApiData(Route.training, dataToDB);
+    await db_create_training(dataToDB);
 
     // if (error) {
     //   toast.error(error.message);

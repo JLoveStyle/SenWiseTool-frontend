@@ -10,11 +10,6 @@ export async function createUser(user: Partial<User>) {
   return apiCall.POST(BASE_URL + "/users", user)
 }
 
-// CREATE COMPANY
-export async function createCompany(company: Partial<Company>) {
-  return apiCall.POST(BASE_URL + "/companies", company)
-
-}
 
 /**
  * Fetch data from the API
