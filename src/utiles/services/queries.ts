@@ -19,6 +19,7 @@ export async function createUser(user: Partial<User>) {
  * @returns The response from the API, or an error if the call fails
  */
 export const fetchApiData = async <T = any>(route: string, valueTofetch?: string, ...args: any[]): Promise<T> => {
-  return await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
+  const data = await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
+  return data;
 }
 

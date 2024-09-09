@@ -22,9 +22,10 @@ export default function Home({ }: Props) {
 
   // create user and set him to the store
   const { data: currentUser, refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
-    fn: () => mutateApiData(Route.user, "current"),
+    fn: () => fetchApiData(Route.user, "current"),
     route: Route.user,
   })
+
 
   async function fetchData() {
     const token = await getToken();

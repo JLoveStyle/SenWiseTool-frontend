@@ -96,7 +96,7 @@ export const FormTraining = ({
         <InputUI
           label="Début de la formation"
           id="start_date"
-          type="date"
+          type="datetime-local"
           isLoading={isLoading}
           errors={errors}
           value={formData.start_date}
@@ -106,7 +106,7 @@ export const FormTraining = ({
         <InputUI
           label="Fin de la formation"
           id="end_date"
-          type="date"
+          type="datetime-local"
           isLoading={isLoading}
           errors={errors}
           value={formData.end_date}
