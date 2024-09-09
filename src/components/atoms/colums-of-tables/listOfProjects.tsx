@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -110,14 +109,24 @@ export const columnListProjects: ColumnDef<Project>[] = [
               Copy project ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Link href={Route.inspectionInterne + `/${project.id}`}>
+            <Link href={Route.details + `/${project.id}`}>
               <DropdownMenuItem
                 onClick={() => LOCAL_STORAGE.save("projectId", project.id)}
               >
                 View project details
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuItem className="text-red-500">
+            <DropdownMenuItem
+              onClick={() => {
+                LOCAL_STORAGE.save("projectId", project.id);
+                // INSERT THE DELETE PROJECT FUNCTION HERE
+                toast.success("Project deleted", {
+                  autoClose: 1000,
+                  transition: Bounce,
+                });
+              }}
+              className="text-red-500"
+            >
               Delete project
             </DropdownMenuItem>
           </DropdownMenuContent>

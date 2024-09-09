@@ -8,18 +8,21 @@ import CustomSelectTag from "@/components/molecules/select";
 import { Button } from "@/components/ui/button";
 import CheckBox from "@/components/molecules/checkButton";
 import { FormData } from "@/types/formData";
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import Popup from "@/components/organisms/popup";
 import CancelModal from "@/components/molecules/cancelModal";
 import { createCompany } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
-import { createOrganization } from "@/utiles/services/createOrg";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { businessActivity } from "@/utiles/services/constants";
 
 type Props = {};
 
 export default function Home({}: Props) {
   const router = useRouter();
+  const { getToken, isLoaded } = useAuth();
+
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
@@ -28,6 +31,9 @@ export default function Home({}: Props) {
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [hasOtherBusiness, setHasOtherBusiness] = useState<boolean>(false);
+  const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>(
+    ""
+  );
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -41,14 +47,6 @@ export default function Home({}: Props) {
     businessActivity: "",
     otherBusiness: "",
   });
-  const businessActivity: string[] = [
-    "Cocoa",
-    "Café",
-    "Banane",
-    "Thé",
-    "Bois",
-    "Autre",
-  ];
 
   const { isSignedIn, user } = useUser();
 
@@ -61,11 +59,12 @@ export default function Home({}: Props) {
       return;
     }
     setIsLoading((prev) => !prev);
+    console.log(companyLogo);
 
     if (user?.id) {
-      console.log("userId available");
-      const res = await createOrganization(formData, user.id);
-      console.log("res =>", res);
+      console.log("userId available", user);
+      // const res = await createOrganization(formData, user.id);
+      // console.log("res =>", res);
 
       await createCompany({
         companyEmail: formData.companyEmail,
@@ -73,6 +72,7 @@ export default function Home({}: Props) {
         country: formData.country,
         state: formData.state,
         city: formData.city,
+        // logo: companyLogo, // company logo will be coming from edgstore
         sector_of_activity: formData.businessActivity,
       })
         .then((response) => {
@@ -137,6 +137,27 @@ export default function Home({}: Props) {
     setIsModalOpen(value);
   };
 
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (e) {
+      reader.onload = (onLoadEvent) => {
+        if (onLoadEvent.target) {
+          setCompanyLogo(onLoadEvent.target.result);
+        }
+      };
+    }
+  };
+
+  const fetchToken = async () => {
+    const token = await getToken();
+    console.log(token);
+    LOCAL_STORAGE.save("token", token);
+  };
+
+  useEffect(() => {
+    fetchToken();
+  }, []);
+
   return (
     <div className="h-full">
       <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
@@ -180,7 +201,7 @@ export default function Home({}: Props) {
           <CustomSelectTag
             selectName="state"
             onChange={(e) => handleInputChange(e)}
-            label="State"
+            label="Region"
             arrayOfItems={state}
             value={formData.state}
           />
@@ -223,13 +244,25 @@ export default function Home({}: Props) {
               className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
             />
           )}
+          <div className="pb-6 flex flex-col">
+            <label htmlFor="logo" className="font-semibold">
+              Enter company logo
+            </label>
+            <input
+              type="file"
+              accept=".png, .jpeg, .jpg"
+              placeholder="Enter logo"
+              onChange={(e) => handleLogoUpload(e)}
+            />
+          </div>
           <CheckBox onChange={() => handleOnCheck()} />
           {hasAgree && (
             <span className="text-red-500">
               Please agree to the terms and conditions
             </span>
           )}
-          <div className="flex flex-col gap-3 pt-5 ">
+
+          <div className="flex flex-col gap-3 pt-3 ">
             {isLoading ? (
               <Button className="cursor-wait">
                 <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
@@ -250,14 +283,11 @@ export default function Home({}: Props) {
           </div>
         </form>
       </div>
-
-      <Popup
-        isVisible={isModalOpen}
-        onCloseModal={() => setIsModalOpen((prev) => !prev)}
-        modalOpen={() => setIsModalOpen(true)}
-      >
-        <CancelModal onClose={handleCloseModal} />
-      </Popup>
+      <Dialog onOpenChange={() => setIsModalOpen(prev => !prev)} open={isModalOpen}>
+        <DialogContent>
+          <CancelModal onClose={handleCloseModal} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

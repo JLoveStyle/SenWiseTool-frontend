@@ -87,8 +87,10 @@ export const deployableFormColumn: ColumnDef<DeployableFormMetadata>[] = [
             name="status"
             type="radio"
             value="NA"
+            checked={row.getIsSelected()}
             onChange={(e) => {
               console.log(e.target.value)
+              row.toggleSelected()
             }}
           />
         ),
@@ -100,7 +102,7 @@ export const deployableFormColumn: ColumnDef<DeployableFormMetadata>[] = [
   }),
   {
     id: "select",
-    header: () => <span>Observation/comment</span>,
+    header: () => <span>Observation/<br/>comment</span>,
     cell: ({ row }) => (
       <textarea
         className="w-full h-full p-2"

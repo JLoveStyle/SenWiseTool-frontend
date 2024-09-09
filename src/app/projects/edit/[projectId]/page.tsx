@@ -2,7 +2,7 @@
 import { groupedColumns } from "@/components/atoms/colums-of-tables/chapter";
 import { Logo } from "@/components/atoms/logo";
 import { ChaptersRequirements } from "@/components/molecules/chapters-table-data/chapterOne";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,28 +22,30 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
-import {
-  chapter2,
-  chapters,
-  requirements,
-} from "@/utiles/services/constants";
+import { chapter2, chapters, requirements } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { Library, Settings, X } from "lucide-react";
+import { Library, Pencil, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
+import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
+import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
 
-const AddFormFromLibrary = dynamic(() => import('@/components/molecules/addFormFromLibrary'), {
-  ssr: false,
-});
+const AddFormFromLibrary = dynamic(
+  () => import("@/components/molecules/addFormFromLibrary"),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {};
 
 export default function page({}: Props) {
   const router = useRouter();
-  const projectDetails: Project = LOCAL_STORAGE.get("project_data");
+  const projectDetails: Project = LOCAL_STORAGE.get("project_data"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);
+  const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [exit, setExit] = useState<boolean>(false);
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);
@@ -62,7 +64,7 @@ export default function page({}: Props) {
   const [chap1, chap2, chap3] = requirements;
   const chapitre1 = chap1.chapter1;
   const chapitre2 = chap2.chapitre2;
-  const chapitre3 = chap3.chapitre3
+  const chapitre3 = chap3.chapitre3;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data: Project = {
@@ -70,6 +72,7 @@ export default function page({}: Props) {
       [event.target.name]: event.target.value,
     };
     setProjectData(data);
+    console.log("pro =>", projectData);
   };
 
   async function handleProjectSave() {
@@ -104,7 +107,6 @@ export default function page({}: Props) {
           </label>
           <input
             type="text"
-            placeholder="Project name"
             required
             name="projectTitle"
             value={projectData.title}
@@ -112,7 +114,7 @@ export default function page({}: Props) {
             className="border mt-1 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           />
         </div>
-        <div className="flex gap-6 my-auto pr-5 md:w-[200px]">
+        <div className="flex justify-between my-auto md:w-[140px] pr-3 gap-2">
           <Button onClick={handleProjectDraft} className=" px-6">
             Save
           </Button>
@@ -147,6 +149,23 @@ export default function page({}: Props) {
           Click on <strong>Form metadata</strong> to select form metadata
         </em>
         <div className="flex justify-between gap-10 d">
+          <div
+            onClick={() => setOpenEditForm((prev) => !prev)}
+            className="flex gap-4 hover:cursor-pointer "
+          >
+            <Pencil />
+            <p className="font-semibold">Edit project</p>
+          </div>
+          <Dialog onOpenChange={setOpenEditForm} open={openEditForm}>
+            <DialogContent>
+              <EditProjectFormDatails
+                project={projectData}
+                onClick={function (val: boolean): void {
+                  setOpenEditForm(val)
+                }}
+              />
+            </DialogContent>
+          </Dialog>
           <div className="flex gap-4 hover:cursor-pointer ">
             <Library />
             <p className="font-semibold">Add from library</p>
@@ -191,18 +210,18 @@ export default function page({}: Props) {
                   key={index}
                   value={chap}
                   onClick={() => {
-                    if (chap === 'Chapter 1') {
-                      setDisplayChapOne(true)
-                      setDisplayChapTwo(false)
-                      setDisplayChapThree(false)
-                    } else if (chap === 'Chapter 2') {
-                      setDisplayChapOne(false)
-                      setDisplayChapTwo(true)
-                      setDisplayChapThree(false)
-                    } else if (chap === 'Chapter 3') {
-                      setDisplayChapThree(true)
-                      setDisplayChapOne(false)
-                      setDisplayChapTwo(false)
+                    if (chap === "Chapter 1") {
+                      setDisplayChapOne(true);
+                      setDisplayChapTwo(false);
+                      setDisplayChapThree(false);
+                    } else if (chap === "Chapter 2") {
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(true);
+                      setDisplayChapThree(false);
+                    } else if (chap === "Chapter 3") {
+                      setDisplayChapThree(true);
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(false);
                     }
                   }}
                 >

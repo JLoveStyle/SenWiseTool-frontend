@@ -1,6 +1,6 @@
 export interface Project {
   id: string,
-  type?: ["INITIAL_INPSECTION" | "INTERNAL_INSPECTION" | "AUTO_EVALUATION"],
+  type?: ["INITIAL_INSPECTION" | "INTERNAL_INSPECTION" | "AUTO_EVALUATION"],
   company_id?: string,
   other_logo?: string,
   title: string,

@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from "react";
-import InputField from "./inputField";
+import InputField from "../../molecules/inputField";
 import { Project } from "@/types/gestion";
-import CustomSelectTag from "./select";
+import CustomSelectTag from "../../molecules/select";
 import { City, Country, State } from "country-state-city";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Route } from "@/lib/route";
 import { useRouter } from "next/navigation";
-import { tableRaw } from "@/utiles/services/constants";
+import { businessActivity, tableRaw } from "@/utiles/services/constants";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import CardLayout from "../../templates/cardLayout";
+import { Textarea } from "../../ui/textarea";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
+  typeOfProject: ["INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION"]
+  project?: Project
 };
 
-export default function ProjectDetailsForm({ onClick }: Props) {
+export default function ProjectDetailsForm({ onClick, typeOfProject, project }: Props) {
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
-  const closeModal: boolean = false;
   const router = useRouter();
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>("");
-  const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("")
+  const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
   const [projectData, setProjectData] = useState<Project>({
     id: "", // this might be harmfull
     title: "",
@@ -37,23 +40,16 @@ export default function ProjectDetailsForm({ onClick }: Props) {
     description: "",
     city: "",
     state: "",
+    start_date: "",
+    end_date: "",
     status: ["DRAFT"],
-    type: ["INTERNAL_INSPECTION"],
+    type: typeOfProject, // Project type ['AUTO_EVALUATION', 'INITIAL_INSPECTION', etc]
   });
 
-  const animatedComponents = makeAnimated(); // Fro react-select
-
-  const businessActivity: string[] = [
-    "Cocoa",
-    "Café",
-    "Banane",
-    "Thé",
-    "Bois",
-    "Autre",
-  ];
+  const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const data: Project = {
       ...projectData,
@@ -81,8 +77,8 @@ export default function ProjectDetailsForm({ onClick }: Props) {
     if (e) {
       reader.onload = (onLoadEvent) => {
         if (onLoadEvent.target) {
-          console.log(onLoadEvent.target.result)
-          setCompanyLogo(onLoadEvent.target.result)
+          console.log(onLoadEvent.target.result);
+          setCompanyLogo(onLoadEvent.target.result);
         }
       };
       reader.readAsDataURL(e.target.files[0]);
@@ -90,25 +86,26 @@ export default function ProjectDetailsForm({ onClick }: Props) {
   };
 
   const handleOtherLogo = (e: any) => {
-    const reader = new FileReader()
+    const reader = new FileReader();
     if (e) {
       reader.onload = (onLoadEvent) => {
         if (onLoadEvent.target) {
-          setOtherLogo(onLoadEvent.target.result)
+          setOtherLogo(onLoadEvent.target.result);
         }
-      }
+      };
     }
-  }
+  };
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    setIsLoading(prev => !prev)
+    setIsLoading((prev) => !prev);
     if (companyLogo) {
       // load the company logo in the companys' table
     }
     console.log(projectData);
     LOCAL_STORAGE.save("project_data", projectData);
     tableRaw.push(projectData);
+    // get the id of the project response and route to that ID
     router.push(Route.editProject + "/45");
   }
 
@@ -117,44 +114,67 @@ export default function ProjectDetailsForm({ onClick }: Props) {
   }, [projectData.country]);
 
   return (
-    <div className="w-full bg-white rounded-lg">
-      <div className="flex h-[80px] bg-primary justify-between rounded-t-lg">
-        <h1 className="text-xl p-4 font-semibold text-white">
-          Create a project: Project details
-        </h1>
-      </div>
+    <CardLayout heading={`Create a project (${typeOfProject}): Project details`}>
       <form className="w-full flex flex-col px-6 py-4" onSubmit={handleSubmit}>
-        <em><strong>NB</strong>: The Rain forest Alliances' logo will be added by default on this project</em>
+        <em>
+          <strong>NB</strong>: The Rain forest Alliances' logo will be added by
+          default on this project form
+        </em>
         <div className="flex justify-between py-5">
-          
-          {/* The existence of the company logo in the company object will done here. This input field will be displayed based on that */}
+          {/* The existence of the company logo in the company object will checked here. This input field will be displayed based on that */}
           <div className="flex flex-col">
             <label htmlFor="company_logo">
               <strong>Company logo</strong>
             </label>
-            <input type="file" onChange={(e) => handlecompanyLogo(e)}/>
+            <input type="file" onChange={(e) => handlecompanyLogo(e)} />
           </div>
           <div className="flex flex-col">
             <label htmlFor="company_logo">
               <strong>Add another logo</strong>
             </label>
-            <input type="file" onChange={(e) => handleOtherLogo(e)}/>
+            <input type="file" onChange={(e) => handleOtherLogo(e)} />
           </div>
         </div>
-        <InputField
-          label="Project title"
-          inputName="title"
-          type="text"
-          value={projectData.title}
-          onChange={(e) => handleChangeEvent(e)}
-        />
-        <InputField
-          label="Description"
-          inputName="description"
-          type="text"
-          value={projectData.description}
-          onChange={(e) => handleChangeEvent(e)}
-        />
+        <div className="flex justify-between gap-4">
+          <div className="md:w-1/2">
+            <InputField
+              label="Project title"
+              inputName="title"
+              type="text"
+              value={projectData.title}
+              onChange={(e) => handleChangeEvent(e)}
+            />
+          </div>
+          <div className="md:w-1/2">
+            <InputField
+              label="Description"
+              inputName="description"
+              type="text"
+              value={projectData.description}
+              onChange={(e) => handleChangeEvent(e)}
+            />
+          </div>
+        </div>
+        <div className="flex justify-between gap-4">
+          <div className="md:w-1/2">
+            <InputField
+              label="Start date"
+              inputName="start_date"
+              type="date"
+              value={projectData.start_date}
+              onChange={(e) => handleChangeEvent(e)}
+            />
+          </div>
+          <div className="md:w-1/2">
+            <InputField
+              label="End date"
+              inputName="end_date"
+              type="date"
+              value={projectData.end_date}
+              onChange={(e) => handleChangeEvent(e)}
+            />
+          </div>
+        </div>
         <label className="font-semibold" htmlFor="activity">
           Business sector
           <span className="text-red-500">*</span>
@@ -211,6 +231,13 @@ export default function ProjectDetailsForm({ onClick }: Props) {
             className="md:w-[33.33%]"
           />
         </div>
+        {/* <Textarea
+          placeholder="Enter project description"
+          value={projectData.description}
+          name='description'
+
+          onChange={(e) => handleChangeEvent(e)}
+        /> */}
         <div className="flex justify-end gap-4">
           <Button
             className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow"
@@ -221,11 +248,15 @@ export default function ProjectDetailsForm({ onClick }: Props) {
           >
             BACK
           </Button>
-          <Button type="submit" className={isLoading ? "hover:cursor-wait opacity-70" : ""}>
+          <Button
+            type="submit"
+            className={isLoading ? "hover:cursor-wait opacity-70" : ""}
+          >
             {isLoading ? "Processing..." : "CREATE PROJECT"}
           </Button>
         </div>
       </form>
-    </div>
+    </CardLayout>
+    // </div>
   );
 }

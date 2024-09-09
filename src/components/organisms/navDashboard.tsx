@@ -20,11 +20,9 @@ import { usePathname } from "next/navigation";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { OrganizationSwitcher } from "@clerk/nextjs";
 
-type Props = {
-  placeholder: string;
-};
+type Props = {};
 
-export default function NavDashboard({ placeholder }: Props) {
+export default function NavDashboard({}: Props) {
   const [showAdgForm, setShowAdgForm] = useState<boolean>(false);
   const [showMemberForm, setShowMemberForm] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
@@ -57,7 +55,7 @@ export default function NavDashboard({ placeholder }: Props) {
   ];
 
   return (
-    <nav className="flex justify-between px-3 bg-tertiary shadow-md z-50 fixed w-screen">
+    <nav className="flex justify-between px-3 bg-tertiary z-50 fixed w-screen">
       {/* LOGO & PROJECT NAME IF DEFINED */}
       <div className="flex justify-between md:w-[250px]">
         <Link href={Route.home}>
@@ -83,19 +81,27 @@ export default function NavDashboard({ placeholder }: Props) {
             : "hidden"
         }
       >
-        <div className="input justify-center flex text-[#3a3737] bg-white w-[60%] mx-auto md:w-full items-center p-2 gap-2 ">
+        {pathname === Route.autoEvaluation ? (
+          <h1 className="font-bold text-center">AUTO EVALAUTION</h1>
+        ) : pathname === Route.inspectionInitial ? (
+          <h1 className="font-bold text-center">INITIAL INSPECTION</h1>
+        ) : pathname === Route.inspectionInterne ? (
+          <h1 className="font-bold text-center">INTERNAL INSPECTION</h1>
+        ) : (
+          ""
+        )}
+        {/* <div className="input justify-center flex text-[#3a3737] bg-white w-[60%] mx-auto md:w-full items-center p-2 gap-2 ">
           <input
             type="search"
             placeholder={placeholder}
             className="w-full  outline-none bg-transparent"
           />
           <Search size={20} />
-        </div>
+        </div> */}
       </div>
 
       {/* CREATE SUB ACCOUNT BUTTON */}
-      <OrganizationSwitcher/>
-      
+      <OrganizationSwitcher />
     </nav>
   );
 }

@@ -16,6 +16,13 @@ export default function ProjectDetails({}: Props) {
 
   let id: string | undefined | null = "";
 
+  const showDataFuntionFromChild = (val: boolean) => {
+    setDataActive(val)
+    // setSettingsActive(false)
+    // setFormActive(false)
+    setSummaryActive(false)
+  }
+
   useEffect(() => {
     id = LOCAL_STORAGE.get("projectId");
    setSelectedProject( tableRaw.find((item) => item.id === id));
@@ -99,7 +106,7 @@ export default function ProjectDetails({}: Props) {
           {settingsActive ? <div className="w-full h-1 bg-tertiary"></div> : ""}
         </div>
       </div>
-      {summaryActive && <ProjectSummary projectObject={selectedProject} />}
+      {summaryActive && <ProjectSummary showData={showDataFuntionFromChild} projectObject={selectedProject} />}
       {dataActive && <p>Show collected data</p>}
       {formActive && <p>Show form sample</p>}
       {settingsActive && <p>Show settings</p>}

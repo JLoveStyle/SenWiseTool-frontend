@@ -41,7 +41,7 @@ export default function RootLayout({
             <ToastContainer position="top-center" transition={Flip} />
           </ClerkProvider>
         </ThemeProvider>
-        <Toaster richColors theme="light" closeButton position="top-right" />
+        {/* <Toaster richColors theme="light" closeButton position="top-right" /> */}
       </body>
     </html>
   );

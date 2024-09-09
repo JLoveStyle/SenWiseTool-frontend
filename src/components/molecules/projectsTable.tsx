@@ -31,20 +31,17 @@ import {
 } from "../ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { Project } from "@/types/gestion";
-import useRequirement from "@/app/stores/requirements";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
   incomingData: TData[];
-  onSelecteItem: (value: TData[]) => void
+  onSelecteItem: (value: TData[]) => void;
 }
 
 export function DataTable<TData, TValue>({
   incomingColumns,
   incomingData,
-  onSelecteItem
+  onSelecteItem,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -75,32 +72,25 @@ export function DataTable<TData, TValue>({
   });
 
   useEffect(() => {
-    const selectedPro = table
-      .getSelectedRowModel()
-      .flatRows.map((pro) => {
-        // console.log(pro.original);
-        return pro.original;
-      });
-      console.log("selPro =>", selectedPro)
-    onSelecteItem(selectedPro)
+    const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
+      // console.log(pro.original);
+      return pro.original;
+    });
+    console.log("selPro =>", selectedPro);
+    onSelecteItem(selectedPro);
   }, [rowSelection]);
-
 
   return (
     <>
       <div className="flex items-center py-4">
-        {pathname.includes("projects/edit") ? (
-          ""
-        ) : (
-          <Input
-            placeholder="Filter projects..."
-            value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("title")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-        )}
+        <Input
+          placeholder="Filter projects..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("title")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

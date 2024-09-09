@@ -10,9 +10,14 @@ export async function createUser(user: Partial<User>) {
   return await apiCall.POST(BASE_URL + "/v1/users", user)
 }
 
-// SAVE PROOJECT TO DRAFT
+// SAVE PROOJECT AS DRAFT
 export async function saveProjectToDraft(id: string, project: Partial<Project>) {
   return await apiCall.PUT(BASE_URL + "/v1/projects", id)
+}
+
+// CREATE PROJECT
+export async function createProject(project: Partial<Project>) {
+  return await apiCall.POST(BASE_URL + "v1/projects", project)
 }
 
 // CREATE COMPANY

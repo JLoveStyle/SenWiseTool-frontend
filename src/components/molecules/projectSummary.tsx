@@ -15,18 +15,17 @@ import React from "react";
 
 type Props = {
   projectObject: Project | undefined;
+  showData: (val: boolean) => void
 };
 
-export default function ProjectSummary({ projectObject }: Props) {
+export default function ProjectSummary({ projectObject, showData }: Props) {
   const router = useRouter();
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
       text: "Data collection",
       secondIcon: <ChevronRight />,
-      function: () => {
-        console.log("hello1");
-      },
+      function: () => showData(true),
     },
     {
       firstIcon: <UserRoundPlus />,
@@ -41,14 +40,14 @@ export default function ProjectSummary({ projectObject }: Props) {
       text: "Edit form",
       secondIcon: <ChevronRight />,
       function: () => {
-        console.log("hello3");
+        router.push(Route.editProject + "/45")
       },
     },
     {
       firstIcon: <Eye />,
       text: "View form",
       secondIcon: <ChevronRight />,
-      function: () => router.push(Route.editProject + "/45"),
+      function: () => router.push(Route.editProject + "/45/pdf"),
     },
   ];
 
@@ -56,7 +55,7 @@ export default function ProjectSummary({ projectObject }: Props) {
 
   return (
     <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
-      <div className="md:w-2/3">
+      <div className="md:w-[70%]">
         <p className="">Project details</p>
         <div className="bg-white md:w-full p-5 shadow">
           <div className="border-b pb-4">
@@ -123,7 +122,7 @@ export default function ProjectSummary({ projectObject }: Props) {
       </div>
 
       {/* RAPID LINKS */}
-      <div className="md:w-1/3">
+      <div className="md:w-[30%]">
         <p className="">Links</p>
         <div className="bg-white px-5 shadow">
           {lienRapide.map((link: any, index: number) => (

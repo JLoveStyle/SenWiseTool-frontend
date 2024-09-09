@@ -7,51 +7,61 @@ export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
 
 
+// BUSINESS ACTIVITIES
+export const businessActivity: string[] = [
+  "Cocoa",
+  "Coffee",
+  "Banana",
+  "Tee",
+  "Wood",
+  "Other",
+];
+
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'GESTION'
 export const optionsGestions: { title: string; href: string; description: string }[] = [
   {
-    title: "Inspection initial",
-    href: "/docs/primitives/progress",
+    title: "Initial inspection",
+    href: Route.inspectionInitial,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
-    title: "Inspection internes",
+    title: "Internal inspection",
     href: Route.inspectionInterne,
     description:
       "For sighted users to preview content available behind a link.",
   },
   {
-    title: "Auto-évaluation du groupe",
-    href: "/docs/primitives/progress",
+    title: "Auto evaluation of group",
+    href: Route.autoEvaluation,
     description:
       "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
   },
   {
-    title: "mapping",
+    title: "Mapping",
     href: "/docs/primitives/scroll-area",
     description: "Visually or semantically separates content.",
   },
   {
-    title: "Outil d'évaluation des risques",
+    title: "Evalution risks tools",
     href: "/docs/primitives/tabs",
     description:
       "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
   },
   {
-    title: "Plan de gestion",
+    title: "Management plan",
     href: "/docs/primitives/tooltip",
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Cartes",
+    title: "Maps",
     href: "/docs/primitives/tooltip",
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Mécanismes de réclamation",
+    title: "Reclamation mechanosms",
     href: "/docs/primitives/tooltip",
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
@@ -63,13 +73,13 @@ export const optionsGestions: { title: string; href: string; description: string
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Formation",
+    title: "Training",
     href: "/docs/primitives/tooltip",
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Liste des producteurs",
+    title: "Lists of farmers",
     href: "/docs/primitives/tooltip",
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
@@ -146,7 +156,7 @@ export let tableRaw: Project[] = [
     id: "1",
     end_date: "2020-03-01",
     start_date: "2020-01-01",
-    type: ["INITIAL_INPSECTION"],
+    type: ["INITIAL_INSPECTION"],
     title: "Projet de figil",
     description: "Campagn de distribtion des angraits bio pour la culture des oignions dans le village Figile",
     sector_activity: "",
@@ -162,7 +172,7 @@ export let tableRaw: Project[] = [
     id: "2",
     end_date: "2021-03-01",
     start_date: "2021-01-05",
-    type: ["INITIAL_INPSECTION"],
+    type: ["INITIAL_INSPECTION"],
     title: "Projet d'Akonolinga",
     description: "Projet de construcion des pépinière de pistier dans le village Akonolinga",
     sector_activity: "",
@@ -178,7 +188,7 @@ export let tableRaw: Project[] = [
     id: "3",
     end_date: "2020-10-11",
     start_date: "2020-03-21",
-    type: ["INITIAL_INPSECTION"],
+    type: ["INITIAL_INSPECTION"],
     title: "Projet de Cacao",
     description: "Recolte de cacao dans le village de Yokadouma",
     sector_activity: "",
@@ -220,13 +230,40 @@ export const requirements = [
           },
           {
             principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
+            number: "1.1.3",
+            certication_de_group: {
+              direction_de_group: "yes",
+              petit_exp_agri: "yes",
+              grande_exp_agri: "yes"
+            }
+          },
+          {
+            principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
+            number: "1.1.4",
+            certication_de_group: {
+              direction_de_group: "yes",
+              petit_exp_agri: "yes",
+              grande_exp_agri: "yes"
+            }
+          },
+          {
+            principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
             number: "1.1.5",
             certication_de_group: {
               direction_de_group: "yes",
               petit_exp_agri: "yes",
               grande_exp_agri: "yes"
             }
-          }
+          },
+          {
+            principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
+            number: "1.1.6",
+            certication_de_group: {
+              direction_de_group: "yes",
+              petit_exp_agri: "yes",
+              grande_exp_agri: "yes"
+            }
+          },
         ]
       },
       {

@@ -12,7 +12,10 @@ export type AvailableRoute =
   | "profile"
   | "login"
   | "inspectionInterne"
+  | "inspectionInitial"
+  | "autoEvaluation"
   | "editProject"
+  | "details"
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -27,6 +30,9 @@ export const Route: Record<AvailableRoute, string> = {
   profile: "/profile",
   login: "/login",
   inspectionInterne: "/projects/inspection-interne",
+  inspectionInitial: "/projects/inspection-initial",
+  autoEvaluation: "/projects/auto-evaluation",
   editProject: "/projects/edit",
   checkout: "/checkout",
+  details: "/projects/details"
 };

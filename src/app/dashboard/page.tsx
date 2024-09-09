@@ -19,7 +19,6 @@ export default function Home({ }: Props) {
   async function fetchData() {
     const token = await getToken();
     if (token) {
-      console.log(token)
       LOCAL_STORAGE.save("token", token);
       // store the user in the session
       // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
@@ -34,7 +33,7 @@ export default function Home({ }: Props) {
   console.log(session);
   return (
     <>
-      <LayoutDashboard>
+      <LayoutDashboard typeOfProject={["INITIAL_INSPECTION"]} projectsPerType={[]}>
         <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
       </LayoutDashboard>
     </>

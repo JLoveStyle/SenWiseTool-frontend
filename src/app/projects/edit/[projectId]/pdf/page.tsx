@@ -1,19 +1,20 @@
 "use client";
 import { deployableFormColumn } from "@/components/atoms/colums-of-tables/deployableForm";
 import PrintContent from "@/components/atoms/print-content";
-import { ChaptersRequirements } from "@/components/molecules/chapters-table-data/chapterOne";
 import PrintableFormTable from "@/components/molecules/chapters-table-data/printableFormTable";
-import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
-import { deployedPro, requirements } from "@/utiles/services/constants";
+import { deployedPro } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import slugify from 'slugify'
 
 type Props = {};
 
 export default function page({}: Props) {
+  const router = useRouter();
+  const [personalInfo, setPersonalInfo] = useState({})
   const projectData = LOCAL_STORAGE.get("project_data");
   const metaData: { [key: string]: string }[] =
     LOCAL_STORAGE.get("formMetadata");
@@ -23,13 +24,15 @@ export default function page({}: Props) {
     metaData.length
   );
 
-  const [chap1, chap2] = requirements
-  const ctn=chap1.chapter1
-  console.log(ctn)
-  // console.log(metaData);
+  const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const data = {...personalInfo, [e.target.name]: e.target.value };
+    setPersonalInfo(data)
+  };
+
+  console.log(personalInfo)
 
   return (
-    <PrintContent>
+    <PrintContent onClick={() => router.push(Route.editProject + "/45")}>
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
         <div className="flex justify-between py-2 md:w-[500px] mx-auto">
@@ -65,7 +68,8 @@ export default function page({}: Props) {
                   <input
                     type="text"
                     id={item.val}
-                    name={item.val}
+                    name={slugify(item.val)}
+                    onChange={(e) => handleChangeEvent(e)}
                     className="border py-1 px-2 w-full"
                   />
                 </div>
@@ -81,6 +85,7 @@ export default function page({}: Props) {
                     type="text"
                     id={item.val}
                     name={item.val}
+                    onChange={(e) => handleChangeEvent(e)}
                     className="border py-1 px-2 w-full"
                   />
                 </div>
@@ -96,22 +101,17 @@ export default function page({}: Props) {
             incomingData={deployedPro}
             chapter={"deploy"}
           />
-          {/* <ChaptersRequirements
-          incomingColumns={deployableFormColumn}
-          incomingData={deployedPro}
-          chapter={"deploy"}
-        /> */}
         </div>
-        <div className="flex justify-end gap-6 pt-5" data-html2canvas-ignore>
-          <Link href={Route.editProject + "/45"}>
-            <Button className=" border border-primary hover:bg-white hover:text-black px-8 ">
-              Edit
+        {/* <div className="flex justify-end gap-6 pt-5" data-html2canvas-ignore>
+            <Link href={}>
+              <Button className=" border border-primary hover:bg-white hover:text-black px-8 ">
+                Edit
+              </Button>
+            </Link>
+            <Button className=" border border-primary hover:bg-white hover:text-black ">
+              Print & Download
             </Button>
-          </Link>
-          <Button className=" border border-primary hover:bg-white hover:text-black ">
-            Print & Download
-          </Button>
-        </div>
+        </div> */}
       </div>
     </PrintContent>
   );

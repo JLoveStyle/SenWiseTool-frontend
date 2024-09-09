@@ -8,13 +8,13 @@ type Props = {};
 
 export default function Home({}: Props) {
 
-  // Fetch all projects with type ["INTERNAL_INSPECTION"] and pass it as props to Layout
+  // Fetch all projects with type ["INITIAL_INSPECTION"] and pass it as props to Layout
   useEffect(() => {
     console.log("Auto-evaluation");
   }, []);
 
   return (
-    <LayoutDashboard projectsPerType={[]} typeOfProject={["INTERNAL_INSPECTION"]}>
+    <LayoutDashboard projectsPerType={tableRaw} typeOfProject={["INITIAL_INSPECTION"]}>
       <ProjectDisplay projects={tableRaw} />
     </LayoutDashboard>
   );

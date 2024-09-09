@@ -1,5 +1,6 @@
 import { LayoutTemplate, PenLine } from "lucide-react";
 import React, { useState } from "react";
+import CardLayout from "../templates/cardLayout";
 
 type Props = {
   onClick: (value1: boolean, value2: boolean) => void;
@@ -10,18 +11,13 @@ export default function CreateProjectOptions({ onClick }: Props) {
   const [projectForm, setProjectform] = useState<boolean>(false);
 
   return (
-    <div className="w-full md:h-[450px] bg-white rounded-lg">
-      <div className="flex h-[80px] bg-primary justify-between rounded-t-lg">
-        <h1 className="text-xl p-4 font-semibold text-white">
-          Create a project: Choose source
-        </h1>
-      </div>
-      <div className="p-2 ">
+    <CardLayout heading="Create a project: Choose source">
+      <div className="px-2 pt-2 pb-6">
         <em className="">
           Please select one of the options below to continue. You will be asked
           to enter your name and the other following steps
         </em>
-        <div className="flex justify-center gap-4 pt-20">
+        <div className="flex justify-center gap-4 py-10">
           <div
             onClick={() => onClick(constructForm, projectForm)}
             className="rounded-[12px] bg-[#e7e9ee] w-[250px] h-[150px] flex gap-2 flex-col justify-center my-auto hover:cursor-pointer hover:shadow-md"
@@ -39,6 +35,6 @@ export default function CreateProjectOptions({ onClick }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </CardLayout>
   );
 }
