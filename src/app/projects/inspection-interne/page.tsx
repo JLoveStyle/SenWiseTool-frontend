@@ -1,20 +1,20 @@
 "use client";
-import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
-import React, { useEffect } from "react";
+import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import { tableRaw } from "@/utiles/services/constants";
+import React, { useEffect } from "react";
 
 type Props = {};
 
 export default function Home({}: Props) {
 
-  // Fetch all projects with type ["INTERNAL_INSPECTION"] and pass it as props to Layout
+  // Fetech all projects xwith ["INTERNAL_INSPECTION"] and pass it as props to layout
   useEffect(() => {
-    console.log("Auto-evaluation");
-  }, []);
+    console.log("inspection interne")
+  }, [])
 
   return (
-    <LayoutDashboard projectsPerType={[]} typeOfProject={["INTERNAL_INSPECTION"]}>
+    <LayoutDashboard typeOfProject={["INITIAL_INSPECTION"]} projectsPerType={[]}>
       <ProjectDisplay projects={tableRaw} />
     </LayoutDashboard>
   );

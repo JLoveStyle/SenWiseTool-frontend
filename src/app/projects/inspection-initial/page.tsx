@@ -10,7 +10,7 @@ export default function Home({}: Props) {
 
   // Fetch all projects with type ["INITIAL_INSPECTION"] and pass it as props to Layout
   useEffect(() => {
-    console.log("Auto-evaluation");
+    console.log("initial_inspection");
   }, []);
 
   return (

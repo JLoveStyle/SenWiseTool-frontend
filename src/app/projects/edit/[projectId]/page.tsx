@@ -161,7 +161,7 @@ export default function page({}: Props) {
               <EditProjectFormDatails
                 project={projectData}
                 onClick={function (val: boolean): void {
-                  setOpenEditForm(val)
+                  setOpenEditForm(val);
                 }}
               />
             </DialogContent>

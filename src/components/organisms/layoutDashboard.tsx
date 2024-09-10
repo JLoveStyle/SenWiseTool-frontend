@@ -22,11 +22,11 @@ export default function LayoutDashboard({
     <div className="">
       <NavDashboard />
       <div className="flex ">
-          <SideNav />
-          <CloseSideNav
-            projectsPerType={projectsPerType}
-            typeOfProject={typeOfProject}
-          />
+        <SideNav />
+        <CloseSideNav
+          projectsPerType={projectsPerType}
+          typeOfProject={typeOfProject}
+        />
         <div className="w-full ">
           <div className="px-6 pt-20 pb-3 ">
             <NavigationMenuDemo />

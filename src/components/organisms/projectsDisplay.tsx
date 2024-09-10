@@ -4,8 +4,9 @@ import { Archive, Trash2, UserPlus } from "lucide-react";
 import React, { useState } from "react";
 import CustomHoverCard from "./hoverCard";
 import { DataTable } from "../molecules/projectsTable";
-import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
+// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { Project } from "@/types/gestion";
+import { columnListProjects } from "../atoms/columnsProject";
 
 type Props = {
   projects: Project[];
