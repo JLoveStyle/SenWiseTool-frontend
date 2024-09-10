@@ -4,33 +4,41 @@ import ProjectSummary from "../molecules/projectSummary";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Project } from "@/types/gestion";
 import { tableRaw } from "@/utiles/services/constants";
+import { MoveLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 export default function ProjectDetails({}: Props) {
+  const router = useRouter()
   const [summaryActive, setSummaryActive] = useState<boolean>(true);
   const [formActive, setFormActive] = useState<boolean>(false);
   const [dataActive, setDataActive] = useState<boolean>(false);
   const [settingsActive, setSettingsActive] = useState<boolean>(false);
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>()
+  const [selectedProject, setSelectedProject] = useState<Project | undefined>();
 
   let id: string | undefined | null = "";
 
   const showDataFuntionFromChild = (val: boolean) => {
-    setDataActive(val)
+    setDataActive(val);
     // setSettingsActive(false)
     // setFormActive(false)
-    setSummaryActive(false)
-  }
+    setSummaryActive(false);
+  };
 
   useEffect(() => {
     id = LOCAL_STORAGE.get("projectId");
-   setSelectedProject( tableRaw.find((item) => item.id === id));
-    
+    setSelectedProject(tableRaw.find((item) => item.id === id));
   }, []);
 
   return (
     <div className="">
+        <div onClick={() => router.back()} className="active:translate-y-1 flex gap-2 items-baseline underline hover:cursor-pointer absolute font-semibold pl-6">
+          <MoveLeft size={15} />
+          <span className="">
+            Back
+          </span>
+        </div>
       {/* NAVIGATION FOR A SINGLE PROJECT */}
       <div className="flex justify-between md:w-[400px] mx-auto">
         <div className="flex flex-col gap-2">
@@ -106,7 +114,12 @@ export default function ProjectDetails({}: Props) {
           {settingsActive ? <div className="w-full h-1 bg-tertiary"></div> : ""}
         </div>
       </div>
-      {summaryActive && <ProjectSummary showData={showDataFuntionFromChild} projectObject={selectedProject} />}
+      {summaryActive && (
+        <ProjectSummary
+          showData={showDataFuntionFromChild}
+          projectObject={selectedProject}
+        />
+      )}
       {dataActive && <p>Show collected data</p>}
       {formActive && <p>Show form sample</p>}
       {settingsActive && <p>Show settings</p>}

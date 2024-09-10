@@ -63,7 +63,7 @@ export default function NavDashboard({}: Props) {
         </Link>
         <div
           className={
-            pathname === Route.inspectionInterne + `/${id}`
+            pathname === Route.details + `/${id}`
               ? "flex gap-4 my-auto absolute left-[330px] top-6"
               : "hidden"
           }

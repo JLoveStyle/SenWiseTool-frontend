@@ -60,13 +60,13 @@ export default function CloseSiveNav({
           : "bg-[#f7f6f6] w-fit h-screen px-5 pt-20 shadow-lg "
       }
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-3">
         <Button
           onClick={() => {
             setOpenModal((prev) => !prev);
             setShowProjectOptions((prev) => !prev);
           }}
-          className="px-10"
+          className="px-10 mb-4"
         >
           New Form
         </Button>
