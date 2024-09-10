@@ -7,8 +7,12 @@ export type AvailableRoute =
   | "checkout"
   | "signIn"
   | "signUp"
+  | "companies"
   | "createCompany"
   | "dashboard"
+  | "training"
+  | "formationProject"
+  | "formationProjectDetails"
   | "profile"
   | "login"
   | "inspectionInterne"
@@ -16,17 +20,20 @@ export type AvailableRoute =
   | "autoEvaluation"
   | "editProject"
   | "details"
+  | "training_session"
+  | "user"
+  | "login";
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
   aboutUs: "/about-us",
   features: "/features",
   services: "/services",
-  pricing: "/pricing",
   signIn: "/sign-in",
   signUp: "/sign-up",
   dashboard: "/dashboard",
-  createCompany: "/create-compay",
+  formationProject: "/dashboard/training",
+  formationProjectDetails: "/dashboard/training/project",
   profile: "/profile",
   login: "/login",
   inspectionInterne: "/projects/inspection-interne",
@@ -34,5 +41,11 @@ export const Route: Record<AvailableRoute, string> = {
   autoEvaluation: "/projects/auto-evaluation",
   editProject: "/projects/edit",
   checkout: "/checkout",
-  details: "/projects/details"
+  details: "/projects/details",
+  pricing: "price_plans",
+  training: "trainings",
+  training_session: "training_sessions",
+  user: "users",
+  companies: "companies",
+  createCompany: "/create-compay",
 };

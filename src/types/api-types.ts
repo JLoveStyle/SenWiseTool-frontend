@@ -92,23 +92,23 @@ export type UserType = {
 
 export type TrainingType = {
     company_id: string;
-    created_at: Date;
-    end_date: Date;
+    created_at: string;
+    end_date: string;
     slug: string;
     id: string;
     location: string;
     modules: string[];
     report_url: string;
-    start_date: Date;
+    start_date: string;
     title: string;
     trainer_proof_of_competency: string[];
     training_attendance_sheet_url: string[];
     training_picture_url: string[];
-    updated_at: Date;
+    updated_at: string;
 }
 
 export type Training_session = {
-    created_at: Date;
+    created_at: string;
     email: string;
     first_name: string;
     id: string;

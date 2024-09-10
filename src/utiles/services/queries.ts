@@ -25,6 +25,14 @@ export async function createCompany(company: Partial<Company>) {
   return await apiCall.POST(BASE_URL + "/v1/companies", company)
 }
 
-export const fetchApiData = async (valueTofetch: string) => {
-  return await apiCall.GET(`${API_URL}/price_plans/${valueTofetch}`)
+/**
+ * Fetch data from the API
+ * @param valueTofetch - The value to fetch in the API
+ * @param route - The route to use in the API
+ * @param args - Additional arguments to pass to the API call
+ * @returns The response from the API, or an error if the call fails
+ */
+export const fetchApiData = async <T = any>(route: string, valueTofetch?: string, ...args: any[]): Promise<T> => {
+  return await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
 }
+

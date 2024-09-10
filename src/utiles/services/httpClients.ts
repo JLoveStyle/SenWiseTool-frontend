@@ -5,8 +5,8 @@ export const Headers = {
   Authorization: `Bearer ${LOCAL_STORAGE.get("token")}`,
 };
 
+console.log("storage: ", LOCAL_STORAGE.get("token"));
 export default class ApiCall {
-
   async PATCH(url: string, body: any, _headers: HeadersInit = {}) {
     return fetch(url, {
       method: "PATCH",
@@ -66,6 +66,33 @@ export default class ApiCall {
       body: JSON.stringify(body),
     }).then((res) => res.json());
   }
+
+  // async POST(url: string, body: any, _headers: HeadersInit = {}) {
+  //   try {
+  //     const response = await fetch(
+  //       "https://senwisetool-project-backend.onrender.com",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json", // Définir le Content-Type
+  //           ..._headers, // Ajouter les autres en-têtes passés en paramètre
+  //         },
+  //         body: JSON.stringify(body),
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     } else {
+  //       console.log("Sucèèèèèèèès !!!");
+  //     }
+
+  //     return await response.json();
+  //   } catch (error) {
+  //     console.error("Error in POST request:", error);
+  //     throw error; // Relancer l'erreur pour la gestion externe
+  //   }
+  // }
 }
 
-export const apiObj = () => new ApiCall()
+export const apiObj = () => new ApiCall();

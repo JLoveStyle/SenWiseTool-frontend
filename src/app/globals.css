@@ -24,8 +24,8 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    /* --ring: 222.2 84% 4.9%; */
+    /* --radius: 0.5rem; */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -52,7 +52,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* --ring: 212.7 26.8% 83.9%; */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -67,23 +67,23 @@
     padding: 0;
     box-sizing: border-box;
   }
+  html,
   body {
+    width: 100%;
+    overflow-x: hidden; /* Empêche le défilement horizontal */
+    margin: 0; /* Enlève la marge par défaut pour éviter le débordement */
+    padding: 0; /* Enlève le padding par défaut */
+    box-sizing: border-box; /* Inclus les bordures et padding dans la largeur totale */
     font-family: "Roboto", sans-serif;
+  }
+
+  .scrool-bar-hidden::-webkit-scrollbar {
+    display: none; /* Masque la scrollbar */
   }
   .logo {
     font-family: "Pacifico";
     font-weight: 400;
     font-style: normal;
-  }
-
-  .border-border {
-    /* Your declarations here. */
-  }
-
-  .bg-background {
-  }
-
-  .text-foreground {
   }
 
   * {
@@ -403,6 +403,29 @@
 
   .text-blink {
     animation: blink 3s infinite;
+  }
+
+  /* Animate empty image */
+  .animate-empty-image {
+    animation: empty-image-animation 2s infinite;
+    animation-delay: 5s;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes empty-image-animation {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-30px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-empty-image {
+    animation-duration: 17s;
   }
 }
 

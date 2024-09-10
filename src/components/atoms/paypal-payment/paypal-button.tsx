@@ -10,28 +10,34 @@ import {
 } from "@paypal/react-paypal-js";
 import { PricePlanType } from "@/types/api-types";
 import { toast } from "sonner";
+import { usePriceStore } from "@/lib/stores/price-store";
 
-const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) => {
+const ButtonWrapper = ({ type }: { type: string, }) => {
     const [{ options }, dispatch] = usePayPalScriptReducer();
+
+    // call the price store and init the plan
+
+    const plan = usePriceStore((state) => state.price_plan);
+    const plan_id = plan ? plan?.id : null;
+
+    console.log("price plan: ", plan);
 
     // this is for mock only!!!!!!!!!!!!!!!!!!!
     const public_url = process.env.NEXT_PUBLIC_PUBLIC_URL;
     const server_url = process.env.NEXT_PUBLIC_SERVER_API_URL
     useEffect(() => {
         dispatch({
-            // type: 'resetOptions' as DISPATCH_ACTION.RESET_OPTIONS,
             type: 'setLoadingStatus' as DISPATCH_ACTION.LOADING_STATUS,
             value: {
-                state: 'pending' as SCRIPT_LOADING_STATE.PENDING,
-                message: 'Loading...'
-            }
+                message: 'PayPal is Initializing...',
+                state: 'pending' as SCRIPT_LOADING_STATE.PENDING
+            },
         });
     }, [type]);
 
     // TODO: handle the correct date starting for a plan.
     // to set the starting date.
     let now = new Date();
-    const plan_id = plan?.id;
     return (<PayPalButtons
         createSubscription={(data, actions) => {
             return actions.subscription
@@ -71,7 +77,7 @@ const ButtonWrapper = ({ type, plan }: { type: string, plan: PricePlanType }) =>
     />);
 }
 
-export function PaypalPaypements({ plan }: { plan: PricePlanType }) {
+export function PaypalPaypements() {
 
 
     const paypalOptions = {
@@ -85,7 +91,7 @@ export function PaypalPaypements({ plan }: { plan: PricePlanType }) {
         <PayPalScriptProvider
             options={paypalOptions}
         >
-            <ButtonWrapper type="subscription" plan={plan} />
+            <ButtonWrapper type="subscription" />
         </PayPalScriptProvider>
     );
 }

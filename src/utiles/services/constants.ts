@@ -4,8 +4,9 @@ import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
 
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [
@@ -18,7 +19,11 @@ export const businessActivity: string[] = [
 ];
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'GESTION'
-export const optionsGestions: { title: string; href: string; description: string }[] = [
+export const optionsGestions: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
   {
     title: "Initial inspection",
     href: Route.inspectionInitial,
@@ -73,8 +78,8 @@ export const optionsGestions: { title: string; href: string; description: string
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Training",
-    href: "/docs/primitives/tooltip",
+    title: "Formation",
+    href: Route.formationProject,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
@@ -83,11 +88,14 @@ export const optionsGestions: { title: string; href: string; description: string
     href: "/docs/primitives/tooltip",
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  }
-]
+  },
+];
 
-// THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'TRACABILITE'
-export const optionsTracabilité: { title: string; href: string; description: string }[] = [
+export const optionsTracabilité: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
   {
     title: "Reçus",
     href: "/docs/primitives/alert-dialog",
@@ -117,11 +125,15 @@ export const optionsTracabilité: { title: string; href: string; description: st
     href: "/docs/primitives/alert-dialog",
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
-  }
-]
+  },
+];
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'REVENU ET RESPONSABILTE'
-export const optionsRevenu: { title: string; href: string; description: string }[] = [
+export const optionsRevenu: {
+  title: string;
+  href: string;
+  description: string;
+}[] = [
   {
     title: "Justificatifs de payement de l'investissement de durabilité",
     href: "/docs/primitives/alert-dialog",

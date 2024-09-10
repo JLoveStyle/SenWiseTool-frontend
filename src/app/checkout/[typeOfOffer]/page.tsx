@@ -14,7 +14,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { useApiFetch } from "@/lib/api-provider";
+import { useApiOps } from "@/lib/api-provider";
 import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
 import { ApiDataResponse, PricePlanType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -63,12 +63,12 @@ export default function page({ }: Props) {
     }
   }, [router]);
 
-  const { data: pricePlan } = useApiFetch<PricePlanType, ApiDataResponse<PricePlanType>>({
+  const { data: pricePlan } = useApiOps<PricePlanType, ApiDataResponse<PricePlanType>>({
     query: params.typeOfOffer.toString().toLowerCase(),
-    fn: () => fetchApiData(params.typeOfOffer.toString().toLowerCase()),
+    fn: () => fetchApiData(Route.pricing, params.typeOfOffer.toString().toLowerCase()),
+    route: Route.pricing,
   });
 
-  console.log("checkout page; plan name:", typeOfOffer, "the current plan data is ", pricePlan);
 
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
@@ -291,16 +291,16 @@ export default function page({ }: Props) {
                   )}  /   ¹⁄₂Year`}
               </span>
             </div>
-            {isLoading ? (
-              <Button className="cursor-wait py-6 bg-primary hover:cursor-pointer font-semibold text-white w-full">
-                <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
-                Processing...
-              </Button>
-            ) : (// TODO: handle the case the fetching of plan id is not correct <<later>>
-
-              //es-lint-disable-next-line @typescript-eslint/restrict-template-expressions
-              < PaypalPaypements plan={pricePlan as PricePlanType} />
-            )}
+            {
+              pricePlan ? (
+                <PaypalPaypements />
+              ) : (
+                <Button className="cursor-wait py-6 bg-primary hover:cursor-pointer font-semibold text-white w-full">
+                  <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
+                  loading paypal checkout...
+                </Button>
+              )
+            }
           </div>
         </div>
       </div>
