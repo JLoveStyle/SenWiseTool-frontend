@@ -24,6 +24,12 @@ import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
 import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
+<<<<<<< HEAD
+=======
+import { useCompanyStore } from "@/lib/stores/companie-store";
+
+
+>>>>>>> feature/training
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -50,14 +56,14 @@ export function NewTraining() {
     // const { error, data } = await db_create_training(formData);
     const dataToDB = {
       title: formData.title,
-      start_date: formData.start_date,
-      end_date: formData.end_date,
+      start_date: new Date(formData.start_date).toISOString(),
+      end_date: new Date(formData.end_date).toISOString(),
       location: formData.location,
       company_id: company?.id,
       modules: formData.modules.map((item) => item.value),
     };
-    await mutateApiData(Route.training, dataToDB);
-
+    const result = await db_create_training(dataToDB);
+    console.log(result)
     // if (error) {
     //   toast.error(error.message);
     //   setIsLoading(false);
@@ -65,9 +71,9 @@ export function NewTraining() {
     // }
     // console.log(data);
 
-    // await db_test_add(formData);
+    // // await db_test_add(formData);
     // toast.success("Your project are created successfull");
-    // setIsLoading(false);
+    setIsLoading(false);
     return;
   };
 

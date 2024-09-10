@@ -3,7 +3,7 @@ import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import { ApiDataResponse, UserType } from "@/types/api-types";
-import { mutateApiData } from "@/utiles/services/mutations";
+import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
@@ -17,12 +17,12 @@ export default function Home({}: Props) {
 
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
-  // create user and set him to the state
+  // create user and set him to the store
   const { data: currentUser, refetch } = useApiOps<
     UserType,
     ApiDataResponse<UserType>
   >({
-    fn: () => mutateApiData(Route.user, "current"),
+    fn: () => fetchApiData(Route.user, "current"),
     route: Route.user,
   });
 
