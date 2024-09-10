@@ -128,9 +128,9 @@ export default function ProjectDetailsForm({
       end_date: projectData.end_date,
     })
       .then((res) => {
-        console.log("project dereated", res);
+        console.log("project cereated", res);
         setIsLoading((prev) => !prev);
-
+        router.push(Route.editProject + "/45");
       })
       .catch((err) => {
         console.log("error occured while creating", err);
@@ -140,7 +140,6 @@ export default function ProjectDetailsForm({
     LOCAL_STORAGE.save("project_data", projectData);
     // tableRaw.push(projectData);
     // // get the id of the project response and route to that ID
-    // router.push(Route.editProject + "/45");
   }
 
   useEffect(() => {
@@ -197,7 +196,7 @@ export default function ProjectDetailsForm({
               label="Start date"
               inputName="start_date"
               type="date"
-              value={projectData.start_date}
+              value={JSON.stringify(projectData.start_date)}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>
@@ -206,7 +205,7 @@ export default function ProjectDetailsForm({
               label="End date"
               inputName="end_date"
               type="date"
-              value={projectData.end_date}
+              value={JSON.stringify(projectData.end_date)}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>

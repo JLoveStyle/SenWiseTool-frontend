@@ -142,7 +142,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
               label="Start date"
               inputName="start_date"
               type="date"
-              value={projectData.start_date}
+              value={JSON.stringify(projectData.start_date)}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>
@@ -151,7 +151,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
               label="End date"
               inputName="end_date"
               type="date"
-              value={projectData.end_date}
+              value={JSON.stringify(projectData.end_date)}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>
