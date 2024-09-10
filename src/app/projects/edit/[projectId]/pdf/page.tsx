@@ -1,6 +1,6 @@
 "use client";
 import { deployableFormColumn } from "@/components/atoms/colums-of-tables/deployableForm";
-import PrintContent from "@/components/atoms/print-content";
+import PrintContent from "@/components/atoms/print-and-edit-content";
 import PrintableFormTable from "@/components/molecules/chapters-table-data/printableFormTable";
 import { Route } from "@/lib/route";
 import { deployedPro } from "@/utiles/services/constants";
