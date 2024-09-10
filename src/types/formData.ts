@@ -10,7 +10,6 @@ export interface FormData {
 }
 
 export interface User {
-<<<<<<< HEAD
   id?: string,
   username?: string,
   title: ['ADG' | "MEMBER"],
@@ -45,28 +44,6 @@ export interface Company {
   logo?: string,
   paypal_id?: string,
   payment_mode?: string
-=======
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  role?: string;
-  companyId?: string;
-  phoneNumber?: string;
-  civility?: string;
-}
-
-export interface Company {
-  companyName: string;
-  companyEmail: string;
-  country: string;
-  state: string;
-  city: string;
-  sector_of_activity: string;
-  logo?: string;
-  paypal_id?: string;
-  payment_mode?: string;
->>>>>>> e317a321f98d45a3a2860b203cf7f54370c4fe06
 }
 
 export interface ModuleProps {
