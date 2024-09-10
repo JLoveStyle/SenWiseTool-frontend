@@ -7,9 +7,9 @@ import CloseSideNav from "./closeSideNav";
 
 type Props = {
   children: React.ReactNode;
-  typeOfProject: [
-    "INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION"
-  ];
+  typeOfProject?: [
+    "INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"
+  ]
   projectsPerType: Project[];
 };
 

@@ -12,14 +12,21 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
+import { mutateApiData } from "@/utiles/services/mutations";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject: ["INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION"]
-  project?: Project
+  typeOfProject?: [
+    "INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"
+  ] 
+  project?: Project;
 };
 
-export default function ProjectDetailsForm({ onClick, typeOfProject, project }: Props) {
+export default function ProjectDetailsForm({
+  onClick,
+  typeOfProject,
+  project,
+}: Props) {
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
@@ -30,7 +37,9 @@ export default function ProjectDetailsForm({ onClick, typeOfProject, project }: 
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>("");
+  const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>(
+    ""
+  );
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
   const [projectData, setProjectData] = useState<Project>({
     id: "", // this might be harmfull
@@ -49,7 +58,9 @@ export default function ProjectDetailsForm({ onClick, typeOfProject, project }: 
   const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const data: Project = {
       ...projectData,
@@ -96,17 +107,40 @@ export default function ProjectDetailsForm({ onClick, typeOfProject, project }: 
     }
   };
 
-  function handleSubmit(e: any) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     setIsLoading((prev) => !prev);
     if (companyLogo) {
       // load the company logo in the companys' table
     }
+
+    // CREATE NEW RECORD IN THE PROJECTS' TABLE
+    await mutateApiData(Route.projects, {
+      type: projectData.type,
+      company_id: "",
+      title: projectData.title,
+      description: projectData.description,
+      sector_activity: projectData.sector_activity,
+      country: projectData.country,
+      city: projectData.city,
+      status: projectData.status,
+      start_date: projectData.start_date,
+      end_date: projectData.end_date,
+    })
+      .then((res) => {
+        console.log("project dereated", res);
+        setIsLoading((prev) => !prev);
+
+      })
+      .catch((err) => {
+        console.log("error occured while creating", err);
+      });
+
     console.log(projectData);
     LOCAL_STORAGE.save("project_data", projectData);
-    tableRaw.push(projectData);
-    // get the id of the project response and route to that ID
-    router.push(Route.editProject + "/45");
+    // tableRaw.push(projectData);
+    // // get the id of the project response and route to that ID
+    // router.push(Route.editProject + "/45");
   }
 
   useEffect(() => {
@@ -114,7 +148,9 @@ export default function ProjectDetailsForm({ onClick, typeOfProject, project }: 
   }, [projectData.country]);
 
   return (
-    <CardLayout heading={`Create a project (${typeOfProject}): Project details`}>
+    <CardLayout
+      heading={`Create a project (${typeOfProject}): Project details`}
+    >
       <form className="w-full flex flex-col px-6 py-4" onSubmit={handleSubmit}>
         <em>
           <strong>NB</strong>: The Rain forest Alliances' logo will be added by

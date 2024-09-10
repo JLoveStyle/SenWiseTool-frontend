@@ -31,7 +31,7 @@ export default function Layout({ children }: Props) {
   console.log(user);
   return (
     <>
-      <LayoutDashboard>
+      <LayoutDashboard typeOfProject={["TRAINING"]} projectsPerType={[]}>
         <hr className="mt-3 mb-2" />
         {children}
       </LayoutDashboard>
