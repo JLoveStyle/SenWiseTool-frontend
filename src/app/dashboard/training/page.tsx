@@ -8,12 +8,12 @@ import { ApiDataResponse, CompanyType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 
 export default function Home() {
-  // set company state
   const { data: companyData } = useApiOps<
     CompanyType,
     ApiDataResponse<CompanyType>
   >({
-    fn: () => fetchApiData(Route.companies, "current", Route.companies),
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
   });
 
   return (

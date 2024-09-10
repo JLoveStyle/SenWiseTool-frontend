@@ -81,14 +81,14 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
 
     const refetch = () => fetchData();
 
-    // TODO: this could be refactor later.
+    // TODO: this could be well refactor later.
     if (data) {
         if (route?.includes("users")) {
 
             setCurrentUser(data as unknown as UserType);
         } else
             if (route?.includes("companies")) {
-
+                console.log("company state set: ", data as unknown as CompanyType)
                 setCompany(data as unknown as CompanyType);
             } else
                 if (route?.includes("price_plans")) {
@@ -96,7 +96,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
                     setPricePlan(data as unknown as PricePlanType);
                 }
     }
-
+    console.log("fro provider service: ", data)
     return {
         data,
         // error,

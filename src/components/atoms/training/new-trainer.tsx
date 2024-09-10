@@ -11,10 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
-import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
-import { mutateApiData } from "@/utiles/services/mutations";
+import { db_create_training } from "@/utiles/services/training";
 import { isEmptyObject } from "@/utils/tool";
 import { TrainingFormVerification } from "@/utils/training-form-verification";
 import clsx from "clsx";
@@ -50,14 +49,14 @@ export function NewTraining() {
     // const { error, data } = await db_create_training(formData);
     const dataToDB = {
       title: formData.title,
-      start_date: formData.start_date,
-      end_date: formData.end_date,
+      start_date: new Date(formData.start_date).toISOString(),
+      end_date: new Date(formData.end_date).toISOString(),
       location: formData.location,
       company_id: company?.id,
       modules: formData.modules.map((item) => item.value),
     };
-    await mutateApiData(Route.training, dataToDB);
-
+    const result = await db_create_training(dataToDB);
+    console.log(result);
     // if (error) {
     //   toast.error(error.message);
     //   setIsLoading(false);
@@ -65,9 +64,9 @@ export function NewTraining() {
     // }
     // console.log(data);
 
-    // await db_test_add(formData);
+    // // await db_test_add(formData);
     // toast.success("Your project are created successfull");
-    // setIsLoading(false);
+    setIsLoading(false);
     return;
   };
 

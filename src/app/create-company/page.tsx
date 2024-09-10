@@ -11,11 +11,12 @@ import { FormData } from "@/types/formData";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import CancelModal from "@/components/molecules/cancelModal";
-import { createCompany } from "@/utiles/services/queries";
+// import { createCompany } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { businessActivity } from "@/utiles/services/constants";
+import { mutateApiData } from "@/utiles/services/mutations";
 
 type Props = {};
 
@@ -66,13 +67,12 @@ export default function Home({}: Props) {
       // const res = await createOrganization(formData, user.id);
       // console.log("res =>", res);
 
-      await createCompany({
+      await mutateApiData(Route.companies, {
         companyEmail: formData.companyEmail,
         companyName: formData.companyName,
         country: formData.country,
         state: formData.state,
         city: formData.city,
-        // logo: companyLogo, // company logo will be coming from edgstore
         sector_of_activity: formData.businessActivity,
       })
         .then((response) => {
@@ -288,6 +288,6 @@ export default function Home({}: Props) {
           <CancelModal onClose={handleCloseModal} />
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>
+  );
 }
