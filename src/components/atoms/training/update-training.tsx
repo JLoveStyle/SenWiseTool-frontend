@@ -20,7 +20,10 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
+<<<<<<< HEAD
 import { useCompanyStore } from "@/lib/stores/companie-store";
+=======
+>>>>>>> training
 
 interface Props {
   currentTaining: TrainingProps;
@@ -29,7 +32,10 @@ interface Props {
 export function UpdateTraining({ currentTaining }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
+<<<<<<< HEAD
   const company = useCompanyStore((state) => state.company);
+=======
+>>>>>>> training
 
   const initialize = {
     id: currentTaining.id,
@@ -55,11 +61,19 @@ export function UpdateTraining({ currentTaining }: Props) {
       start_date: formData.start_date,
       end_date: formData.end_date,
       location: formData.location,
+<<<<<<< HEAD
       company_id: company?.id ?? "",
       modules: formData.modules.map((item) => item.value),
     };
 
     await db_update_training(dataToDB, formData.id!);
+=======
+      company_id: "compagny1",
+      modules: formData.modules.map((item) => item.value),
+    };
+
+    await db_update_training(dataToDB, formData.id);
+>>>>>>> training
 
     // if (error) {
     //   toast.error(error.message);
@@ -89,7 +103,11 @@ export function UpdateTraining({ currentTaining }: Props) {
       }
 
       handleUpdateTraining(formData);
+<<<<<<< HEAD
     } catch (error) { }
+=======
+    } catch (error) {}
+>>>>>>> training
   };
 
   return (

@@ -38,12 +38,19 @@ export interface ModuleProps {
 }
 
 export interface TrainingProps {
-  id?: string;
+  id: string;
   title: string;
   start_date: string;
   end_date: string;
   location: string;
   modules: ModuleProps[];
+}
+
+export interface AttachedFilesProps {
+  id: string;
+  title: string;
+  description: string;
+  files: File[];
 }
 
 export interface DBTrainingProps {

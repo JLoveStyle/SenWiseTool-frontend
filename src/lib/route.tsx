@@ -8,6 +8,7 @@ export type AvailableRoute =
   | "signIn"
   | "signUp"
   | "companies"
+  | "createCompany"
   | "dashboard"
   | "training"
   | "formationProject"
@@ -35,4 +36,5 @@ export const Route: Record<AvailableRoute, string> = {
   training_session: "training_sessions",
   user: "users",
   companies: "companies",
+  createCompany: "/create-compay",
 };

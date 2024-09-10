@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { NewTraining } from "@/components/atoms/training/new-trainer";
@@ -14,6 +15,12 @@ export default function Home() {
   const { data: companyData } = useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
     fn: () => fetchApiData(Route.companies, "current", Route.companies),
   })
+=======
+import { NewTraining } from "@/components/atoms/training/new-trainer";
+import { TrainingList } from "@/components/atoms/training/training-list";
+
+export default function Home() {
+>>>>>>> training
   return (
     <>
       <div className="flex flex-col justify-between gap-10  w-full">

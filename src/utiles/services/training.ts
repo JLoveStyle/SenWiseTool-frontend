@@ -1,9 +1,12 @@
 import { Route } from "@/lib/route";
-import { DBTrainingProps } from "@/types/formData";
-import ApiCall from "./httpClients";
-import { API_URL } from "./constants";
-import { mutateApiData, mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import { TrainingType } from "@/types/api-types";
+import { DBTrainingProps } from "@/types/formData";
+import {
+  mutateApiData,
+  mutateDelApiData,
+  mutateUpApiData,
+} from "@/utiles/services/mutations";
+import ApiCall from "./httpClients";
 import { fetchApiData } from "./queries";
 
 export const db_create_training = async (data: DBTrainingProps) => {

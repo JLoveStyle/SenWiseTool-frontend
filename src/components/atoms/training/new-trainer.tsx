@@ -22,11 +22,14 @@ import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
 import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
+<<<<<<< HEAD
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { Route } from "@/lib/route";
 
 
+=======
+>>>>>>> training
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -41,16 +44,22 @@ export function NewTraining() {
     modules: [],
   });
 
+<<<<<<< HEAD
   // load company state
   const company = useCompanyStore((state) => state.company);
 
+=======
+>>>>>>> training
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: TrainingProps) => {
     setFormData(updatedFormData);
   };
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> training
   const handleCreateTraining = async (formData: TrainingProps) => {
     // const { error, data } = await db_create_training(formData);
     const dataToDB = {
@@ -58,10 +67,17 @@ export function NewTraining() {
       start_date: formData.start_date,
       end_date: formData.end_date,
       location: formData.location,
+<<<<<<< HEAD
       company_id: company?.id,
       modules: formData.modules.map((item) => item.value),
     };
     await mutateApiData(Route.training, dataToDB);
+=======
+      company_id: "compagny1",
+      modules: formData.modules.map((item) => item.value),
+    };
+    await db_create_training(dataToDB);
+>>>>>>> training
 
     // if (error) {
     //   toast.error(error.message);
@@ -91,7 +107,11 @@ export function NewTraining() {
       }
 
       handleCreateTraining(formData);
+<<<<<<< HEAD
     } catch (error) { }
+=======
+    } catch (error) {}
+>>>>>>> training
   };
 
   return (
