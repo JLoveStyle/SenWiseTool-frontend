@@ -14,10 +14,7 @@ interface Props {
   value?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-<<<<<<< HEAD
-=======
   multiple?: boolean;
->>>>>>> training
 }
 
 export const InputUI = ({
@@ -30,10 +27,7 @@ export const InputUI = ({
   value,
   onChange,
   onKeyDown,
-<<<<<<< HEAD
-=======
   multiple,
->>>>>>> training
 }: Props) => {
   return (
     <div className="items-center gap-4">
@@ -54,10 +48,7 @@ export const InputUI = ({
         onChange={onChange}
         onKeyDown={onKeyDown}
         disabled={isLoading}
-<<<<<<< HEAD
-=======
         multiple={multiple}
->>>>>>> training
       />
       {id in errors && (
         <span className="text-red-500 text-xs">{errors[id]}</span>
