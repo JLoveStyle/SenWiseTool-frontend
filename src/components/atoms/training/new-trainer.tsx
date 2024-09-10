@@ -11,10 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
-import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
-import { mutateApiData } from "@/utiles/services/mutations";
+import { db_create_training } from "@/utiles/services/training";
 import { isEmptyObject } from "@/utils/tool";
 import { TrainingFormVerification } from "@/utils/training-form-verification";
 import clsx from "clsx";
@@ -24,12 +23,6 @@ import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
 import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
-<<<<<<< HEAD
-=======
-import { useCompanyStore } from "@/lib/stores/companie-store";
-
-
->>>>>>> feature/training
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -63,7 +56,7 @@ export function NewTraining() {
       modules: formData.modules.map((item) => item.value),
     };
     const result = await db_create_training(dataToDB);
-    console.log(result)
+    console.log(result);
     // if (error) {
     //   toast.error(error.message);
     //   setIsLoading(false);
