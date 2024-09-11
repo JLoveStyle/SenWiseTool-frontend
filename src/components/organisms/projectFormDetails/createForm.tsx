@@ -196,7 +196,7 @@ export default function ProjectDetailsForm({
               label="Start date"
               inputName="start_date"
               type="date"
-              value={JSON.stringify(projectData.start_date)}
+              value={projectData.start_date}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>
@@ -205,7 +205,7 @@ export default function ProjectDetailsForm({
               label="End date"
               inputName="end_date"
               type="date"
-              value={JSON.stringify(projectData.end_date)}
+              value={projectData.end_date}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>
