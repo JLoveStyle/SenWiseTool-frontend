@@ -1,7 +1,8 @@
 "use client";
-import { OrganizationProfile, OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { ChevronDown } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
+import { MdCampaign } from "react-icons/md";
 
 type Props = {};
 
@@ -50,7 +51,9 @@ export default function SideNav({}: Props) {
         onClick={() => setShowDropDown((prev) => !prev)}
         className="flex gap-2 hover:cursor-pointer pt-[87px]"
       >
-        <h2 className="font-semibold">CAMPAGNE</h2>
+        <h2 className="font-semibold">
+          <MdCampaign />
+        </h2>
         <ChevronDown
           className={
             showDropDown
