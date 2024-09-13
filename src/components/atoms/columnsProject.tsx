@@ -18,7 +18,6 @@ import Link from "next/link";
 import { Checkbox } from "../ui/checkbox";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 
-
 export type ChapterMetaData = {
   id: string;
   number: string;
@@ -29,6 +28,9 @@ export type ChapterMetaData = {
     direction_de_group: string;
   };
 };
+
+let allProject = LOCAL_STORAGE.get("all_projects");
+console.log("all projects", allProject);
 
 // this could be wrapped in a hook inorder to have a stable reference to prevent infinite re-rendres
 export const column: ColumnDef<ChapterMetaData>[] = [
@@ -190,7 +192,40 @@ export const columnListProjects: ColumnDef<Project>[] = [
                 View project details
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuItem className="text-red-500">
+            <DropdownMenuItem
+              className=""
+              // onClick={() => {
+              //   const selectedProject = allProject.find(
+              //     (item: { id: string }) => item.id === project.id
+              //   );
+              //   console.log("SELECTED PROJECT", selectedProject);
+              //   const updatePro = { ...selectedProject, status: ["DEPOYED"] };
+              //   console.log(" UPDATE PROJECT", updatePro);
+              //   const newArr = allProject.push(updatePro);
+              //   console.log("newArr", newArr);
+              //   LOCAL_STORAGE.save("all_projects", allProject.push(updatePro));
+              //   toast.success("Project deployed", {
+              //     autoClose: 1000,
+              //     transition: Bounce,
+              //   });
+              // }}
+            >
+              Deploy project
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-500"
+              onClick={() => {
+                const allPro = allProject.filter(
+                  (item: { id: string }) => item.id !== project.id
+                );
+                console.log("allPro", allPro);
+                LOCAL_STORAGE.save("all_project", allPro);
+                toast.success("Project deleted", {
+                  autoClose: 1000,
+                  transition: Bounce,
+                });
+              }}
+            >
               Delete project
             </DropdownMenuItem>
           </DropdownMenuContent>

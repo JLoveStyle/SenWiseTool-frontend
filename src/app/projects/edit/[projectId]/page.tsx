@@ -139,6 +139,14 @@ export default function page({}: Props) {
     LOCAL_STORAGE.save('all_projects', allProjects)
     router.push(Route.editProject + `/${id}/pdf`);
 
+    for (let i=0; i<5; i++) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(`chap_one_req${i}`)
+        localStorage.removeItem(`chap_two_req${i}`)
+        localStorage.removeItem(`chap_three_req${i}`)
+      }
+    }
+
     /*
     // Make a patch request with the project id
     await mutateUpApiData(

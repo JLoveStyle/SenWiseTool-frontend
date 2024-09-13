@@ -11,6 +11,7 @@ type Props = {};
 export default function Home({}: Props) {
 
   const allProject: Project[] = LOCAL_STORAGE.get('all_projects')
+  console.log('init pro', allProject)
   const projects = allProject.filter((item) => item?.type[0] === "INTERNAL_INSPECTION")
   console.log('allPro =>', allProject)
 

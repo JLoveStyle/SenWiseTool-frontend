@@ -76,7 +76,7 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">N° Questions</span>
-                <span className="bg-green-200 text-sm px-2 rounded-lg">3</span>
+                <span className="bg-green-200 text-sm px-2 rounded-lg">{projectObject?.project_structure.requirements.length}</span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Owner</span>

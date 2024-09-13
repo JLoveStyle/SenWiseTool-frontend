@@ -151,11 +151,12 @@ export default function ProjectDetailsForm({
       end_date: projectData.end_date,
       type: projectData.type,
       company_id: "",
-      other_logo: otherLogo
+      other_logo: otherLogo,
+      creator: LOCAL_STORAGE.get('username')
     }
     console.log('fakeProject', fakeProject);
+    LOCAL_STORAGE("all_project", [])
     LOCAL_STORAGE.save("fakeProject", fakeProject);
-    LOCAL_STORAGE.save('all_projects', [])
     router.push(Route.editProject + `/${fakeProject.id}`)
 
     // LOCAL_STORAGE.save("project_data", projectData);
