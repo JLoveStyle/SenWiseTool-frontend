@@ -1,35 +1,36 @@
 interface Props {
   size?: "very-small" | "small" | "medium" | "large" | "very-large";
+  color?: string;
 }
 
-export const Spinner = ({ size = "medium" }: Props) => {
-  let sizeStyle = 0;
+export const Spinner = ({ size = "medium", color }: Props) => {
+  let sizeStyle = "0";
 
   switch (size) {
     case "very-small":
-      sizeStyle = 18;
+      sizeStyle = "18";
       break;
     case "small":
-      sizeStyle = 25;
+      sizeStyle = "25";
       break;
     case "medium":
-      sizeStyle = 33; // DEFAULT
+      sizeStyle = "33"; // DEFAULT
       break;
     case "large":
-      sizeStyle = 40;
+      sizeStyle = "40";
       break;
     case "very-large":
-      sizeStyle = 50;
+      sizeStyle = "50";
       break;
   }
 
   return (
     <svg
-      width="20"
-      height="20"
+      width={sizeStyle}
+      height={sizeStyle}
       viewBox="0 0 38 38"
       xmlns="http://www.w3.org/2000/svg"
-      stroke="#fff"
+      stroke={color}
     >
       <g fill="none" fill-rule="evenodd">
         <g transform="translate(1 1)" stroke-width="2">

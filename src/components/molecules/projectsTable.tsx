@@ -2,15 +2,15 @@
 import { Button } from "@/components/ui/button";
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
-  useReactTable,
-  getPaginationRowModel,
-  SortingState,
-  ColumnFiltersState,
-  VisibilityState,
-  getSortedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -21,27 +21,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ChevronDown } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Input } from "../ui/input";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Input } from "../ui/input";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
   incomingData: TData[];
   onSelecteItem: (value: TData[]) => void;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   incomingColumns,
   incomingData,
   onSelecteItem,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -196,3 +198,38 @@ export function DataTable<TData, TValue>({
     </>
   );
 }
+
+/* {isLoading ? (
+<TableRow>
+  <TableCell colSpan={columns.length} className="h-24">
+    <div className="flex justify-center text-center w-full">
+      <Spinner color="orangered" size="large" />
+    </div>
+  </TableCell>
+</TableRow>
+) : table.getRowModel().rows?.length ? (
+table.getRowModel().rows.map((row) => (
+  <TableRow
+    key={row.id}
+    data-state={row.getIsSelected() && "selected"}
+  >
+    {row.getVisibleCells().map((cell) => (
+      <TableCell key={cell.id}>
+        {flexRender(
+          cell.column.columnDef.cell,
+          cell.getContext()
+        )}
+      </TableCell>
+    ))}
+  </TableRow>
+))
+) : (
+<TableRow>
+  <TableCell
+    colSpan={columns.length}
+    className="h-24 text-center"
+  >
+    No results.
+  </TableCell>
+</TableRow>
+)} */

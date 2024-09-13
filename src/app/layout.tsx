@@ -5,8 +5,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
-// import { Toaster } from "sonner";
+import "./styles/globals.css";
 
 const fontSans = FontSans({
   subsets: ["latin"],

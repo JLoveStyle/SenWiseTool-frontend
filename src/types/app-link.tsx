@@ -10,3 +10,8 @@ export interface footerLink {
   title: string;
   links: AppLink[];
 }
+
+export interface DashboardSidebarOption {
+  option: AppLink;
+  details?: AppLink[];
+}

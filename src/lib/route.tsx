@@ -23,7 +23,7 @@ export type AvailableRoute =
   | "training_session"
   | "user"
   | "login"
-  | "projects"
+  | "projects";
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",

@@ -1,27 +1,30 @@
 "use client";
-import React, { useState } from "react";
-import { Button } from "../ui/button";
-import { Archive, FilePenLine, Rocket, Router } from "lucide-react";
-import { tableRaw } from "@/utiles/services/constants";
+import { Route } from "@/lib/route";
+import { Project } from "@/types/gestion";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { Dialog } from "@radix-ui/react-dialog";
+import { Archive, FilePenLine, Rocket } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
-import { Dialog } from "@radix-ui/react-dialog";
-import { DialogContent, DialogTrigger } from "../ui/dialog";
-import { Project } from "@/types/gestion";
-import { usePathname, useRouter } from "next/navigation";
-import { Route } from "@/lib/route";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 
 type Props = {
   typeOfProject?: [
-    "INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"
-  ]
+    | "INTERNAL_INSPECTION"
+    | "INITIAL_INSPECTION"
+    | "AUTO_EVALUATION"
+    | "TRAINING"
+  ];
   projectsPerType: Project[];
+  newForm?: React.ReactNode;
 };
 
 export default function CloseSiveNav({
   typeOfProject,
   projectsPerType,
+  newForm,
 }: Props) {
   const pathname = usePathname();
   const router = useRouter();
@@ -54,14 +57,15 @@ export default function CloseSiveNav({
   );
   return (
     <div
-      className={
-        pathname.includes("/details") // Hide this component on the detail page
-          ? "hidden"
-          : "bg-[#f7f6f6] w-fit h-screen px-5 pt-20 shadow-lg "
-      }
+    // className={
+    //   pathname.includes("/details") // Hide this component on the detail page
+    //     ? "hidden"
+    //     : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
+    // }
     >
-      <div className="flex flex-col gap-3">
-        <Button
+      <div className="flex flex-col gap-3 p-2">
+        {newForm}
+        {/* <Button
           onClick={() => {
             setOpenModal((prev) => !prev);
             setShowProjectOptions((prev) => !prev);
@@ -69,7 +73,7 @@ export default function CloseSiveNav({
           className="px-10 mb-4"
         >
           New Form
-        </Button>
+        </Button> */}
         <Dialog
           onOpenChange={() => {
             setOpenModal((prev) => !prev);

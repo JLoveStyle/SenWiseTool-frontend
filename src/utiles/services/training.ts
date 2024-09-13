@@ -12,23 +12,13 @@ import { fetchApiData } from "./queries";
 export const db_create_training = async (data: DBTrainingProps) => {
   const db = new ApiCall();
 
-  console.log("from db_create_training:", data);
   return mutateApiData<TrainingType>(Route.training, data)
     .then((response) => {
-      console.log("from db_create_training:", response);
-
-      // const result = response.json();
-      // return { data: result.message };
+      if (response.status) return { response: response, status: "success" };
+      else return { response: response, status: "error" };
     })
     .catch((error) => {
-      console.error("Erreur lors de l'envoi des données :", error);
-      return {
-        error: {
-          message: (error as Error).message || "Erreur inconnue",
-          code: (error as any).code || 500,
-        },
-      };
-
+      return { response: error, status: "error" };
     });
 };
 
@@ -54,22 +44,14 @@ export const db_update_training = async (data: DBTrainingProps, id: string) => {
     });
 };
 
-export const db_get_trainings = async (data: DBTrainingProps) => {
+export const db_get_trainings = async () => {
   const db = new ApiCall();
 
   fetchApiData<TrainingType>(Route.training)
     .then((response) => {
-      // const result = response.json();
-      // return { data: result.message };
       console.log("Réponse du serveur :", response);
     })
     .catch((error) => {
-      // return {
-      //   error: {
-      //     message: (error as Error).message || "Erreur inconnue",
-      //     code: (error as any).code || 500,
-      //   },
-      // };
       console.error("Erreur lors de l'envoi des données :", error);
     });
 };
