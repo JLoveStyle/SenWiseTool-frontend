@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
+import { trainingDatas } from "@/lib/datas";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
 import { db_create_training } from "@/utiles/services/training";
@@ -60,7 +61,7 @@ export function NewTraining() {
 
     console.log("daaaaata:::::::::", serverResponse);
 
-    // trainingDatas.push(formData);
+    trainingDatas.push(formData);
 
     if (serverResponse.status === "error") {
       toast.error(serverResponse.response.message.message);

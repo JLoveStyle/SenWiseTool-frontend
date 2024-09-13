@@ -15,6 +15,7 @@ import { getTrainings } from "@/components/atoms/training/training-list";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import { columnTable } from "@/lib/column-table";
+import { trainingDatas } from "@/lib/datas";
 import { TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
 
@@ -73,7 +74,7 @@ export default function Training() {
       <div className="px-6">
         <DataTable
           incomingColumns={columnTable}
-          incomingData={data}
+          incomingData={trainingDatas}
           onSelecteItem={() => {}}
           isLoading={isLoading}
         />

@@ -6,6 +6,7 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "../ui/button";
 import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
@@ -64,16 +65,19 @@ export default function CloseSiveNav({
     // }
     >
       <div className="flex flex-col gap-3 p-2">
-        {newForm}
-        {/* <Button
-          onClick={() => {
-            setOpenModal((prev) => !prev);
-            setShowProjectOptions((prev) => !prev);
-          }}
-          className="px-10 mb-4"
-        >
-          New Form
-        </Button> */}
+        {pathname.includes("/training") ? (
+          newForm
+        ) : (
+          <Button
+            onClick={() => {
+              setOpenModal((prev) => !prev);
+              setShowProjectOptions((prev) => !prev);
+            }}
+            className="px-10 mb-4"
+          >
+            New Form
+          </Button>
+        )}
         <Dialog
           onOpenChange={() => {
             setOpenModal((prev) => !prev);
