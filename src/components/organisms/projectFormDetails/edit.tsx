@@ -10,6 +10,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {
   onClick: (val1: boolean) => void;
@@ -92,6 +93,11 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
 
     console.log(projectData);
     LOCAL_STORAGE.save("project_data", projectData);
+    toast('Edited', {
+      transition: Bounce,
+      autoClose: 1000
+    })
+    onClick(closeEditForm) // close the modal after edititng
   }
 
   useEffect(() => {
@@ -100,7 +106,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   }, [projectData.country]);
 
   return (
-    <CardLayout heading={`Create a project: Project details`}>
+    <CardLayout heading={`Edit project: Project details`}>
       <form className="w-full flex flex-col px-6 py-4" onSubmit={handleSubmit}>
         <em>
           <strong>NB</strong>: The Rain forest Alliances' logo will be added by
@@ -142,7 +148,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
               label="Start date"
               inputName="start_date"
               type="date"
-              value={JSON.stringify(projectData.start_date)}
+              value={projectData.start_date}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>
@@ -151,7 +157,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
               label="End date"
               inputName="end_date"
               type="date"
-              value={JSON.stringify(projectData.end_date)}
+              value={projectData.end_date}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>

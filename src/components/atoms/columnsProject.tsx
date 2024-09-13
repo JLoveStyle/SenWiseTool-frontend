@@ -183,7 +183,7 @@ export const columnListProjects: ColumnDef<Project>[] = [
               Copy project ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Link href={Route.inspectionInterne + `/${project.id}`}>
+            <Link href={Route.details + `/${project.id}`}>
               <DropdownMenuItem
                 onClick={() => LOCAL_STORAGE.save("projectId", project.id)}
               >

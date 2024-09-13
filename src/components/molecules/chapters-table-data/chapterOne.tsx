@@ -32,6 +32,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { Requirements } from "@/components/atoms/colums-of-tables/chapter";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
@@ -42,7 +43,7 @@ interface DataTableProps<TData, TValue> {
 export function ChaptersRequirements<TData, TValue>({
   incomingColumns,
   incomingData,
-  key2localStorage
+  key2localStorage,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -73,16 +74,13 @@ export function ChaptersRequirements<TData, TValue>({
   });
 
   useEffect(() => {
-    let prev = LOCAL_STORAGE.get(key2localStorage)
-    const selectedPro = table
-      .getSelectedRowModel()
-      .flatRows.map((pro) => {
-        return pro.original;
-      });
-      // console.log("selPro", selectedPro)
-      if (selectedPro.length) LOCAL_STORAGE.save(key2localStorage, selectedPro)
+    let prev = LOCAL_STORAGE.get(key2localStorage);
+    const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
+      return pro.original;
+    });
+    // console.log("selPro", selectedPro)
+    if (selectedPro.length) LOCAL_STORAGE.save(key2localStorage, selectedPro);
   }, [rowSelection]);
-
 
   return (
     <>

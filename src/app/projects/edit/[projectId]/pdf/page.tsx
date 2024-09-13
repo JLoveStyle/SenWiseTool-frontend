@@ -1,35 +1,41 @@
 "use client";
-import { deployableFormColumn } from "@/components/atoms/colums-of-tables/deployableForm";
+import { ChapterMetaData } from "@/components/atoms/columnsProject";
+import {
+  DeployableFormMetadata,
+  printableFormColumns,
+} from "@/components/atoms/colums-of-tables/deployableForm";
 import PrintContent from "@/components/atoms/print-and-edit-content";
+import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
 import PrintableFormTable from "@/components/molecules/chapters-table-data/printableFormTable";
 import { Route } from "@/lib/route";
 import { deployedPro } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import slugify from 'slugify'
+import React, { useEffect, useState } from "react";
+import slugify from "slugify";
 
 type Props = {};
 
 export default function page({}: Props) {
   const router = useRouter();
-  const [personalInfo, setPersonalInfo] = useState({})
+  const [personalInfo, setPersonalInfo] = useState({});
   const projectData = LOCAL_STORAGE.get("project_data");
-  const metaData: { [key: string]: string }[] =
-    LOCAL_STORAGE.get("formMetadata");
-  const firstHalfMetaData = metaData.slice(0, Math.round(metaData.length / 2));
-  const secondHalfMetaData = metaData.slice(
-    Math.round(metaData.length / 2),
-    metaData.length
+  const finalJson = LOCAL_STORAGE.get("finalJson");
+
+  const [constuctedObject, setConstructedObject] = useState<
+    DeployableFormMetadata[]
+  >([]);
+  const firstHalfMetaData = finalJson.metaData.slice(0, Math.round(finalJson.metaData.length / 2));
+  const secondHalfMetaData = finalJson.metaData.slice(
+    Math.round(finalJson.metaData.length / 2),
+    finalJson.metaData.length
   );
 
   const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const data = {...personalInfo, [e.target.name]: e.target.value };
-    setPersonalInfo(data)
+    const data = { ...personalInfo, [e.target.name]: e.target.value };
+    setPersonalInfo(data);
   };
-
-  console.log(personalInfo)
 
   return (
     <PrintContent onClick={() => router.push(Route.editProject + "/45")}>
@@ -60,7 +66,7 @@ export default function page({}: Props) {
           </h2>
           <div className="flex gap-5">
             <div className="w-1/2">
-              {firstHalfMetaData.map((item, idx: number) => (
+              {firstHalfMetaData.map((item: any, idx: number) => (
                 <div key={idx} className=" flex py-2 gap-3">
                   <label htmlFor={item.val} className="font-semibold">
                     {item.val}:
@@ -76,7 +82,7 @@ export default function page({}: Props) {
               ))}
             </div>
             <div className="w-1/2">
-              {secondHalfMetaData.map((item, idx: number) => (
+              {secondHalfMetaData.map((item: any, idx: number) => (
                 <div key={idx} className="flex py-2 gap-3">
                   <label htmlFor={item.val} className="font-semibold">
                     {item.val}:
@@ -96,22 +102,13 @@ export default function page({}: Props) {
 
         {/* LIST OF REQUIREMENTS TABULATED */}
         <div className=" mx-auto pt-5">
-          <PrintableFormTable
-            incomingColumns={deployableFormColumn}
+          <FinalFormData selectedProjects={finalJson.requirements} />
+          {/* <PrintableFormTable
+            // incomingColumns={deployableFormColumn}
+            incomingColumns={printableFormColumns}
             incomingData={deployedPro}
-            chapter={"deploy"}
-          />
+          /> */}
         </div>
-        {/* <div className="flex justify-end gap-6 pt-5" data-html2canvas-ignore>
-            <Link href={}>
-              <Button className=" border border-primary hover:bg-white hover:text-black px-8 ">
-                Edit
-              </Button>
-            </Link>
-            <Button className=" border border-primary hover:bg-white hover:text-black ">
-              Print & Download
-            </Button>
-        </div> */}
       </div>
     </PrintContent>
   );

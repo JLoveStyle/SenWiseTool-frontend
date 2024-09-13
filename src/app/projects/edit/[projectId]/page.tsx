@@ -22,7 +22,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
-import { chapter2, chapters, requirements } from "@/utiles/services/constants";
+import { chapters, requirements } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Library, Pencil, Settings, X } from "lucide-react";
 import Link from "next/link";
@@ -31,6 +31,7 @@ import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
 import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
+import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 
 const AddFormFromLibrary = dynamic(
   () => import("@/components/molecules/addFormFromLibrary"),
@@ -80,6 +81,44 @@ export default function page({}: Props) {
   }
 
   async function handleProjectDraft() {
+    // get data from localStorage
+    const metaData: { [key: string]: string }[] = LOCAL_STORAGE.get("formMetadata");
+    let chapitre: any = [];
+    let constructedRequirements: DeployableFormMetadata[] = [];
+    for (let i = 0; i <= 5; i++) {
+      chapitre.push(LOCAL_STORAGE.get(`chap_one_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_two_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_three_req${i}`));
+    }
+    // remove undefined items in the array
+    const res = chapitre.filter((item: any) => item !== undefined).flat();
+
+    // construct an array of objects of type DeployableMetadata[]
+    for (let i = 0; i < res.length; i++) {
+      constructedRequirements.push({
+        status: {
+          NA: false,
+          NC: false,
+          C: false,
+        },
+        principal_requirement: res[i].principal_requirement,
+        certication_de_group: res[i].certication_de_group,
+        number: res[i].number,
+        comment: "",
+      });
+    }
+
+    // Join constructedRequirements and metaData to form a single json object
+    const finalJson = {
+      metaData: metaData,
+      requirements: constructedRequirements
+    }
+    LOCAL_STORAGE.save('finalJson', finalJson)
+    console.log("finalJson =>", finalJson)
+
+
+    // Make a patch request with the project id
+    
     router.push(Route.editProject + "/45/pdf");
   }
 
@@ -92,7 +131,8 @@ export default function page({}: Props) {
       autoClose: 1000,
       transition: Bounce,
     });
-    router.push(Route.inspectionInterne);
+    // router.push(Route.inspectionInterne);
+    router.back()
   };
 
   return (
@@ -241,7 +281,7 @@ export default function page({}: Props) {
                   <ChaptersRequirements
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
-                    key2localStorage="chap_one_req"
+                    key2localStorage={`chap_one_req${idx}`}
                   />
                 </div>
               ))}
@@ -257,7 +297,7 @@ export default function page({}: Props) {
                   <ChaptersRequirements
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
-                    key2localStorage="chap_two_req"
+                    key2localStorage={`chap_two_req${idx}`}
                   />
                 </div>
               ))}
@@ -273,7 +313,7 @@ export default function page({}: Props) {
                   <ChaptersRequirements
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
-                    key2localStorage="chap_three_req"
+                    key2localStorage={`chap_three_req${idx}`}
                   />
                 </div>
               ))}
