@@ -9,6 +9,7 @@ import FinalFormData from "@/components/molecules/chapters-table-data/finalFormD
 import PrintableFormTable from "@/components/molecules/chapters-table-data/printableFormTable";
 import { Route } from "@/lib/route";
 import { deployedPro } from "@/utiles/services/constants";
+import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -20,13 +21,21 @@ type Props = {};
 export default function page({}: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
-  const projectData = LOCAL_STORAGE.get("project_data");
-  const finalJson = LOCAL_STORAGE.get("finalJson");
+  const [project, setProject] = useState<{[key: string]: any}>({})
+  // const id = LOCAL_STORAGE.get("projectId");
+  // const projectData = LOCAL_STORAGE.get("project_data");
+  // const finalJson = LOCAL_STORAGE.get("finalJson");
 
-  const [constuctedObject, setConstructedObject] = useState<
-    DeployableFormMetadata[]
-  >([]);
-  const firstHalfMetaData = finalJson.metaData.slice(0, Math.round(finalJson.metaData.length / 2));
+  // FAKE PROJECT
+  const fakeProject = LOCAL_STORAGE.get('fakeProject')
+  const id = fakeProject.id
+  const projectData = fakeProject
+  const finalJson = fakeProject.project_structure
+
+  const firstHalfMetaData = finalJson.metaData.slice(
+    0,
+    Math.round(finalJson.metaData.length / 2)
+  );
   const secondHalfMetaData = finalJson.metaData.slice(
     Math.round(finalJson.metaData.length / 2),
     finalJson.metaData.length
@@ -37,8 +46,24 @@ export default function page({}: Props) {
     setPersonalInfo(data);
   };
 
+  async function getProjectById() {
+    await fetchApiData(Route.profile, id)
+      .then((response) => {
+        console.log("Here is the response", response);
+        setProject(response)
+      })
+      .catch((error) => {
+        console.log("error occured", error);
+      });
+  }
+
+  useEffect(() => {
+    // Fetch project with id
+    getProjectById()
+  }, []);
+
   return (
-    <PrintContent onClick={() => router.push(Route.editProject + "/45")}>
+    <PrintContent onClick={() => router.push(Route.editProject + `/${id}`)}>
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
         <div className="flex justify-between py-2 md:w-[500px] mx-auto">

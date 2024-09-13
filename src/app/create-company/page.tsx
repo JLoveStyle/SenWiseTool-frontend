@@ -47,6 +47,7 @@ export default function Home({}: Props) {
     city: "",
     businessActivity: "",
     otherBusiness: "",
+    logo: ""
   });
 
   const { isSignedIn, user } = useUser();
@@ -74,11 +75,12 @@ export default function Home({}: Props) {
         state: formData.state,
         city: formData.city,
         sector_of_activity: formData.businessActivity,
+        logo: companyLogo
       })
         .then((response) => {
           console.log("create company res =>", response);
           setIsLoading((prev) => !prev);
-          router.push(Route.inspectionInterne);
+          router.push(Route.inspectionInitial);
         })
         .catch((error) => {
           console.log("An error occured", error);

@@ -27,6 +27,7 @@ export default function ProjectDetailsForm({
   typeOfProject,
   project,
 }: Props) {
+  let fakeProject: {[key: string]: any} = {}
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
@@ -115,7 +116,7 @@ export default function ProjectDetailsForm({
     }
 
     // CREATE NEW RECORD IN THE PROJECTS' TABLE
-    await mutateApiData(Route.projects, {
+    /* await mutateApiData(Route.projects, {
       type: projectData.type,
       company_id: "",
       title: projectData.title,
@@ -135,9 +136,29 @@ export default function ProjectDetailsForm({
       .catch((err) => {
         console.log("error occured while creating", err);
       });
+    */
 
-    console.log(projectData);
-    LOCAL_STORAGE.save("project_data", projectData);
+    // create fake project
+    fakeProject = {
+      id: Math.floor(Math.random()*100),
+      title: projectData.title,
+      description: projectData.description,
+      sector_activity: projectData.sector_activity,
+      country: projectData.country,
+      city: projectData.city,
+      status: projectData.status,
+      start_date: projectData.start_date,
+      end_date: projectData.end_date,
+      type: projectData.type,
+      company_id: "",
+      other_logo: otherLogo
+    }
+    console.log('fakeProject', fakeProject);
+    LOCAL_STORAGE.save("fakeProject", fakeProject);
+    LOCAL_STORAGE.save('all_projects', [])
+    router.push(Route.editProject + `/${fakeProject.id}`)
+
+    // LOCAL_STORAGE.save("project_data", projectData);
     // tableRaw.push(projectData);
     // // get the id of the project response and route to that ID
   }
@@ -157,12 +178,12 @@ export default function ProjectDetailsForm({
         </em>
         <div className="flex justify-between py-5">
           {/* The existence of the company logo in the company object will checked here. This input field will be displayed based on that */}
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label htmlFor="company_logo">
               <strong>Company logo</strong>
             </label>
             <input type="file" onChange={(e) => handlecompanyLogo(e)} />
-          </div>
+          </div> */}
           <div className="flex flex-col">
             <label htmlFor="company_logo">
               <strong>Add another logo</strong>

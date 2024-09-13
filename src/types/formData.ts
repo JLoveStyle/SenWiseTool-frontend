@@ -7,6 +7,7 @@ export interface FormData {
   city: string;
   businessActivity: string;
   otherBusiness: string;
+  logo: string
 }
 
 export interface User {

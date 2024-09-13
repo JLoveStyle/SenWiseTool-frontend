@@ -40,7 +40,7 @@ export default function FinalFormData({ selectedProjects }: Props) {
                 <input type="radio" id="NA" name="C" />
               </td>
               <td className="px-2 border">
-                <textarea />
+                <textarea className="p-2"/>
               </td>
             </tr>
           ))}

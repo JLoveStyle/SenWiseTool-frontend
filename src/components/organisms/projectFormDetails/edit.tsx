@@ -11,13 +11,17 @@ import makeAnimated from "react-select/animated";
 import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { Bounce, toast } from "react-toastify";
+import { Route } from "@/lib/route";
+import { mutateUpApiData } from "@/utiles/services/mutations";
 
 type Props = {
   onClick: (val1: boolean) => void;
-  project: Project
+  project: Project;
 };
 
 export default function EditProjectFormDatails({ onClick, project }: Props) {
+  // FAKE PROJECT
+  let fakeProject = LOCAL_STORAGE.get("fakeProject");
   const countries: any[] = Country.getAllCountries();
   const closeEditForm: boolean = false;
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
@@ -27,28 +31,36 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   const [city, setCity] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
-  const [otherLogoUrl, setOtherLogoUrl] = useState<string>("")
+  const [otherLogoUrl, setOtherLogoUrl] = useState<string>("");
   const [projectData, setProjectData] = useState<Project>({
-    id: project?.id, // this might be harmfull
-    title: project?.title,
-    sector_activity: project?.sector_activity,
-    country: project?.country,
-    description: project?.description,
-    city: project?.city,
-    state: project?.state,
-    start_date: project?.start_date,
-    end_date: project?.end_date,
+    id: fakeProject?.id, // this might be harmfull
+    title: fakeProject?.title,
+    sector_activity: fakeProject?.sector_activity,
+    country: fakeProject?.country,
+    description: fakeProject?.description,
+    city: fakeProject?.city,
+    state: fakeProject?.state,
+    start_date: fakeProject?.start_date,
+    end_date: fakeProject?.end_date,
     status: ["DRAFT"],
-    other_logo: "" // url from edge store
+    other_logo: "", // url from edge store
   });
+
+  const id = LOCAL_STORAGE.get("projectId");
 
   const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
-    const data: Project = {
-      ...projectData,
+    // const data: Project = {
+    //   ...projectData,
+    //   [e.target.name]: e.target.value,
+    // };
+    const data = {
+      ...fakeProject,
       [e.target.name]: e.target.value,
     };
     setProjectData(data);
@@ -79,29 +91,68 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     }
   };
 
-  function handleSubmit(e: any) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
     setIsLoading((prev) => !prev);
 
     // Upload other logo to edge store.
     if (otherLogo) {
-      // write the logoc here
-
+      // write the logic here
     }
 
-    // write the patch function here
-
-    console.log(projectData);
-    LOCAL_STORAGE.save("project_data", projectData);
-    toast('Edited', {
+    // UPDATE FAKE project
+    fakeProject = {
+      ...projectData,
+      title: projectData?.title,
+      description: projectData?.description,
+      country: projectData?.country,
+      city: projectData?.city,
+      sector_activity: projectData?.sector_activity,
+      state: projectData?.state,
+      start_date: projectData?.start_date,
+      end_data: projectData?.end_date,
+      otherLogo: otherLogo
+    };
+    LOCAL_STORAGE.save("fakeProject", fakeProject);
+    onClick(closeEditForm); // close the modal after edititng
+    toast("Project Edited", {
       transition: Bounce,
-      autoClose: 1000
-    })
-    onClick(closeEditForm) // close the modal after edititng
+      autoClose: 1000,
+    });
+
+    // write the patch function here
+    /*await mutateUpApiData(
+      Route.projects,
+      {
+        title: projectData.title,
+        description: projectData.description,
+        country: projectData?.country,
+        city: projectData.city,
+        sector_activity: projectData.sector_activity,
+        state: projectData.state,
+        start_date: projectData.start_date,
+        end_data: projectData.end_date,
+      },
+      id
+    )
+      .then((response) => {
+        console.log("successfully updated project", response);
+        onClick(closeEditForm); // close the modal after edititng
+        toast("Project Edited", {
+          transition: Bounce,
+          autoClose: 1000,
+        });
+      })
+      .catch((error) => {
+        console.log("unable to edit project", error);
+      });
+*/
+    console.log(projectData);
+    LOCAL_STORAGE.save("fakeProject", projectData);
+    // LOCAL_STORAGE.save("project_data", projectData);
   }
 
   useEffect(() => {
-    console.log(project)
     setState(State.getStatesOfCountry(selectedCountryObject?.isoCode));
   }, [projectData.country]);
 
@@ -114,7 +165,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
         </em>
         <div className="flex justify-between py-5">
           {/* The existence of the company logo in the company object will checked here. This input field will be displayed based on that */}
-          
+
           <div className="flex flex-col">
             <label htmlFor="company_logo">
               <strong>Add another logo</strong>

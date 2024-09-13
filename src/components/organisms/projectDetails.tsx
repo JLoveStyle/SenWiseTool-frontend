@@ -28,7 +28,8 @@ export default function ProjectDetails({}: Props) {
 
   useEffect(() => {
     id = LOCAL_STORAGE.get("projectId");
-    setSelectedProject(tableRaw.find((item) => item.id === id));
+    const allProjects = LOCAL_STORAGE.get('all_projects')
+    setSelectedProject(allProjects.find((item: { id: string | null | undefined; }) => item.id === id));
   }, []);
 
   return (
