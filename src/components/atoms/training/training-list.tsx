@@ -1,5 +1,5 @@
-import { trainingDatas } from "@/lib/datas";
 import { TrainingProps } from "@/types/formData";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { db_get_trainings } from "@/utiles/services/training";
 
 export const getTrainings = async (): Promise<TrainingProps[]> => {
@@ -10,5 +10,5 @@ export const getTrainings = async (): Promise<TrainingProps[]> => {
   // console.log("user from db: ", currentUser);
 
   // Retourner les données soit depuis la base de données, soit une valeur statique
-  return trainingDatas;
+  return LOCAL_STORAGE.get("trainings");
 };

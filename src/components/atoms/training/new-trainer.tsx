@@ -11,12 +11,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
+import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { isEmptyObject } from "@/utils/tool";
 import { TrainingFormVerification } from "@/utils/training-form-verification";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
@@ -26,6 +29,8 @@ export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
+
+  const router = useRouter();
 
   const [formData, setFormData] = useState<TrainingProps>({
     id: "",
@@ -59,8 +64,12 @@ export function NewTraining() {
 
     // console.log("daaaaata:::::::::", serverResponse);
 
-    // const trainings = LOCAL_STORAGE.get("trainings").push(dataToDB);
-    // LOCAL_STORAGE.save("trainings", trainings);
+    let trainings: TrainingProps[] = LOCAL_STORAGE.get("trainings")
+      ? LOCAL_STORAGE.get("trainings")
+      : [];
+
+    trainings.push(formData);
+    LOCAL_STORAGE.save("trainings", trainings);
 
     // if (serverResponse.status === "error") {
     //   toast.error(serverResponse.response.message.message);
@@ -71,6 +80,7 @@ export function NewTraining() {
     toast.success("Your project are created successfull");
     setIsLoading(false);
     toggleOpenModal();
+    router.push(Route.formationProject);
     return;
   };
 

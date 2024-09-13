@@ -30,6 +30,7 @@ export default function Training() {
 
   const [data, setData] = useState<TrainingProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  // const [trainingDatas, setTrainingDatas] = useState<TrainingProps[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,8 +42,6 @@ export default function Training() {
 
     fetchData();
   }, []);
-
-  // const trainingDatas = LOCAL_STORAGE.get("trainings");
 
   return (
     <LayoutDashboard
