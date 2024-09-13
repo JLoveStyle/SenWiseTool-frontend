@@ -11,10 +11,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
-import { trainingDatas } from "@/lib/datas";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
-import { db_create_training } from "@/utiles/services/training";
 import { isEmptyObject } from "@/utils/tool";
 import { TrainingFormVerification } from "@/utils/training-form-verification";
 import clsx from "clsx";
@@ -57,17 +55,18 @@ export function NewTraining() {
       modules: formData.modules.map((item) => item.value),
     };
 
-    const serverResponse = await db_create_training(dataToDB);
+    // const serverResponse = await db_create_training(dataToDB);
 
-    console.log("daaaaata:::::::::", serverResponse);
+    // console.log("daaaaata:::::::::", serverResponse);
 
-    trainingDatas.push(formData);
+    // const trainings = LOCAL_STORAGE.get("trainings").push(dataToDB);
+    // LOCAL_STORAGE.save("trainings", trainings);
 
-    if (serverResponse.status === "error") {
-      toast.error(serverResponse.response.message.message);
-      setIsLoading(false);
-      return;
-    }
+    // if (serverResponse.status === "error") {
+    //   toast.error(serverResponse.response.message.message);
+    //   setIsLoading(false);
+    //   return;
+    // }
 
     toast.success("Your project are created successfull");
     setIsLoading(false);

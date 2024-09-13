@@ -24,6 +24,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { Spinner } from "../atoms/spinner/spinner";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -142,7 +143,15 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24">
+                  <div className="flex justify-center text-center w-full">
+                    <Spinner color="#999" size="large" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -168,6 +177,33 @@ export function DataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+
+            {/* {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )} */}
           </TableBody>
         </Table>
       </div>
@@ -198,38 +234,3 @@ export function DataTable<TData, TValue>({
     </>
   );
 }
-
-/* {isLoading ? (
-<TableRow>
-  <TableCell colSpan={columns.length} className="h-24">
-    <div className="flex justify-center text-center w-full">
-      <Spinner color="orangered" size="large" />
-    </div>
-  </TableCell>
-</TableRow>
-) : table.getRowModel().rows?.length ? (
-table.getRowModel().rows.map((row) => (
-  <TableRow
-    key={row.id}
-    data-state={row.getIsSelected() && "selected"}
-  >
-    {row.getVisibleCells().map((cell) => (
-      <TableCell key={cell.id}>
-        {flexRender(
-          cell.column.columnDef.cell,
-          cell.getContext()
-        )}
-      </TableCell>
-    ))}
-  </TableRow>
-))
-) : (
-<TableRow>
-  <TableCell
-    colSpan={columns.length}
-    className="h-24 text-center"
-  >
-    No results.
-  </TableCell>
-</TableRow>
-)} */

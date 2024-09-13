@@ -42,6 +42,8 @@ export default function Training() {
     fetchData();
   }, []);
 
+  // const trainingDatas = LOCAL_STORAGE.get("trainings");
+
   return (
     <LayoutDashboard
       projectsPerType={[]}
