@@ -65,6 +65,7 @@ export type CompanyType = {
     website: string,
     address: string,
     phone_number: string,
+    state: string,
     city: string,
     description: string,
     created_at: string,

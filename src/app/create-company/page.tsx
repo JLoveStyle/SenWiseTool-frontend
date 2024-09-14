@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
 
@@ -89,6 +89,7 @@ export default function Home({}: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
+        status: "INACTIVE",
       })
         .then((response) => {
           console.log("create company res =>", response);
