@@ -18,6 +18,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { businessActivity } from "@/utiles/services/constants";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { createOrganization } from "@/utiles/services/createOrg";
+import { CompanyType } from "@/types/api-types";
 
 type Props = {};
 
@@ -48,7 +49,8 @@ export default function Home({}: Props) {
     city: "",
     businessActivity: "",
     otherBusiness: "",
-    logo: ""
+    logo: "",
+    phone: "",
   });
 
   const { isSignedIn, user } = useUser();
@@ -56,13 +58,18 @@ export default function Home({}: Props) {
   async function handleSubmit(e: any) {
     e.preventDefault();
     setHasAgree(false);
+    console.log(formData);
+    console.log(companyLogo);
+    let activity;
+    if (formData.businessActivity === "Other") {
+      activity = formData.otherBusiness;
+    } else activity = formData.businessActivity;
 
     if (!isChecked) {
       setHasAgree((prev) => !prev);
       return;
     }
     setIsLoading((prev) => !prev);
-    console.log(companyLogo);
 
     if (user?.id) {
       console.log("userId available", user);
@@ -70,13 +77,14 @@ export default function Home({}: Props) {
       console.log("company res on clerk =>", res);
 
       await mutateApiData(Route.companies, {
-        companyEmail: formData.companyEmail,
-        companyName: formData.companyName,
+        email: formData.companyEmail,
+        name: formData.companyName,
         country: formData.country,
         state: formData.state,
         city: formData.city,
-        sector_of_activity: formData.businessActivity,
-        logo: companyLogo
+        sector_of_activity: activity,
+        logo: companyLogo,
+        phone_number: formData.phone,
       })
         .then((response) => {
           console.log("create company res =>", response);
@@ -87,10 +95,6 @@ export default function Home({}: Props) {
           console.log("An error occured", error);
         });
     }
-    // setTimeout(() => {
-    //   setIsLoading((prev) => !prev);
-    //   router.push(Route.inspectionInterne);
-    // }, 6000);
     setIsLoading((prev) => !prev);
   }
 
@@ -107,6 +111,7 @@ export default function Home({}: Props) {
       ...formData,
       [event.target.name]: event.target.value,
     };
+    console.log(data);
     setFormData(data);
     for (const country of countries) {
       if (country.name === data.country) {
@@ -140,14 +145,16 @@ export default function Home({}: Props) {
     setIsModalOpen(value);
   };
 
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoUpload = async (e: any) => {
     const reader = new FileReader();
     if (e) {
       reader.onload = (onLoadEvent) => {
         if (onLoadEvent.target) {
+          console.log("results", onLoadEvent.target.result);
           setCompanyLogo(onLoadEvent.target.result);
         }
       };
+      reader.readAsDataURL(e.target.files[0]);
     }
   };
 
@@ -177,7 +184,8 @@ export default function Home({}: Props) {
           </Link>
         </div>
         <h3 className="font-semibold text-2xl text-center pb-7">
-          Welcome to Senwisetool<br/>
+          Welcome to Senwisetool
+          <br />
           Register your company
         </h3>
         <form className="" onSubmit={handleSubmit}>
@@ -192,6 +200,13 @@ export default function Home({}: Props) {
             label="Company email"
             inputName="companyEmail"
             type="email"
+            value={formData.companyEmail}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
+            label="Company phone"
+            inputName="phone"
+            type="tel"
             value={formData.companyEmail}
             onChange={(e) => handleInputChange(e)}
           />
@@ -287,11 +302,15 @@ export default function Home({}: Props) {
           </div>
         </form>
       </div>
-      <Dialog onOpenChange={() => setIsModalOpen(prev => !prev)} open={isModalOpen}>
+      <Dialog
+        onOpenChange={() => setIsModalOpen((prev) => !prev)}
+        open={isModalOpen}
+      >
         <DialogContent>
           <CancelModal onClose={handleCloseModal} />
         </DialogContent>
       </Dialog>
-    </div>
-  );
+         
+    </div>
+  );
 }
