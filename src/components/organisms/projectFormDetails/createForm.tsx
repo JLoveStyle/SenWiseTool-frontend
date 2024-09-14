@@ -17,8 +17,11 @@ import { mutateApiData } from "@/utiles/services/mutations";
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject?: [
-    "INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"
-  ] 
+    | "INTERNAL_INSPECTION"
+    | "INITIAL_INSPECTION"
+    | "AUTO_EVALUATION"
+    | "TRAINING"
+  ];
   project?: Project;
 };
 
@@ -27,7 +30,7 @@ export default function ProjectDetailsForm({
   typeOfProject,
   project,
 }: Props) {
-  let fakeProject: {[key: string]: any} = {}
+  let fakeProject: { [key: string]: any } = {};
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
@@ -84,6 +87,7 @@ export default function ProjectDetailsForm({
     }
   };
 
+  /*
   const handlecompanyLogo = (e: any) => {
     const reader = new FileReader();
     if (e) {
@@ -95,7 +99,7 @@ export default function ProjectDetailsForm({
       };
       reader.readAsDataURL(e.target.files[0]);
     }
-  };
+  }; */
 
   const handleOtherLogo = (e: any) => {
     const reader = new FileReader();
@@ -116,7 +120,7 @@ export default function ProjectDetailsForm({
     }
 
     // CREATE NEW RECORD IN THE PROJECTS' TABLE
-    /* await mutateApiData(Route.projects, {
+    await mutateApiData(Route.projects, {
       type: projectData.type,
       company_id: "",
       title: projectData.title,
@@ -131,37 +135,13 @@ export default function ProjectDetailsForm({
       .then((res) => {
         console.log("project cereated", res);
         setIsLoading((prev) => !prev);
-        router.push(Route.editProject + "/45");
+        router.push(Route.editProject + `/45`);
       })
       .catch((err) => {
         console.log("error occured while creating", err);
       });
-    */
 
-    // create fake project
-    fakeProject = {
-      id: Math.floor(Math.random()*100),
-      title: projectData.title,
-      description: projectData.description,
-      sector_activity: projectData.sector_activity,
-      country: projectData.country,
-      city: projectData.city,
-      status: projectData.status,
-      start_date: projectData.start_date,
-      end_date: projectData.end_date,
-      type: projectData.type,
-      company_id: "",
-      other_logo: otherLogo,
-      creator: LOCAL_STORAGE.get('username')
-    }
-    console.log('fakeProject', fakeProject);
-    LOCAL_STORAGE("all_project", [])
-    LOCAL_STORAGE.save("fakeProject", fakeProject);
-    router.push(Route.editProject + `/${fakeProject.id}`)
-
-    // LOCAL_STORAGE.save("project_data", projectData);
-    // tableRaw.push(projectData);
-    // // get the id of the project response and route to that ID
+    // get the id of the project response and route to that ID
   }
 
   useEffect(() => {

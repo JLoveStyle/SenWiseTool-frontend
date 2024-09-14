@@ -17,6 +17,7 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { businessActivity } from "@/utiles/services/constants";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { createOrganization } from "@/utiles/services/createOrg";
 
 type Props = {};
 
@@ -65,8 +66,8 @@ export default function Home({}: Props) {
 
     if (user?.id) {
       console.log("userId available", user);
-      // const res = await createOrganization(formData, user.id);
-      // console.log("res =>", res);
+      const res = await createOrganization(formData, user.id);
+      console.log("company res on clerk =>", res);
 
       await mutateApiData(Route.companies, {
         companyEmail: formData.companyEmail,
@@ -121,7 +122,7 @@ export default function Home({}: Props) {
         }
       }
     }
-    if (data.businessActivity === "Autre") {
+    if (data.businessActivity === "Other") {
       setHasOtherBusiness(true);
     }
   };
@@ -176,6 +177,7 @@ export default function Home({}: Props) {
           </Link>
         </div>
         <h3 className="font-semibold text-2xl text-center pb-7">
+          Welcome to Senwisetool<br/>
           Register your company
         </h3>
         <form className="" onSubmit={handleSubmit}>

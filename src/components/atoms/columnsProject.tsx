@@ -64,10 +64,6 @@ export const column: ColumnDef<ChapterMetaData>[] = [
     accessorKey: "principal_requirement",
     header: "Exigences principal",
   },
-  // {
-  //   accessorKey: "certication_de_group",
-  //   header: "Certification de group",
-  // },
   {
     accessorKey: "certication_de_group.petit_exp_agri",
     id: "Petite exp. agricole",
@@ -79,19 +75,7 @@ export const column: ColumnDef<ChapterMetaData>[] = [
   {
     accessorKey: "certication_de_group.direction_de_group",
     id: "Direction de group",
-  },
-  // {
-  //   accessorKey: "certification_de_group.petit_exp_agri",
-  //   header: "Petite exp. agricole",
-  // },
-  // {
-  //   accessorKey: "certification_de_group.grande_exp_agri",
-  //   header: "Grande exp. agricole",
-  // },
-  // {
-  //   accessorKey: "certification_de_group.direction_de_group",
-  //   header: "Direction de group",
-  // },
+  }
 ];
 
 export const columnListProjects: ColumnDef<Project>[] = [

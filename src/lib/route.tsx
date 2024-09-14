@@ -47,7 +47,7 @@ export const Route: Record<AvailableRoute, string> = {
   training: "trainings",
   training_session: "training_sessions",
   user: "users",
-  companies: "companies",
+  companies: "v1/companies",
   projects: "v1/projects",
   createCompany: "/create-compay",
 };

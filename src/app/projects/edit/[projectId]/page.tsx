@@ -45,26 +45,26 @@ type Props = {};
 
 export default function page({}: Props) {
   const router = useRouter();
-  // const projectDetails: Project = LOCAL_STORAGE.get("project_data"); // Only for project title editoring
-  let fakeProject = LOCAL_STORAGE.get('fakeProject')
+  const projectDetails: Project = LOCAL_STORAGE.get("project_data"); // Only for project title editoring
+  let fakeProject = LOCAL_STORAGE.get("fakeProject");
   const [openSheet, setOpenSheet] = useState<boolean>(false);
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [exit, setExit] = useState<boolean>(false);
-  const [isSaving, setIsSaving] = useState<boolean>(false)
+  const [isSaving, setIsSaving] = useState<boolean>(false);
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);
   const [displayChapThree, setDisplayChapThree] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<Project>({
-    id: fakeProject.id,
-    sector_activity: fakeProject.sector_activity,
-    city: fakeProject.city,
-    country: fakeProject.country,
+    id: projectDetails.id,
+    sector_activity: projectDetails.sector_activity,
+    city: projectDetails.city,
+    country: projectDetails.country,
     status: ["DRAFT"],
-    state: fakeProject.state,
-    start_date: "",
-    end_date: "",
-    title: fakeProject.title,
-    description: fakeProject.description,
+    state: projectDetails.state,
+    start_date: projectDetails.start_date,
+    end_date: projectDetails.end_date,
+    title: projectDetails.title,
+    description: projectDetails.description,
   });
 
   const [chap1, chap2, chap3] = requirements;
@@ -92,11 +92,9 @@ export default function page({}: Props) {
   }
 
   async function handleProjectDraft() {
-    setIsSaving(prev => !prev)
+    setIsSaving((prev) => !prev);
     // get data from localStorage
-    // const id = LOCAL_STORAGE.get("projectId")
-    const id = fakeProject.id // to be removed
-    const allProjects = LOCAL_STORAGE.get('all_projects')
+    const id = LOCAL_STORAGE.get("projectId");
     const metaData: { [key: string]: string }[] =
       LOCAL_STORAGE.get("formMetadata");
     let chapitre: any = [];
@@ -132,22 +130,16 @@ export default function page({}: Props) {
     LOCAL_STORAGE.save("finalJson", finalJson);
     console.log("finalJson =>", finalJson);
 
-
-    fakeProject = {...fakeProject, project_structure: finalJson}
-    allProjects.push(fakeProject)
-    LOCAL_STORAGE.save('fakeProject', fakeProject)
-    LOCAL_STORAGE.save('all_projects', allProjects)
     router.push(Route.editProject + `/${id}/pdf`);
 
-    for (let i=0; i<5; i++) {
+    for (let i = 0; i < 5; i++) {
       if (typeof window !== "undefined") {
-        localStorage.removeItem(`chap_one_req${i}`)
-        localStorage.removeItem(`chap_two_req${i}`)
-        localStorage.removeItem(`chap_three_req${i}`)
+        localStorage.removeItem(`chap_one_req${i}`);
+        localStorage.removeItem(`chap_two_req${i}`);
+        localStorage.removeItem(`chap_three_req${i}`);
       }
     }
 
-    /*
     // Make a patch request with the project id
     await mutateUpApiData(
       Route.projects,
@@ -167,20 +159,21 @@ export default function page({}: Props) {
       .catch((error) => {
         console.log("An error occured", error);
       });
-      */
   }
 
   const discartProjectForm = () => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem("chap_one_req");
-      localStorage.removeItem("chap_two_req");
+      for (let i = 0; i < 5; i++) {
+        localStorage.removeItem(`chap_one_req${i}`);
+        localStorage.removeItem(`chap_two_req${i}`);
+        localStorage.removeItem(`chap_three_req${i}`);
+      }
     }
-    router.push(Route.inspectionInitial);
+    router.push(Route.inspectionInitial); // conditionally
     toast.success("Discarded", {
       autoClose: 1000,
       transition: Bounce,
     });
-    // router.push(Route.inspectionInterne);
   };
 
   return (
@@ -203,7 +196,10 @@ export default function page({}: Props) {
           />
         </div>
         <div className="flex justify-between my-auto md:w-[140px] pr-3 gap-2">
-          <Button onClick={handleProjectDraft} className={isSaving? 'hover:cursor-wait opacity-70 px-4' : " px-6"}>
+          <Button
+            onClick={handleProjectDraft}
+            className={isSaving ? "hover:cursor-wait opacity-70 px-4" : " px-6"}
+          >
             {isSaving ? "please wait..." : "Save"}
           </Button>
           <Dialog>
