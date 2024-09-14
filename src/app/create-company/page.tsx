@@ -21,6 +21,7 @@ import { createOrganization } from "@/utiles/services/createOrg";
 import { CompanyType } from "@/types/api-types";
 import { Description } from "@radix-ui/react-dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {};
 
@@ -89,6 +90,7 @@ export default function Home({}: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
+        status: "INACTIVE"
       })
         .then((response) => {
           console.log("create company res =>", response);
@@ -97,9 +99,14 @@ export default function Home({}: Props) {
         })
         .catch((error) => {
           console.log("An error occured", error);
+          setIsLoading((prev) => !prev);
+          toast.error('Fail to create company', {
+            transition: Bounce,
+            autoClose: 1000
+          })
         });
     }
-    setIsLoading((prev) => !prev);
+    
   }
 
   function handleCancel(e: any) {
