@@ -8,7 +8,9 @@ export interface FormData {
   businessActivity: string;
   otherBusiness: string;
   logo: string;
-  phone: string
+  phone: string;
+  description: string;
+  address: string;
 }
 
 export interface User {

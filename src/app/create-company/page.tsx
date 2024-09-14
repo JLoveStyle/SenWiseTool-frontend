@@ -19,6 +19,8 @@ import { businessActivity } from "@/utiles/services/constants";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { createOrganization } from "@/utiles/services/createOrg";
 import { CompanyType } from "@/types/api-types";
+import { Description } from "@radix-ui/react-dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 type Props = {};
 
@@ -51,6 +53,8 @@ export default function Home({}: Props) {
     otherBusiness: "",
     logo: "",
     phone: "",
+    address: "",
+    description: "",
   });
 
   const { isSignedIn, user } = useUser();
@@ -58,8 +62,6 @@ export default function Home({}: Props) {
   async function handleSubmit(e: any) {
     e.preventDefault();
     setHasAgree(false);
-    console.log(formData);
-    console.log(companyLogo);
     let activity;
     if (formData.businessActivity === "Other") {
       activity = formData.otherBusiness;
@@ -85,11 +87,13 @@ export default function Home({}: Props) {
         sector_of_activity: activity,
         logo: companyLogo,
         phone_number: formData.phone,
+        address: formData.address,
+        description: formData.description,
       })
         .then((response) => {
           console.log("create company res =>", response);
           setIsLoading((prev) => !prev);
-          router.push(Route.inspectionInitial);
+          // router.push(Route.inspectionInitial);
         })
         .catch((error) => {
           console.log("An error occured", error);
@@ -105,7 +109,9 @@ export default function Home({}: Props) {
   }
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const data: FormData = {
       ...formData,
@@ -204,12 +210,20 @@ export default function Home({}: Props) {
             onChange={(e) => handleInputChange(e)}
           />
           <InputField
+            label="Address"
+            inputName="address"
+            type="text"
+            value={formData.address}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
             label="Company phone"
             inputName="phone"
             type="tel"
             value={formData.companyEmail}
             onChange={(e) => handleInputChange(e)}
           />
+
           <CustomSelectTag
             selectName="country"
             onChange={(e) => handleInputChange(e)}
@@ -274,6 +288,15 @@ export default function Home({}: Props) {
               onChange={(e) => handleLogoUpload(e)}
             />
           </div>
+          <label className="font-semibold" htmlFor="description">
+            Description<span className="text-red-500">*</span>
+          </label>
+          <Textarea
+            className="w-full p-2 mb-3"
+            value={formData.description}
+            name="description"
+            onChange={(e) => handleInputChange(e)}
+          />
           <CheckBox onChange={() => handleOnCheck()} />
           {hasAgree && (
             <span className="text-red-500">
@@ -310,7 +333,6 @@ export default function Home({}: Props) {
           <CancelModal onClose={handleCloseModal} />
         </DialogContent>
       </Dialog>
-         
     </div>
   );
 }
