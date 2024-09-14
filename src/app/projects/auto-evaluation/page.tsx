@@ -7,6 +7,7 @@ type Props = {}
 
 export default function Home({}: Props) {
 
+
   // Fetch all projects with type ["AUTO_EVALUATION"] and pass it as props to Layout
   useEffect(() => {
     console.log("Auto-evaluation")

@@ -365,89 +365,9 @@ export const requirements = [
   }
 ]
 
-export const chapterData: ChapterMetaData[] = [
-  {
-    principal_requirement: "La direction se conforme aux lois applicables et aux conventions collectives (CC) au sein du champ d’application de la Norme pour l’agriculture durable de Rainforest Alliance.",
-    number: "1.1.1",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "1.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "1.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "1.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-
-]
-
-export const chapter2: ChapterMetaData[] = [
-  {
-    principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
-    number: "2.1.1",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
-    number: "2.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "2.1.3",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "2.1.4",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-
-]
-
 export const deployedPro: DeployableFormMetadata[] = [
   {
-    id: "1",
+    // id: "1",
     principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
     number: "2.1.1",
     certication_de_group: {
@@ -455,7 +375,7 @@ export const deployedPro: DeployableFormMetadata[] = [
       petit_exp_agri: "no",
       grande_exp_agri: "no"
     },
-    comment: "sbdvisdvhbsdv",
+    comment: "",
     status: {
       C: false,
       NC: false,
@@ -463,7 +383,7 @@ export const deployedPro: DeployableFormMetadata[] = [
     }
   },
   {
-    id: "2",
+    // id: "2",
     principal_requirement: "Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
     number: "2.1.2",
     certication_de_group: {
@@ -471,7 +391,7 @@ export const deployedPro: DeployableFormMetadata[] = [
       petit_exp_agri: "no",
       grande_exp_agri: "no"
     },
-    comment: "sudbv sdvous dvsdkjvbsuid vdv",
+    comment: "",
     status: {
       C: false,
       NC: false,
@@ -479,7 +399,7 @@ export const deployedPro: DeployableFormMetadata[] = [
     }
   },
   {
-    id: "3",
+    // id: "3",
     principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
     number: "2.1.3",
     certication_de_group: {
@@ -487,7 +407,7 @@ export const deployedPro: DeployableFormMetadata[] = [
       petit_exp_agri: "no",
       grande_exp_agri: "no"
     },
-    comment: "sd uivsduivspuid vsd mvusiduvb \n# usus",
+    comment: "",
     status: {
       C: false,
       NC: false,
@@ -495,7 +415,7 @@ export const deployedPro: DeployableFormMetadata[] = [
     }
   },
   {
-    id: "4",
+    // id: "4",
     principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
     number: "2.1.4",
     certication_de_group: {

@@ -15,7 +15,9 @@ const useProjects = create<StoreTye>((set) => ({
     country: '',
     city: '',
     state: '',
-    status: ['DRAFT']
+    status: ['DRAFT'],
+    start_date: '',
+    end_date: ''
   }],
   setProjects: (pro) => set(() => ({projects: pro}))
 }))
