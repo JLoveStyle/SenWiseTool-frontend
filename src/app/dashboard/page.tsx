@@ -13,6 +13,9 @@ export default function Home({}: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
+  LOCAL_STORAGE.save('username', user?.firstName)
+
+  console.log("user", user)
 
   if (!isSignedIn) return <div>sign in to view this page</div>;
 

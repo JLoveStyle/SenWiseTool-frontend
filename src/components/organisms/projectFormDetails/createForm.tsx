@@ -27,6 +27,7 @@ export default function ProjectDetailsForm({
   typeOfProject,
   project,
 }: Props) {
+  let fakeProject: { [key: string]: any } = {};
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
@@ -83,6 +84,7 @@ export default function ProjectDetailsForm({
     }
   };
 
+  /*
   const handlecompanyLogo = (e: any) => {
     const reader = new FileReader();
     if (e) {
@@ -94,7 +96,7 @@ export default function ProjectDetailsForm({
       };
       reader.readAsDataURL(e.target.files[0]);
     }
-  };
+  }; */
 
   const handleOtherLogo = (e: any) => {
     const reader = new FileReader();
@@ -130,16 +132,13 @@ export default function ProjectDetailsForm({
       .then((res) => {
         console.log("project cereated", res);
         setIsLoading((prev) => !prev);
-        router.push(Route.editProject + "/45");
+        router.push(Route.editProject + `/45`);
       })
       .catch((err) => {
         console.log("error occured while creating", err);
       });
 
-    console.log(projectData);
-    LOCAL_STORAGE.save("project_data", projectData);
-    // tableRaw.push(projectData);
-    // // get the id of the project response and route to that ID
+    // get the id of the project response and route to that ID
   }
 
   useEffect(() => {
@@ -157,12 +156,12 @@ export default function ProjectDetailsForm({
         </em>
         <div className="flex justify-between py-5">
           {/* The existence of the company logo in the company object will checked here. This input field will be displayed based on that */}
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label htmlFor="company_logo">
               <strong>Company logo</strong>
             </label>
             <input type="file" onChange={(e) => handlecompanyLogo(e)} />
-          </div>
+          </div> */}
           <div className="flex flex-col">
             <label htmlFor="company_logo">
               <strong>Add another logo</strong>
@@ -196,7 +195,7 @@ export default function ProjectDetailsForm({
               label="Start date"
               inputName="start_date"
               type="date"
-              value={JSON.stringify(projectData.start_date)}
+              value={projectData.start_date}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>
@@ -205,7 +204,7 @@ export default function ProjectDetailsForm({
               label="End date"
               inputName="end_date"
               type="date"
-              value={JSON.stringify(projectData.end_date)}
+              value={projectData.end_date}
               onChange={(e) => handleChangeEvent(e)}
             />
           </div>

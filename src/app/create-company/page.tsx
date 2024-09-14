@@ -17,10 +17,15 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { businessActivity } from "@/utiles/services/constants";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { createOrganization } from "@/utiles/services/createOrg";
+import { CompanyType } from "@/types/api-types";
+import { Description } from "@radix-ui/react-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
 
@@ -47,6 +52,10 @@ export default function Home({}: Props) {
     city: "",
     businessActivity: "",
     otherBusiness: "",
+    logo: "",
+    phone: "",
+    address: "",
+    description: "",
   });
 
   const { isSignedIn, user } = useUser();
@@ -54,41 +63,50 @@ export default function Home({}: Props) {
   async function handleSubmit(e: any) {
     e.preventDefault();
     setHasAgree(false);
+    let activity;
+    if (formData.businessActivity === "Other") {
+      activity = formData.otherBusiness;
+    } else activity = formData.businessActivity;
 
     if (!isChecked) {
       setHasAgree((prev) => !prev);
       return;
     }
     setIsLoading((prev) => !prev);
-    console.log(companyLogo);
 
     if (user?.id) {
       console.log("userId available", user);
-      // const res = await createOrganization(formData, user.id);
-      // console.log("res =>", res);
+      const res = await createOrganization(formData, user.id);
+      console.log("company res on clerk =>", res);
 
       await mutateApiData(Route.companies, {
-        companyEmail: formData.companyEmail,
-        companyName: formData.companyName,
+        email: formData.companyEmail,
+        name: formData.companyName,
         country: formData.country,
         state: formData.state,
         city: formData.city,
-        sector_of_activity: formData.businessActivity,
+        sector_of_activity: activity,
+        logo: companyLogo,
+        phone_number: formData.phone,
+        address: formData.address,
+        description: formData.description,
+        status: "INACTIVE"
       })
         .then((response) => {
           console.log("create company res =>", response);
           setIsLoading((prev) => !prev);
-          router.push(Route.inspectionInterne);
+          // router.push(Route.inspectionInitial);
         })
         .catch((error) => {
           console.log("An error occured", error);
+          setIsLoading((prev) => !prev);
+          toast.error('Fail to create company', {
+            transition: Bounce,
+            autoClose: 1000
+          })
         });
     }
-    // setTimeout(() => {
-    //   setIsLoading((prev) => !prev);
-    //   router.push(Route.inspectionInterne);
-    // }, 6000);
-    setIsLoading((prev) => !prev);
+
   }
 
   function handleCancel(e: any) {
@@ -98,12 +116,15 @@ export default function Home({}: Props) {
   }
 
   const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const data: FormData = {
       ...formData,
       [event.target.name]: event.target.value,
     };
+    console.log(data);
     setFormData(data);
     for (const country of countries) {
       if (country.name === data.country) {
@@ -119,7 +140,7 @@ export default function Home({}: Props) {
         }
       }
     }
-    if (data.businessActivity === "Autre") {
+    if (data.businessActivity === "Other") {
       setHasOtherBusiness(true);
     }
   };
@@ -137,14 +158,16 @@ export default function Home({}: Props) {
     setIsModalOpen(value);
   };
 
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoUpload = async (e: any) => {
     const reader = new FileReader();
     if (e) {
       reader.onload = (onLoadEvent) => {
         if (onLoadEvent.target) {
+          console.log("results", onLoadEvent.target.result);
           setCompanyLogo(onLoadEvent.target.result);
         }
       };
+      reader.readAsDataURL(e.target.files[0]);
     }
   };
 
@@ -174,6 +197,8 @@ export default function Home({}: Props) {
           </Link>
         </div>
         <h3 className="font-semibold text-2xl text-center pb-7">
+          Welcome to Senwisetool
+          <br />
           Register your company
         </h3>
         <form className="" onSubmit={handleSubmit}>
@@ -191,6 +216,21 @@ export default function Home({}: Props) {
             value={formData.companyEmail}
             onChange={(e) => handleInputChange(e)}
           />
+          <InputField
+            label="Address"
+            inputName="address"
+            type="text"
+            value={formData.address}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
+            label="Company phone"
+            inputName="phone"
+            type="tel"
+            value={formData.companyEmail}
+            onChange={(e) => handleInputChange(e)}
+          />
+
           <CustomSelectTag
             selectName="country"
             onChange={(e) => handleInputChange(e)}
@@ -255,6 +295,15 @@ export default function Home({}: Props) {
               onChange={(e) => handleLogoUpload(e)}
             />
           </div>
+          <label className="font-semibold" htmlFor="description">
+            Description<span className="text-red-500">*</span>
+          </label>
+          <Textarea
+            className="w-full p-2 mb-3"
+            value={formData.description}
+            name="description"
+            onChange={(e) => handleInputChange(e)}
+          />
           <CheckBox onChange={() => handleOnCheck()} />
           {hasAgree && (
             <span className="text-red-500">
@@ -283,11 +332,14 @@ export default function Home({}: Props) {
           </div>
         </form>
       </div>
-      <Dialog onOpenChange={() => setIsModalOpen(prev => !prev)} open={isModalOpen}>
+      <Dialog
+        onOpenChange={() => setIsModalOpen((prev) => !prev)}
+        open={isModalOpen}
+      >
         <DialogContent>
           <CancelModal onClose={handleCloseModal} />
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>
+  );
 }

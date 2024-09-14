@@ -1,7 +1,6 @@
 "use client";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDisplay from "@/components/organisms/projectsDisplay";
-import { tableRaw } from "@/utiles/services/constants";
 import React, { useEffect } from "react";
 
 type Props = {};
@@ -15,7 +14,7 @@ export default function Home({}: Props) {
 
   return (
     <LayoutDashboard typeOfProject={["INTERNAL_INSPECTION"]} projectsPerType={[]}>
-      <ProjectDisplay projects={tableRaw} />
+      <ProjectDisplay projects={[]} />
     </LayoutDashboard>
   );
 }

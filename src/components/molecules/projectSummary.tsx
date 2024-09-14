@@ -1,6 +1,7 @@
 "use client";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import {
   ChevronRight,
   ClipboardType,
@@ -15,11 +16,12 @@ import React from "react";
 
 type Props = {
   projectObject: Project | undefined;
-  showData: (val: boolean) => void
+  showData: (val: boolean) => void;
 };
 
 export default function ProjectSummary({ projectObject, showData }: Props) {
   const router = useRouter();
+  const id = LOCAL_STORAGE.get("projectId");
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
@@ -40,14 +42,14 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
       text: "Edit form",
       secondIcon: <ChevronRight />,
       function: () => {
-        router.push(Route.editProject + "/45")
+        router.push(Route.editProject + `/${id}`);
       },
     },
     {
       firstIcon: <Eye />,
       text: "View form",
       secondIcon: <ChevronRight />,
-      function: () => router.push(Route.editProject + "/45/pdf"),
+      function: () => router.push(Route.editProject + `/${id}/pdf`),
     },
   ];
 
@@ -65,7 +67,7 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
             <p className="">{projectObject?.description} </p>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
-            <div className="flex md:w-[350px] justify-between">
+            <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
                 <span className="bg-green-200 text-sm px-2 rounded-lg">
@@ -74,9 +76,11 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">N° Questions</span>
-                <span className="bg-green-200 text-sm px-2 rounded-lg">
-                  3
-                </span>
+                {projectObject?.project_structure && (
+                  <span className="bg-green-200 text-sm px-2 rounded-lg">
+                    3
+                  </span>
+                )}
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Owner</span>
@@ -87,7 +91,19 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
             </div>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
-            <div className="flex md:w-[350px] justify-between">
+            <div className="flex md:w-[500px] justify-between">
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Start date</span>
+                <span className=" text-sm rounded-lg">
+                  {projectObject?.start_date}
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">End date</span>
+                <span className=" text-sm rounded-lg">
+                  {projectObject?.end_date}
+                </span>
+              </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last update</span>
                 <span className=" text-sm rounded-lg">
@@ -103,7 +119,7 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
             </div>
           </div>
           <div className="flex justify-between md:w-full pt-4">
-            <div className="flex md:w-[350px] justify-between">
+            <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Country</span>
                 <span className=" text-sm rounded-lg">
@@ -111,9 +127,21 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Region</span>
+                <span className=" text-sm rounded-lg">
+                  {projectObject?.state}
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Ville</span>
+                <span className=" text-sm rounded-lg">
+                  {projectObject?.city}
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Business sector</span>
                 <span className=" text-sm rounded-lg">
-                  {projectObject?.deployed_at}
+                  {projectObject?.sector_activity}
                 </span>
               </div>
             </div>

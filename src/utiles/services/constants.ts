@@ -4,8 +4,8 @@ import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [
@@ -23,109 +23,109 @@ export const optionsGestions: {
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Initial inspection",
-    href: Route.inspectionInitial,
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Internal inspection",
-    href: Route.inspectionInterne,
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Auto evaluation of group",
-    href: Route.autoEvaluation,
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Mapping",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Evalution risks tools",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Management plan",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Maps",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Reclamation mechanosms",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Organigramme du SGI",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Formation",
-    href: Route.formationProject,
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Lists of farmers",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
+    {
+      title: "Initial inspection",
+      href: Route.inspectionInitial,
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Internal inspection",
+      href: Route.inspectionInterne,
+      description:
+        "For sighted users to preview content available behind a link.",
+    },
+    {
+      title: "Auto evaluation of group",
+      href: Route.autoEvaluation,
+      description:
+        "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+    },
+    {
+      title: "Mapping",
+      href: "/docs/primitives/scroll-area",
+      description: "Visually or semantically separates content.",
+    },
+    {
+      title: "Evalution risks tools",
+      href: "/docs/primitives/tabs",
+      description:
+        "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+    },
+    {
+      title: "Management plan",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Maps",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Reclamation mechanosms",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Organigramme du SGI",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Formation",
+      href: Route.formationProject,
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Lists of farmers",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+  ];
 
 export const optionsTracabilité: {
   title: string;
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Reçus",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Fiche d'accompagnement à l'usine",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Bordereaux de vente",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Fiche de transmission et de déclaration",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Bon d'entrée au magasin",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-];
+    {
+      title: "Reçus",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Fiche d'accompagnement à l'usine",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Bordereaux de vente",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Fiche de transmission et de déclaration",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Bon d'entrée au magasin",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+  ];
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'REVENU ET RESPONSABILTE'
 export const optionsRevenu: {
@@ -133,25 +133,25 @@ export const optionsRevenu: {
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Justificatifs de payement de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Plan de gestion de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Différentiel de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-]
+    {
+      title: "Justificatifs de payement de l'investissement de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Plan de gestion de l'investissement de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Différentiel de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+  ]
 
 // THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
 export const tableHead: string[] = [
@@ -303,7 +303,7 @@ export const requirements = [
       },
 
     ],
-    
+
   },
   {
     chapitre2: [
@@ -365,89 +365,9 @@ export const requirements = [
   }
 ]
 
-export const chapterData: ChapterMetaData[] = [
-  {
-    principal_requirement: "La direction se conforme aux lois applicables et aux conventions collectives (CC) au sein du champ d’application de la Norme pour l’agriculture durable de Rainforest Alliance.",
-    number: "1.1.1",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "1.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "1.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "1.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-
-]
-
-export const chapter2: ChapterMetaData[] = [
-  {
-    principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
-    number: "2.1.1",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
-    number: "2.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "2.1.3",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-  {
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "2.1.4",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    }
-  },
-
-]
-
 export const deployedPro: DeployableFormMetadata[] = [
   {
-    id: "1",
+    // id: "1",
     principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
     number: "2.1.1",
     certication_de_group: {
@@ -455,7 +375,7 @@ export const deployedPro: DeployableFormMetadata[] = [
       petit_exp_agri: "no",
       grande_exp_agri: "no"
     },
-    comment: "sbdvisdvhbsdv",
+    comment: "",
     status: {
       C: false,
       NC: false,
@@ -463,7 +383,7 @@ export const deployedPro: DeployableFormMetadata[] = [
     }
   },
   {
-    id: "2",
+    // id: "2",
     principal_requirement: "Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
     number: "2.1.2",
     certication_de_group: {
@@ -471,7 +391,7 @@ export const deployedPro: DeployableFormMetadata[] = [
       petit_exp_agri: "no",
       grande_exp_agri: "no"
     },
-    comment: "sudbv sdvous dvsdkjvbsuid vdv",
+    comment: "",
     status: {
       C: false,
       NC: false,
@@ -479,7 +399,7 @@ export const deployedPro: DeployableFormMetadata[] = [
     }
   },
   {
-    id: "3",
+    // id: "3",
     principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
     number: "2.1.3",
     certication_de_group: {
@@ -487,7 +407,7 @@ export const deployedPro: DeployableFormMetadata[] = [
       petit_exp_agri: "no",
       grande_exp_agri: "no"
     },
-    comment: "sd uivsduivspuid vsd mvusiduvb \n# usus",
+    comment: "",
     status: {
       C: false,
       NC: false,
@@ -495,7 +415,7 @@ export const deployedPro: DeployableFormMetadata[] = [
     }
   },
   {
-    id: "4",
+    // id: "4",
     principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
     number: "2.1.4",
     certication_de_group: {
@@ -512,4 +432,3 @@ export const deployedPro: DeployableFormMetadata[] = [
   },
 
 ]
-

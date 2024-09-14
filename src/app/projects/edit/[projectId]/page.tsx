@@ -22,15 +22,17 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
-import { chapter2, chapters, requirements } from "@/utiles/services/constants";
+import { chapters, requirements } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Library, Pencil, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
 import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
+import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
+import { mutateUpApiData } from "@/utiles/services/mutations";
 
 const AddFormFromLibrary = dynamic(
   () => import("@/components/molecules/addFormFromLibrary"),
@@ -44,9 +46,11 @@ type Props = {};
 export default function page({}: Props) {
   const router = useRouter();
   const projectDetails: Project = LOCAL_STORAGE.get("project_data"); // Only for project title editoring
+  let fakeProject = LOCAL_STORAGE.get("fakeProject");
   const [openSheet, setOpenSheet] = useState<boolean>(false);
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [exit, setExit] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);
   const [displayChapThree, setDisplayChapThree] = useState<boolean>(false);
@@ -57,6 +61,8 @@ export default function page({}: Props) {
     country: projectDetails.country,
     status: ["DRAFT"],
     state: projectDetails.state,
+    start_date: projectDetails.start_date,
+    end_date: projectDetails.end_date,
     title: projectDetails.title,
     description: projectDetails.description,
   });
@@ -65,6 +71,11 @@ export default function page({}: Props) {
   const chapitre1 = chap1.chapter1;
   const chapitre2 = chap2.chapitre2;
   const chapitre3 = chap3.chapitre3;
+
+  // Fetch all requirements
+  useEffect(() => {
+    // function to fetch all requirements and per chapters
+  }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data: Project = {
@@ -77,22 +88,92 @@ export default function page({}: Props) {
 
   async function handleProjectSave() {
     console.log(projectData);
+    // router.push();
   }
 
   async function handleProjectDraft() {
-    router.push(Route.editProject + "/45/pdf");
+    setIsSaving((prev) => !prev);
+    // get data from localStorage
+    const id = LOCAL_STORAGE.get("projectId");
+    const metaData: { [key: string]: string }[] =
+      LOCAL_STORAGE.get("formMetadata");
+    let chapitre: any = [];
+    let constructedRequirements: DeployableFormMetadata[] = [];
+    for (let i = 0; i <= 5; i++) {
+      chapitre.push(LOCAL_STORAGE.get(`chap_one_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_two_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_three_req${i}`));
+    }
+    // remove undefined items in the array
+    const res = chapitre.filter((item: any) => item !== undefined).flat();
+
+    // construct an array of objects of type DeployableMetadata[]
+    for (let i = 0; i < res.length; i++) {
+      constructedRequirements.push({
+        status: {
+          NA: false,
+          NC: false,
+          C: false,
+        },
+        principal_requirement: res[i].principal_requirement,
+        certication_de_group: res[i].certication_de_group,
+        number: res[i].number,
+        comment: "",
+      });
+    }
+
+    // Join constructedRequirements and metaData to form a single json object
+    const finalJson = {
+      metaData: metaData,
+      requirements: constructedRequirements,
+    };
+    LOCAL_STORAGE.save("finalJson", finalJson);
+    console.log("finalJson =>", finalJson);
+
+    router.push(Route.editProject + `/${id}/pdf`);
+
+    for (let i = 0; i < 5; i++) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(`chap_one_req${i}`);
+        localStorage.removeItem(`chap_two_req${i}`);
+        localStorage.removeItem(`chap_three_req${i}`);
+      }
+    }
+
+    // Make a patch request with the project id
+    await mutateUpApiData(
+      Route.projects,
+      {
+        project_structure: finalJson,
+      },
+      id
+    )
+      .then((response) => {
+        console.log("here is the response", response);
+        router.push(Route.editProject + `/${id}/pdf`);
+        toast("Project saved", {
+          transition: Bounce,
+          autoClose: 1000,
+        });
+      })
+      .catch((error) => {
+        console.log("An error occured", error);
+      });
   }
 
   const discartProjectForm = () => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem("chap_one_req");
-      localStorage.removeItem("chap_two_req");
+      for (let i = 0; i < 5; i++) {
+        localStorage.removeItem(`chap_one_req${i}`);
+        localStorage.removeItem(`chap_two_req${i}`);
+        localStorage.removeItem(`chap_three_req${i}`);
+      }
     }
+    router.push(Route.inspectionInitial); // conditionally
     toast.success("Discarded", {
       autoClose: 1000,
       transition: Bounce,
     });
-    router.push(Route.inspectionInterne);
   };
 
   return (
@@ -108,15 +189,18 @@ export default function page({}: Props) {
           <input
             type="text"
             required
-            name="projectTitle"
+            name="title"
             value={projectData.title}
             onChange={(e) => handleInputChange(e)}
             className="border mt-1 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           />
         </div>
         <div className="flex justify-between my-auto md:w-[140px] pr-3 gap-2">
-          <Button onClick={handleProjectDraft} className=" px-6">
-            Save
+          <Button
+            onClick={handleProjectDraft}
+            className={isSaving ? "hover:cursor-wait opacity-70 px-4" : " px-6"}
+          >
+            {isSaving ? "please wait..." : "Save"}
           </Button>
           <Dialog>
             <DialogTrigger asChild>
@@ -148,7 +232,7 @@ export default function page({}: Props) {
         <em className=" ">
           Click on <strong>Form metadata</strong> to select form metadata
         </em>
-        <div className="flex justify-between gap-10 d">
+        <div className="flex justify-between gap-10 ">
           <div
             onClick={() => setOpenEditForm((prev) => !prev)}
             className="flex gap-4 hover:cursor-pointer "
@@ -166,10 +250,10 @@ export default function page({}: Props) {
               />
             </DialogContent>
           </Dialog>
-          <div className="flex gap-4 hover:cursor-pointer ">
+          {/* <div className="flex gap-4 hover:cursor-pointer ">
             <Library />
             <p className="font-semibold">Add from library</p>
-          </div>
+          </div> */}
 
           <div
             onClick={() => setOpenSheet((prev) => !prev)}
@@ -241,7 +325,7 @@ export default function page({}: Props) {
                   <ChaptersRequirements
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
-                    key2localStorage="chap_one_req"
+                    key2localStorage={`chap_one_req${idx}`}
                   />
                 </div>
               ))}
@@ -257,7 +341,7 @@ export default function page({}: Props) {
                   <ChaptersRequirements
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
-                    key2localStorage="chap_two_req"
+                    key2localStorage={`chap_two_req${idx}`}
                   />
                 </div>
               ))}
@@ -273,7 +357,7 @@ export default function page({}: Props) {
                   <ChaptersRequirements
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
-                    key2localStorage="chap_three_req"
+                    key2localStorage={`chap_three_req${idx}`}
                   />
                 </div>
               ))}

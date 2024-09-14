@@ -31,10 +31,13 @@ export default function NavDashboard({}: Props) {
   const pathname = usePathname();
 
   useEffect(() => {
-    const localId: string | undefined | null = LOCAL_STORAGE.get("projectId");
-    setId(localId);
-    setSelectedProject(tableRaw.find((item) => item.id === localId));
+    // const allProject = LOCAL_STORAGE.get('all_projects')
+    // const localId: string | undefined | null = LOCAL_STORAGE.get("projectId");
+    // setId(localId);
+    // setSelectedProject(allProject.find((item: { id: string | null | undefined; }) => item.id === localId));
   }, []);
+
+  console.log('selectedPro =>', selectedProject)
 
   const createdRole: { [key: string]: any }[] = [
     {
