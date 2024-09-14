@@ -27,6 +27,17 @@ export interface ApiDataResponse<T> {
     totalPages: number;
 }
 
+type ApiErroType = {
+    statusCode: number,
+    timestamp: string,
+    path: string,
+    message: {
+        message: string,
+        error: string,
+        statusCode: number
+    }
+}
+
 export type ProjectType = {
     id?: string;
     type: "INITIAL_INSPECTION" | "EXTERNAL_INSPECTION" | "AUTO_EVALUATION" | "MAPPING";
