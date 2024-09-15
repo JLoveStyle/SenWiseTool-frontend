@@ -27,7 +27,7 @@ import { useEdgeStore } from "@/lib/edgestore";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const { edgestore } = useEdgeStore();
@@ -111,6 +111,10 @@ export default function Home({}: Props) {
           });
         });
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5bb3d6ac24fe758468ae2f3f7925b84889846b8d
   }
 
   function handleCancel(e: any) {

@@ -4,8 +4,8 @@ import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [
@@ -23,109 +23,109 @@ export const optionsGestions: {
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Initial inspection",
-    href: Route.inspectionInitial,
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Internal inspection",
-    href: Route.inspectionInterne,
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Auto evaluation of group",
-    href: Route.autoEvaluation,
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Mapping",
-    href: "/docs/primitives/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Evalution risks tools",
-    href: "/docs/primitives/tabs",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Management plan",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Maps",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Reclamation mechanosms",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Organigramme du SGI",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Formation",
-    href: Route.formationProject,
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-  {
-    title: "Lists of farmers",
-    href: "/docs/primitives/tooltip",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-  },
-];
+    {
+      title: "Initial inspection",
+      href: Route.inspectionInitial,
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Internal inspection",
+      href: Route.inspectionInterne,
+      description:
+        "For sighted users to preview content available behind a link.",
+    },
+    {
+      title: "Auto evaluation of group",
+      href: Route.autoEvaluation,
+      description:
+        "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+    },
+    {
+      title: "Mapping",
+      href: "/docs/primitives/scroll-area",
+      description: "Visually or semantically separates content.",
+    },
+    {
+      title: "Evalution risks tools",
+      href: "/docs/primitives/tabs",
+      description:
+        "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+    },
+    {
+      title: "Management plan",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Maps",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Reclamation mechanosms",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Organigramme du SGI",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Formation",
+      href: Route.formationProject,
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+    {
+      title: "Lists of farmers",
+      href: "/docs/primitives/tooltip",
+      description:
+        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+    },
+  ];
 
 export const optionsTracabilité: {
   title: string;
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Reçus",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Fiche d'accompagnement à l'usine",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Bordereaux de vente",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Fiche de transmission et de déclaration",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Bon d'entrée au magasin",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-];
+    {
+      title: "Reçus",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Fiche d'accompagnement à l'usine",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Bordereaux de vente",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Fiche de transmission et de déclaration",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Bon d'entrée au magasin",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+  ];
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'REVENU ET RESPONSABILTE'
 export const optionsRevenu: {
@@ -133,25 +133,25 @@ export const optionsRevenu: {
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Justificatifs de payement de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Plan de gestion de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Différentiel de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-]
+    {
+      title: "Justificatifs de payement de l'investissement de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Plan de gestion de l'investissement de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Différentiel de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+  ]
 
 // THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
 export const tableHead: string[] = [
@@ -303,7 +303,7 @@ export const requirements = [
       },
 
     ],
-    
+
   },
   {
     chapitre2: [
@@ -432,4 +432,3 @@ export const deployedPro: DeployableFormMetadata[] = [
   },
 
 ]
-

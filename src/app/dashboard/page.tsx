@@ -1,13 +1,11 @@
 "use client";
-import NavDashboard from "@/components/organisms/navDashboard";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import { ApiDataResponse, UserType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 type Props = {};
 
@@ -48,9 +46,9 @@ export default function Home({}: Props) {
   console.log(session);
   return (
     <>
-      <LayoutDashboard typeOfProject={["INITIAL_INSPECTION"]} projectsPerType={[]}>
-        <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
-      </LayoutDashboard>
+      {/* <LayoutDashboard typeOfProject={["INITIAL_INSPECTION"]} projectsPerType={[]}> */}
+      <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
+      {/* </LayoutDashboard> */}
     </>
   );
 }
