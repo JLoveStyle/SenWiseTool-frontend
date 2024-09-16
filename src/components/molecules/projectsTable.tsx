@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "../atoms/spinner/spinner";
 import {
   DropdownMenu,
@@ -52,8 +52,8 @@ export function DataTable<TData, TValue>({
   const [rowSelection, setRowSelection] = useState({});
   const pathname: string = usePathname();
 
-  const data = useMemo(() => incomingData, []);
-  const columns = useMemo(() => incomingColumns, []);
+  const data = incomingData; //useMemo(() => incomingData, [incomingData]);
+  const columns = incomingColumns; //useMemo(() => incomingColumns, []);
 
   const table = useReactTable({
     data,

@@ -11,11 +11,10 @@ import { Archive, Trash2, UserPlus } from "lucide-react";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 
 import { NewTraining } from "@/components/atoms/training/new-trainer";
-import { getTrainings } from "@/components/atoms/training/training-list";
+import { trainingList } from "@/components/atoms/training/training-list";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import { columnTable } from "@/lib/column-table";
-import { trainingDatas } from "@/lib/datas";
 import { TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
 
@@ -30,18 +29,19 @@ export default function Training() {
 
   const [data, setData] = useState<TrainingProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const [trainingDatas, setTrainingDatas] = useState<TrainingProps[]>([]);
+  const [trainingDatas, setTrainingDatas] = useState<TrainingProps[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getTrainings();
-      setData(result); // Ici on passe bien les données renvoyées par la fonction
+      const result = await trainingList("cm0job09a0004wrr2scsyu3a3");
+      setTrainingDatas(result);
       setIsLoading(false);
-      console.log(result);
     };
 
     fetchData();
   }, []);
+
+  useEffect(() => {}, [trainingDatas]);
 
   return (
     <LayoutDashboard

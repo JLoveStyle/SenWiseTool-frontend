@@ -50,7 +50,6 @@ export function NewTraining() {
   };
 
   const handleCreateTraining = async (formData: TrainingProps) => {
-    // const { error, data } = await db_create_training(formData);
     const dataToDB = {
       title: formData.title,
       start_date: new Date(formData.start_date).toISOString(),

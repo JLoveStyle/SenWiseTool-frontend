@@ -44,16 +44,17 @@ export const db_update_training = async (data: DBTrainingProps, id: string) => {
     });
 };
 
-export const db_get_trainings = async () => {
+export const db_get_trainings = async (companyId: string) => {
   const db = new ApiCall();
 
-  fetchApiData<TrainingType>(Route.training)
+  fetchApiData<TrainingType>(Route.training, companyId)
     .then((response) => {
       console.log("Réponse du serveur :", response);
     })
     .catch((error) => {
       console.error("Erreur lors de l'envoi des données :", error);
     });
+  return [];
 };
 
 export const db_delete_training = async (data: DBTrainingProps, id: string) => {
