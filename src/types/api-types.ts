@@ -1,3 +1,21 @@
+export type ObjectValue<T> = T[keyof T];
+
+const PRICEPLAN = {
+    BRONZE: "BRONZE",
+    SILVER: "SILVER",
+    GOLD: "GOLD",
+} as const;
+
+const PRICEPLANSTATUS = {
+    ON: "ON",
+    OFF: "OFF",
+    SUSPENDED: "SUSPENDED",
+    EXPIRED: "EXPIRED",
+} as const;
+
+type PricePlanName = ObjectValue<typeof PRICEPLAN>
+type PricePlanStatus = ObjectValue<typeof PRICEPLANSTATUS>
+
 export type PricePlanType = {
 
     active: boolean;
@@ -8,9 +26,9 @@ export type PricePlanType = {
     number_of_billing_cycles: string;
     price: string;
     price_type: string;
-    product_name: 'BRONZE' | 'SILVER' | 'GOLD';
+    product_name: PricePlanName
     plan_name: string;
-    status: 'ON' | 'OFF' | 'SUSPENDED' | 'EXPIRED';
+    status: PricePlanStatus
     auto_renewal: boolean;
     cancellation_policy: string[];
     created_at: Date;
@@ -132,3 +150,21 @@ export type Training_session = {
     updated_at: Date;
 }
 
+export const CampaignStatus = {
+    OPEN: "OPEN",
+    CLOSED: "CLOSED"
+} as const;
+
+
+export type CampaignStatusType = ObjectValue<typeof CampaignStatus>;
+
+export type Campaign = {
+    created_at: Date;
+    description: string;
+    end_date: Date;
+    id: string;
+    name: string;
+    start_date: Date;
+    status: CampaignStatusType;
+    updated_at: Date;
+}

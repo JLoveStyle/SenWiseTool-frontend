@@ -90,7 +90,6 @@ export default function Home({ }: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        status: "INACTIVE"
       })
         .then((response) => {
           console.log("create company res =>", response);

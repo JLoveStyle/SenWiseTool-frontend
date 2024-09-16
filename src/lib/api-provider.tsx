@@ -66,35 +66,30 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
 
     useEffect(() => {
         fetchData();
-        // fn()
-        //     .then((response) => {
-        //         if (response?.status?.toString().startsWith("2"))
-        //             setData(response.data);
-        //         else setData(null);
-        //     })
-        //     .catch((error) => {
-        //         setError(error);
-        //     }).finally(() => {
-        //         setIsLoading(false);
-        //     });
     }, [query, route]);
 
     const refetch = () => fetchData();
 
     // TODO: this could be well refactor later.
     if (data) {
+        // store user data.
         if (route?.includes("users")) {
 
             setCurrentUser(data as unknown as UserType);
-        } else
-            if (route?.includes("companies")) {
-                console.log("company state set: ", data as unknown as CompanyType)
-                setCompany(data as unknown as CompanyType);
-            } else
-                if (route?.includes("price_plans")) {
-
-                    setPricePlan(data as unknown as PricePlanType);
-                }
+        }
+        if (route?.includes("companies")) {
+            // store company data.
+            console.log("company state set: ", data as unknown as CompanyType)
+            setCompany(data as unknown as CompanyType);
+        }
+        if (route?.includes("price_plans")) {
+            // store price_plans data.
+            setPricePlan(data as unknown as PricePlanType);
+        }
+        if (route?.includes("campaigns")) {
+            // store price_plans data.
+            setPricePlan(data as unknown as PricePlanType);
+        }
     }
     console.log("fro provider service: ", data)
     return {

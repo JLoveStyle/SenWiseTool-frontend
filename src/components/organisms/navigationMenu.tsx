@@ -30,7 +30,7 @@ export function NavigationMenuDemo() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[1000px] md:grid-cols-3 lg:w-[600px] ">
-              {optionsGestions.map((component) => (
+              {/* {optionsGestions.map((component) => (
                 <ListItem
                   key={component.title}
                   title={component.title}
@@ -38,7 +38,7 @@ export function NavigationMenuDemo() {
                 >
                   {component.description}
                 </ListItem>
-              ))}
+              ))} */}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
