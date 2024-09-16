@@ -22,15 +22,9 @@ export default function page({}: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
   const [project, setProject] = useState<{[key: string]: any}>({})
-  // const id = LOCAL_STORAGE.get("projectId");
-  // const projectData = LOCAL_STORAGE.get("project_data");
-  // const finalJson = LOCAL_STORAGE.get("finalJson");
-
-  // FAKE PROJECT
-  const fakeProject = LOCAL_STORAGE.get('fakeProject')
-  const id = fakeProject.id
-  const projectData = fakeProject
-  const finalJson = fakeProject.project_structure
+  const id = LOCAL_STORAGE.get("projectId");
+  const projectData = LOCAL_STORAGE.get("project_data");
+  const finalJson = LOCAL_STORAGE.get("finalJson");
 
   const firstHalfMetaData = finalJson.metaData.slice(
     0,

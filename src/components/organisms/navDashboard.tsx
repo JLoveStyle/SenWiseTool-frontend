@@ -37,8 +37,6 @@ export default function NavDashboard({}: Props) {
     // setSelectedProject(allProject.find((item: { id: string | null | undefined; }) => item.id === localId));
   }, []);
 
-  console.log('selectedPro =>', selectedProject)
-
   const createdRole: { [key: string]: any }[] = [
     {
       label: "ADG",
@@ -90,6 +88,8 @@ export default function NavDashboard({}: Props) {
           <h1 className="font-bold text-center">INITIAL INSPECTION</h1>
         ) : pathname === Route.inspectionInterne ? (
           <h1 className="font-bold text-center">INTERNAL INSPECTION</h1>
+        ) : pathname === Route.formationProject ? (
+          <h1 className="font-bold text-center">FORMATIONS</h1>
         ) : (
           ""
         )}

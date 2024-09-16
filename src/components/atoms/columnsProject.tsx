@@ -178,37 +178,12 @@ export const columnListProjects: ColumnDef<Project>[] = [
             </Link>
             <DropdownMenuItem
               className=""
-              // onClick={() => {
-              //   const selectedProject = allProject.find(
-              //     (item: { id: string }) => item.id === project.id
-              //   );
-              //   console.log("SELECTED PROJECT", selectedProject);
-              //   const updatePro = { ...selectedProject, status: ["DEPOYED"] };
-              //   console.log(" UPDATE PROJECT", updatePro);
-              //   const newArr = allProject.push(updatePro);
-              //   console.log("newArr", newArr);
-              //   LOCAL_STORAGE.save("all_projects", allProject.push(updatePro));
-              //   toast.success("Project deployed", {
-              //     autoClose: 1000,
-              //     transition: Bounce,
-              //   });
-              // }}
             >
               Deploy project
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-500"
-              onClick={() => {
-                const allPro = allProject.filter(
-                  (item: { id: string }) => item.id !== project.id
-                );
-                console.log("allPro", allPro);
-                LOCAL_STORAGE.save("all_project", allPro);
-                toast.success("Project deleted", {
-                  autoClose: 1000,
-                  transition: Bounce,
-                });
-              }}
+              onClick={() => {}}
             >
               Delete project
             </DropdownMenuItem>

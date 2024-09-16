@@ -80,8 +80,8 @@ export default function Home({ }: Props) {
         file: companyLogo,
         onProgressChange: (progress) => console.log(progress),
       });
-      const res = await createOrganization(formData, user.id);
-      console.log(res)
+      // const res = await createOrganization(formData, user.id);
+      // console.log(res)
       if (!uploadedLogo) return
 
       await mutateApiData(Route.companies, {
@@ -95,11 +95,18 @@ export default function Home({ }: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        status: "INACTIVE",
+        // status: "INACTIVE",
       })
         .then((response) => {
           console.log("create company res =>", response);
-          setIsLoading((prev) => !prev);
+          if (response.statusCode >= 205) {
+            toast.error(`Sorry something went wrong`, {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading(false);
+          }
+          
           // router.push(Route.inspectionInitial);
         })
         .catch((error) => {
@@ -110,11 +117,8 @@ export default function Home({ }: Props) {
             autoClose: 1000,
           });
         });
+      
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 5bb3d6ac24fe758468ae2f3f7925b84889846b8d
   }
 
   function handleCancel(e: any) {
@@ -175,6 +179,8 @@ export default function Home({ }: Props) {
   useEffect(() => {
     fetchToken();
   }, []);
+
+  console.log(isLoading)
 
   return (
     <div className="h-full">

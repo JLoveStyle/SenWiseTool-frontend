@@ -21,7 +21,6 @@ type Props = {
 
 export default function EditProjectFormDatails({ onClick, project }: Props) {
   // FAKE PROJECT
-  let fakeProject = LOCAL_STORAGE.get("fakeProject");
   const countries: any[] = Country.getAllCountries();
   const closeEditForm: boolean = false;
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
@@ -33,15 +32,15 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
   const [otherLogoUrl, setOtherLogoUrl] = useState<string>("");
   const [projectData, setProjectData] = useState<Project>({
-    id: fakeProject?.id, // this might be harmfull
-    title: fakeProject?.title,
-    sector_activity: fakeProject?.sector_activity,
-    country: fakeProject?.country,
-    description: fakeProject?.description,
-    city: fakeProject?.city,
-    state: fakeProject?.state,
-    start_date: fakeProject?.start_date,
-    end_date: fakeProject?.end_date,
+    id: project?.id, // this might be harmfull
+    title: project?.title,
+    sector_activity: project?.sector_activity,
+    country: project?.country,
+    description: project?.description,
+    city: project?.city,
+    state: project?.state,
+    start_date: project?.start_date,
+    end_date: project?.end_date,
     status: ["DRAFT"],
     other_logo: "", // url from edge store
   });
@@ -60,7 +59,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     //   [e.target.name]: e.target.value,
     // };
     const data = {
-      ...fakeProject,
+      ...project,
       [e.target.name]: e.target.value,
     };
     setProjectData(data);
@@ -100,28 +99,8 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
       // write the logic here
     }
 
-    // UPDATE FAKE project
-    fakeProject = {
-      ...projectData,
-      title: projectData?.title,
-      description: projectData?.description,
-      country: projectData?.country,
-      city: projectData?.city,
-      sector_activity: projectData?.sector_activity,
-      state: projectData?.state,
-      start_date: projectData?.start_date,
-      end_data: projectData?.end_date,
-      otherLogo: otherLogo
-    };
-    LOCAL_STORAGE.save("fakeProject", fakeProject);
-    onClick(closeEditForm); // close the modal after edititng
-    toast("Project Edited", {
-      transition: Bounce,
-      autoClose: 1000,
-    });
-
     // write the patch function here
-    /*await mutateUpApiData(
+    await mutateUpApiData(
       Route.projects,
       {
         title: projectData.title,
@@ -146,9 +125,8 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
       .catch((error) => {
         console.log("unable to edit project", error);
       });
-*/
-    console.log(projectData);
-    LOCAL_STORAGE.save("fakeProject", projectData);
+    // console.log(projectData);
+    // LOCAL_STORAGE.save("fakeProject", projectData);
     // LOCAL_STORAGE.save("project_data", projectData);
   }
 

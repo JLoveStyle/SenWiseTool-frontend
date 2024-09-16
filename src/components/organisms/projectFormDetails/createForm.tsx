@@ -1,15 +1,18 @@
-import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
-import { businessActivity } from "@/utiles/services/constants";
-import { mutateApiData } from "@/utiles/services/mutations";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { City, Country, State } from "country-state-city";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import InputField from "../../molecules/inputField";
+import { Project } from "@/types/gestion";
 import CustomSelectTag from "../../molecules/select";
-import CardLayout from "../../templates/cardLayout";
+import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { Route } from "@/lib/route";
+import { useRouter } from "next/navigation";
+import { businessActivity, tableRaw } from "@/utiles/services/constants";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import CardLayout from "../../templates/cardLayout";
+import { Textarea } from "../../ui/textarea";
+import { mutateApiData } from "@/utiles/services/mutations";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
@@ -27,7 +30,6 @@ export default function ProjectDetailsForm({
   typeOfProject,
   project,
 }: Props) {
-  let fakeProject: { [key: string]: any } = {};
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
@@ -56,7 +58,7 @@ export default function ProjectDetailsForm({
     type: typeOfProject, // Project type ['AUTO_EVALUATION', 'INITIAL_INSPECTION', etc]
   });
 
-  // const animatedComponents = makeAnimated(); // For react-select
+  const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
     e: React.ChangeEvent<
@@ -116,7 +118,7 @@ export default function ProjectDetailsForm({
       // load the company logo in the companys' table
     }
 
-    // CREATE NEW RECORD IN THE PROJECTS' TABLE
+    // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
       company_id: "",

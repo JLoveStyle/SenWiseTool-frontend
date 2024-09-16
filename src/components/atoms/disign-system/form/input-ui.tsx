@@ -30,7 +30,7 @@ export const InputUI = ({
   multiple,
 }: Props) => {
   return (
-    <div className="items-center gap-4">
+    <div className="items-center gap-4 w-full">
       <Label htmlFor={id} className="text-right">
         {label}
       </Label>
