@@ -3,11 +3,11 @@ import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
-import { useUsertore } from "@/lib/stores/user-stores";
+import { Route } from "@/lib/route";
 import { ApiDataResponse, CampaignType, CompanyType, UserType } from "@/types/api-types";
+import { useUsertore } from "@/lib/stores/user-stores";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useApiOps } from "@/lib/api-provider";
-import { Route } from "@/lib/route";
 
 
 interface Props {
@@ -18,18 +18,16 @@ export default function Layout({ children }: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
-  const setCurrentUser = useUsertore((state) => state.setUser);
+
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
-  setTimeout(() => {
-    const { refetch } = useApiOps<
-      CompanyType,
-      ApiDataResponse<CompanyType>
-    >({
-      fn: () => fetchApiData(Route.user, "companies"),
-      route: Route.companies,
-    });
-  }, 100);
+  const { refetch } = useApiOps<
+    CompanyType,
+    ApiDataResponse<CompanyType>
+  >({
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
+  });
 
   // create user and set him to the store
   async function fetchData() {
@@ -42,6 +40,7 @@ export default function Layout({ children }: Props) {
 
   useEffect(() => {
     fetchData();
+    refetch();
     console.log(isLoaded);
   }, []);
 

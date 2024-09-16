@@ -29,18 +29,6 @@ export default function Home({ }: Props) {
     route: Route.user,
   });
 
-
-
-  // setTimeout(() => {
-  //   const { refetch } = useApiOps<
-  //     CampaignType,
-  //     ApiDataResponse<CampaignType>
-  //   >({
-  //     fn: () => fetchApiData(Route.user, "campaigns"),
-  //     route: Route.companies,
-  //   });
-  // }, 100);
-
   async function fetchData() {
     const token = await getToken();
     if (token) {
@@ -55,7 +43,7 @@ export default function Home({ }: Props) {
   useEffect(() => {
     fetchData();
     refetch();
-  }, [refetch]);
+  }, []);
 
   console.log(session);
   return (

@@ -19,7 +19,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     const setCurrentUser = useUsertore((state: IUser) => state.setUser);
     const setCompany = useCompanyStore((state) => state.setCompany);
     const setPricePlan = usePriceStore((state) => state.setPricePlan);
-    const setCampaign = useCampaignStore((state) => state.setCampaign);
+    const setCampaigns = useCampaignStore((state) => state.setCampaigns);
 
 
 
@@ -41,6 +41,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     };
 
     useEffect(() => {
+        console.log("from api provider route: ", route)
         fetchData();
     }, [query, route]);
 
@@ -61,8 +62,8 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
             setPricePlan(data as unknown as PricePlanType);
         }
         if (route?.includes("campaigns")) {
-
-            setCampaign(data as unknown as CampaignType);
+            console.log("campaigns all set: ", data as unknown as CampaignType)
+            setCampaigns(data as unknown as CampaignType[]);
         }
     }
     console.log("fro provider service: ", data)

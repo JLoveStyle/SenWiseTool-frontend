@@ -2,20 +2,24 @@
 // libs
 
 import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+// import { devtools, persist } from 'zustand/middleware'
 
 // local import
-import { CampaignType, UserType } from '../../types/api-types';
+import { CampaignType, } from '../../types/api-types';
 
 
 export interface ICampaign {
-    campaign: CampaignType | null
-    setCampaign: (campaign: CampaignType | null) => void
+    campaigns: CampaignType[] | []
+    currentCampaign: CampaignType | null
+    setCampaigns: (campaign: CampaignType[] | []) => void;
+    setCurrentCampaign: (campaignId: CampaignType | null) => void;
 }
 
 console.log("hit campaign store")
 
 export const useCampaignStore = create<ICampaign>()((set) => ({
-    campaign: null,
-    setCampaign: (campaign) => set(() => ({ campaign })),
+    campaigns: [],
+    currentCampaign: null,
+    setCampaigns: (campaign: CampaignType[]) => set(() => ({ campaigns: campaign })),
+    setCurrentCampaign: (campaign: CampaignType | null) => set(() => ({ currentCampaign: campaign })),
 }))

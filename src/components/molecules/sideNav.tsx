@@ -1,47 +1,23 @@
 "use client";
 import { UserButton } from "@clerk/nextjs";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { MdCampaign } from "react-icons/md";
+import { CampaignType } from "@/types/api-types";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 
-type Props = {};
 
-export default function SideNav({}: Props) {
+type Props = {
+  campaigns: CampaignType[] | [];
+};
+
+const SideNav = function ({ campaigns }: Props) {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const setCurrentCampaign = useCampaignStore((state) => state.setCurrentCampaign);
 
-  const campagn: { [key: string]: any }[] = [
-    {
-      id: "1",
-      name: "2022-2023",
-    },
-    {
-      id: "2",
-      name: "2023-2024",
-    },
-    {
-      id: 3,
-      name: "2024-2025",
-    },
-    {
-      id: "4",
-      name: "2025-2026",
-    },
-    {
-      id: "5",
-      name: "2026-2027",
-    },
-    {
-      id: "6",
-      name: "2027-2028",
-    },
-    {
-      id: "7",
-      name: "2028-2029",
-    },
-  ];
-
-  async function handleCampagneObject(id: string) {
-    console.log(id);
+  async function handleCampagneObject(currentCampaign: CampaignType) {
+    console.log("current campaign: ", currentCampaign);
+    setCurrentCampaign(currentCampaign);
     setShowDropDown((prev) => !prev);
   }
 
@@ -64,10 +40,10 @@ export default function SideNav({}: Props) {
       </div>
       {showDropDown && (
         <div className="z-50 absolute bg-tertiary">
-          {campagn.map((item) => (
+          {campaigns.map((item) => (
             <p
               key={item.id}
-              onClick={() => handleCampagneObject(item.id)}
+              onClick={() => handleCampagneObject(item)}
               className="hover:bg-white w-full p-2 hover:cursor-pointer"
             >
               {item.name}
@@ -82,3 +58,5 @@ export default function SideNav({}: Props) {
     </div>
   );
 }
+
+export default memo(SideNav);
