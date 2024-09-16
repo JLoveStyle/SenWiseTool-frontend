@@ -5,19 +5,17 @@ import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 // local import
-import { PricePlanType } from '@/types/api-types'
+import { CampaignType, UserType } from '../../types/api-types';
 
 
-interface PriceType {
-    price_plan: PricePlanType | null;
-    setPricePlan: (price_plan: PricePlanType) => void;
+export interface ICampaign {
+    campaign: CampaignType | null
+    setCampaign: (campaign: CampaignType | null) => void
 }
 
-console.log("hit the price store")
+console.log("hit campaign store")
 
-export const usePriceStore = create<PriceType>()((set) => ({
-    price_plan: null,
-    setPricePlan: (price_plan) => {
-        return set(() => ({ price_plan }))
-    },
-}));
+export const useCampaignStore = create<ICampaign>()((set) => ({
+    campaign: null,
+    setCampaign: (campaign) => set(() => ({ campaign })),
+}))

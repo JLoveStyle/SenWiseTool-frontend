@@ -1,7 +1,8 @@
 "use client";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import { ApiDataResponse, UserType } from "@/types/api-types";
+import { useUsertore } from "@/lib/stores/user-stores";
+import { ApiDataResponse, CampaignType, CompanyType, UserType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
@@ -9,24 +10,36 @@ import { useEffect } from "react";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
   LOCAL_STORAGE.save('username', user?.firstName)
-
+  const setCurrentUser = useUsertore((state) => state.setUser);
   console.log("user", user)
 
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
   // create user and set him to the store
-  const { data: currentUser, refetch } = useApiOps<
+  const { refetch } = useApiOps<
     UserType,
     ApiDataResponse<UserType>
   >({
     fn: () => fetchApiData(Route.user, "current"),
     route: Route.user,
   });
+
+
+
+  // setTimeout(() => {
+  //   const { refetch } = useApiOps<
+  //     CampaignType,
+  //     ApiDataResponse<CampaignType>
+  //   >({
+  //     fn: () => fetchApiData(Route.user, "campaigns"),
+  //     route: Route.companies,
+  //   });
+  // }, 100);
 
   async function fetchData() {
     const token = await getToken();
@@ -37,11 +50,12 @@ export default function Home({}: Props) {
     }
   }
 
+
+
   useEffect(() => {
     fetchData();
-    console.log(isLoaded);
     refetch();
-  }, []);
+  }, [refetch]);
 
   console.log(session);
   return (
