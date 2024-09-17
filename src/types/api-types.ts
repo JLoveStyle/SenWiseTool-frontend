@@ -132,3 +132,24 @@ export type Training_session = {
     updated_at: Date;
 }
 
+const CAMPAIGNSTATUS = {
+    OPEN: 'OPEN',
+    CLOSED: "CLOSED"
+} as const;
+
+type ObjectValue<T> = T[keyof T];
+
+export type CampaignStatus = ObjectValue<typeof CAMPAIGNSTATUS>;
+
+export type CampaignType = {
+
+    created_at: Date;
+    description: string;
+    end_date: Date;
+    id: string;
+    name: string;
+    start_date: Date;
+    status: CampaignStatus;
+    updated_at: Date;
+
+}

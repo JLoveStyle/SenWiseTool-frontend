@@ -1,0 +1,1 @@
+export type ProjectClientType = "INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING";

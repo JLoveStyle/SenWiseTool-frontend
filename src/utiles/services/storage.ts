@@ -6,6 +6,7 @@ type OPTIONS = {
 
 export class LOCAL_STORAGE {
   static save(key: string, value: any) {
+    if (typeof window === "undefined") return;
     return localStorage.setItem(key, JSON.stringify(value));
   }
 
