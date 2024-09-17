@@ -33,7 +33,8 @@ export default function ActionComponent({
 
   // DELETE PROJECT
   async function handleDeleteProject() {
-    setIsLoading((prev) => !prev);
+    setIsLoading((prev) => !prev)
+
     for (const project of projects) {
       await mutateDelApiData(Route.projects + `${project.id}`)
         .then((res) => {
