@@ -1,4 +1,5 @@
 "use client";
+import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import { ApiDataResponse, UserType } from "@/types/api-types";
@@ -13,9 +14,9 @@ export default function Home({}: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
-  LOCAL_STORAGE.save('username', user?.firstName)
+  LOCAL_STORAGE.save("username", user?.firstName);
 
-  console.log("user", user)
+  console.log("user", user);
 
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
@@ -46,9 +47,12 @@ export default function Home({}: Props) {
   console.log(session);
   return (
     <>
-      {/* <LayoutDashboard typeOfProject={["INITIAL_INSPECTION"]} projectsPerType={[]}> */}
-      <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
-      {/* </LayoutDashboard> */}
+      <LayoutDashboard
+        typeOfProject={["INITIAL_INSPECTION"]}
+        projectsPerType={[]}
+      >
+        <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
+      </LayoutDashboard>
     </>
   );
 }

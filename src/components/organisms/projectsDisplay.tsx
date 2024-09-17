@@ -25,6 +25,11 @@ export default function ProjectDisplay({ projects }: Props) {
     setSelectedProjects(projects);
   };
 
+  // read value form child component
+  const handleCloseDialog = (val: boolean) => {
+    setOpenModal(val)
+  }
+
   return (
     <>
       <div className="flex justify-between pb-4 pt-2 px-6">
@@ -90,7 +95,8 @@ export default function ProjectDisplay({ projects }: Props) {
                 shareProject={shareProject}
                 archiveProject={archiveProject}
                 deleteProject={deleteProject}
-                projectsId={[]}
+                projects={[]}
+                closeDialog={handleCloseDialog}
               />
             </DialogContent>
           </Dialog>

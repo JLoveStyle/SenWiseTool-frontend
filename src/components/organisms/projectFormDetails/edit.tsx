@@ -13,6 +13,7 @@ import { Textarea } from "../../ui/textarea";
 import { Bounce, toast } from "react-toastify";
 import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
+import { useEdgeStore } from "@/lib/edgestore";
 
 type Props = {
   onClick: (val1: boolean) => void;
@@ -20,7 +21,7 @@ type Props = {
 };
 
 export default function EditProjectFormDatails({ onClick, project }: Props) {
-  // FAKE PROJECT
+  const { edgestore } = useEdgeStore();
   const countries: any[] = Country.getAllCountries();
   const closeEditForm: boolean = false;
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
@@ -29,8 +30,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
-  const [otherLogoUrl, setOtherLogoUrl] = useState<string>("");
+  const [otherLogo, setOtherLogo] = useState<File>();
   const [projectData, setProjectData] = useState<Project>({
     id: project?.id, // this might be harmfull
     title: project?.title,
@@ -79,25 +79,16 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     }
   };
 
-  const handleOtherLogo = (e: any) => {
-    const reader = new FileReader();
-    if (e) {
-      reader.onload = (onLoadEvent) => {
-        if (onLoadEvent.target) {
-          setOtherLogo(onLoadEvent.target.result);
-        }
-      };
-    }
-  };
-
   async function handleSubmit(e: any) {
     e.preventDefault();
     setIsLoading((prev) => !prev);
+    // const uploadedLogo = await edgestore.publicImages.upload({
+    //   file: otherLogo,
+    //   onProgressChange: (progress) => console.log(progress),
+    // });
 
     // Upload other logo to edge store.
-    if (otherLogo) {
-      // write the logic here
-    }
+    // if (!uploadedLogo) return;
 
     // write the patch function here
     await mutateUpApiData(
@@ -148,7 +139,11 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             <label htmlFor="company_logo">
               <strong>Add another logo</strong>
             </label>
-            <input type="file" onChange={(e) => handleOtherLogo(e)} />
+            <input
+              accept=".png, .jpeg, .jpg"
+              type="file"
+              onChange={(e) => setOtherLogo(e.target.files?.[0])}
+            />
           </div>
         </div>
         <div className="flex justify-between gap-4">

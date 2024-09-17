@@ -7,39 +7,107 @@ import { InputUI } from "../atoms/disign-system/form/input-ui";
 import { ModuleProps } from "@/types/formData";
 import InputField from "./inputField";
 import { RxCross2 } from "react-icons/rx";
+import { Project } from "@/types/gestion";
+import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
+import { Route } from "@/lib/route";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {
   shareProject: boolean;
   archiveProject: boolean;
   deleteProject: boolean;
-  projectsId: string[];
+  projects: Project[];
+  closeDialog: (value: boolean) => void;
 };
 
 export default function ActionComponent({
   shareProject,
   deleteProject,
   archiveProject,
-  projectsId,
+  projects,
+  closeDialog,
 }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [emails, setEmails] = useState<ModuleProps[]>([]);
   const [email, setEmail] = useState<ModuleProps>();
+
   // DELETE PROJECT
   async function handleDeleteProject() {
-    // write logic here
-    console.log("delete pro");
+    setIsLoading((prev) => !prev);
+    for (const project of projects) {
+      await mutateDelApiData(Route.projects + `${project.id}`)
+        .then((res) => {
+          if (res.statusCode >= 205) {
+            console.log("Deleted successfully", res);
+            toast.error("Something went wrong", {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading((prev) => !prev);
+          } else {
+            toast.success("Deleted", {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading((prev) => !prev);
+            closeDialog(false); // close dialogue
+          }
+        })
+        .catch((error) => {
+          console.log("An error occured while archiving project", error);
+          setIsLoading((prev) => !prev);
+          toast.error("Fail to archive project", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+        });
+    }
   }
 
   // SHARE PROJECT
   async function handleShareProject() {
-    // Whrite your logic here
+    setIsLoading((prev) => !prev);
     console.log("share pro");
   }
 
   // ARCHIVE PROJECT
   async function handleArchiveProject() {
-    // write logic here
-    console.log("archive pro");
+    setIsLoading((prev) => !prev);
+    // Loop through all projects an update one by one
+    for (const project of projects) {
+      await mutateUpApiData(
+        Route.projects,
+        {
+          status: "ARCHIVE",
+        },
+        project.id
+      )
+        .then((res) => {
+          if (res.statusCode >= 205) {
+            console.log("archived successfully", res);
+            toast.error("Something went wrong", {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading((prev) => !prev);
+          } else {
+            toast.success("Project archived", {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading((prev) => !prev);
+            closeDialog(false); // close dialogue
+          }
+        })
+        .catch((error) => {
+          console.log("An error occured while archiving project", error);
+          setIsLoading((prev) => !prev);
+          toast.error("Fail to archive project", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+        });
+    }
   }
 
   const handleEmailUpdate = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -50,43 +118,35 @@ export default function ActionComponent({
     }
   };
 
-  const filterdEmails = (id: number) => {
+  const filterEmails = (id: number) => {
     const filteredEmail = emails.filter((item) => item.id !== id);
     setEmails(filteredEmail);
   };
 
-  async function sendInvites() {
-    // write logic here
-  }
-
   const shareProjectcontent = (
     <div className="">
-      <div className="flex gap-4 pb-6">
-        <div className=" w-full">
-          <InputField
-            label="Invite people to project"
-            inputName="email"
-            type="email"
-            placeholder="Enter email and press enter"
-            value={email?.value}
-            onKeyDown={handleEmailUpdate}
-            onChange={(e) =>
-              setEmail({
-                ...email,
-                id: Math.floor(Math.random() * 100),
-                value: e.target.value,
-              })
-            }
-          />
-        </div>
-      </div>
+      <InputField
+        label="Invite people to project"
+        inputName="email"
+        type="email"
+        placeholder="Enter email and press enter"
+        value={email?.value}
+        onKeyDown={handleEmailUpdate}
+        onChange={(e) =>
+          setEmail({
+            ...email,
+            id: Math.floor(Math.random() * 100),
+            value: e.target.value,
+          })
+        }
+      />
       {emails.length &&
         emails.map((item) => (
           <div key={item.id} className="flex justify-between py-1">
             <p>{item.value}</p>
             <RxCross2
               className="hover:cursor-pointer hover:bg-gray-300 h-4 w-4 rounded-full"
-              onClick={() => filterdEmails(item.id)}
+              onClick={() => filterEmails(item.id)}
             />
           </div>
         ))}
@@ -95,13 +155,20 @@ export default function ActionComponent({
 
   const archiveProjectcontent = (
     <div className="">
-      <p>archive</p>
+      <h2 className="font-semibold text-xl text-center pb-2">
+        {projects.length > 1
+          ? "Archive these projects"
+          : "Archive this project"}
+      </h2>
     </div>
   );
 
   const deleteProjectContent = (
-    <div className="">
-      <label htmlFor="">Enter </label>
+    <div className="pb-4">
+      <h2 className="">
+        Are you sure you want to delete{" "}
+        <span>{projects.length > 1 ? "these" : "this"}</span> project?
+      </h2>
     </div>
   );
 
@@ -117,14 +184,21 @@ export default function ActionComponent({
   console.log(heading);
   return (
     <CardLayout heading={heading}>
-      <div className="p-6 ">
+      <div className="py-4 px-6 ">
         <div className="">
           {shareProject && shareProjectcontent}
           {deleteProject && deleteProjectContent}
           {archiveProject && archiveProjectcontent}
         </div>
         <div className="flex gap-4 justify-center mx-auto">
-          <Button className="border border-red-500 bg-white text-red-500 hover:bg-red-100">
+          <Button
+            className={
+              deleteProject
+                ? "active:transition-y-1"
+                : "border active:transition-y-1 border-red-500 bg-white text-red-500 hover:bg-red-100"
+            }
+            onClick={() => closeDialog(false)}
+          >
             Cancel
           </Button>
           {isLoading ? (
@@ -140,7 +214,11 @@ export default function ActionComponent({
                   handleDeleteProject();
                 } else if (archiveProject) handleArchiveProject();
               }}
-              className="active:translate-y-1"
+              className={
+                deleteProject
+                  ? "text-white active:translate-y-1 hover:bg-red-400 bg-red-500 "
+                  : "active:translate-y-1"
+              }
             >
               {heading}
             </Button>

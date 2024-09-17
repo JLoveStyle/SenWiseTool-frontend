@@ -37,7 +37,7 @@ export const Route: Record<AvailableRoute, string> = {
   formationProjectDetails: "dashboard/training/project",
   profile: "profile",
   login: "login",
-  inspectionInterne: "/projects/inspection-interne",
+  inspectionInterne: "/dashboard/inspection-interne",
   inspectionInitial: "/dashboard/inspection-initial",
   autoEvaluation: "/dashboard/auto-evaluation",
   editProject: "/dashboard/edit",
