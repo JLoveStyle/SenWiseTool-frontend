@@ -30,12 +30,18 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
-import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
+// import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 
 const AddFormFromLibrary = dynamic(
   () => import("@/components/molecules/addFormFromLibrary"),
+  {
+    ssr: false,
+  }
+);
+const EditProjectFormDatails = dynamic(
+  () => import("@/components/organisms/projectFormDetails/edit"),
   {
     ssr: false,
   }
@@ -46,10 +52,8 @@ type Props = {};
 export default function page({}: Props) {
   const router = useRouter();
   const projectDetails: Project = LOCAL_STORAGE.get("project_data"); // Only for project title editoring
-  let fakeProject = LOCAL_STORAGE.get("fakeProject");
   const [openSheet, setOpenSheet] = useState<boolean>(false);
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
-  const [exit, setExit] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);

@@ -9,11 +9,13 @@ import FinalFormData from "@/components/molecules/chapters-table-data/finalFormD
 import PrintableFormTable from "@/components/molecules/chapters-table-data/printableFormTable";
 import { Route } from "@/lib/route";
 import { deployedPro } from "@/utiles/services/constants";
+import { mutateUpApiData } from "@/utiles/services/mutations";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Bounce, toast } from "react-toastify";
 import slugify from "slugify";
 
 type Props = {};
@@ -21,7 +23,7 @@ type Props = {};
 export default function page({}: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
-  const [project, setProject] = useState<{[key: string]: any}>({})
+  const [project, setProject] = useState<{ [key: string]: any }>({});
   const id = LOCAL_STORAGE.get("projectId");
   const projectData = LOCAL_STORAGE.get("project_data");
   const finalJson = LOCAL_STORAGE.get("finalJson");
@@ -44,7 +46,7 @@ export default function page({}: Props) {
     await fetchApiData(Route.profile, id)
       .then((response) => {
         console.log("Here is the response", response);
-        setProject(response)
+        setProject(response);
       })
       .catch((error) => {
         console.log("error occured", error);
@@ -53,25 +55,57 @@ export default function page({}: Props) {
 
   useEffect(() => {
     // Fetch project with id
-    getProjectById()
+    getProjectById();
   }, []);
 
+  async function deployProject() {
+    await mutateUpApiData(Route.projects + `/${id}`, { status: "DEPLOY" })
+      .then((response) => {
+        console.log(response);
+        if (response.statusCode >= 205) {
+          toast.error(`Sorry something went wrong`, {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("An error occured", error);
+        toast.error("Fail to deploy. Try again", {
+          transition: Bounce,
+          autoClose: 1000,
+        });
+      });
+  }
+
   return (
-    <PrintContent onClick={() => router.push(Route.editProject + `/${id}`)}>
+    <PrintContent
+      deployProject={() => deployProject()}
+      onClick={() => router.push(Route.editProject + `/${id}`)}
+    >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
-        <div className="flex justify-between py-2 md:w-[500px] mx-auto">
+        <div className="flex justify-between py-2 mx-auto">
+          {/* COMPANY LOGO */}
           <img
             src="https://syndustricam.org/wp-content/uploads/2023/07/013-image-0125-1.png"
             alt="rainforest aliance logo"
-            width={200}
+            width={250}
             height={200}
           />
+
           <Image
             src="/images/logo_forest.jpg"
             alt="rainforest aliance logo"
-            width={200}
-            height={200}
+            width={100}
+            height={100}
+          />
+          {/* Partner logo */}
+          <Image
+            src="/images/logo-senima.png"
+            alt="rainforest aliance logo"
+            width={100}
+            height={100}
           />
         </div>
         <h1 className="font-bold text-2xl text-center py-8 ">

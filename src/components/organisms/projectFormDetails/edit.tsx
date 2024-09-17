@@ -146,17 +146,15 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             />
           </div>
         </div>
-        <div className="flex justify-between gap-4">
-          <div className="md:w-1/2">
-            <InputField
-              label="Project title"
-              inputName="title"
-              type="text"
-              value={projectData.title}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div>
-          <div className="md:w-1/2">
+        <div className="">
+          <InputField
+            label="Project title"
+            inputName="title"
+            type="text"
+            value={projectData.title}
+            onChange={(e) => handleChangeEvent(e)}
+          />
+          {/* <div className="md:w-1/2">
             <InputField
               label="Description"
               inputName="description"
@@ -164,7 +162,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
               value={projectData.description}
               onChange={(e) => handleChangeEvent(e)}
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-between gap-4">
           <div className="md:w-1/2">
@@ -242,13 +240,16 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             className="md:w-[33.33%]"
           />
         </div>
-        {/* <Textarea
+        <label className="font-semibold " htmlFor="description">
+          Description<span className="text-red-500">*</span>
+        </label>
+        <Textarea
+          className="border mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           placeholder="Enter project description"
           value={projectData.description}
-          name='description'
-
+          name="description"
           onChange={(e) => handleChangeEvent(e)}
-        /> */}
+        />
         <div className="flex justify-end gap-4">
           <Button
             className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow"
