@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ApiDataResponse, CampaignType, CompanyType, PricePlanType, UserType } from '../types/api-types';
-import { IUser, useUsertore } from './stores/user-stores';
+import { IUser, useUserstore } from './stores/user-stores';
 import { useCompanyStore } from './stores/companie-store';
 import { usePriceStore } from './stores/price-store';
 import { useCampaignStore } from './stores/campaign-store';
@@ -16,7 +16,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const setCurrentUser = useUsertore((state: IUser) => state.setUser);
+    const setCurrentUser = useUserstore((state: IUser) => state.setUser);
     const setCompany = useCompanyStore((state) => state.setCompany);
     const setPricePlan = usePriceStore((state) => state.setPricePlan);
     const setCampaigns = useCampaignStore((state) => state.setCampaigns);

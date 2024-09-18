@@ -14,7 +14,7 @@ export interface IUser {
 
 console.log("hit user store")
 
-export const useUsertore = create<IUser>()((set) => ({
+export const useUserstore = create<IUser>()((set) => ({
     user: null,
     setUser: (user) => set(() => ({ user })),
 }))

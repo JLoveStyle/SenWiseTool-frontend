@@ -2,8 +2,13 @@
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import { useUsertore } from "@/lib/stores/user-stores";
-import { ApiDataResponse, CampaignType, CompanyType, UserType } from "@/types/api-types";
+import { useUserstore } from "@/lib/stores/user-stores";
+import {
+  ApiDataResponse,
+  CampaignType,
+  CompanyType,
+  UserType,
+} from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
@@ -11,27 +16,18 @@ import { useEffect } from "react";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
-<<<<<<< HEAD
   LOCAL_STORAGE.save("username", user?.firstName);
-
+  const setCurrentUser = useUserstore((state) => state.setUser);
   console.log("user", user);
-=======
-  LOCAL_STORAGE.save('username', user?.firstName)
-  const setCurrentUser = useUsertore((state) => state.setUser);
-  console.log("user", user)
->>>>>>> 17901abf828b7e0c11b5e0dcfbf65d09ffcefabf
 
   if (!isSignedIn) return <div>sign in to view this page</div>;
 
   // create user and set him to the store
-  const { refetch } = useApiOps<
-    UserType,
-    ApiDataResponse<UserType>
-  >({
+  const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
     fn: () => fetchApiData(Route.user, "current"),
     route: Route.user,
   });
@@ -44,8 +40,6 @@ export default function Home({ }: Props) {
       // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
     }
   }
-
-
 
   useEffect(() => {
     fetchData();

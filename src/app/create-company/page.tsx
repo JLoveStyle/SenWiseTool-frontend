@@ -60,6 +60,7 @@ export default function Home({ }: Props) {
 
   const { isSignedIn, user } = useUser();
 
+  // REGISTER COMPANY
   async function handleSubmit(e: any) {
     e.preventDefault();
     setHasAgree(false);
@@ -80,13 +81,8 @@ export default function Home({ }: Props) {
         file: companyLogo,
         onProgressChange: (progress) => console.log(progress),
       });
-<<<<<<< HEAD
-      // const res = await createOrganization(formData, user.id);
-      // console.log(res)
-=======
       const res = await createOrganization(formData, user.id);
       console.log(res)
->>>>>>> 17901abf828b7e0c11b5e0dcfbf65d09ffcefabf
       if (!uploadedLogo) return
 
       await mutateApiData(Route.companies, {
@@ -100,11 +96,7 @@ export default function Home({ }: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-<<<<<<< HEAD
-        // status: "INACTIVE",
-=======
         status: "INACTIVE",
->>>>>>> 17901abf828b7e0c11b5e0dcfbf65d09ffcefabf
       })
         .then((response) => {
           console.log("create company res =>", response);
@@ -116,7 +108,7 @@ export default function Home({ }: Props) {
             setIsLoading(false);
           }
           
-          // router.push(Route.inspectionInitial);
+          router.push(Route.dashboard);
         })
         .catch((error) => {
           console.log("An error occured", error);
