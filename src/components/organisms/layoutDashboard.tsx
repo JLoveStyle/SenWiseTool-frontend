@@ -7,7 +7,7 @@ import { Project } from "@/types/gestion";
 import CloseSideNav from "./closeSideNav";
 import { ProjectClientType } from "@/types/client-types";
 import { ApiDataResponse, CampaignType, CompanyType, UserType } from "@/types/api-types";
-import { useUsertore } from "@/lib/stores/user-stores";
+import { useUserstore } from "@/lib/stores/user-stores";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useApiOps } from "@/lib/api-provider";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
