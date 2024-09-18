@@ -13,6 +13,7 @@ import makeAnimated from "react-select/animated";
 import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { Spinner } from "@/components/atoms/spinner/spinner";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
@@ -139,8 +140,8 @@ export default function ProjectDetailsForm({
       })
       .catch((err) => {
         console.log("error occured while creating", err);
+        setIsLoading((prev) => !prev);
       });
-
     // get the id of the project response and route to that ID
   }
 
@@ -289,7 +290,7 @@ export default function ProjectDetailsForm({
             type="submit"
             className={isLoading ? "hover:cursor-wait opacity-70" : ""}
           >
-            {isLoading ? "Processing..." : "CREATE PROJECT"}
+            {isLoading ? <Spinner/> : "CREATE PROJECT"}
           </Button>
         </div>
       </form>
