@@ -26,7 +26,6 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     /** TODO : REFACTOR THIS HOOK LATER */
 
     const fetchData = () => {
-
         fn()
             .then((response) => {
                 if (response?.status?.toString().startsWith("2"))
@@ -41,28 +40,22 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     };
 
     useEffect(() => {
-        console.log("from api provider route: ", route)
         fetchData();
     }, [query, route]);
 
     const refetch = () => fetchData();
 
-    // TODO: this could be well refactor later.
     if (data) {
         if (route?.includes("users")) {
-
             setCurrentUser(data as unknown as UserType);
         }
         if (route?.includes("companies")) {
-            console.log("company state set: ", data as unknown as CompanyType)
             setCompany(data as unknown as CompanyType);
         }
         if (route?.includes("price_plans")) {
-
             setPricePlan(data as unknown as PricePlanType);
         }
         if (route?.includes("campaigns")) {
-            console.log("campaigns all set: ", data as unknown as CampaignType)
             setCampaigns(data as unknown as CampaignType[]);
         }
     }

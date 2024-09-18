@@ -33,6 +33,7 @@ import ProjectDetailsForm from "@/components/organisms/projectFormDetails/create
 // import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
+import { ProjectStatus, ProjectType } from "@/types/api-types";
 
 const AddFormFromLibrary = dynamic(
   () => import("@/components/molecules/addFormFromLibrary"),
@@ -49,7 +50,7 @@ const EditProjectFormDatails = dynamic(
 
 type Props = {};
 
-export default function page({}: Props) {
+export default function page({ }: Props) {
   const router = useRouter();
   const projectDetails: Project = LOCAL_STORAGE.get("project_data"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);
@@ -63,12 +64,13 @@ export default function page({}: Props) {
     sector_activity: projectDetails.sector_activity,
     city: projectDetails.city,
     country: projectDetails.country,
-    status: "DRAFT",
+    status: "ACTIVE",
     state: projectDetails.state,
     start_date: projectDetails.start_date,
     end_date: projectDetails.end_date,
     title: projectDetails.title,
     description: projectDetails.description,
+
   });
 
   const [chap1, chap2, chap3] = requirements;
