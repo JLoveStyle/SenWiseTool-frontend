@@ -63,7 +63,7 @@ export default function page({}: Props) {
     sector_activity: projectDetails.sector_activity,
     city: projectDetails.city,
     country: projectDetails.country,
-    status: ["DRAFT"],
+    status: "DRAFT",
     state: projectDetails.state,
     start_date: projectDetails.start_date,
     end_date: projectDetails.end_date,

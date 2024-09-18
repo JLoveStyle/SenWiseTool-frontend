@@ -100,14 +100,15 @@ export default function Home({ }: Props) {
       })
         .then((response) => {
           console.log("create company res =>", response);
-          if (response.statusCode >= 205) {
+          if (!response.statusCode.toString().startsWith('2')) {
             toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
             });
             setIsLoading(false);
+            return
           }
-          
+          setIsLoading(false);
           router.push(Route.dashboard);
         })
         .catch((error) => {
@@ -229,7 +230,7 @@ export default function Home({ }: Props) {
             label="Company phone"
             inputName="phone"
             type="tel"
-            value={formData.companyEmail}
+            value={formData.phone}
             onChange={(e) => handleInputChange(e)}
           />
 

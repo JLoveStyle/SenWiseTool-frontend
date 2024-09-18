@@ -14,7 +14,7 @@ export default function Home({}: Props) {
   }, []);
 
   return (
-    <LayoutDashboard projectsPerType={[]} typeOfProject={["INITIAL_INSPECTION"]}>
+    <LayoutDashboard projectsPerType={[]} typeOfProject={"INITIAL_INSPECTION"}>
       <ProjectDisplay projects={[]} />
     </LayoutDashboard>
   );

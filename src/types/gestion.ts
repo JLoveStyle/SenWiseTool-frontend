@@ -1,6 +1,6 @@
 export interface Project {
   id: string,
-  type?: ["INITIAL_INSPECTION" | "INTERNAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"],
+  type?: "INITIAL_INSPECTION" | "INTERNAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING",
   company_id?: string,
   other_logo?: string,
   title: string,
@@ -9,7 +9,7 @@ export interface Project {
   country: string,
   city: string,
   state: string,
-  status: ['ARCHIVED' | 'DRAFT' | 'ACTIVE' | 'INACTIVE' | 'DEPLOYED'],
+  status: 'ARCHIVED' | 'DRAFT' | 'ACTIVE' | 'INACTIVE' | 'DEPLOYED',
   start_date: string,
   end_date: string,
   project_structure?: {},

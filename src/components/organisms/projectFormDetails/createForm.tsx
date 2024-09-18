@@ -16,12 +16,12 @@ import { mutateApiData } from "@/utiles/services/mutations";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject?: [
+  typeOfProject?: 
     | "INTERNAL_INSPECTION"
     | "INITIAL_INSPECTION"
     | "AUTO_EVALUATION"
     | "TRAINING"
-  ];
+  ;
   project?: Project;
 };
 
@@ -54,8 +54,8 @@ export default function ProjectDetailsForm({
     state: "",
     start_date: "",
     end_date: "",
-    status: ["DRAFT"],
-    type: typeOfProject, // Project type ['AUTO_EVALUATION', 'INITIAL_INSPECTION', etc]
+    status: "DRAFT",
+    type: typeOfProject, // Project type 'AUTO_EVALUATION' | 'INITIAL_INSPECTION' | etc
   });
 
   const animatedComponents = makeAnimated(); // For react-select
@@ -127,6 +127,7 @@ export default function ProjectDetailsForm({
       sector_activity: projectData.sector_activity,
       country: projectData.country,
       city: projectData.city,
+      state: projectData.state,
       status: projectData.status,
       start_date: projectData.start_date,
       end_date: projectData.end_date,
@@ -196,7 +197,7 @@ export default function ProjectDetailsForm({
             <InputField
               label="Start date"
               inputName="start_date"
-              type="date"
+              type="datetime-local"
               value={projectData.start_date}
               onChange={(e) => handleChangeEvent(e)}
             />
@@ -205,7 +206,7 @@ export default function ProjectDetailsForm({
             <InputField
               label="End date"
               inputName="end_date"
-              type="date"
+              type="datetime-local"
               value={projectData.end_date}
               onChange={(e) => handleChangeEvent(e)}
             />

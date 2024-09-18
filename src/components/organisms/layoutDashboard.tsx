@@ -14,7 +14,7 @@ import { useCampaignStore } from "@/lib/stores/campaign-store"
 import { Route } from "@/lib/route";
 type Props = {
   children: React.ReactNode;
-  typeOfProject?: [ProjectClientType]
+  typeOfProject?: ProjectClientType
   projectsPerType: Project[];
 };
 

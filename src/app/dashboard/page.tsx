@@ -50,7 +50,7 @@ export default function Home({}: Props) {
   return (
     <>
       <LayoutDashboard
-        typeOfProject={["INITIAL_INSPECTION"]}
+        typeOfProject={"INITIAL_INSPECTION"}
         projectsPerType={[]}
       >
         <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>

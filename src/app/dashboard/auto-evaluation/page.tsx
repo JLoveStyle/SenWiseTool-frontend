@@ -14,7 +14,7 @@ export default function Home({}: Props) {
   }, [])
 
   return (
-    <LayoutDashboard projectsPerType={[]} typeOfProject={["AUTO_EVALUATION"]}>
+    <LayoutDashboard projectsPerType={[]} typeOfProject={"AUTO_EVALUATION"}>
       <ProjectDisplay projects={[]}/>
     </LayoutDashboard>
   )
