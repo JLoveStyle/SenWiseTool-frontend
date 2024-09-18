@@ -6,7 +6,6 @@ import {
 } from "@/components/atoms/colums-of-tables/deployableForm";
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
-import PrintableFormTable from "@/components/molecules/chapters-table-data/printableFormTable";
 import { Route } from "@/lib/route";
 import { deployedPro } from "@/utiles/services/constants";
 import { mutateUpApiData } from "@/utiles/services/mutations";
