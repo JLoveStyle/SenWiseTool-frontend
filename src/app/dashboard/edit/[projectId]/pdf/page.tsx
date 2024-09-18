@@ -19,12 +19,12 @@ import slugify from "slugify";
 
 type Props = {};
 
-export default function page({}: Props) {
+export default function page({ }: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
   const [project, setProject] = useState<{ [key: string]: any }>({});
-  const id = LOCAL_STORAGE.get("projectId");
-  const projectData = LOCAL_STORAGE.get("project_data");
+
+  const projectData = LOCAL_STORAGE.get("project");
   const finalJson = LOCAL_STORAGE.get("finalJson");
 
   const firstHalfMetaData = finalJson.metaData.slice(
@@ -42,7 +42,7 @@ export default function page({}: Props) {
   };
 
   async function getProjectById() {
-    await fetchApiData(Route.profile, id)
+    await fetchApiData(Route.projects, projectData.id)
       .then((response) => {
         console.log("Here is the response", response);
         setProject(response);
@@ -58,7 +58,7 @@ export default function page({}: Props) {
   }, []);
 
   async function deployProject() {
-    await mutateUpApiData(Route.projects + `/${id}`, { status: "DEPLOY" })
+    await mutateUpApiData(Route.projects, { status: "DEPLOYED" }, projectData.id)
       .then((response) => {
         console.log(response);
         if (response.statusCode >= 205) {
@@ -79,8 +79,8 @@ export default function page({}: Props) {
 
   return (
     <PrintContent
-      deployProject={() => deployProject()}
-      onClick={() => router.push(Route.editProject + `/${id}`)}
+      deployProject={deployProject}
+      onClick={() => router.push(Route.editProject + `/${projectData.id}`)}
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}

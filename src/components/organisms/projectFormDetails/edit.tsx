@@ -14,10 +14,11 @@ import { Bounce, toast } from "react-toastify";
 import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { useEdgeStore } from "@/lib/edgestore";
+import { ProjectType } from "@/types/api-types";
 
 type Props = {
   onClick: (val1: boolean) => void;
-  project: Project;
+  project: ProjectType;
 };
 
 export default function EditProjectFormDatails({ onClick, project }: Props) {
@@ -31,8 +32,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   const [city, setCity] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [otherLogo, setOtherLogo] = useState<File>();
-  const [projectData, setProjectData] = useState<Project>({
-    id: project?.id, // this might be harmfull
+  const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: project?.title,
     sector_activity: project?.sector_activity,
     country: project?.country,
@@ -41,8 +41,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     state: project?.state,
     start_date: project?.start_date,
     end_date: project?.end_date,
-    status: ["DRAFT"],
-    other_logo: "", // url from edge store
+    status: "DRAFT",
   });
 
   const id = LOCAL_STORAGE.get("projectId");
@@ -211,7 +210,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="Country"
             arrayOfItems={countries}
-            value={projectData.country}
+            value={projectData.country as string}
             className="md:w-[33.33%]"
           />
           <CustomSelectTag
@@ -219,7 +218,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
-            value={projectData.state}
+            value={projectData.state as string}
             className="md:w-[33.33%]"
           />
           {/* <div className="flex flex-col ">
@@ -236,7 +235,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="City"
             arrayOfItems={city}
-            value={projectData.city}
+            value={projectData.city as string}
             className="md:w-[33.33%]"
           />
         </div>

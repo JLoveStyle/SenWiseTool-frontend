@@ -16,12 +16,11 @@ import { useEffect } from "react";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
   LOCAL_STORAGE.save("username", user?.firstName);
-  const setCurrentUser = useUserstore((state) => state.setUser);
   console.log("user", user);
 
   if (!isSignedIn) return <div>sign in to view this page</div>;
@@ -30,6 +29,11 @@ export default function Home({}: Props) {
   const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
     fn: () => fetchApiData(Route.user, "current"),
     route: Route.user,
+  });
+
+  useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
   });
 
   async function fetchData() {

@@ -95,7 +95,7 @@ export type ProjectType = {
     project_structure: JSON;
     archived: boolean;
     draft: boolean;
-
+    campaign_id: string;
     archived_at: string;
     draft_at: string;
     created_at: string;

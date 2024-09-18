@@ -7,20 +7,22 @@ import { Button } from "../../ui/button";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Route } from "@/lib/route";
 import { useRouter } from "next/navigation";
-import { businessActivity, tableRaw } from "@/utiles/services/constants";
+import { businessActivity } from "@/utiles/services/constants";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject?: 
-    | "INTERNAL_INSPECTION"
-    | "INITIAL_INSPECTION"
-    | "AUTO_EVALUATION"
-    | "TRAINING"
+  typeOfProject?:
+  | "INTERNAL_INSPECTION"
+  | "INITIAL_INSPECTION"
+  | "AUTO_EVALUATION"
+  | "TRAINING"
   ;
   project?: Project;
 };
@@ -34,6 +36,8 @@ export default function ProjectDetailsForm({
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
   const router = useRouter();
+  const company = useCompanyStore((state) => state.company);
+  const compains = useCampaignStore((state) => state.campaigns);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -57,6 +61,7 @@ export default function ProjectDetailsForm({
     status: "DRAFT",
     type: typeOfProject, // Project type 'AUTO_EVALUATION' | 'INITIAL_INSPECTION' | etc
   });
+
 
   const animatedComponents = makeAnimated(); // For react-select
 
@@ -121,7 +126,7 @@ export default function ProjectDetailsForm({
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
-      company_id: "",
+      company_id: company?.id,
       title: projectData.title,
       description: projectData.description,
       sector_activity: projectData.sector_activity,
@@ -129,13 +134,18 @@ export default function ProjectDetailsForm({
       city: projectData.city,
       state: projectData.state,
       status: projectData.status,
-      start_date: projectData.start_date,
-      end_date: projectData.end_date,
+      start_date: new Date(projectData.start_date).toISOString(),
+      end_date: new Date(projectData.end_date).toISOString(),
+      campaign_id: compains[0]?.id,
     })
       .then((res) => {
         console.log("project cereated", res);
         setIsLoading((prev) => !prev);
-        router.push(Route.editProject + `/45`);
+        LOCAL_STORAGE.save("project", {
+          title: res.data.title,
+          id: res.data.id
+        });
+        router.push(Route.editProject + `/${res.data.id}`);
       })
       .catch((err) => {
         console.log("error occured while creating", err);

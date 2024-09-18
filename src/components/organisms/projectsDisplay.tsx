@@ -9,9 +9,12 @@ import { Project } from "@/types/gestion";
 import { columnListProjects } from "../atoms/columnsProject";
 import { Dialog, DialogContent } from "../ui/dialog";
 import ActionComponent from "../molecules/actionComponent";
+import { CompanyType } from "@/types/api-types";
+import { useCompanyStore } from "@/lib/stores/companie-store";
 
 type Props = {
   projects: Project[];
+
 };
 
 export default function ProjectDisplay({ projects }: Props) {
@@ -20,6 +23,10 @@ export default function ProjectDisplay({ projects }: Props) {
   const [archiveProject, setArchiveProiect] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedProjects, setSelectedProjects] = useState<Project[]>();
+
+  const company = useCompanyStore((state) => state.company);
+
+  console.log("from project display: ", company)
 
   const handleSelectedProjects = (projects: Project[]) => {
     setSelectedProjects(projects);
