@@ -11,10 +11,10 @@ import { Archive, Trash2, UserPlus } from "lucide-react";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 
 import { NewTraining } from "@/components/atoms/training/new-trainer";
+import { trainingColumnTable } from "@/components/atoms/training/training-column-table";
 import { trainingList } from "@/components/atoms/training/training-list";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-import { columnTable } from "@/lib/column-table";
 import { TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
 
@@ -74,7 +74,7 @@ export default function Training() {
       </div>
       <div className="px-6">
         <DataTable
-          incomingColumns={columnTable}
+          incomingColumns={trainingColumnTable}
           incomingData={trainingDatas}
           onSelecteItem={() => {}}
           isLoading={isLoading}

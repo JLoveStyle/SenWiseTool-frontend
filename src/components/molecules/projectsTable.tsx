@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Spinner } from "../atoms/spinner/spinner";
@@ -173,7 +174,15 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <div className="flex items-center justify-center mt-28">
+                    <Image
+                      src="/svg/empty.svg"
+                      height={250}
+                      width={350}
+                      alt="Empty illustation"
+                      className="animate-empty-image"
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             )}

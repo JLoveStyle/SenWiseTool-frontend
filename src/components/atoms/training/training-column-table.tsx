@@ -18,7 +18,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Bounce, toast } from "react-toastify";
 
-export const columnTable: ColumnDef<TrainingProps>[] = [
+export const trainingColumnTable: ColumnDef<TrainingProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -101,9 +101,11 @@ export const columnTable: ColumnDef<TrainingProps>[] = [
               Copy project ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Link href={Route.inspectionInterne + `/${project.id}`}>
+            <Link href={Route.trainingProject + `/${project.id}`}>
               <DropdownMenuItem
-                onClick={() => LOCAL_STORAGE.save("projectId", project.id)}
+                onClick={() =>
+                  LOCAL_STORAGE.save("currentTrainingProject", project)
+                }
               >
                 View project details
               </DropdownMenuItem>

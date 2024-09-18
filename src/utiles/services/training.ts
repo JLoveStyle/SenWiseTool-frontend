@@ -1,6 +1,6 @@
 import { Route } from "@/lib/route";
 import { TrainingType } from "@/types/api-types";
-import { DBTrainingProps } from "@/types/formData";
+import { DBTrainingProps, LocalTrainingProps } from "@/types/formData";
 import {
   mutateApiData,
   mutateDelApiData,
@@ -8,9 +8,32 @@ import {
 } from "@/utiles/services/mutations";
 import ApiCall from "./httpClients";
 import { fetchApiData } from "./queries";
+import { LOCAL_STORAGE } from "./storage";
 
 export const db_create_training = async (data: DBTrainingProps) => {
   const db = new ApiCall();
+
+  // Local storage
+
+  let trainings = LOCAL_STORAGE.get("trainings")
+    ? LOCAL_STORAGE.get("trainings")
+    : [];
+
+  const id = trainings.length !== 0 ? trainings.at(-1).id + 1 : 1;
+
+  const localDbData = { id: id, ...data, status: "DRAFT" };
+
+  trainings.push(localDbData);
+  LOCAL_STORAGE.save("trainings", trainings);
+
+  const response = {
+    message: {
+      message: "Created successfull",
+      statusCode: 201,
+    },
+  };
+  return { response: response, status: "success" };
+  // end local storage
 
   return mutateApiData<TrainingType>(Route.training, data)
     .then((response) => {
@@ -26,6 +49,33 @@ export const db_update_training = async (data: DBTrainingProps, id: string) => {
   const db = new ApiCall();
 
   const url_formated = `${Route.training}/${id}`;
+
+  // Local storage
+
+  let trainings = LOCAL_STORAGE.get("trainings")
+    ? LOCAL_STORAGE.get("trainings")
+    : [];
+
+  let localDbData: LocalTrainingProps[] = [];
+
+  trainings.forEach((training: LocalTrainingProps) => {
+    if (training.id === id) {
+      localDbData.push({ ...training, ...data });
+    } else {
+      localDbData.push(training);
+    }
+  });
+
+  LOCAL_STORAGE.save("trainings", localDbData);
+
+  const response = {
+    message: {
+      message: "Updated successfull",
+      statusCode: 201,
+    },
+  };
+  return { response: response, status: "success" };
+  // end local storage
 
   mutateUpApiData<TrainingType>(Route.training, data, id)
     .then((response) => {
@@ -57,8 +107,35 @@ export const db_get_trainings = async (companyId: string) => {
   return [];
 };
 
-export const db_delete_training = async (data: DBTrainingProps, id: string) => {
+export const db_delete_training = async (id: string) => {
   const db = new ApiCall();
+
+  // Local storage
+
+  let trainings = LOCAL_STORAGE.get("trainings")
+    ? LOCAL_STORAGE.get("trainings")
+    : [];
+
+  let localDbData: LocalTrainingProps[] = [];
+
+  trainings.forEach((training: LocalTrainingProps) => {
+    if (training.id !== id) {
+      localDbData.push(training);
+    }
+  });
+
+  console.log("NewData ", localDbData);
+
+  LOCAL_STORAGE.save("trainings", localDbData);
+
+  const response = {
+    message: {
+      message: "Updated successfull",
+      statusCode: 201,
+    },
+  };
+  return { response: response, status: "success" };
+  // end local storage
 
   // const url_formated = `${Route.db_base_url}/${id}`;
 

@@ -6,16 +6,13 @@ import {
   ClipboardType,
   Eye,
   FilePenLine,
-  Router,
   UserRoundPlus,
 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 type Props = {
   projectObject: Project | undefined;
-  showData: (val: boolean) => void
+  showData: (val: boolean) => void;
 };
 
 export default function ProjectSummary({ projectObject, showData }: Props) {
@@ -40,7 +37,7 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
       text: "Edit form",
       secondIcon: <ChevronRight />,
       function: () => {
-        router.push(Route.editProject + "/45")
+        router.push(Route.editProject + "/45");
       },
     },
     {
@@ -74,9 +71,7 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">N° Questions</span>
-                <span className="bg-green-200 text-sm px-2 rounded-lg">
-                  3
-                </span>
+                <span className="bg-green-200 text-sm px-2 rounded-lg">3</span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Owner</span>

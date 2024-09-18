@@ -14,7 +14,7 @@ import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { db_create_training } from "@/utiles/services/training";
 import { isEmptyObject } from "@/utils/tool";
 import { TrainingFormVerification } from "@/utils/training-form-verification";
 import clsx from "clsx";
@@ -59,27 +59,20 @@ export function NewTraining() {
       modules: formData.modules.map((item) => item.value),
     };
 
-    // const serverResponse = await db_create_training(dataToDB);
+    const serverResponse = await db_create_training(dataToDB);
 
-    // console.log("daaaaata:::::::::", serverResponse);
+    console.log("daaaaata:::::::::", serverResponse);
 
-    let trainings: TrainingProps[] = LOCAL_STORAGE.get("trainings")
-      ? LOCAL_STORAGE.get("trainings")
-      : [];
-
-    trainings.push(formData);
-    LOCAL_STORAGE.save("trainings", trainings);
-
-    // if (serverResponse.status === "error") {
-    //   toast.error(serverResponse.response.message.message);
-    //   setIsLoading(false);
-    //   return;
-    // }
+    if (serverResponse.status === "error") {
+      toast.error(serverResponse.response.message.message);
+      setIsLoading(false);
+      return;
+    }
 
     toast.success("Your project are created successfull");
     setIsLoading(false);
     toggleOpenModal();
-    router.push(Route.formationProject);
+    router.push(Route.trainingProject);
     return;
   };
 

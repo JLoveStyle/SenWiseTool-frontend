@@ -10,40 +10,40 @@ export interface FormData {
 }
 
 export interface User {
-  id?: string,
-  username?: string,
-  title: ['ADG' | "MEMBER"],
-  company_id?: string,
-  status?: ['active' | 'inactive' | "banned"],
-  activity?: ['FARMER' | 'EMPLOYEE' | "AUDITOR" | "TRAINER" | "AGENT"],
-  famer_attached_contract_url?: string,
-  profileUrls?: string,
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-  role?: string,
-  companyId?: string,
-  phone_number?: string,
-  civility?: string
+  id?: string;
+  username?: string;
+  title: ["ADG" | "MEMBER"];
+  company_id?: string;
+  status?: ["active" | "inactive" | "banned"];
+  activity?: ["FARMER" | "EMPLOYEE" | "AUDITOR" | "TRAINER" | "AGENT"];
+  famer_attached_contract_url?: string;
+  profileUrls?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role?: string;
+  companyId?: string;
+  phone_number?: string;
+  civility?: string;
 }
 
 export interface Company {
-  id?: string,
-  slug?: string,
-  address?: string,
-  description?: string,
-  website?: string,
-  phone_number?: string,
-  companyName: string,
-  companyEmail: string,
-  country: string,
-  state: string,
-  city: string,
-  sector_of_activity: string,
-  logo?: string,
-  paypal_id?: string,
-  payment_mode?: string
+  id?: string;
+  slug?: string;
+  address?: string;
+  description?: string;
+  website?: string;
+  phone_number?: string;
+  companyName: string;
+  companyEmail: string;
+  country: string;
+  state: string;
+  city: string;
+  sector_of_activity: string;
+  logo?: string;
+  paypal_id?: string;
+  payment_mode?: string;
 }
 
 export interface ModuleProps {
@@ -58,6 +58,16 @@ export interface TrainingProps {
   end_date: string;
   location: string;
   modules: ModuleProps[];
+}
+
+export interface LocalTrainingProps {
+  id: string;
+  title: string;
+  start_date: string;
+  end_date: string;
+  location: string;
+  modules: string[];
+  status?: "ACTIVE" | "DELETED" | "ARCHIVED" | "DRAFT";
 }
 
 export interface AttachedFilesProps {
