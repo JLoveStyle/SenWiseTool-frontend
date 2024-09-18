@@ -10,7 +10,7 @@ import { ApiDataResponse, CampaignType, CompanyType, UserType } from "@/types/ap
 import { useUserstore } from "@/lib/stores/user-stores";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useApiOps } from "@/lib/api-provider";
-import { useCampaignStore } from "@/lib/stores/campaign-store";
+import { useCampaignStore } from "@/lib/stores/campaign-store"
 import { Route } from "@/lib/route";
 type Props = {
   children: React.ReactNode;
