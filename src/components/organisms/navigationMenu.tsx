@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
+import * as React from "react";
 
 import { cn } from "@/lib/utils";
 // import { Icons } from "@/components/icons"
@@ -25,9 +25,7 @@ export function NavigationMenuDemo() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="">
-            GESTION
-          </NavigationMenuTrigger>
+          <NavigationMenuTrigger className="">GESTION</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[1000px] md:grid-cols-3 lg:w-[600px] ">
               {optionsGestions.map((component) => (

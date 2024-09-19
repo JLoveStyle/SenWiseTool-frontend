@@ -10,16 +10,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export const AttendanceSheetForm = () => {
-  const rows = Array.from({ length: 13 }, () =>
+interface Props {
+  row?: number;
+  editableCell?: boolean;
+  data: any;
+}
+
+export const AttendanceSheetForm = ({
+  row = 13,
+  editableCell = true,
+  data,
+}: Props) => {
+  const rows = Array.from({ length: row }, () =>
     Array.from({ length: 7 }, () => "")
   );
 
   const backgroundImageUrl = "/images/logo-sm-senima.png";
 
   return (
-    <PrintContent>
-      <div className="my-5">
+    <PrintContent className="py-5">
+      <div>
         <div className="flex justify-center items-center">
           <Image
             src="/images/logo-lg-senima.png"
@@ -36,11 +46,11 @@ export const AttendanceSheetForm = () => {
             </u>
             <div>
               <u className="font-bold mr-2">Theme :</u>
-              <span>Initiation à l'apprentissage des jeunes</span>
+              <span>{data?.title}</span>
             </div>
             <div>
               <span className="font-bold mr-2">Date :</span>
-              <span>25/09/2024</span>
+              <span>{new Date().toISOString()}</span>
             </div>
             <div className="my-5">
               <u className="font-bold text-lg">Fiche de présence</u>
@@ -70,25 +80,25 @@ export const AttendanceSheetForm = () => {
               <Table style={{ borderCollapse: "collapse", width: "100%" }}>
                 <TableHeader>
                   <TableRow className="bg-gray-100">
-                    <TableHead className="border-[1px] border-gray-400">
+                    <TableHead className="border-[1px] border-gray-300">
                       N°
                     </TableHead>
-                    <TableHead className="border-[1px] border-gray-400">
+                    <TableHead className="border-[1px] border-gray-300">
                       Noms et Prénoms
                     </TableHead>
-                    <TableHead className="border-[1px] border-gray-400">
+                    <TableHead className="border-[1px] border-gray-300">
                       Sexe
                     </TableHead>
-                    <TableHead className="border-[1px] border-gray-400">
+                    <TableHead className="border-[1px] border-gray-300">
                       Organisation
                     </TableHead>
-                    <TableHead className="border-[1px] border-gray-400">
+                    <TableHead className="border-[1px] border-gray-300">
                       Fonction
                     </TableHead>
-                    <TableHead className="border-[1px] border-gray-400">
+                    <TableHead className="border-[1px] border-gray-300">
                       Contacts
                     </TableHead>
-                    <TableHead className="border-[1px] border-gray-400">
+                    <TableHead className="border-[1px] border-gray-300">
                       Signature
                     </TableHead>
                   </TableRow>
@@ -99,7 +109,8 @@ export const AttendanceSheetForm = () => {
                       {row.map((cell, cellIndex) => (
                         <TableCell
                           key={cellIndex}
-                          className="border-[1px] border-gray-400 p-5 text-center"
+                          className="border-[1px] border-gray-300 p-5 text-center"
+                          contentEditable={editableCell}
                         ></TableCell>
                       ))}
                     </TableRow>

@@ -4,6 +4,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Rancho&display=swap");
 
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+CU:wght@100..400&display=swap");
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -81,9 +83,7 @@
     display: none; /* Masque la scrollbar */
   }
   .logo {
-    font-family: "Pacifico";
-    font-weight: 400;
-    font-style: normal;
+    font-family: "Playwrite CU";
   }
 
   * {

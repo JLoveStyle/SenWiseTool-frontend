@@ -1,9 +1,9 @@
 "use client";
 import { Archive, Trash2, UserPlus } from "lucide-react";
 
-import React, { useState } from "react";
-import CustomHoverCard from "./hoverCard";
+import { useState } from "react";
 import { DataTable } from "../molecules/projectsTable";
+import CustomHoverCard from "./hoverCard";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { Project } from "@/types/gestion";
 import { columnListProjects } from "../atoms/columnsProject";

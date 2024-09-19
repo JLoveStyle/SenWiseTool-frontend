@@ -1,24 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Logo } from "../atoms/logo";
-import {
-  ChevronDown,
-  ClipboardType,
-  FilePenLine,
-  Search,
-  UserPlus,
-} from "lucide-react";
-import CreateAdgForm from "../molecules/createAdgForm";
-import CreateMemeberForm from "../molecules/createMemberForm";
-import CustomHoverCard from "./hoverCard";
-import Link from "next/link";
 import { Route } from "@/lib/route";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { tableRaw } from "@/utiles/services/constants";
 import { Project } from "@/types/gestion";
-import { usePathname } from "next/navigation";
-import { Dialog, DialogContent } from "../ui/dialog";
+import { tableRaw } from "@/utiles/services/constants";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { OrganizationSwitcher } from "@clerk/nextjs";
+import { ClipboardType } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Logo } from "../atoms/logo";
 
 type Props = {};
 
@@ -56,16 +45,28 @@ export default function NavDashboard({}: Props) {
   ];
 
   return (
-    <nav className="flex justify-between px-3 bg-tertiary z-50 fixed w-screen">
-      {/* LOGO & PROJECT NAME IF DEFINED */}
-      <div className="flex justify-between md:w-[250px]">
-        <Link href={Route.home}>
-          <Logo size="very-large" />
-        </Link>
+    <nav className="px-3 bg-tertiary z-50">
+      <div className="flex justify-between mr-0 w-full top-0 right-10 left-[100px]">
+        {/* LOGO & PROJECT NAME IF DEFINED */}
+        <div className="flex justify-between items-center">
+          <Logo variant="text" />
+          <div
+            className={
+              pathname === Route.details + `/${id}`
+                ? "flex gap-4 my-auto absolute left-[330px] top-6"
+                : "hidden"
+            }
+          >
+            <ClipboardType />
+            <p className="text-xl font-semibold ">{selectedProject?.title}</p>
+          </div>
+        </div>
+
+        {/* SEARCH BAR IF PROJECT NAME ISN'T DEFINED */}
         <div
           className={
-            pathname === Route.details + `/${id}`
-              ? "flex gap-4 my-auto absolute left-[330px] top-6"
+            pathname !== Route.inspectionInterne + `/${id}`
+              ? "my-auto hidden md:flex px-6 w-[600px] md:border-white"
               : "hidden"
           }
         >
@@ -88,7 +89,7 @@ export default function NavDashboard({}: Props) {
           <h1 className="font-bold text-center">INITIAL INSPECTION</h1>
         ) : pathname === Route.inspectionInterne ? (
           <h1 className="font-bold text-center">INTERNAL INSPECTION</h1>
-        ) : pathname === Route.formationProject ? (
+        ) : pathname === Route.trainingProject ? (
           <h1 className="font-bold text-center">FORMATIONS</h1>
         ) : (
           ""
@@ -101,10 +102,10 @@ export default function NavDashboard({}: Props) {
           />
           <Search size={20} />
         </div> */}
-      </div>
 
-      {/* CREATE SUB ACCOUNT BUTTON */}
-      <OrganizationSwitcher />
+        {/* CREATE SUB ACCOUNT BUTTON */}
+        <OrganizationSwitcher />
+      </div>
     </nav>
   );
 }

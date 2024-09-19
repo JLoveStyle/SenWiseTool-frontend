@@ -1,8 +1,8 @@
 "use client";
-import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import React, { useEffect } from "react";
 import { useCompanyStore } from "@/lib/stores/companie-store";
+import ProjectDisplay from "@/components/organisms/projectsDisplay";
 
 type Props = {};
 

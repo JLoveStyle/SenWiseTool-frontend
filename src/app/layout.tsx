@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
+import "./styles/globals.css";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 // import { Toaster } from "sonner";
 

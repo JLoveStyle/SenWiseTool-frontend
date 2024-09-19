@@ -1,50 +1,106 @@
 interface Props {
   size?: "very-small" | "small" | "medium" | "large" | "very-large";
+  color?: string;
 }
 
-export const Spinner = ({ size = "medium" }: Props) => {
-  let sizeStyle = 0;
+export const Spinner = ({ size = "medium", color }: Props) => {
+  let sizeStyle = "0";
 
   switch (size) {
     case "very-small":
-      sizeStyle = 18;
+      sizeStyle = "18";
       break;
     case "small":
-      sizeStyle = 25;
+      sizeStyle = "25";
       break;
     case "medium":
-      sizeStyle = 33; // DEFAULT
+      sizeStyle = "33"; // DEFAULT
       break;
     case "large":
-      sizeStyle = 40;
+      sizeStyle = "40";
       break;
     case "very-large":
-      sizeStyle = 50;
+      sizeStyle = "50";
       break;
   }
 
   return (
     <svg
-      width="20"
-      height="20"
-      viewBox="0 0 38 38"
       xmlns="http://www.w3.org/2000/svg"
-      stroke="#fff"
+      width={sizeStyle}
+      height={sizeStyle}
+      viewBox="0 0 24 24"
     >
-      <g fill="none" fill-rule="evenodd">
-        <g transform="translate(1 1)" stroke-width="2">
-          <circle stroke-opacity=".5" cx="18" cy="18" r="18" />
-          <path d="M36 18c0-9.94-8.06-18-18-18">
-            <animateTransform
-              attributeName="transform"
-              type="rotate"
-              from="0 18 18"
-              to="360 18 18"
-              dur="1s"
-              repeatCount="indefinite"
-            />
-          </path>
-        </g>
+      <g>
+        <rect
+          width="2"
+          height="5"
+          x="11"
+          y="1"
+          fill={color ?? "currentColor"}
+          opacity="0.14"
+        />
+        <rect
+          width="2"
+          height="5"
+          x="11"
+          y="1"
+          fill={color ?? "currentColor"}
+          opacity="0.29"
+          transform="rotate(30 12 12)"
+        />
+        <rect
+          width="2"
+          height="5"
+          x="11"
+          y="1"
+          fill={color ?? "currentColor"}
+          opacity="0.43"
+          transform="rotate(60 12 12)"
+        />
+        <rect
+          width="2"
+          height="5"
+          x="11"
+          y="1"
+          fill={color ?? "currentColor"}
+          opacity="0.57"
+          transform="rotate(90 12 12)"
+        />
+        <rect
+          width="2"
+          height="5"
+          x="11"
+          y="1"
+          fill={color ?? "currentColor"}
+          opacity="0.71"
+          transform="rotate(120 12 12)"
+        />
+        <rect
+          width="2"
+          height="5"
+          x="11"
+          y="1"
+          fill={color ?? "currentColor"}
+          opacity="0.86"
+          transform="rotate(150 12 12)"
+        />
+        <rect
+          width="2"
+          height="5"
+          x="11"
+          y="1"
+          fill={color ?? "currentColor"}
+          transform="rotate(180 12 12)"
+        />
+        <animateTransform
+          attributeName="transform"
+          calcMode="discrete"
+          dur="0.75s"
+          repeatCount="indefinite"
+          type="rotate"
+          values="0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12"
+        />
       </g>
     </svg>
   );

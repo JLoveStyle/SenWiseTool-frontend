@@ -12,6 +12,7 @@ import {
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useSession, useUser } from "@clerk/nextjs";
+import Image from "next/image";
 import { useEffect } from "react";
 
 type Props = {};
@@ -57,7 +58,17 @@ export default function Home({ }: Props) {
         typeOfProject={"INITIAL_INSPECTION"}
         projectsPerType={[]}
       >
-        <p> jnsduvusdbvjsdjv sdfviqsdfiovsd</p>
+        <div>
+          <div className="flex items-center justify-center mt-28">
+            <Image
+              src="/svg/empty.svg"
+              height={250}
+              width={350}
+              alt="Empty illustation"
+              className="animate-empty-image"
+            />
+          </div>
+        </div>
       </LayoutDashboard>
     </>
   );

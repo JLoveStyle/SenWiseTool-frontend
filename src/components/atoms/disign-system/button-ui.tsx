@@ -19,6 +19,7 @@ interface Props {
   isLoading?: boolean;
   disabled?: boolean;
   title?: string;
+  style?: object;
 }
 
 export const ButtonUI: React.FC<Props> = ({
@@ -35,6 +36,7 @@ export const ButtonUI: React.FC<Props> = ({
   isLoading = false,
   disabled = false,
   title,
+  style,
 }) => {
   let sizeStyle: string = "",
     iconSize: number = 0;
@@ -80,6 +82,7 @@ export const ButtonUI: React.FC<Props> = ({
         isLoading && "cursor-not-allowed",
         className
       )}
+      style={style}
     >
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center">

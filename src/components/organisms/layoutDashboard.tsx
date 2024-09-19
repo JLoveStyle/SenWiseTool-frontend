@@ -3,7 +3,10 @@ import React, { useEffect } from "react";
 import NavDashboard from "./navDashboard";
 import SideNav from "../molecules/sideNav";
 import { NavigationMenuDemo } from "./navigationMenu";
+import { useToggle } from "@/hooks/use-toggle";
 import { Project } from "@/types/gestion";
+import { HiViewGridAdd } from "react-icons/hi";
+import FloatingButton from "../atoms/disign-system/floating-button";
 import CloseSideNav from "./closeSideNav";
 import { ProjectClientType } from "@/types/client-types";
 import { ApiDataResponse, CampaignType, CompanyType, UserType } from "@/types/api-types";
@@ -12,17 +15,78 @@ import { fetchApiData } from "@/utiles/services/queries";
 import { useApiOps } from "@/lib/api-provider";
 import { useCampaignStore } from "@/lib/stores/campaign-store"
 import { Route } from "@/lib/route";
+import { DashboardSidebarOption } from "@/types/app-link";
+import { RxGithubLogo, RxHeart, RxLinkedinLogo, RxStack, RxTwitterLogo } from "react-icons/rx";
+import { IoMdShareAlt } from "react-icons/io";
+import { BsPersonVcard } from "react-icons/bs";
 type Props = {
   children: React.ReactNode;
   typeOfProject?: ProjectClientType
   projectsPerType: Project[];
+  newForm?: React.ReactNode;
 };
 
 export default function LayoutDashboard({
   children,
   typeOfProject,
   projectsPerType,
+  newForm,
 }: Props) {
+
+  const campaigns = useCampaignStore((state) => state.campaigns).map(comp => ({
+    label: comp.name,
+    id: comp.id,
+    baseUrl: ""
+  }))
+  
+  const dashboardSidebarOptions: DashboardSidebarOption[] = [
+    {
+      option: {
+        label: "Campagnes",
+        baseUrl: "",
+        icon: RxStack,
+      },
+      details: campaigns,
+    },
+    {
+      option: {
+        label: "Followers",
+        baseUrl: "",
+        icon: RxHeart,
+      },
+    },
+    {
+      option: {
+        label: "Share to",
+        baseUrl: "",
+        icon: IoMdShareAlt,
+      },
+      details: [
+        {
+          label: "Github",
+          baseUrl: "",
+          icon: RxGithubLogo,
+        },
+        {
+          label: "Linkedin",
+          baseUrl: "",
+          icon: RxLinkedinLogo,
+        },
+        {
+          label: "Twitter",
+          baseUrl: "",
+          icon: RxTwitterLogo,
+        },
+      ],
+    },
+    {
+      option: {
+        label: "Abonnement",
+        baseUrl: "",
+        icon: BsPersonVcard,
+      },
+    },
+  ];
 
 
   const { refetch } = useApiOps<
@@ -35,23 +99,42 @@ export default function LayoutDashboard({
   useEffect(() => {
     refetch();
   }, [])
+  const { value: displayCloseSideNav, toggle: togglrDisplayCloseSideNav } =
+    useToggle({ initial: true });
 
   return (
-    <div className="">
-      <NavDashboard />
-      <div className="flex ">
-        <SideNav />
-        <CloseSideNav
-          projectsPerType={projectsPerType}
-          typeOfProject={typeOfProject}
-        />
-        <div className="w-full ">
-          <div className="px-6 pt-20 pb-3 ">
-            <NavigationMenuDemo />
+    <div className="flex w-screen h-screen absolute overflow-hidden scrool-bar-hidden">
+      <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2">
+        <SideNav options={dashboardSidebarOptions} />
+      </div>
+      <div className="w-[calc(100vw-100px)]">
+        <NavDashboard />
+        <div className="flex">
+          {displayCloseSideNav && (
+            <CloseSideNav
+              projectsPerType={projectsPerType}
+              typeOfProject={typeOfProject}
+              newForm={newForm}
+            />
+          )}
+          <div className="w-full ">
+            <div className="px-6 pt-1 pb-3 flex justify-center items-center">
+              <NavigationMenuDemo />
+            </div>
+            <div className="overflow-y-auto">{children}</div>
           </div>
-          <div className="overflow-y-auto ">{children}</div>
         </div>
       </div>
+      {/* {newForm && ( */}
+      <FloatingButton
+        className="rounded-full bg-white text-black"
+        positionLeft={70}
+        positionTop={400}
+        action={togglrDisplayCloseSideNav}
+      >
+        <HiViewGridAdd />
+      </FloatingButton>
+      {/* )} */}
     </div>
   );
 }
