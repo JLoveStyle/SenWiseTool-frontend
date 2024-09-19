@@ -6,6 +6,7 @@ interface Props {
   children: React.ReactNode;
   onClick: () => void;
   deployProject: () => void;
+  filename: string;
 }
 
 const PrintContent: React.FC<Props> = (props) => {
@@ -15,7 +16,7 @@ const PrintContent: React.FC<Props> = (props) => {
     const element = formRef.current;
     let options = {
       margin: 0,
-      filename: "fiche_inscription.pdf",
+      filename: props.filename + ".pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: {
