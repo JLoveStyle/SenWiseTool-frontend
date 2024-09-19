@@ -18,6 +18,7 @@ import { useApiOps } from "@/lib/api-provider";
 import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
 import { ApiDataResponse, PricePlanType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
+import { Spinner } from "@/components/atoms/spinner/spinner";
 // paypal component
 // import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from "@paypal/react-paypal-js";
 
@@ -295,9 +296,9 @@ export default function page({ }: Props) {
               pricePlan ? (
                 <PaypalPaypements />
               ) : (
-                <Button className="cursor-wait py-6 bg-primary hover:cursor-pointer font-semibold text-white w-full">
-                  <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
-                  loading paypal checkout...
+                <Button className="cursor-wait flex gap-3 py-6 bg-primary hover:cursor-not-allowed opacity-70 font-semibold text-white w-full">
+                  <Spinner/>
+                  <span>loading paypal checkout...</span>
                 </Button>
               )
             }
