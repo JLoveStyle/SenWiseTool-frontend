@@ -24,7 +24,7 @@ export default function LayoutDashboard({
   projectsPerType,
 }: Props) {
 
-  const campaigns = useCampaignStore((state) => state.campaigns);
+
   const { refetch } = useApiOps<
     CampaignType,
     ApiDataResponse<CampaignType>
@@ -40,7 +40,7 @@ export default function LayoutDashboard({
     <div className="">
       <NavDashboard />
       <div className="flex ">
-        <SideNav campaigns={campaigns} />
+        <SideNav />
         <CloseSideNav
           projectsPerType={projectsPerType}
           typeOfProject={typeOfProject}

@@ -12,7 +12,6 @@ export interface IUser {
     setUser: (user: UserType | null) => void
 }
 
-console.log("hit user store")
 
 export const useUserstore = create<IUser>()((set) => ({
     user: null,

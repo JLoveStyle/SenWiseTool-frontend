@@ -59,7 +59,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
             setCampaigns(data as unknown as CampaignType[]);
         }
     }
-    console.log("fro provider service: ", data)
+    // console.log("fro provider service: ", data)
     return {
         data,
         // error,

@@ -8,12 +8,13 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 
 type Props = {
-  campaigns: CampaignType[] | [];
+  // campaigns: CampaignType[] | [];
 };
 
-const SideNav = function ({ campaigns }: Props) {
+const SideNav = function () {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const setCurrentCampaign = useCampaignStore((state) => state.setCurrentCampaign);
+  const campaigns = useCampaignStore((state) => state.campaigns);
 
   async function handleCampagneObject(currentCampaign: CampaignType) {
     console.log("current campaign: ", currentCampaign);

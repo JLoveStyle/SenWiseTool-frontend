@@ -18,7 +18,7 @@ const apiCall = new ApiCall()
  * created resource.
  */
 export async function mutateApiData<T>(route: string, valueToStore: Partial<T>) {
-    console.log('mutation')
+
     return apiCall['POST'](`${API_URL}/${route}`, valueToStore)
 }
 

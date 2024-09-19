@@ -18,7 +18,7 @@ import { ProjectType } from "@/types/api-types";
 
 type Props = {
   onClick: (val1: boolean) => void;
-  project: Project;
+  project: ProjectType;
 };
 
 export default function EditProjectFormDatails({ onClick, project }: Props) {
@@ -32,8 +32,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   const [city, setCity] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [otherLogo, setOtherLogo] = useState<File>();
-  const [projectData, setProjectData] = useState<Project>({
-    id: project?.id, // this might be harmfull
+  const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: project?.title,
     sector_activity: project?.sector_activity,
     country: project?.country,
@@ -43,7 +42,6 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     start_date: project?.start_date,
     end_date: project?.end_date,
     status: "DRAFT",
-    // other_logo: "", // url from edge store
   });
 
   const id = LOCAL_STORAGE.get("projectId");

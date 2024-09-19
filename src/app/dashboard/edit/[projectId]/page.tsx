@@ -35,6 +35,9 @@ import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/depl
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { ProjectStatus, ProjectType } from "@/types/api-types";
 
+
+
+
 const AddFormFromLibrary = dynamic(
   () => import("@/components/molecules/addFormFromLibrary"),
   {
@@ -48,29 +51,24 @@ const EditProjectFormDatails = dynamic(
   }
 );
 
-type Props = {};
+type Props = {
+  params: {
+    projectId: string;
+  }
+};
 
-export default function page({ }: Props) {
+export default function page({ params: { projectId } }: Props) {
   const router = useRouter();
-  const projectDetails: Project = LOCAL_STORAGE.get("project_data"); // Only for project title editoring
+  const projectDetails: Project = LOCAL_STORAGE.get("project"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);
   const [displayChapThree, setDisplayChapThree] = useState<boolean>(false);
-  const [projectData, setProjectData] = useState<Project>({
-    id: projectDetails.id,
-    sector_activity: projectDetails.sector_activity,
-    city: projectDetails.city,
-    country: projectDetails.country,
-    status: "ACTIVE",
-    state: projectDetails.state,
-    start_date: projectDetails.start_date,
-    end_date: projectDetails.end_date,
+  const [projectData, setProjectData] = useState<{ id: string, title: string }>({
     title: projectDetails.title,
-    description: projectDetails.description,
-
+    id: projectDetails.id,
   });
 
   const [chap1, chap2, chap3] = requirements;
@@ -84,7 +82,7 @@ export default function page({ }: Props) {
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const data: Project = {
+    const data: { id: string, title: string } = {
       ...projectData,
       [event.target.name]: event.target.value,
     };
@@ -136,7 +134,7 @@ export default function page({ }: Props) {
     LOCAL_STORAGE.save("finalJson", finalJson);
     console.log("finalJson =>", finalJson);
 
-    router.push(Route.editProject + `/${id}/pdf`);
+    router.push(Route.editProject + `/${projectId}/pdf`);
 
     for (let i = 0; i < 5; i++) {
       if (typeof window !== "undefined") {
@@ -152,11 +150,11 @@ export default function page({ }: Props) {
       {
         project_structure: finalJson,
       },
-      id
+      projectId
     )
       .then((response) => {
         console.log("here is the response", response);
-        router.push(Route.editProject + `/${id}/pdf`);
+        router.push(Route.editProject + `/${projectId}/pdf`);
         toast("Project saved", {
           transition: Bounce,
           autoClose: 1000,
@@ -249,7 +247,7 @@ export default function page({ }: Props) {
           <Dialog onOpenChange={setOpenEditForm} open={openEditForm}>
             <DialogContent>
               <EditProjectFormDatails
-                project={projectData}
+                project={projectData as ProjectType}
                 onClick={function (val: boolean): void {
                   setOpenEditForm(val);
                 }}

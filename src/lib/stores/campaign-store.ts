@@ -15,11 +15,11 @@ export interface ICampaign {
     setCurrentCampaign: (campaignId: CampaignType | null) => void;
 }
 
-console.log("hit campaign store")
-
 export const useCampaignStore = create<ICampaign>()((set) => ({
     campaigns: [],
     currentCampaign: null,
-    setCampaigns: (campaign: CampaignType[]) => set(() => ({ campaigns: campaign })),
+    setCampaigns: (campaigns: CampaignType[]) => set(() => ({ campaigns: campaigns })),
     setCurrentCampaign: (campaign: CampaignType | null) => set(() => ({ currentCampaign: campaign })),
-}))
+}));
+
+
