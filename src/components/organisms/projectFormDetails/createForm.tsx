@@ -14,15 +14,17 @@ import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { ProjectType } from "@/types/api-types";
+import { Bounce, toast } from "react-toastify";
+import { ISOStringFormat } from "date-fns";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject?: 
+  typeOfProject?:
     | "INTERNAL_INSPECTION"
     | "INITIAL_INSPECTION"
     | "AUTO_EVALUATION"
-    | "TRAINING"
-  ;
+    | "TRAINING";
   project?: Project;
 };
 
@@ -135,8 +137,15 @@ export default function ProjectDetailsForm({
     })
       .then((res) => {
         console.log("project cereated", res);
+        if (res.statusCode.toString().startsWith("2")) {
+          setIsLoading((prev) => !prev);
+          router.push(Route.editProject + `/45`);
+        }
         setIsLoading((prev) => !prev);
-        router.push(Route.editProject + `/45`);
+        toast.error("Something went wrong", {
+          transition: Bounce,
+          autoClose: 3000,
+        });
       })
       .catch((err) => {
         console.log("error occured while creating", err);
@@ -174,16 +183,14 @@ export default function ProjectDetailsForm({
           </div>
         </div>
         <div className="flex justify-between gap-4">
-          <div className="md:w-1/2">
-            <InputField
-              label="Project title"
-              inputName="title"
-              type="text"
-              value={projectData.title}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div>
-          <div className="md:w-1/2">
+          <InputField
+            label="Project title"
+            inputName="title"
+            type="text"
+            value={projectData.title}
+            onChange={(e) => handleChangeEvent(e)}
+          />
+          {/* <div className="md:w-1/2">
             <InputField
               label="Description"
               inputName="description"
@@ -191,7 +198,7 @@ export default function ProjectDetailsForm({
               value={projectData.description}
               onChange={(e) => handleChangeEvent(e)}
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-between gap-4">
           <div className="md:w-1/2">
@@ -269,13 +276,12 @@ export default function ProjectDetailsForm({
             className="md:w-[33.33%]"
           />
         </div>
-        {/* <Textarea
+        <Textarea
           placeholder="Enter project description"
           value={projectData.description}
-          name='description'
-
+          name="description"
           onChange={(e) => handleChangeEvent(e)}
-        /> */}
+        />
         <div className="flex justify-end gap-4">
           <Button
             className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow"
@@ -290,7 +296,7 @@ export default function ProjectDetailsForm({
             type="submit"
             className={isLoading ? "hover:cursor-wait opacity-70" : ""}
           >
-            {isLoading ? <Spinner/> : "CREATE PROJECT"}
+            {isLoading ? <Spinner /> : "CREATE PROJECT"}
           </Button>
         </div>
       </form>

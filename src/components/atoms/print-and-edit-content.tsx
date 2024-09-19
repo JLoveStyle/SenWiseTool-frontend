@@ -32,14 +32,14 @@ const PrintContent: React.FC<Props> = (props) => {
   return (
     <div>
       <div ref={formRef}>{props.children}</div>
-      <div className="flex justify-center mx-auto gap-4 pb-10 active:translate-y-1">
+      <div className="flex justify-center mx-auto gap-4 pb-10 ">
         <Button className="px-10" onClick={props.onClick}>
           Edit
         </Button>
-        <Button className="active:translate-y-1" onClick={handlePrint}>
+        <Button className="" onClick={handlePrint}>
           Download
         </Button>
-        <Button className="active:translate-y-1" onClick={props.deployProject}>
+        <Button className="" onClick={props.deployProject}>
           Deploy
         </Button>
       </div>
