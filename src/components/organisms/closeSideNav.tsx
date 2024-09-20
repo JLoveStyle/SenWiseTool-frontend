@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
+import { ProjectType } from "@/types/api-types";
 
 type Props = {
   typeOfProject?:
@@ -18,7 +19,7 @@ type Props = {
     | "AUTO_EVALUATION"
     | "TRAINING";
 
-  projectsPerType: Project[];
+  projectsPerType: ProjectType[];
   newForm?: React.ReactNode;
 };
 
@@ -47,14 +48,14 @@ export default function CloseSiveNav({
     setShowProjectOptions(value2);
   };
 
-  const draftProjects = projectsPerType.filter(
-    (item) => item.status[0] === "DRAFT"
+  const draftProjects = projectsPerType?.filter(
+    (item) => item.status === "DRAFT"
   );
-  const deployedProjects = projectsPerType.filter(
-    (item) => item.status[0] === "DEPLOYED"
+  const deployedProjects = projectsPerType?.filter(
+    (item) => item.status === "DEPLOYED"
   );
-  const archiveProjects = projectsPerType.filter(
-    (item) => item.status[0] === "ARCHIVED"
+  const archiveProjects = projectsPerType?.filter(
+    (item) => item.status === "ARCHIVED"
   );
   return (
     <div
@@ -110,11 +111,11 @@ export default function CloseSiveNav({
             <p className="font-semibold">Deployed</p>
           </div>
           <span className="bg-white rounded-full h-fit w-fit px-2 py-[2px] ">
-            {deployedProjects.length}
+            {deployedProjects?.length}
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {deployedProjects.map((item) => (
+          {deployedProjects?.map((item) => (
             <p
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
@@ -143,11 +144,11 @@ export default function CloseSiveNav({
             <p className="font-semibold">Draft</p>
           </div>
           <span className="bg-white rounded-full h-fit w-fit px-2 py-[2px]">
-            {draftProjects.length}
+            {draftProjects?.length}
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {draftProjects.map((item) => (
+          {draftProjects?.map((item) => (
             <p
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
@@ -176,11 +177,11 @@ export default function CloseSiveNav({
             <p className="font-semibold">Archive</p>
           </div>
           <span className="bg-white rounded-full h-fit w-fit px-2 py-[2px]">
-            {archiveProjects.length}
+            {archiveProjects?.length}
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {archiveProjects.map((item) => (
+          {archiveProjects?.map((item) => (
             <p
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);

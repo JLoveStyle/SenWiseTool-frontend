@@ -11,12 +11,13 @@ import { Project } from "@/types/gestion";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import { Route } from "@/lib/route";
 import { Bounce, toast } from "react-toastify";
+import { ProjectType } from "@/types/api-types";
 
 type Props = {
   shareProject: boolean;
   archiveProject: boolean;
   deleteProject: boolean;
-  projects: Project[];
+  projects: ProjectType[];
   closeDialog: (value: boolean) => void;
 };
 

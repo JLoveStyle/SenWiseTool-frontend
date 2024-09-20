@@ -24,7 +24,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "../atoms/spinner/spinner";
 import {
   DropdownMenu,
@@ -33,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
+import { ProjectType } from "@/types/api-types";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
@@ -51,10 +52,9 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const pathname: string = usePathname();
 
-  const data = incomingData; //useMemo(() => incomingData, [incomingData]);
-  const columns = incomingColumns; //useMemo(() => incomingColumns, []);
+  const data = useMemo(() => incomingData, [incomingData]);
+  const columns = useMemo(() => incomingColumns, []);
 
   const table = useReactTable({
     data,
@@ -76,10 +76,12 @@ export function DataTable<TData, TValue>({
   });
 
   useEffect(() => {
-    const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
-      // console.log(pro.original);
-      return pro.original;
-    });
+    const selectedPro = table
+      .getSelectedRowModel()
+      .flatRows.map((pro) => {
+        // console.log(pro.original);
+        return pro.original;
+      });
     console.log("selPro =>", selectedPro);
     onSelecteItem(selectedPro);
   }, [rowSelection]);

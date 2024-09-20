@@ -9,20 +9,32 @@ import { HiViewGridAdd } from "react-icons/hi";
 import FloatingButton from "../atoms/disign-system/floating-button";
 import CloseSideNav from "./closeSideNav";
 import { ProjectClientType } from "@/types/client-types";
-import { ApiDataResponse, CampaignType, CompanyType, UserType } from "@/types/api-types";
+import {
+  ApiDataResponse,
+  CampaignType,
+  CompanyType,
+  ProjectType,
+  UserType,
+} from "@/types/api-types";
 import { useUserstore } from "@/lib/stores/user-stores";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useApiOps } from "@/lib/api-provider";
-import { useCampaignStore } from "@/lib/stores/campaign-store"
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { Route } from "@/lib/route";
 import { DashboardSidebarOption } from "@/types/app-link";
-import { RxGithubLogo, RxHeart, RxLinkedinLogo, RxStack, RxTwitterLogo } from "react-icons/rx";
+import {
+  RxGithubLogo,
+  RxHeart,
+  RxLinkedinLogo,
+  RxStack,
+  RxTwitterLogo,
+} from "react-icons/rx";
 import { IoMdShareAlt } from "react-icons/io";
 import { BsPersonVcard } from "react-icons/bs";
 type Props = {
   children: React.ReactNode;
-  typeOfProject?: ProjectClientType
-  projectsPerType: Project[];
+  typeOfProject?: ProjectClientType;
+  projectsPerType: ProjectType[];
   newForm?: React.ReactNode;
 };
 
@@ -32,13 +44,16 @@ export default function LayoutDashboard({
   projectsPerType,
   newForm,
 }: Props) {
+  // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
+  const campaigns = useCampaignStore((state) => state.campaigns).map(
+    (comp) => ({
+      label: comp.name,
+      id: comp.id,
+      baseUrl: "",
+    })
+  );
 
-  const campaigns = useCampaignStore((state) => state.campaigns).map(comp => ({
-    label: comp.name,
-    id: comp.id,
-    baseUrl: ""
-  }))
-  
+  // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
     {
       option: {
@@ -88,17 +103,13 @@ export default function LayoutDashboard({
     },
   ];
 
-
-  const { refetch } = useApiOps<
-    CampaignType,
-    ApiDataResponse<CampaignType>
-  >({
+  const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
     fn: () => fetchApiData(Route.campaign, ""),
     route: Route.campaign,
   });
   useEffect(() => {
     refetch();
-  }, [])
+  }, []);
   const { value: displayCloseSideNav, toggle: togglrDisplayCloseSideNav } =
     useToggle({ initial: true });
 

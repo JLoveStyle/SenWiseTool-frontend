@@ -2,40 +2,40 @@
 import { Archive, Trash2, UserPlus } from "lucide-react";
 
 import { useState } from "react";
-import { DataTable } from "../molecules/projectsTable";
 import CustomHoverCard from "./hoverCard";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { Project } from "@/types/gestion";
-import { columnListProjects } from "../atoms/columnsProject";
 import { Dialog, DialogContent } from "../ui/dialog";
 import ActionComponent from "../molecules/actionComponent";
-import { CompanyType } from "@/types/api-types";
+import { CompanyType, ProjectsType, ProjectType } from "@/types/api-types";
 import { useCompanyStore } from "@/lib/stores/companie-store";
+import { DataTable } from "../molecules/projectsTable";
+import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 
 type Props = {
-  projects: Project[];
-
+  projects: ProjectType[];
+  isLoading: boolean;
 };
 
-export default function ProjectDisplay({ projects }: Props) {
+export default function ProjectDisplay({ projects, isLoading }: Props) {
   const [shareProject, setShareProject] = useState<boolean>(false);
   const [deleteProject, setDeleteProjet] = useState<boolean>(false);
   const [archiveProject, setArchiveProiect] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [selectedProjects, setSelectedProjects] = useState<Project[]>();
+  const [selectedProjects, setSelectedProjects] = useState<ProjectType[]>();
 
   const company = useCompanyStore((state) => state.company);
 
-  console.log("from project display: ", company)
+  console.log("from project display: ", company);
 
-  const handleSelectedProjects = (projects: Project[]) => {
+  const handleSelectedProjects = (projects: ProjectType[]) => {
     setSelectedProjects(projects);
   };
 
   // read value form child component
   const handleCloseDialog = (val: boolean) => {
-    setOpenModal(val)
-  }
+    setOpenModal(val);
+  };
 
   return (
     <>
@@ -47,9 +47,9 @@ export default function ProjectDisplay({ projects }: Props) {
               onClick={() => {
                 if (!selectedProjects?.length) {
                   setOpenModal((prev) => !prev);
-                  setShareProject(true)
-                  setArchiveProiect(false)
-                  setDeleteProjet(false)
+                  setShareProject(true);
+                  setArchiveProiect(false);
+                  setDeleteProjet(false);
                 }
               }}
               className={
@@ -64,9 +64,9 @@ export default function ProjectDisplay({ projects }: Props) {
               onClick={() => {
                 if (!selectedProjects?.length) {
                   setOpenModal((prev) => !prev);
-                  setArchiveProiect(true)
-                  setShareProject(false)
-                  setDeleteProjet(false)
+                  setArchiveProiect(true);
+                  setShareProject(false);
+                  setDeleteProjet(false);
                 }
               }}
               className={
@@ -81,9 +81,9 @@ export default function ProjectDisplay({ projects }: Props) {
               onClick={() => {
                 if (!selectedProjects?.length) {
                   setOpenModal((prev) => !prev);
-                  setDeleteProjet(true)
-                  setShareProject(false)
-                  setArchiveProiect(false)
+                  setDeleteProjet(true);
+                  setShareProject(false);
+                  setArchiveProiect(false);
                 }
               }}
               className={
@@ -102,7 +102,7 @@ export default function ProjectDisplay({ projects }: Props) {
                 shareProject={shareProject}
                 archiveProject={archiveProject}
                 deleteProject={deleteProject}
-                projects={[]}
+                projects={projects}
                 closeDialog={handleCloseDialog}
               />
             </DialogContent>
@@ -111,9 +111,10 @@ export default function ProjectDisplay({ projects }: Props) {
       </div>
       <div className="px-6">
         <DataTable
-          onSelecteItem={handleSelectedProjects}
+          isLoading={isLoading}
           incomingColumns={columnListProjects}
           incomingData={projects}
+          onSelecteItem={handleSelectedProjects}
         />
       </div>
     </>

@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { ProjectType } from "@/types/api-types";
 
 export type ChapterMetaData = {
   id: string;
@@ -78,7 +79,7 @@ export const column: ColumnDef<ChapterMetaData>[] = [
   }
 ];
 
-export const columnListProjects: ColumnDef<Project>[] = [
+export const columnListProjects: ColumnDef<ProjectType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -126,10 +127,6 @@ export const columnListProjects: ColumnDef<Project>[] = [
     ),
   },
   {
-    accessorKey: "creator",
-    header: "Creator",
-  },
-  {
     accessorKey: "updated_at",
     header: "Last update",
   },
@@ -140,6 +137,10 @@ export const columnListProjects: ColumnDef<Project>[] = [
   {
     accessorKey: "start_date",
     header: "Start date",
+  },
+  {
+    accessorKey: "end_date",
+    header: "End date",
   },
   {
     id: "actions",
@@ -159,7 +160,7 @@ export const columnListProjects: ColumnDef<Project>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
-                navigator.clipboard.writeText(project.id);
+                navigator.clipboard.writeText(project.id as string);
                 toast.success("Copied", {
                   autoClose: 1000,
                   transition: Bounce,

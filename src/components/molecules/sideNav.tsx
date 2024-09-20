@@ -45,8 +45,8 @@ export default function SideNav({ options }: Props) {
       </div>
       <div className="flex flex-col items-center justify-center gap-7 pt-10">
         {options &&
-          options.map((opt) => (
-            <DropdownMenu>
+          options.map((opt, index) => (
+            <DropdownMenu key={index}>
               <DropdownMenuTrigger
                 className="flex gap-[0.3rem] hover:cursor-pointer"
                 asChild
@@ -63,8 +63,8 @@ export default function SideNav({ options }: Props) {
                   <DropdownMenuLabel>{opt.option.label}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    {opt.details.map((detail) => (
-                      <DropdownMenuItem>
+                    {opt.details.map((detail, indx) => (
+                      <DropdownMenuItem key={indx} onClick={() => console.log(detail.id)}>
                         {detail.icon && (
                           <detail.icon className="mr-2 h-4 w-4" />
                         )}

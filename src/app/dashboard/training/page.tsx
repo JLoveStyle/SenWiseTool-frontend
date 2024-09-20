@@ -46,7 +46,7 @@ export default function Training() {
   return (
     <LayoutDashboard
       projectsPerType={[]}
-      typeOfProject={["TRAINING"]}
+      typeOfProject={"TRAINING"}
       newForm={<NewTraining />}
     >
       {/* <div className="flex flex-col justify-between gap-10  w-full">

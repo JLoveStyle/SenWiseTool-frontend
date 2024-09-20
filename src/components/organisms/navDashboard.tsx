@@ -45,10 +45,10 @@ export default function NavDashboard({}: Props) {
   ];
 
   return (
-    <nav className="px-3 bg-tertiary z-50">
-      <div className="flex justify-between mr-0 w-full top-0 right-10 left-[100px]">
+    <nav className=" bg-tertiary z-50 flex justify-between ">
+      <div className=" px-2 items-center flex justify-between mr-0 top-0  left-[100px]">
         {/* LOGO & PROJECT NAME IF DEFINED */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between gap-10">
           <Logo variant="text" />
           <div
             className={
@@ -61,25 +61,12 @@ export default function NavDashboard({}: Props) {
             <p className="text-xl font-semibold ">{selectedProject?.title}</p>
           </div>
         </div>
-
-        {/* SEARCH BAR IF PROJECT NAME ISN'T DEFINED */}
-        <div
-          className={
-            pathname !== Route.inspectionInterne + `/${id}`
-              ? "my-auto hidden md:flex px-6 w-[600px] md:border-white"
-              : "hidden"
-          }
-        >
-          <ClipboardType />
-          <p className="text-xl font-semibold ">{selectedProject?.title}</p>
-        </div>
       </div>
 
-      {/* SEARCH BAR IF PROJECT NAME ISN'T DEFINED */}
       <div
         className={
           pathname !== Route.inspectionInterne + `/${id}`
-            ? "my-auto hidden md:flex px-6 w-[600px] md:border-white"
+            ? "my-auto hidden md:flex px-6 text-center md:border-white "
             : "hidden"
         }
       >
@@ -94,18 +81,9 @@ export default function NavDashboard({}: Props) {
         ) : (
           ""
         )}
-        {/* <div className="input justify-center flex text-[#3a3737] bg-white w-[60%] mx-auto md:w-full items-center p-2 gap-2 ">
-          <input
-            type="search"
-            placeholder={placeholder}
-            className="w-full  outline-none bg-transparent"
-          />
-          <Search size={20} />
-        </div> */}
-
-        {/* CREATE SUB ACCOUNT BUTTON */}
-        <OrganizationSwitcher />
       </div>
+      {/* CREATE SUB ACCOUNT BUTTON */}
+      <OrganizationSwitcher />
     </nav>
   );
 }
