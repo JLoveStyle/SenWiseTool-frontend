@@ -1,27 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import { Route } from "@/lib/route";
+import { Project } from "@/types/gestion";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { Dialog } from "@radix-ui/react-dialog";
+import { Archive, FilePenLine, Rocket } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { Button } from "../ui/button";
-import { Archive, FilePenLine, Rocket, Router } from "lucide-react";
-import { tableRaw } from "@/utiles/services/constants";
+import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
-import { Dialog } from "@radix-ui/react-dialog";
-import { DialogContent, DialogTrigger } from "../ui/dialog";
-import { Project } from "@/types/gestion";
-import { usePathname, useRouter } from "next/navigation";
-import { Route } from "@/lib/route";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { ProjectType } from "@/types/api-types";
 
 type Props = {
-  typeOfProject?: [
-    "INTERNAL_INSPECTION" | "INITIAL_INSPECTION" | "AUTO_EVALUATION" | "TRAINING"
-  ]
-  projectsPerType: Project[];
+  typeOfProject?:
+    | "INTERNAL_INSPECTION"
+    | "INITIAL_INSPECTION"
+    | "AUTO_EVALUATION"
+    | "TRAINING";
+
+  projectsPerType: ProjectType[];
+  newForm?: React.ReactNode;
 };
 
 export default function CloseSiveNav({
   typeOfProject,
   projectsPerType,
+  newForm,
 }: Props) {
   const pathname = usePathname();
   const router = useRouter();
@@ -43,33 +48,37 @@ export default function CloseSiveNav({
     setShowProjectOptions(value2);
   };
 
-  const draftProjects = projectsPerType.filter(
-    (item) => item.status[0] === "DRAFT"
+  const draftProjects = projectsPerType?.filter(
+    (item) => item.status === "DRAFT"
   );
-  const deployedProjects = projectsPerType.filter(
-    (item) => item.status[0] === "DEPLOYED"
+  const deployedProjects = projectsPerType?.filter(
+    (item) => item.status === "DEPLOYED"
   );
-  const archiveProjects = projectsPerType.filter(
-    (item) => item.status[0] === "ARCHIVED"
+  const archiveProjects = projectsPerType?.filter(
+    (item) => item.status === "ARCHIVED"
   );
   return (
     <div
-      className={
-        pathname.includes("/details") // Hide this component on the detail page
-          ? "hidden"
-          : "bg-[#f7f6f6] w-fit h-screen px-5 pt-20 shadow-lg "
-      }
+    // className={
+    //   pathname.includes("/details") // Hide this component on the detail page
+    //     ? "hidden"
+    //     : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
+    // }
     >
-      <div className="flex flex-col gap-3">
-        <Button
-          onClick={() => {
-            setOpenModal((prev) => !prev);
-            setShowProjectOptions((prev) => !prev);
-          }}
-          className="px-10 mb-4"
-        >
-          New Form
-        </Button>
+      <div className="flex flex-col gap-3 p-2">
+        {pathname.includes("/training") ? (
+          newForm
+        ) : (
+          <Button
+            onClick={() => {
+              setOpenModal((prev) => !prev);
+              setShowProjectOptions((prev) => !prev);
+            }}
+            className="px-10 mb-4"
+          >
+            New Form
+          </Button>
+        )}
         <Dialog
           onOpenChange={() => {
             setOpenModal((prev) => !prev);
@@ -102,11 +111,11 @@ export default function CloseSiveNav({
             <p className="font-semibold">Deployed</p>
           </div>
           <span className="bg-white rounded-full h-fit w-fit px-2 py-[2px] ">
-            {deployedProjects.length}
+            {deployedProjects?.length}
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {deployedProjects.map((item) => (
+          {deployedProjects?.map((item) => (
             <p
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
@@ -135,11 +144,11 @@ export default function CloseSiveNav({
             <p className="font-semibold">Draft</p>
           </div>
           <span className="bg-white rounded-full h-fit w-fit px-2 py-[2px]">
-            {draftProjects.length}
+            {draftProjects?.length}
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {draftProjects.map((item) => (
+          {draftProjects?.map((item) => (
             <p
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
@@ -168,11 +177,11 @@ export default function CloseSiveNav({
             <p className="font-semibold">Archive</p>
           </div>
           <span className="bg-white rounded-full h-fit w-fit px-2 py-[2px]">
-            {archiveProjects.length}
+            {archiveProjects?.length}
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {archiveProjects.map((item) => (
+          {archiveProjects?.map((item) => (
             <p
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);

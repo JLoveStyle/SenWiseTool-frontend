@@ -2,15 +2,15 @@
 import { Button } from "@/components/ui/button";
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
-  useReactTable,
-  getPaginationRowModel,
-  SortingState,
-  ColumnFiltersState,
-  VisibilityState,
-  getSortedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -21,35 +21,39 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { Input } from "../ui/input";
+import { Spinner } from "../atoms/spinner/spinner";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Input } from "../ui/input";
+import { ProjectType } from "@/types/api-types";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
   incomingData: TData[];
   onSelecteItem: (value: TData[]) => void;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   incomingColumns,
   incomingData,
   onSelecteItem,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const pathname: string = usePathname();
 
-  const data = useMemo(() => incomingData, []);
+  const data = useMemo(() => incomingData, [incomingData]);
   const columns = useMemo(() => incomingColumns, []);
 
   const table = useReactTable({
@@ -72,10 +76,12 @@ export function DataTable<TData, TValue>({
   });
 
   useEffect(() => {
-    const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
-      // console.log(pro.original);
-      return pro.original;
-    });
+    const selectedPro = table
+      .getSelectedRowModel()
+      .flatRows.map((pro) => {
+        // console.log(pro.original);
+        return pro.original;
+      });
     console.log("selPro =>", selectedPro);
     onSelecteItem(selectedPro);
   }, [rowSelection]);
@@ -140,7 +146,50 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24">
+                  <div className="flex justify-center text-center w-full">
+                    <Spinner color="#999" size="large" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <div className="flex items-center justify-center mt-28">
+                    <Image
+                      src="/svg/empty.svg"
+                      height={250}
+                      width={350}
+                      alt="Empty illustation"
+                      className="animate-empty-image"
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+
+            {/* {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -165,7 +214,7 @@ export function DataTable<TData, TValue>({
                   No results.
                 </TableCell>
               </TableRow>
-            )}
+            )} */}
           </TableBody>
         </Table>
       </div>

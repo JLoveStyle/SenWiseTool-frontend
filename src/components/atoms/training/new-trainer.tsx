@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
+import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
 import { db_create_training } from "@/utiles/services/training";
@@ -18,15 +19,18 @@ import { isEmptyObject } from "@/utils/tool";
 import { TrainingFormVerification } from "@/utils/training-form-verification";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
-import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
+  const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
+
+  const router = useRouter();
 
   const [formData, setFormData] = useState<TrainingProps>({
     id: "",
@@ -46,27 +50,29 @@ export function NewTraining() {
   };
 
   const handleCreateTraining = async (formData: TrainingProps) => {
-    // const { error, data } = await db_create_training(formData);
     const dataToDB = {
       title: formData.title,
       start_date: new Date(formData.start_date).toISOString(),
       end_date: new Date(formData.end_date).toISOString(),
       location: formData.location,
-      company_id: company?.id,
+      company_id: "cm0job09a0004wrr2scsyu3a3", //company?.id
       modules: formData.modules.map((item) => item.value),
     };
-    const result = await db_create_training(dataToDB);
-    console.log(result);
-    // if (error) {
-    //   toast.error(error.message);
-    //   setIsLoading(false);
-    //   return;
-    // }
-    // console.log(data);
 
-    // // await db_test_add(formData);
-    // toast.success("Your project are created successfull");
+    const serverResponse = await db_create_training(dataToDB);
+
+    console.log("daaaaata:::::::::", serverResponse);
+
+    if (serverResponse.status === "error") {
+      toast.error(serverResponse.response.message.message);
+      setIsLoading(false);
+      return;
+    }
+
+    toast.success("Your project are created successfull");
     setIsLoading(false);
+    toggleOpenModal();
+    router.push(Route.trainingProject);
     return;
   };
 
@@ -89,26 +95,23 @@ export function NewTraining() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={openModal}>
       <DialogTrigger asChild>
-        <Button
-          size="sm"
-          className="bg-green-600 hover:bg-green-500 gap-1 h-7 w-18 px-3 py-4 font-normal text-sm rounded-md"
-        >
-          <Icon icon={{ icon: Plus }} size={20}>
-            CRÉER
-          </Icon>
+        <Button className="px-10 mb-4" onClick={toggleOpenModal}>
+          New Form
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Nouveau Projet de Formation</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="w-3/4">
+        <DialogHeader className="bg-orange-300 p-5">
+          <DialogTitle className="text-black text-2xl">
+            Nouveau Projet de Formation
+          </DialogTitle>
+          <DialogDescription className="text-gray-700">
             Créez votre projet de formation en définissant les éléments
             descriptifs suivants...
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="px-5 pb-5">
           <FormTraining
             updatedFormData={handleUpdatedFormData}
             errors={errors}

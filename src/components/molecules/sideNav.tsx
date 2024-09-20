@@ -1,84 +1,89 @@
 "use client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Route } from "@/lib/route";
+import { DashboardSidebarOption } from "@/types/app-link";
 import { UserButton } from "@clerk/nextjs";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { MdCampaign } from "react-icons/md";
+import { CampaignType } from "@/types/api-types";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 
-type Props = {};
+import clsx from "clsx";
+import Link from "next/link";
+import { Logo } from "../atoms/logo";
 
-export default function SideNav({}: Props) {
+interface Props {
+  options: DashboardSidebarOption[];
+}
+
+export default function SideNav({ options }: Props) {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const setCurrentCampaign = useCampaignStore((state) => state.setCurrentCampaign);
+  const campaigns = useCampaignStore((state) => state.campaigns);
 
-  const campagn: { [key: string]: any }[] = [
-    {
-      id: "1",
-      name: "2022-2023",
-    },
-    {
-      id: "2",
-      name: "2023-2024",
-    },
-    {
-      id: 3,
-      name: "2024-2025",
-    },
-    {
-      id: "4",
-      name: "2025-2026",
-    },
-    {
-      id: "5",
-      name: "2026-2027",
-    },
-    {
-      id: "6",
-      name: "2027-2028",
-    },
-    {
-      id: "7",
-      name: "2028-2029",
-    },
-  ];
-
-  async function handleCampagneObject(id: string) {
-    console.log(id);
+  async function handleCampagneObject(currentCampaign: CampaignType) {
+    console.log("current campaign: ", currentCampaign);
+    setCurrentCampaign(currentCampaign);
     setShowDropDown((prev) => !prev);
   }
 
   return (
-    <div className="bg-tertiary w-fit h-screen px-3 ">
-      <div
-        onClick={() => setShowDropDown((prev) => !prev)}
-        className="flex gap-2 hover:cursor-pointer pt-[87px]"
-      >
-        <h2 className="font-semibold">
-          <MdCampaign />
-        </h2>
-        <ChevronDown
-          className={
-            showDropDown
-              ? "rotate-180 transition-transform duration-500"
-              : "duration-500"
-          }
-        />
+    <div className={clsx("px-3 h-full relative")}>
+      <div className="mt-4">
+        <Link href={Route.home}>
+          <Logo size="large" />
+        </Link>
       </div>
-      {showDropDown && (
-        <div className="z-50 absolute bg-tertiary">
-          {campagn.map((item) => (
-            <p
-              key={item.id}
-              onClick={() => handleCampagneObject(item.id)}
-              className="hover:bg-white w-full p-2 hover:cursor-pointer"
-            >
-              {item.name}
-            </p>
+      <div className="flex flex-col items-center justify-center gap-7 pt-10">
+        {options &&
+          options.map((opt, index) => (
+            <DropdownMenu key={index}>
+              <DropdownMenuTrigger
+                className="flex gap-[0.3rem] hover:cursor-pointer"
+                asChild
+              >
+                <div className="flex flex-col items-center justify-center">
+                  {opt.option.icon && <opt.option.icon size={30} />}
+                  <span className="font-normal leading-3 text-[12px]">
+                    {opt.option.label}
+                  </span>
+                </div>
+              </DropdownMenuTrigger>
+              {opt.details && (
+                <DropdownMenuContent className="">
+                  <DropdownMenuLabel>{opt.option.label}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    {opt.details.map((detail, indx) => (
+                      <DropdownMenuItem key={indx} onClick={() => console.log(detail.id)}>
+                        {detail.icon && (
+                          <detail.icon className="mr-2 h-4 w-4" />
+                        )}
+                        <span>{detail.label}</span>
+                        {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              )}
+            </DropdownMenu>
           ))}
-        </div>
-      )}
-      <div className="flex flex-col justify-center absolute bottom-3 left-14 ">
+      </div>
+
+      <div className="flex flex-col justify-center items-center absolute bottom-5 pl-2">
         <UserButton />
         {/* <OrganizationSwitcher /> */}
       </div>
     </div>
   );
 }
+

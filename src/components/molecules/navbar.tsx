@@ -81,7 +81,7 @@ export const Navbar = () => {
             <NavbarDropdown navLinks={navLinks} loginButtons={loginButtons} />
           </div>
           {userId ? (
-            <Link href={Route.inspectionInterne}>
+            <Link href={Route.dashboard}>
               <UserRound />
             </Link>
           ) : (

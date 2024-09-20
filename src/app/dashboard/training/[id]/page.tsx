@@ -1,100 +1,246 @@
 "use client";
 
-import { Icon } from "@/components/atoms/icon";
-import { DetailTraining } from "@/components/atoms/training/detail-training";
-import { trainings } from "@/components/atoms/training/training-list";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import { AttendanceSheetForm } from "@/components/atoms/training/attendance-sheet-form";
+import { DeleteTraining } from "@/components/atoms/training/delete-training";
+import { NewTraining } from "@/components/atoms/training/new-trainer";
 import { UpdateTraining } from "@/components/atoms/training/update-training";
+import CustomHoverCard from "@/components/organisms/hoverCard";
+import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { Button } from "@/components/ui/button";
-import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
-import { TrainingProps } from "@/types/formData";
-import { Share2, Trash2 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { LocalTrainingProps, TrainingProps } from "@/types/formData";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import dayjs from "dayjs";
+import {
+  Archive,
+  MoveLeft,
+  MoveRight,
+  PenLine,
+  Trash2,
+  UserPlus,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { IoMdArchive } from "react-icons/io";
-import { LuEye, LuEyeOff } from "react-icons/lu";
-import { toast } from "react-toastify";
-
+import { IoClose } from "react-icons/io5";
+import { PiFilesFill, PiPrinterFill } from "react-icons/pi";
 interface Props {
   displayForm: boolean;
 }
 
 export default function TrainingDetails() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const router = useRouter();
+  const { id } = useParams();
 
-  const { value: displayForm, toggle: toggleForm } = useToggle();
-
-  const training: TrainingProps | undefined = trainings.find(
-    (training) => training.id == id
-  );
-
-  const [currentTraining, setCurrentTraining] = useState<TrainingProps>({
-    id: training ? training.id : "",
-    title: training ? training.title : "",
-    location: training ? training.location : "",
-    start_date: training ? training.start_date : "",
-    end_date: training ? training.end_date : "",
-    modules: training ? training.modules : [],
-  });
+  // const { value: displayForm, toggle: toggleForm } = useToggle();
+  const [currentTrainingData, setCurrentTrainingData] =
+    useState<TrainingProps>();
+  const [dbCurrentTrainingData, setDbCurrentTrainingData] =
+    useState<LocalTrainingProps>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [displayComponent, setDisplayComponent] = useState<
+    "trainingDetails" | "attendanceSheet"
+  >("trainingDetails");
 
   useEffect(() => {
-    if (!id) {
-      toast.warning("project not found");
-      router.push(Route.formationProject);
-    }
-    console.log(displayForm);
-  }, [id]);
+    const fetchData = async () => {
+      const result = await LOCAL_STORAGE.get("trainings");
+
+      const training = result.find(
+        (training: LocalTrainingProps) => training.id == id
+      );
+      setDbCurrentTrainingData(training);
+
+      if (training) {
+        setCurrentTrainingData({
+          id: training.id,
+          title: training.title,
+          start_date: training.start_date,
+          end_date: training.end_date,
+          location: training.location,
+          modules: training.modules.map((module: string, index: number) => ({
+            id: index,
+            value: module,
+          })),
+        });
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {}, [currentTrainingData]);
 
   return (
-    <div className="flex flex-col justify-between gap-10  w-full">
-      <div className="flex justify-between items-center py-3">
-        <span className="text-2xl font-bold">Formation - Details</span>
+    <LayoutDashboard
+      projectsPerType={[]}
+      typeOfProject={"TRAINING"}
+      newForm={<NewTraining />}
+    >
+      <div className="flex justify-between pb-4 pt-2 px-6 w-3/4">
+        <h1 className="text-xl font-semibold">
+          <Link
+            className="flex gap-1 items-center hover:font-medium"
+            href={Route.trainingProject}
+          >
+            <MoveLeft />
+            Projects
+          </Link>
+        </h1>
+        <div className="flex items-center gap-4 text-gray-500">
+          <CustomHoverCard content="Edit Project">
+            {isLoading && <Spinner size="very-small" color="#999" />}
+            {!isLoading && currentTrainingData !== undefined && (
+              <UpdateTraining
+                currentTaining={currentTrainingData}
+                header={<PenLine className="hover:cursor-pointer" />}
+              />
+            )}
+          </CustomHoverCard>
 
-        <div className="flex items-center">
-          <Button
-            variant="link"
-            className="text-gray-800 font-bold"
-            title="Preview"
-            onClick={() => toggleForm()}
-          >
-            <Icon
-              icon={{ icon: displayForm ? LuEyeOff : LuEye }}
-              size={20}
-            ></Icon>
-          </Button>
-          <UpdateTraining currentTaining={currentTraining} />
-          <Button
-            variant="link"
-            className="text-green-500 font-bold"
-            title="archiver"
-          >
-            <Icon icon={{ icon: Share2 }} size={20}></Icon>
-          </Button>
-          <Button
-            variant="link"
-            className="text-blue-500 font-bold"
-            title="Archive"
-          >
-            <Icon icon={{ icon: IoMdArchive }} size={20}></Icon>
-          </Button>
-          <Button
-            variant="link"
-            className=" font-bold text-red-500"
-            title="Supprimer"
-          >
-            <Icon icon={{ icon: Trash2 }} size={20} />
-          </Button>
+          <CustomHoverCard content="archive project">
+            <Archive className="hover:cursor-pointer" />
+          </CustomHoverCard>
+          <CustomHoverCard content="Share project">
+            <UserPlus className="hover:cursor-pointer" />
+          </CustomHoverCard>
+          <CustomHoverCard content="Delete Project">
+            {isLoading && <Spinner size="very-small" color="#999" />}
+            {!isLoading && currentTrainingData !== undefined && (
+              <DeleteTraining
+                training={currentTrainingData}
+                header={<Trash2 className="hover:cursor-pointer" />}
+              />
+            )}
+          </CustomHoverCard>
         </div>
       </div>
-      <div>
-        <DetailTraining
-          training={currentTraining}
-          toggleDisplayForm={toggleForm}
-          displayForm={displayForm}
-        />
+
+      <div className="flex gap-5">
+        <div className="w-3/4 max-h-[480px] overflow-y-auto scrool-bar-hidden relative">
+          {displayComponent === "trainingDetails" && (
+            <>
+              {currentTrainingData ? (
+                <div className="bg-gray-50 p-5 shadow-md flex items-center text-center flex-col gap-8">
+                  <span className="text-xl text-gray-700">
+                    {currentTrainingData.title}
+                  </span>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="font-medium text-xs">
+                      Information sur la date de formation
+                    </div>
+                    <div className="flex gap-5">
+                      <div>
+                        <span className="text-gray-700">Du </span>
+                        <span className="text-gray-400">
+                          {currentTrainingData.start_date}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-gray-700">Au </span>
+                        <span className="text-gray-400">
+                          {dayjs(
+                            currentTrainingData.end_date,
+                            "YYYY/MM/DD"
+                          ).toISOString()}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-gray-700">À</span>
+                      <span className="text-gray-400">
+                        {currentTrainingData.location}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="font-medium text-xs">
+                      Les modules de la formation à dispenser
+                    </div>
+                    <div className="space-y-1">
+                      {currentTrainingData.modules.map((module) => (
+                        <div className="flex gap-1 items-center">
+                          <MoveRight className="text-gray-600" />
+                          <span className="text-gray-500">{module.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center mt-28">
+                  <Image
+                    src="/svg/empty.svg"
+                    height={250}
+                    width={350}
+                    alt="Empty illustation"
+                    className="animate-empty-image"
+                  />
+                </div>
+              )}
+            </>
+          )}
+          {displayComponent === "attendanceSheet" && (
+            <div>
+              {currentTrainingData ? (
+                <AttendanceSheetForm row={12} data={currentTrainingData} />
+              ) : (
+                <div className="flex items-center justify-center mt-28">
+                  <Image
+                    src="/svg/empty.svg"
+                    height={250}
+                    width={350}
+                    alt="Empty illustation"
+                    className="animate-empty-image"
+                  />
+                </div>
+              )}
+
+              <Button
+                size="sm"
+                className="absolute z-50 top-1 right-5 text-gray-700 bg-transparent hover:bg-transparent hover:text-red-500 font-medium"
+                onClick={() => setDisplayComponent("trainingDetails")}
+              >
+                <IoClose size={25} className="fixed" />
+              </Button>
+            </div>
+          )}
+        </div>
+        <div className="bg-slate-100 w-1/4 relative">
+          <div className="p-3">Metadata</div>
+          <hr />
+          <div className="p-3 text-xs flex flex-col gap-5">
+            <div className="flex justify-between items-center">
+              <span>Status</span>
+              <span className="text-red-500 font-medium">
+                {dbCurrentTrainingData?.status}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span>Formulaires disponibles</span>
+              <span>0</span>
+            </div>
+            <div className="flex justify-between items-center gap-5 bg-transparent absolute bottom-5">
+              <Button
+                size="sm"
+                variant="outline"
+                className="flex gap-1 items-center"
+              >
+                <PiFilesFill /> Tout voir
+              </Button>
+              <Button
+                size="sm"
+                className="flex gap-1 items-center bg-black hover:bg-gray-900"
+                onClick={() => setDisplayComponent("attendanceSheet")}
+              >
+                <PiPrinterFill /> Imprimer
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </LayoutDashboard>
   );
 }

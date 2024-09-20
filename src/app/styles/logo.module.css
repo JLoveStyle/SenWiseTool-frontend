@@ -1,0 +1,58 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"); */
+/* @import url("https://fonts.googleapis.com/css2?family=Boogaloo&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap");
+
+.customFont {
+  /* font-family: "Dancing Script", cursive; */
+  /* font-family: "Boogaloo", sans-serif; */
+
+  font-family: "Protest Guerrilla", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 25px;
+  background: linear-gradient(to bottom, #3c8688 50%, #f09d04 50%);
+  /* background-size: 200% 100%; */
+  background-size: 100% 300%;
+  background-position: 0% 0%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: colorSwap 10s ease-in-out infinite;
+
+  /* horizontal gradiant animation */
+
+  /* background: linear-gradient(to right, #ff7e5f, #feb47b, #3c8688);
+  background-size: 300% 100%;
+  background-position: 0% 0%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: colorSwap 4s ease-in-out infinite; */
+
+  /* Vertical gradiant animation */
+  /* background: linear-gradient(
+    to bottom,
+    #ff7e5f,
+    #feb47b,
+    #3c8688
+  ); 
+  background-size: 100% 300%; 
+  background-position: 0% 0%; 
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent; 
+  animation: colorSwap 20s ease-in-out infinite; */
+}
+
+@keyframes colorSwap {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 0% 100%; /*for horizontal animation: 100% 0% */
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}

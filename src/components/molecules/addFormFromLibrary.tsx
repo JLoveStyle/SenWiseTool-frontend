@@ -8,30 +8,29 @@ type Props = {
 };
 
 export default function AddFormFromLibrary({ isSubmitting }: Props) {
-  const [metaData, setMetaData] = useState<{[key: string]: string}[]>([]);
+  const [metaData, setMetaData] = useState<{ [key: string]: string }[]>([]);
 
   const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value, name } = e.target;
     if (checked) {
-      let data: {[key: string]: string}[] = [...metaData]
-      data.push({val: e.target.name})
+      let data: { [key: string]: string }[] = [...metaData];
+      data.push({ val: e.target.name });
       setMetaData(data);
     } else {
-      const filteredData = [...metaData].filter((item) => item.val !== name)
-      setMetaData(filteredData)
+      const filteredData = [...metaData].filter((item) => item.val !== name);
+      setMetaData(filteredData);
     }
   };
 
   useEffect(() => {
     if (!isSubmitting && metaData.length) {
-      LOCAL_STORAGE.save('formMetadata', metaData)
-      toast.success('Metadata saved', {
+      LOCAL_STORAGE.save("formMetadata", metaData);
+      toast.success("Metadata saved", {
         transition: Bounce,
-        autoClose: 1000
-      })
+        autoClose: 1000,
+      });
     }
-
-  }, [isSubmitting])
+  }, [isSubmitting]);
 
   return (
     <div className="py-5">
@@ -98,8 +97,6 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
             />
             <label htmlFor="village">Village</label>
           </div>
-        </div>
-        <div className="w-1/2">
           <div className="flex gap-3 align-baseline">
             <input
               type="checkbox"
@@ -112,7 +109,8 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
               Année de certification
             </label>
           </div>
-          
+        </div>
+        <div className="w-1/2">
           <div className="flex gap-3">
             <input
               type="checkbox"
@@ -122,6 +120,40 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
               onChange={(e) => handleCheckbox(e)}
             />
             <label htmlFor="nom_de_inspecteur">Nom de l'inspecteur</label>
+          </div>
+          <div className="flex gap-3">
+            <input
+              type="checkbox"
+              name="Contact de l'inspecteur"
+              value="contact_de_inspecteur"
+              onChange={(e) => handleCheckbox(e)}
+              id="contact_de_inspecteur"
+            />
+            <label htmlFor="contact_de_inspecteur">
+              Contact de l'inspecteur
+            </label>
+          </div>
+          <div className="flex gap-3">
+            <input
+              type="checkbox"
+              name="Angrais appliqué"
+              value="angrais_appliqué"
+              id="angrais_appliqué"
+              onChange={(e) => handleCheckbox(e)}
+            />
+            <label htmlFor="angrais_appliqué">Angrais appliqué</label>
+          </div>
+          <div className="flex gap-3">
+            <input
+              type="checkbox"
+              name="Quantité d'angrais"
+              value="qte_angrais_appliqué"
+              id="quantité_angrais_appliqué"
+              onChange={(e) => handleCheckbox(e)}
+            />
+            <label htmlFor="quantité_angrais_appliqué">
+              Quantité d'angrais appliqué
+            </label>
           </div>
           <div className="flex gap-3">
             <input
@@ -138,13 +170,13 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           <div className="flex gap-3">
             <input
               type="checkbox"
-              name="Quantité"
+              name="Quantité de Pesticide"
               value="qte_pesticide"
               id="qte_pesticide"
               onChange={(e) => handleCheckbox(e)}
             />
             <label htmlFor="qte_pesticide">
-              Quantité de Pesticides utiliser
+              Quantité de Pesticides utilisés
             </label>
           </div>
         </div>

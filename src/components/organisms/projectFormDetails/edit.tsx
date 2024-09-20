@@ -13,15 +13,16 @@ import { Textarea } from "../../ui/textarea";
 import { Bounce, toast } from "react-toastify";
 import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
+import { useEdgeStore } from "@/lib/edgestore";
+import { ProjectType } from "@/types/api-types";
 
 type Props = {
   onClick: (val1: boolean) => void;
-  project: Project;
+  project: ProjectType;
 };
 
 export default function EditProjectFormDatails({ onClick, project }: Props) {
-  // FAKE PROJECT
-  let fakeProject = LOCAL_STORAGE.get("fakeProject");
+  const { edgestore } = useEdgeStore();
   const countries: any[] = Country.getAllCountries();
   const closeEditForm: boolean = false;
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
@@ -30,20 +31,17 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
-  const [otherLogoUrl, setOtherLogoUrl] = useState<string>("");
-  const [projectData, setProjectData] = useState<Project>({
-    id: fakeProject?.id, // this might be harmfull
-    title: fakeProject?.title,
-    sector_activity: fakeProject?.sector_activity,
-    country: fakeProject?.country,
-    description: fakeProject?.description,
-    city: fakeProject?.city,
-    state: fakeProject?.state,
-    start_date: fakeProject?.start_date,
-    end_date: fakeProject?.end_date,
-    status: ["DRAFT"],
-    other_logo: "", // url from edge store
+  const [otherLogo, setOtherLogo] = useState<File>();
+  const [projectData, setProjectData] = useState<Partial<ProjectType>>({
+    title: project?.title,
+    sector_activity: project?.sector_activity,
+    country: project?.country,
+    description: project?.description,
+    city: project?.city,
+    state: project?.state,
+    start_date: project?.start_date,
+    end_date: project?.end_date,
+    status: "DRAFT",
   });
 
   const id = LOCAL_STORAGE.get("projectId");
@@ -60,7 +58,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     //   [e.target.name]: e.target.value,
     // };
     const data = {
-      ...fakeProject,
+      ...project,
       [e.target.name]: e.target.value,
     };
     setProjectData(data);
@@ -80,48 +78,19 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     }
   };
 
-  const handleOtherLogo = (e: any) => {
-    const reader = new FileReader();
-    if (e) {
-      reader.onload = (onLoadEvent) => {
-        if (onLoadEvent.target) {
-          setOtherLogo(onLoadEvent.target.result);
-        }
-      };
-    }
-  };
-
   async function handleSubmit(e: any) {
     e.preventDefault();
     setIsLoading((prev) => !prev);
+    // const uploadedLogo = await edgestore.publicImages.upload({
+    //   file: otherLogo,
+    //   onProgressChange: (progress) => console.log(progress),
+    // });
 
     // Upload other logo to edge store.
-    if (otherLogo) {
-      // write the logic here
-    }
-
-    // UPDATE FAKE project
-    fakeProject = {
-      ...projectData,
-      title: projectData?.title,
-      description: projectData?.description,
-      country: projectData?.country,
-      city: projectData?.city,
-      sector_activity: projectData?.sector_activity,
-      state: projectData?.state,
-      start_date: projectData?.start_date,
-      end_data: projectData?.end_date,
-      otherLogo: otherLogo
-    };
-    LOCAL_STORAGE.save("fakeProject", fakeProject);
-    onClick(closeEditForm); // close the modal after edititng
-    toast("Project Edited", {
-      transition: Bounce,
-      autoClose: 1000,
-    });
+    // if (!uploadedLogo) return;
 
     // write the patch function here
-    /*await mutateUpApiData(
+    await mutateUpApiData(
       Route.projects,
       {
         title: projectData.title,
@@ -146,9 +115,8 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
       .catch((error) => {
         console.log("unable to edit project", error);
       });
-*/
-    console.log(projectData);
-    LOCAL_STORAGE.save("fakeProject", projectData);
+    // console.log(projectData);
+    // LOCAL_STORAGE.save("fakeProject", projectData);
     // LOCAL_STORAGE.save("project_data", projectData);
   }
 
@@ -170,20 +138,22 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             <label htmlFor="company_logo">
               <strong>Add another logo</strong>
             </label>
-            <input type="file" onChange={(e) => handleOtherLogo(e)} />
-          </div>
-        </div>
-        <div className="flex justify-between gap-4">
-          <div className="md:w-1/2">
-            <InputField
-              label="Project title"
-              inputName="title"
-              type="text"
-              value={projectData.title}
-              onChange={(e) => handleChangeEvent(e)}
+            <input
+              accept=".png, .jpeg, .jpg"
+              type="file"
+              onChange={(e) => setOtherLogo(e.target.files?.[0])}
             />
           </div>
-          <div className="md:w-1/2">
+        </div>
+        <div className="">
+          <InputField
+            label="Project title"
+            inputName="title"
+            type="text"
+            value={projectData.title}
+            onChange={(e) => handleChangeEvent(e)}
+          />
+          {/* <div className="md:w-1/2">
             <InputField
               label="Description"
               inputName="description"
@@ -191,7 +161,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
               value={projectData.description}
               onChange={(e) => handleChangeEvent(e)}
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-between gap-4">
           <div className="md:w-1/2">
@@ -240,7 +210,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="Country"
             arrayOfItems={countries}
-            value={projectData.country}
+            value={projectData.country as string}
             className="md:w-[33.33%]"
           />
           <CustomSelectTag
@@ -248,7 +218,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
-            value={projectData.state}
+            value={projectData.state as string}
             className="md:w-[33.33%]"
           />
           {/* <div className="flex flex-col ">
@@ -265,17 +235,20 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="City"
             arrayOfItems={city}
-            value={projectData.city}
+            value={projectData.city as string}
             className="md:w-[33.33%]"
           />
         </div>
-        {/* <Textarea
+        <label className="font-semibold " htmlFor="description">
+          Description<span className="text-red-500">*</span>
+        </label>
+        <Textarea
+          className="border mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           placeholder="Enter project description"
           value={projectData.description}
-          name='description'
-
+          name="description"
           onChange={(e) => handleChangeEvent(e)}
-        /> */}
+        />
         <div className="flex justify-end gap-4">
           <Button
             className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow"

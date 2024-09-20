@@ -4,7 +4,9 @@ type Props = {
   label: string;
   inputName: string;
   type: string;
-  value: string;
+  value?: string;
+  placeholder?: string;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onChange: (event: any) => void;
 };
 
@@ -13,6 +15,8 @@ export default function InputField({
   value,
   type,
   inputName,
+  onKeyDown,
+  placeholder,
   onChange,
 }: Props) {
   return (
@@ -27,7 +31,9 @@ export default function InputField({
         value={value}
         onChange={onChange}
         type={type}
+        placeholder={placeholder}
         required
+        onKeyDown={onKeyDown}
         autoComplete="on"
       />
     </div>

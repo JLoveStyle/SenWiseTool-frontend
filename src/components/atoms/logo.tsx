@@ -1,12 +1,18 @@
+import styles from "@/app/styles/logo.module.css";
 import clsx from "clsx";
 import Image from "next/image";
 
 interface Props {
   size?: "very-small" | "small" | "medium" | "large" | "very-large";
   className?: string;
+  variant?: "image" | "text";
 }
 
-export const Logo = ({ size = "medium", className }: Props) => {
+export const Logo = ({
+  size = "medium",
+  className,
+  variant = "image",
+}: Props) => {
   let baseUrl: string,
     width: number = 0,
     height = 0;
@@ -29,6 +35,13 @@ export const Logo = ({ size = "medium", className }: Props) => {
       break;
   }
 
+  if (variant === "text") {
+    return (
+      <div className="my-3">
+        <span className={styles.customFont}>SenWiseTool</span>
+      </div>
+    );
+  }
   return (
     <div className={clsx(className)}>
       <Image

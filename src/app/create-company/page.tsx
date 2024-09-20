@@ -22,13 +22,15 @@ import { CompanyType } from "@/types/api-types";
 import { Description } from "@radix-ui/react-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Bounce, toast } from "react-toastify";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import { useEdgeStore } from "@/lib/edgestore";
 
 type Props = {};
 
 export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
-
+  const { edgestore } = useEdgeStore();
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
@@ -37,9 +39,7 @@ export default function Home({ }: Props) {
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [hasOtherBusiness, setHasOtherBusiness] = useState<boolean>(false);
-  const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>(
-    ""
-  );
+  const [companyLogo, setCompanyLogo] = useState<File>();
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -60,6 +60,7 @@ export default function Home({ }: Props) {
 
   const { isSignedIn, user } = useUser();
 
+  // REGISTER COMPANY
   async function handleSubmit(e: any) {
     e.preventDefault();
     setHasAgree(false);
@@ -74,10 +75,15 @@ export default function Home({ }: Props) {
     }
     setIsLoading((prev) => !prev);
 
-    if (user?.id) {
-      console.log("userId available", user);
+    if (user?.id && companyLogo) {
+      // upload logo to edgestore
+      const uploadedLogo = await edgestore.publicImages.upload({
+        file: companyLogo,
+        onProgressChange: (progress) => console.log(progress),
+      });
       const res = await createOrganization(formData, user.id);
-      console.log("company res on clerk =>", res);
+      console.log(res)
+      if (!uploadedLogo) return
 
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
@@ -86,27 +92,35 @@ export default function Home({ }: Props) {
         state: formData.state,
         city: formData.city,
         sector_of_activity: activity,
-        logo: companyLogo,
+        logo: uploadedLogo.url,
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        status: "INACTIVE"
+        status: "INACTIVE",
       })
         .then((response) => {
           console.log("create company res =>", response);
-          setIsLoading((prev) => !prev);
-          // router.push(Route.inspectionInitial);
+          if (!response.statusCode.toString().startsWith('2')) {
+            toast.error(`Sorry something went wrong`, {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading(false);
+            return
+          }
+          setIsLoading(false);
+          router.push(Route.dashboard);
         })
         .catch((error) => {
           console.log("An error occured", error);
           setIsLoading((prev) => !prev);
-          toast.error('Fail to create company', {
+          toast.error("Fail to create company", {
             transition: Bounce,
-            autoClose: 1000
-          })
+            autoClose: 1000,
+          });
         });
+      
     }
-
   }
 
   function handleCancel(e: any) {
@@ -158,19 +172,6 @@ export default function Home({ }: Props) {
     setIsModalOpen(value);
   };
 
-  const handleLogoUpload = async (e: any) => {
-    const reader = new FileReader();
-    if (e) {
-      reader.onload = (onLoadEvent) => {
-        if (onLoadEvent.target) {
-          console.log("results", onLoadEvent.target.result);
-          setCompanyLogo(onLoadEvent.target.result);
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
-
   const fetchToken = async () => {
     const token = await getToken();
     console.log(token);
@@ -180,6 +181,8 @@ export default function Home({ }: Props) {
   useEffect(() => {
     fetchToken();
   }, []);
+
+  console.log(isLoading)
 
   return (
     <div className="h-full">
@@ -227,7 +230,7 @@ export default function Home({ }: Props) {
             label="Company phone"
             inputName="phone"
             type="tel"
-            value={formData.companyEmail}
+            value={formData.phone}
             onChange={(e) => handleInputChange(e)}
           />
 
@@ -292,7 +295,7 @@ export default function Home({ }: Props) {
               type="file"
               accept=".png, .jpeg, .jpg"
               placeholder="Enter logo"
-              onChange={(e) => handleLogoUpload(e)}
+              onChange={(e) => setCompanyLogo(e.target.files?.[0])}
             />
           </div>
           <label className="font-semibold" htmlFor="description">
@@ -312,16 +315,12 @@ export default function Home({ }: Props) {
           )}
 
           <div className="flex flex-col gap-3 pt-3 ">
-            {isLoading ? (
-              <Button className="cursor-wait">
-                <span className="animate-spin h-5 w-5 mr-3 rounded-lg border-4 ..."></span>
-                Processing...
-              </Button>
-            ) : (
-              <Button className="" type="submit">
-                Register
-              </Button>
-            )}
+            <Button
+              className={isLoading ? "hover:cursor-not-allowed opacity-70" : ""}
+              type="submit"
+            >
+              {isLoading ? <Spinner /> : "Register"}
+            </Button>
 
             <Button
               className="text-red-500 bg-white border border-red-500 hover:bg-[#ef44441e]"

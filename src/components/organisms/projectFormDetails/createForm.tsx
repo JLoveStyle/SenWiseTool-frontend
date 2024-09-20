@@ -1,24 +1,32 @@
-import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
-import { businessActivity } from "@/utiles/services/constants";
-import { mutateApiData } from "@/utiles/services/mutations";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { City, Country, State } from "country-state-city";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import InputField from "../../molecules/inputField";
+import { Project } from "@/types/gestion";
 import CustomSelectTag from "../../molecules/select";
-import CardLayout from "../../templates/cardLayout";
+import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { Route } from "@/lib/route";
+import { useRouter } from "next/navigation";
+import { businessActivity } from "@/utiles/services/constants";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import CardLayout from "../../templates/cardLayout";
+import { Textarea } from "../../ui/textarea";
+import { mutateApiData } from "@/utiles/services/mutations";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import { ProjectType } from "@/types/api-types";
+import { Bounce, toast } from "react-toastify";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject?: [
-    | "INTERNAL_INSPECTION"
-    | "INITIAL_INSPECTION"
-    | "AUTO_EVALUATION"
-    | "TRAINING"
-  ];
+  typeOfProject?:
+  | "INTERNAL_INSPECTION"
+  | "INITIAL_INSPECTION"
+  | "AUTO_EVALUATION"
+  | "TRAINING"
+  ;
   project?: Project;
 };
 
@@ -27,11 +35,12 @@ export default function ProjectDetailsForm({
   typeOfProject,
   project,
 }: Props) {
-  let fakeProject: { [key: string]: any } = {};
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
   const router = useRouter();
+  const company = useCompanyStore((state) => state.company);
+  const compains = useCampaignStore((state) => state.campaigns);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -52,11 +61,12 @@ export default function ProjectDetailsForm({
     state: "",
     start_date: "",
     end_date: "",
-    status: ["DRAFT"],
-    type: typeOfProject, // Project type ['AUTO_EVALUATION', 'INITIAL_INSPECTION', etc]
+    status: "DRAFT",
+    type: typeOfProject, // Project type 'AUTO_EVALUATION' | 'INITIAL_INSPECTION' | etc
   });
 
-  // const animatedComponents = makeAnimated(); // For react-select
+
+  const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
     e: React.ChangeEvent<
@@ -116,28 +126,41 @@ export default function ProjectDetailsForm({
       // load the company logo in the companys' table
     }
 
-    // CREATE NEW RECORD IN THE PROJECTS' TABLE
+    // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
-      company_id: "",
+      company_id: company?.id,
       title: projectData.title,
       description: projectData.description,
       sector_activity: projectData.sector_activity,
       country: projectData.country,
       city: projectData.city,
+      state: projectData.state,
       status: projectData.status,
-      start_date: projectData.start_date,
-      end_date: projectData.end_date,
+      start_date: new Date(projectData.start_date).toISOString(),
+      end_date: new Date(projectData.end_date).toISOString(),
+      campaign_id: compains[0]?.id,
     })
       .then((res) => {
         console.log("project cereated", res);
+        if (res.statusCode.toString().startsWith("2")) {
+          setIsLoading((prev) => !prev);
+          router.push(Route.editProject + `/${res.data.id}`);
+          LOCAL_STORAGE.save("project", {
+            title: res.data.title,
+            id: res.data.id
+          });
+        }
         setIsLoading((prev) => !prev);
-        router.push(Route.editProject + `/45`);
+        toast.error("Something went wrong", {
+          transition: Bounce,
+          autoClose: 3000,
+        });
       })
       .catch((err) => {
         console.log("error occured while creating", err);
+        setIsLoading((prev) => !prev);
       });
-
     // get the id of the project response and route to that ID
   }
 
@@ -170,16 +193,14 @@ export default function ProjectDetailsForm({
           </div>
         </div>
         <div className="flex justify-between gap-4">
-          <div className="md:w-1/2">
-            <InputField
-              label="Project title"
-              inputName="title"
-              type="text"
-              value={projectData.title}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div>
-          <div className="md:w-1/2">
+          <InputField
+            label="Project title"
+            inputName="title"
+            type="text"
+            value={projectData.title}
+            onChange={(e) => handleChangeEvent(e)}
+          />
+          {/* <div className="md:w-1/2">
             <InputField
               label="Description"
               inputName="description"
@@ -187,14 +208,14 @@ export default function ProjectDetailsForm({
               value={projectData.description}
               onChange={(e) => handleChangeEvent(e)}
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex justify-between gap-4">
           <div className="md:w-1/2">
             <InputField
               label="Start date"
               inputName="start_date"
-              type="date"
+              type="datetime-local"
               value={projectData.start_date}
               onChange={(e) => handleChangeEvent(e)}
             />
@@ -203,7 +224,7 @@ export default function ProjectDetailsForm({
             <InputField
               label="End date"
               inputName="end_date"
-              type="date"
+              type="datetime-local"
               value={projectData.end_date}
               onChange={(e) => handleChangeEvent(e)}
             />
@@ -265,13 +286,12 @@ export default function ProjectDetailsForm({
             className="md:w-[33.33%]"
           />
         </div>
-        {/* <Textarea
+        <Textarea
           placeholder="Enter project description"
           value={projectData.description}
-          name='description'
-
+          name="description"
           onChange={(e) => handleChangeEvent(e)}
-        /> */}
+        />
         <div className="flex justify-end gap-4">
           <Button
             className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow"
@@ -286,7 +306,7 @@ export default function ProjectDetailsForm({
             type="submit"
             className={isLoading ? "hover:cursor-wait opacity-70" : ""}
           >
-            {isLoading ? "Processing..." : "CREATE PROJECT"}
+            {isLoading ? <Spinner /> : "CREATE PROJECT"}
           </Button>
         </div>
       </form>

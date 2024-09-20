@@ -1,3 +1,44 @@
+type ObjectValue<T> = T[keyof T];
+
+const PRODUCTNAME = {
+    BRONZE: "BRONZE",
+    SILVER: "SILVER",
+    GOLD: "GOLD",
+} as const;
+
+const PRODUCTSTATUS = {
+    ON: "ON",
+    OFF: "OFF",
+    SUSPENDED: "SUSPENDED",
+    EXPIRED: "EXPIRED",
+} as const;
+
+const PROJECTTYPE = {
+    INITIAL_INSPECTION: "INITIAL_INSPECTION",
+    AUTO_EVALUATION: "AUTO_EVALUATION",
+    TRAINING: "TRAINING",
+    MAPPING: "MAPPING",
+} as const;
+
+const PROJECT_STATUS = {
+    ACTIVE: "ACTIVE",
+    DELETED: "DELETED",
+    DRAFT: "DRAFT",
+    ARCHIVED: "ARCHIVED",
+    DEPLOYED: "DEPLOYED",
+} as const;
+
+const CAMPAIGNSTATUS = {
+    OPEN: 'OPEN',
+    CLOSED: "CLOSED"
+} as const;
+
+
+export type ProductType = ObjectValue<typeof PRODUCTNAME>;
+export type ProductStatus = ObjectValue<typeof PRODUCTSTATUS>;
+export type ProjectsType = ObjectValue<typeof PROJECTTYPE>;
+export type ProjectStatus = ObjectValue<typeof PROJECT_STATUS>;
+
 export type PricePlanType = {
 
     active: boolean;
@@ -8,9 +49,9 @@ export type PricePlanType = {
     number_of_billing_cycles: string;
     price: string;
     price_type: string;
-    product_name: 'BRONZE' | 'SILVER' | 'GOLD';
+    product_name: ProductType;
     plan_name: string;
-    status: 'ON' | 'OFF' | 'SUSPENDED' | 'EXPIRED';
+    status: ProductStatus;
     auto_renewal: boolean;
     cancellation_policy: string[];
     created_at: Date;
@@ -40,25 +81,28 @@ type ApiErroType = {
 
 export type ProjectType = {
     id?: string;
-    type: "INITIAL_INSPECTION" | "EXTERNAL_INSPECTION" | "AUTO_EVALUATION" | "MAPPING";
+    type: ProjectsType;
     company_id: string;
     title: string;
     description: string;
     sector_activity: string;
     country: string;
-    status: "ACTIVE" | "DELETED" | "ARCHIVED" | "DRAFT";
+    state: string;
+    city: string;
+    status: ProjectStatus;
     start_date: string;
     end_date: string;
     project_structure: JSON;
     archived: boolean;
     draft: boolean;
-
+    campaign_id: string;
     archived_at: string;
     draft_at: string;
     created_at: string;
     deleted_at: string;
     slug: string;
     updated_at: string;
+    deployed_at: string;
 }
 
 export type CompanyType = {
@@ -132,3 +176,20 @@ export type Training_session = {
     updated_at: Date;
 }
 
+
+
+
+export type CampaignStatus = ObjectValue<typeof CAMPAIGNSTATUS>;
+
+export type CampaignType = {
+
+    created_at: Date;
+    description: string;
+    end_date: Date;
+    id: string;
+    name: string;
+    start_date: Date;
+    status: CampaignStatus;
+    updated_at: Date;
+
+}

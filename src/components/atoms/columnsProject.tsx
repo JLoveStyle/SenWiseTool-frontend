@@ -1,9 +1,14 @@
 "use client";
 
+import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import { Button } from "../ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
+import { Bounce, toast } from "react-toastify";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Bounce, toast } from "react-toastify";
-import { Route } from "@/lib/route";
-import Link from "next/link";
-import { Checkbox } from "../ui/checkbox";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { ProjectType } from "@/types/api-types";
 
 export type ChapterMetaData = {
   id: string;
@@ -78,7 +79,7 @@ export const column: ColumnDef<ChapterMetaData>[] = [
   }
 ];
 
-export const columnListProjects: ColumnDef<Project>[] = [
+export const columnListProjects: ColumnDef<ProjectType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -126,10 +127,6 @@ export const columnListProjects: ColumnDef<Project>[] = [
     ),
   },
   {
-    accessorKey: "creator",
-    header: "Creator",
-  },
-  {
     accessorKey: "updated_at",
     header: "Last update",
   },
@@ -140,6 +137,10 @@ export const columnListProjects: ColumnDef<Project>[] = [
   {
     accessorKey: "start_date",
     header: "Start date",
+  },
+  {
+    accessorKey: "end_date",
+    header: "End date",
   },
   {
     id: "actions",
@@ -159,7 +160,7 @@ export const columnListProjects: ColumnDef<Project>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
-                navigator.clipboard.writeText(project.id);
+                navigator.clipboard.writeText(project.id as string);
                 toast.success("Copied", {
                   autoClose: 1000,
                   transition: Bounce,
@@ -178,37 +179,12 @@ export const columnListProjects: ColumnDef<Project>[] = [
             </Link>
             <DropdownMenuItem
               className=""
-              // onClick={() => {
-              //   const selectedProject = allProject.find(
-              //     (item: { id: string }) => item.id === project.id
-              //   );
-              //   console.log("SELECTED PROJECT", selectedProject);
-              //   const updatePro = { ...selectedProject, status: ["DEPOYED"] };
-              //   console.log(" UPDATE PROJECT", updatePro);
-              //   const newArr = allProject.push(updatePro);
-              //   console.log("newArr", newArr);
-              //   LOCAL_STORAGE.save("all_projects", allProject.push(updatePro));
-              //   toast.success("Project deployed", {
-              //     autoClose: 1000,
-              //     transition: Bounce,
-              //   });
-              // }}
             >
               Deploy project
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-500"
-              onClick={() => {
-                const allPro = allProject.filter(
-                  (item: { id: string }) => item.id !== project.id
-                );
-                console.log("allPro", allPro);
-                LOCAL_STORAGE.save("all_project", allPro);
-                toast.success("Project deleted", {
-                  autoClose: 1000,
-                  transition: Bounce,
-                });
-              }}
+              onClick={() => {}}
             >
               Delete project
             </DropdownMenuItem>

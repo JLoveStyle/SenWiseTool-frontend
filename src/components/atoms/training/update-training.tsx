@@ -11,12 +11,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
+import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
 import { db_update_training } from "@/utiles/services/training";
 import { isEmptyObject } from "@/utils/tool";
 import { TrainingFormVerification } from "@/utils/training-form-verification";
-import { PenLine, Plus } from "lucide-react";
+import { PenLine } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "../icon";
@@ -24,19 +26,23 @@ import { FormTraining } from "./form-training";
 
 interface Props {
   currentTaining: TrainingProps;
+  header: React.ReactNode;
 }
 
-export function UpdateTraining({ currentTaining }: Props) {
+export function UpdateTraining({ currentTaining, header }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
   const company = useCompanyStore((state) => state.company);
+  const { value: openModal, toggle: toggleOpenModal } = useToggle();
+
+  const router = useRouter();
 
   const initialize = {
     id: currentTaining.id,
     title: currentTaining.title,
     location: currentTaining.location,
-    start_date: currentTaining.start_date,
-    end_date: currentTaining.end_date,
+    start_date: new Date(currentTaining.start_date).toISOString().slice(0, 16),
+    end_date: new Date(currentTaining.end_date).toISOString().slice(0, 16),
     modules: currentTaining.modules,
   };
 
@@ -55,22 +61,21 @@ export function UpdateTraining({ currentTaining }: Props) {
       start_date: formData.start_date,
       end_date: formData.end_date,
       location: formData.location,
-      company_id: company?.id ?? "",
       modules: formData.modules.map((item) => item.value),
     };
 
-    await db_update_training(dataToDB, formData.id!);
+    const serverResponse = await db_update_training(dataToDB, formData.id);
 
-    // if (error) {
-    //   toast.error(error.message);
-    //   setIsLoading(false);
-    //   return;
-    // }
-    // console.log(data);
+    if (serverResponse.status === "error") {
+      toast.error(serverResponse.response.message.message);
+      setIsLoading(false);
+      return;
+    }
 
-    // await db_test_add(formData);
-    // toast.success("Your project are created successfull");
-    // setIsLoading(false);
+    toast.success("Your project are updated successfull");
+    setIsLoading(false);
+    toggleOpenModal();
+    router.push(Route.trainingProject + `/${formData.id}`);
     return;
   };
 
@@ -93,37 +98,33 @@ export function UpdateTraining({ currentTaining }: Props) {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant="link"
-          className="text-yellow-500 font-bold"
-          title="editer"
-        >
-          <Icon icon={{ icon: PenLine }} size={20}></Icon>
-        </Button>
+    <Dialog open={openModal}>
+      <DialogTrigger asChild onClick={toggleOpenModal}>
+        {header}
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Editer le Projet de Formation</DialogTitle>
-          <DialogDescription>
+        <DialogHeader className="bg-orange-300 p-5">
+          <DialogTitle className="text-black text-2xl">
+            Editer le Projet de Formation
+          </DialogTitle>
+          <DialogDescription className="text-gray-700">
             Mettez à jour votre projet de formation en definisant de nouvelles
             valeurs pour l'amelioration...
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="px-5 pb-5">
           <FormTraining
             updatedFormData={handleUpdatedFormData}
             initData={initialize}
             errors={errors}
             isLoading={isLoading}
           />
-          <DialogFooter>
+          <DialogFooter className="mt-2">
             <Button
               type="submit"
               className="bg-green-600 hover:bg-green-500 flex gap-1"
             >
-              <Icon icon={{ icon: Plus }}>ÉDITER</Icon>
+              <Icon icon={{ icon: PenLine }}>ÉDITER</Icon>
             </Button>
           </DialogFooter>
         </form>
