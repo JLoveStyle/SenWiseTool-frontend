@@ -52,8 +52,8 @@ export default function Home({}: Props) {
   return (
     <LayoutDashboard projectsPerType={initialInspectionProjects as ProjectType[]} typeOfProject={"INITIAL_INSPECTION"}>
       <ProjectDisplay
-        projects={initialInspectionProjects as ProjectType[]}
-        // projects={[]}
+        // projects={initialInspectionProjects as ProjectType[]}
+        projects={[]}
         isLoading={isLoading}
       />
     </LayoutDashboard>

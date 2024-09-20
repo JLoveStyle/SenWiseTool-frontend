@@ -48,8 +48,15 @@ export default function Home({}: Props) {
   }, []);
 
   return (
-    <LayoutDashboard projectsPerType={autoEvalutionProjects as ProjectType[]} typeOfProject={"AUTO_EVALUATION"}>
-      <ProjectDisplay projects={autoEvalutionProjects as ProjectType[]} isLoading={isLoading} />
+    <LayoutDashboard
+      projectsPerType={autoEvalutionProjects as ProjectType[]}
+      typeOfProject={"AUTO_EVALUATION"}
+    >
+      <ProjectDisplay
+        // projects={autoEvalutionProjects as ProjectType[]}
+        projects={[]}
+        isLoading={isLoading}
+      />
     </LayoutDashboard>
   );
 }
