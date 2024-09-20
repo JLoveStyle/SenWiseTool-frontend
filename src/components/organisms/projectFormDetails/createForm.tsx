@@ -143,7 +143,7 @@ export default function ProjectDetailsForm({
     })
       .then((res) => {
         console.log("project cereated", res);
-        if (res.statusCode.toString().startsWith("2")) {
+        if (res.status.toString().startsWith("2")) {
           setIsLoading((prev) => !prev);
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", {

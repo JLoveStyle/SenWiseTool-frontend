@@ -6,10 +6,13 @@ import { Project } from "@/types/gestion";
 import { tableRaw } from "@/utiles/services/constants";
 import { MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ProjectType } from "@/types/api-types";
 
-type Props = {};
+type Props = {
+  projectDetails: ProjectType;
+};
 
-export default function ProjectDetails({}: Props) {
+export default function ProjectDetails({ projectDetails }: Props) {
   const router = useRouter()
   const [summaryActive, setSummaryActive] = useState<boolean>(true);
   const [formActive, setFormActive] = useState<boolean>(false);
@@ -27,19 +30,19 @@ export default function ProjectDetails({}: Props) {
   };
 
   useEffect(() => {
-    id = LOCAL_STORAGE.get("projectId");
-    const allProjects = LOCAL_STORAGE.get('all_projects')
-    setSelectedProject(allProjects.find((item: { id: string | null | undefined; }) => item.id === id));
+    // id = LOCAL_STORAGE.get("projectId");
+    // const allProjects = LOCAL_STORAGE.get('all_projects')
+    // setSelectedProject(allProjects.find((item: { id: string | null | undefined; }) => item.id === id));
   }, []);
 
   return (
     <div className="">
-        <div onClick={() => router.back()} className="active:translate-y-1 flex gap-2 items-baseline underline hover:cursor-pointer absolute font-semibold pl-6">
-          <MoveLeft size={15} />
-          <span className="">
-            Back
-          </span>
-        </div>
+      <div onClick={() => router.back()} className="active:translate-y-1 flex gap-2 items-baseline underline hover:cursor-pointer absolute font-semibold pl-6">
+        <MoveLeft size={15} />
+        <span className="">
+          Back
+        </span>
+      </div>
       {/* NAVIGATION FOR A SINGLE PROJECT */}
       <div className="flex justify-between md:w-[400px] mx-auto">
         <div className="flex flex-col gap-2">
@@ -118,7 +121,7 @@ export default function ProjectDetails({}: Props) {
       {summaryActive && (
         <ProjectSummary
           showData={showDataFuntionFromChild}
-          projectObject={selectedProject}
+          projectObject={projectDetails ? projectDetails : undefined}
         />
       )}
       {dataActive && <p>Show collected data</p>}

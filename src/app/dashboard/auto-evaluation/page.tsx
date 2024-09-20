@@ -10,12 +10,12 @@ import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const [autoEvalutionProjects, setAutoEvaluationProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
+  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
 
   // Fetch all projects with type ["AUTO_EVALUATION"] and pass it as props to Layout
   async function fetchAllAutoEvaluationProject() {
@@ -23,8 +23,7 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "AUTO_EVALUATION",
-      company?.id,
+      "?type=AUTO_EVALUATION",
       currentCampaign?.id
     )
       .then((response) => {
@@ -45,7 +44,7 @@ export default function Home({}: Props) {
   useEffect(() => {
     console.log("Auto-evaluation");
     fetchAllAutoEvaluationProject();
-  }, []);
+  }, [currentCampaign?.id]);
 
   return (
     <LayoutDashboard
@@ -53,8 +52,9 @@ export default function Home({}: Props) {
       typeOfProject={"AUTO_EVALUATION"}
     >
       <ProjectDisplay
-        // projects={autoEvalutionProjects as ProjectType[]}
-        projects={[]}
+        projects={autoEvalutionProjects?.length ? autoEvalutionProjects as ProjectType[] : []}
+
+        // projects={[]}
         isLoading={isLoading}
       />
     </LayoutDashboard>

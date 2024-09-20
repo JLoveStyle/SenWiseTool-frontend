@@ -34,7 +34,7 @@ const config = {
           foreground: "hsl(var(--secondary-foreground))",
         },
         tertiary: {
-          DEFAULT: "#fbd7b3",
+          DEFAULT: "#000",
           foreground: "hsl(var(--tertiary-foreground))",
         },
         destructive: {

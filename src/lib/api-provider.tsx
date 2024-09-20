@@ -48,7 +48,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     if (data) {
         if (route?.includes("users")) {
             setCurrentUser(data as unknown as UserType);
-            console.log('users from store', data)
+            // console.log('users from store', data)
         }
         if (route?.includes("companies")) {
             setCompany(data as unknown as CompanyType);
@@ -56,11 +56,11 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
         }
         if (route?.includes("price_plans")) {
             setPricePlan(data as unknown as PricePlanType);
-            console.log('price plan from store', data)
+            // console.log('price plan from store', data)
         }
         if (route?.includes("campaigns")) {
             setCampaigns(data as unknown as CampaignType[]);
-            console.log('campains from store', data)
+            // console.log('campains from store', data)
         }
     }
     // console.log("fro provider service: ", data)

@@ -182,22 +182,24 @@ export default function page({ params: { projectId } }: Props) {
 
   return (
     <div>
-      <nav className="flex gap-10 justify-between px-3 bg-tertiary shadow-md z-50 py-2 w-full">
+      <nav className="flex gap-10 justify-between px-3 bg-tertiary shadow-md z-50 py-2 w-full text-gray-100">
         <Link href={Route.home}>
           <Logo size="very-large" />
         </Link>
-        <div className="flex flex-col my-auto md:w-[80%]">
+        <div className="flex my-auto md:w-[80%] items-center gap-5">
           <label htmlFor="projectTitle" className="font-semibold">
-            PROJECT
+            PROJECT TITLE
           </label>
-          <input
-            type="text"
-            required
-            name="title"
-            value={projectData.title}
-            onChange={(e) => handleInputChange(e)}
-            className="border mt-1 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
-          />
+          <div className="flex-1">
+            <input
+              type="text"
+              required
+              name="title"
+              value={projectData.title}
+              onChange={(e) => handleInputChange(e)}
+              className="border mt-1 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+            />
+          </div>
         </div>
         <div className="flex justify-between my-auto md:w-[140px] pr-3 gap-2">
           <Button
