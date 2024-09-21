@@ -19,7 +19,7 @@ export default function FinalFormData({ selectedProjects }: Props) {
             <th className="px-2 border">C</th>
             <th className="px-2 border">NC</th>
             <th className="px-2 border">NA</th>
-            <th className="px-2 border">Observation/Commentaire</th>
+            <th className="px-2 border">Commentaire</th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +40,7 @@ export default function FinalFormData({ selectedProjects }: Props) {
                 <input type="radio" id="NA" name="C" />
               </td>
               <td className="px-2 border">
-                <textarea className="p-2"/>
+                <textarea className="p-2 border-none h-full"/>
               </td>
             </tr>
           ))}
