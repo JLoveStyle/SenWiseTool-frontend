@@ -11,7 +11,7 @@ import { Logo } from "../atoms/logo";
 
 type Props = {};
 
-export default function NavDashboard({}: Props) {
+export default function NavDashboard({ }: Props) {
   const [showAdgForm, setShowAdgForm] = useState<boolean>(false);
   const [showMemberForm, setShowMemberForm] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
@@ -45,7 +45,7 @@ export default function NavDashboard({}: Props) {
   ];
 
   return (
-    <nav className=" bg-tertiary z-50 flex justify-between ">
+    <nav className=" bg-tertiary  text-white z-50 flex justify-between ">
       <div className=" px-2 items-center flex justify-between mr-0 top-0  left-[100px]">
         {/* LOGO & PROJECT NAME IF DEFINED */}
         <div className="flex justify-between gap-10">
