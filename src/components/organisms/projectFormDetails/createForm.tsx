@@ -22,11 +22,10 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject?:
-  | "INTERNAL_INSPECTION"
-  | "INITIAL_INSPECTION"
-  | "AUTO_EVALUATION"
-  | "TRAINING"
-  ;
+    | "INTERNAL_INSPECTION"
+    | "INITIAL_INSPECTION"
+    | "AUTO_EVALUATION"
+    | "TRAINING";
   project?: Project;
 };
 
@@ -64,7 +63,6 @@ export default function ProjectDetailsForm({
     status: "DRAFT",
     type: typeOfProject, // Project type 'AUTO_EVALUATION' | 'INITIAL_INSPECTION' | etc
   });
-
 
   const animatedComponents = makeAnimated(); // For react-select
 
@@ -127,6 +125,8 @@ export default function ProjectDetailsForm({
     }
 
     // CREATE NEW RECORD IN THE PROJECTS TABLE
+    LOCAL_STORAGE.save('project', projectData) // to be removed
+    router.push(Route.editProject + `/45`); // to be removed
     await mutateApiData(Route.projects, {
       type: projectData.type,
       company_id: company?.id,
@@ -146,10 +146,7 @@ export default function ProjectDetailsForm({
         if (res.status.toString().startsWith("2")) {
           setIsLoading((prev) => !prev);
           router.push(Route.editProject + `/${res.data.id}`);
-          LOCAL_STORAGE.save("project", {
-            title: res.data.title,
-            id: res.data.id
-          });
+          LOCAL_STORAGE.save("project", res.data);
         }
         setIsLoading((prev) => !prev);
         toast.error("Something went wrong", {
@@ -158,7 +155,11 @@ export default function ProjectDetailsForm({
         });
       })
       .catch((err) => {
-        console.log("error occured while creating", err);
+        console.log("error occured while creating project", err);
+        toast.error("Something went wrong. Please try again", {
+          transition: Bounce,
+          autoClose: 3000
+        })
         setIsLoading((prev) => !prev);
       });
     // get the id of the project response and route to that ID
@@ -172,44 +173,24 @@ export default function ProjectDetailsForm({
     <CardLayout
       heading={`Create a project (${typeOfProject}): Project details`}
     >
-      <form className="w-full flex flex-col px-6 py-4" onSubmit={handleSubmit}>
+      <form className="w-full flex flex-col px-6 py-2" onSubmit={handleSubmit}>
         <em>
-          <strong>NB</strong>: The Rain forest Alliances' logo will be added by
-          default on this project form
+          <strong>NB</strong>: The Rain forest Alliances' and company logos will
+          be added by default on this project form
         </em>
-        <div className="flex justify-between py-5">
-          {/* The existence of the company logo in the company object will checked here. This input field will be displayed based on that */}
-          {/* <div className="flex flex-col">
-            <label htmlFor="company_logo">
-              <strong>Company logo</strong>
-            </label>
-            <input type="file" onChange={(e) => handlecompanyLogo(e)} />
-          </div> */}
-          <div className="flex flex-col">
-            <label htmlFor="company_logo">
-              <strong>Add another logo</strong>
-            </label>
-            <input type="file" onChange={(e) => handleOtherLogo(e)} />
-          </div>
+        <div className="flex flex-col py-2">
+          <label htmlFor="company_logo">
+            <strong>Add another logo</strong>
+          </label>
+          <input type="file" onChange={(e) => handleOtherLogo(e)} />
         </div>
-        <div className="flex justify-between w-full gap-4 ">
-          <InputField
-            label="Project title"
-            inputName="title"
-            type="text"
-            value={projectData.title}
-            onChange={(e) => handleChangeEvent(e)}
-          />
-          {/* <div className="md:w-1/2">
-            <InputField
-              label="Description"
-              inputName="description"
-              type="text"
-              value={projectData.description}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div> */}
-        </div>
+        <InputField
+          label="Project title"
+          inputName="title"
+          type="text"
+          value={projectData.title}
+          onChange={(e) => handleChangeEvent(e)}
+        />
         <div className="flex justify-between gap-4">
           <div className="md:w-1/2">
             <InputField
@@ -286,15 +267,18 @@ export default function ProjectDetailsForm({
             className="md:w-[33.33%]"
           />
         </div>
+        <label className="font-semibold" htmlFor="activity">
+          Project description
+        </label>
         <Textarea
-          placeholder="Enter project description"
+          placeholder="Enter description"
           value={projectData.description}
           name="description"
           onChange={(e) => handleChangeEvent(e)}
         />
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end py-2 gap-4">
           <Button
-            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow"
+            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1"
             onClick={(e: any) => {
               e.preventDefault;
               onClick(showProjectDetails, showProjectOptions);
@@ -304,7 +288,7 @@ export default function ProjectDetailsForm({
           </Button>
           <Button
             type="submit"
-            className={isLoading ? "hover:cursor-wait opacity-70" : ""}
+            className={isLoading ? "hover:cursor-wait opacity-70" : "active:transition-y-1"}
           >
             {isLoading ? <Spinner /> : "CREATE PROJECT"}
           </Button>

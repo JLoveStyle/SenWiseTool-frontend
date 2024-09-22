@@ -1,13 +1,7 @@
 "use client";
-import { ChapterMetaData } from "@/components/atoms/columnsProject";
-import {
-  DeployableFormMetadata,
-  printableFormColumns,
-} from "@/components/atoms/colums-of-tables/deployableForm";
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
 import { Route } from "@/lib/route";
-import { deployedPro } from "@/utiles/services/constants";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
@@ -19,9 +13,10 @@ import slugify from "slugify";
 
 type Props = {};
 
-export default function page({ }: Props) {
+export default function page({}: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [project, setProject] = useState<{ [key: string]: any }>({});
   const projectData = LOCAL_STORAGE.get("project");
   const finalJson = LOCAL_STORAGE.get("finalJson");
@@ -57,9 +52,20 @@ export default function page({ }: Props) {
   }, []);
 
   async function deployProject() {
-    await mutateUpApiData(Route.projects, { status: "DEPLOYED" }, projectData?.id)
+    setIsLoading((prev) => !prev);
+    await mutateUpApiData(
+      Route.projects,
+      { status: "DEPLOYED" },
+      projectData?.id
+    )
       .then((response) => {
         console.log(response);
+        if (response.status <= 204) {
+          toast.success("Project deployed", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+        }
         if (response.statusCode >= 205) {
           toast.error(`Sorry something went wrong`, {
             transition: Bounce,
@@ -120,13 +126,13 @@ export default function page({ }: Props) {
             <div className="w-1/2">
               {firstHalfMetaData.map((item: any, idx: number) => (
                 <div key={idx} className=" flex py-2 gap-3">
-                  <label htmlFor={item.val} className="font-semibold">
-                    {item.val}:
+                  <label htmlFor={item} className="font-semibold">
+                    {item}:
                   </label>
                   <input
                     type="text"
-                    id={item.val}
-                    name={slugify(item.val)}
+                    id={item}
+                    name={slugify(item)}
                     onChange={(e) => handleChangeEvent(e)}
                     className="border py-1 px-2 w-full"
                   />
@@ -136,13 +142,13 @@ export default function page({ }: Props) {
             <div className="w-1/2">
               {secondHalfMetaData.map((item: any, idx: number) => (
                 <div key={idx} className="flex py-2 gap-3">
-                  <label htmlFor={item.val} className="font-semibold">
-                    {item.val}:
+                  <label htmlFor={item} className="font-semibold">
+                    {item}:
                   </label>
                   <input
                     type="text"
-                    id={item.val}
-                    name={item.val}
+                    id={item}
+                    name={item}
                     onChange={(e) => handleChangeEvent(e)}
                     className="border py-1 px-2 w-full"
                   />

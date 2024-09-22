@@ -56,6 +56,8 @@ export function DataTable<TData, TValue>({
   const data = useMemo(() => incomingData, [incomingData]);
   const columns = useMemo(() => incomingColumns, []);
 
+  console.log('loadx for datatable', isLoading)
+
   const table = useReactTable({
     data,
     columns,

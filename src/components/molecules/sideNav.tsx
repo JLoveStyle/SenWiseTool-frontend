@@ -20,6 +20,7 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 import clsx from "clsx";
 import Link from "next/link";
 import { Logo } from "../atoms/logo";
+import { Spinner } from "../atoms/spinner/spinner";
 
 interface Props {
   options: DashboardSidebarOption[];
@@ -27,7 +28,9 @@ interface Props {
 
 export default function SideNav({ options }: Props) {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
-  const setCurrentCampaign = useCampaignStore((state) => state.setCurrentCampaign);
+  const setCurrentCampaign = useCampaignStore(
+    (state) => state.setCurrentCampaign
+  );
   const campaigns = useCampaignStore((state) => state.campaigns);
 
   async function handleCampagneObject(currentCampaign: CampaignType) {
@@ -63,15 +66,26 @@ export default function SideNav({ options }: Props) {
                   <DropdownMenuLabel>{opt.option.label}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    {opt.details.map((detail, indx) => (
-                      <DropdownMenuItem key={indx} onClick={() => console.log(detail.id)}>
-                        {detail.icon && (
-                          <detail.icon className="mr-2 h-4 w-4" />
-                        )}
-                        <span>{detail.label}</span>
-                        {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-                      </DropdownMenuItem>
-                    ))}
+                    {!opt.details?.length ? (
+                      <div className="flex justify-center mx-auto">
+                        <Spinner size="small" />
+                      </div>
+                    ) : (
+                      <>
+                        {opt.details.map((detail, indx) => (
+                          <DropdownMenuItem
+                            key={indx}
+                            onClick={() => console.log(detail.id)}
+                          >
+                            {detail.icon && (
+                              <detail.icon className="mr-2 h-4 w-4" />
+                            )}
+                            <span>{detail.label}</span>
+                            {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+                          </DropdownMenuItem>
+                        ))}
+                      </>
+                    )}
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               )}
@@ -86,4 +100,3 @@ export default function SideNav({ options }: Props) {
     </div>
   );
 }
-

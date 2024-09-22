@@ -18,19 +18,15 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { businessActivity } from "@/utiles/services/constants";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { createOrganization } from "@/utiles/services/createOrg";
-import { CompanyType } from "@/types/api-types";
-import { Description } from "@radix-ui/react-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Bounce, toast } from "react-toastify";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { useEdgeStore } from "@/lib/edgestore";
 
 type Props = {};
 
 export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
-  const { edgestore } = useEdgeStore();
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
@@ -76,14 +72,9 @@ export default function Home({ }: Props) {
     setIsLoading((prev) => !prev);
 
     if (user?.id && companyLogo) {
-      // upload logo to edgestore
-      const uploadedLogo = await edgestore.publicImages.upload({
-        file: companyLogo,
-        onProgressChange: (progress) => console.log(progress),
-      });
+      
       const res = await createOrganization(formData, user.id);
       console.log(res)
-      if (!uploadedLogo) return
 
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
@@ -92,7 +83,7 @@ export default function Home({ }: Props) {
         state: formData.state,
         city: formData.city,
         sector_of_activity: activity,
-        logo: uploadedLogo.url,
+        // logo: uploadedLogo.url,
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
@@ -215,6 +206,13 @@ export default function Home({ }: Props) {
           <InputField
             label="Company email"
             inputName="companyEmail"
+            type="email"
+            value={formData.companyEmail}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
+            label="Head office email"
+            inputName="headOfficeEmail"
             type="email"
             value={formData.companyEmail}
             onChange={(e) => handleInputChange(e)}

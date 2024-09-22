@@ -13,7 +13,6 @@ import { Textarea } from "../../ui/textarea";
 import { Bounce, toast } from "react-toastify";
 import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
-import { useEdgeStore } from "@/lib/edgestore";
 import { ProjectType } from "@/types/api-types";
 
 type Props = {
@@ -22,7 +21,6 @@ type Props = {
 };
 
 export default function EditProjectFormDatails({ onClick, project }: Props) {
-  const { edgestore } = useEdgeStore();
   const countries: any[] = Country.getAllCountries();
   const closeEditForm: boolean = false;
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
@@ -81,15 +79,8 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   async function handleSubmit(e: any) {
     e.preventDefault();
     setIsLoading((prev) => !prev);
-    // const uploadedLogo = await edgestore.publicImages.upload({
-    //   file: otherLogo,
-    //   onProgressChange: (progress) => console.log(progress),
-    // });
 
-    // Upload other logo to edge store.
-    // if (!uploadedLogo) return;
-
-    // write the patch function here
+    // update a project record
     await mutateUpApiData(
       Route.projects,
       {

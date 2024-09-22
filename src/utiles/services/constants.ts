@@ -4,8 +4,8 @@ import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
-export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [
@@ -16,6 +16,62 @@ export const businessActivity: string[] = [
   "Wood",
   "Other",
 ];
+
+// META DATA OPTIONS
+export const metaDataOptions: {[key: string]: string}[] = [
+  {
+    name: "Nom du planteur",
+    value: "nom_planteur"
+  },
+  {
+    name: "Contact planteur",
+    value: "contact_planteur"
+  },
+  {
+    name: "Code du planteur",
+    value: "code_planteur"
+  },
+  {
+    name: "N° CNI",
+    value: "cni"
+  },
+  {
+    name: "Date de l'inspection",
+    value: "date_de_inspection"
+  },
+  {
+    name: "Village",
+    value: "village"
+  },
+  {
+    name: "Annee de certification",
+    value: "annee_de_certification"
+  },
+  {
+    name: "Nom de inspecteur",
+    value: "nom_de_inspecteur"
+  },
+  {
+    name: "Contact de inspecteur",
+    value: "contact_de_inspecteur"
+  },
+  {
+    name: "Angrais appliqué",
+    value: "angrais_appliqué"
+  },
+  {
+    name: "Quantité d'angrais appliqué",
+    value: "qte_angrais_appliqué"
+  },
+  {
+    name: "Pesticide utiliser",
+    value: "pesticide_utiliser"
+  },
+  {
+    name: "Quantité de Pesticide",
+    value: "qte_pesticide"
+  },
+]
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'GESTION'
 export const optionsGestions: {

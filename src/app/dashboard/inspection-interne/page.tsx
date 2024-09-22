@@ -6,12 +6,11 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const [interanlInspectionProjects, setInternalInspectionProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,11 +29,7 @@ export default function Home({ }: Props) {
       .then((response) => {
         console.log("all initial_inspection projects", response);
         if (response.statusCode.toString().startsWith("2")) {
-          setInternalInspectionProjects(() => {
-            if (response.data) {
-              return response.data
-            } else return []
-          });
+          setInternalInspectionProjects(response.data);
         }
         setIsLoading((prev) => !prev);
       })
@@ -49,13 +44,22 @@ export default function Home({ }: Props) {
     console.log("inspection interne");
   }, [currentCampaign?.id, company?.id]);
 
+
   return (
     <LayoutDashboard
       typeOfProject={"INTERNAL_INSPECTION"}
-      projectsPerType={interanlInspectionProjects as ProjectType[]}
+      projectsPerType={
+        interanlInspectionProjects?.length
+          ? (interanlInspectionProjects as ProjectType[])
+          : []
+      }
     >
       <ProjectDisplay
-        projects={interanlInspectionProjects?.length ? interanlInspectionProjects as ProjectType[] : []}
+        projects={
+          interanlInspectionProjects?.length
+            ? (interanlInspectionProjects as ProjectType[])
+            : []
+        }
         // projects={[]}
         isLoading={isLoading}
       />

@@ -30,7 +30,6 @@ export default function Home({ params: { id } }: Props) {
 
 
   useEffect(() => {
-    console.log("internal_inspection");
     fecthDetailProjectData()
   }, [Route.projects, id]);
 

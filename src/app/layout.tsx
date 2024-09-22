@@ -6,7 +6,6 @@ import { Inter as FontSans } from "next/font/google";
 import { Flip, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/globals.css";
-import { EdgeStoreProvider } from "@/lib/edgestore";
 // import { Toaster } from "sonner";
 
 const fontSans = FontSans({
@@ -38,7 +37,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClerkProvider>
-            <EdgeStoreProvider>{children}</EdgeStoreProvider>
+            {children}
             <ToastContainer position="top-center" transition={Flip} />
           </ClerkProvider>
         </ThemeProvider>

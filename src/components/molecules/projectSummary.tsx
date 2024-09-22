@@ -51,8 +51,6 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
     },
   ];
 
-  // console.log("here =>", projectObject);
-
   return (
     <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
       <div className="md:w-[70%]">
