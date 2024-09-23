@@ -19,6 +19,7 @@ type Props = {
 
 export default function ProjectSummary({ projectObject, showData }: Props) {
   const router = useRouter();
+  const id = LOCAL_STORAGE.get('projectId')
   const project = LOCAL_STORAGE.get("project");
   const lienRapide: { [key: string]: any } = [
     {
@@ -40,14 +41,18 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
       text: "Edit form",
       secondIcon: <ChevronRight />,
       function: () => {
-        router.push(Route.editProject + `/${project?.id}`);
+        // router.push(Route.editProject + `/${project?.id}`);
+        router.push(Route.editProject + `/${id}`);
       },
     },
     {
       firstIcon: <Eye />,
       text: "View form",
       secondIcon: <ChevronRight />,
-      function: () => router.push(Route.editProject + `/${project?.id}/pdf`),
+      function: () => {
+        router.push(Route.editProject + `/${id}/pdf`);
+        // router.push(Route.editProject + `/${project?.id}/pdf`)
+      },
     },
   ];
 

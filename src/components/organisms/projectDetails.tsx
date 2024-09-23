@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ProjectSummary from "../molecules/projectSummary";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Project } from "@/types/gestion";
-import { tableRaw } from "@/utiles/services/constants";
 import { MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ProjectType } from "@/types/api-types";
@@ -28,12 +26,6 @@ export default function ProjectDetails({ projectDetails }: Props) {
     // setFormActive(false)
     setSummaryActive(false);
   };
-
-  useEffect(() => {
-    // id = LOCAL_STORAGE.get("projectId");
-    // const allProjects = LOCAL_STORAGE.get('all_projects')
-    // setSelectedProject(allProjects.find((item: { id: string | null | undefined; }) => item.id === id));
-  }, []);
 
   return (
     <div className="">

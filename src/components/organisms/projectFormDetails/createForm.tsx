@@ -125,8 +125,6 @@ export default function ProjectDetailsForm({
     }
 
     // CREATE NEW RECORD IN THE PROJECTS TABLE
-    LOCAL_STORAGE.save('project', projectData) // to be removed
-    router.push(Route.editProject + `/45`); // to be removed
     await mutateApiData(Route.projects, {
       type: projectData.type,
       company_id: company?.id,
