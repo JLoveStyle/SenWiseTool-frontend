@@ -14,6 +14,7 @@ import {
   CampaignType,
   CompanyType,
   ProjectType,
+  RequirementType,
   UserType,
 } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -102,17 +103,25 @@ export default function LayoutDashboard({
       },
     },
   ];
-  useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
-    fn: () => fetchApiData(Route.companies, "current"),
-    route: Route.companies,
-  });
-  const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
-    fn: () => fetchApiData(Route.campaign, ""),
-    route: Route.campaign,
-  });
+  /**
+   *   useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+      fn: () => fetchApiData(Route.companies, "current"),
+      route: Route.companies,
+    });
+    const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
+      fn: () => fetchApiData(Route.campaign, ""),
+      route: Route.campaign,
+    });
+    useApiOps<RequirementType, ApiDataResponse<RequirementType>>({
+      fn: () => fetchApiData(Route.requirements, ""),
+      route: Route.requirements,
+    });
+   */
+
   useEffect(() => {
-    refetch();
+    // refetch();
   }, []);
+
   const { value: displayCloseSideNav, toggle: togglrDisplayCloseSideNav } =
     useToggle({ initial: true });
 

@@ -17,24 +17,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ProjectType } from "@/types/api-types";
+import { ChapterMetaDataType, ProjectType } from "@/types/api-types";
 
-export type ChapterMetaData = {
-  id: string;
-  number: string;
-  principal_requirement: string;
-  certication_de_group: {
-    petit_exp_agri: string;
-    grande_exp_agri: string;
-    direction_de_group: string;
-  };
-};
 
 let allProject = LOCAL_STORAGE.get("all_projects");
 console.log("all projects", allProject);
 
 // this could be wrapped in a hook inorder to have a stable reference to prevent infinite re-rendres
-export const column: ColumnDef<ChapterMetaData>[] = [
+export const column: ColumnDef<ChapterMetaDataType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -184,7 +174,7 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem
               className="text-red-500"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               Delete project
             </DropdownMenuItem>
@@ -196,9 +186,9 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
 ];
 
 // Grouped columns
-const columnHelper = createColumnHelper<ChapterMetaData>();
+const columnHelper = createColumnHelper<ChapterMetaDataType>();
 
-export const groupedColumns: ColumnDef<ChapterMetaData>[] = [
+export const groupedColumns: ColumnDef<ChapterMetaDataType>[] = [
   {
     id: "select",
     header: ({ table }) => (

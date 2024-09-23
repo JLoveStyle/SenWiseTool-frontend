@@ -74,9 +74,10 @@ export const db_get_trainings = async (companyId?: string) => {
 };
 
 export const db_delete_training = async (id: string) => {
-
+  console.log("deleting training: ", id)
   return mutateDelApiData<ApiDataResponse<TrainingType>>(Route.training, id)
     .then((response) => {
+      console.log("deleting training response ", response)
       if (typeof response != 'undefined' && response?.status === 204)
         return { data: response.message };
       return {

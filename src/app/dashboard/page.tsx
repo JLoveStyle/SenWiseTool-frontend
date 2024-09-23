@@ -7,6 +7,7 @@ import {
   ApiDataResponse,
   CampaignType,
   CompanyType,
+  RequirementType,
   UserType,
 } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -30,14 +31,23 @@ export default function Home({ }: Props) {
     route: Route.user,
   });
 
-
-
+  useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
+  });
+  useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
+    fn: () => fetchApiData(Route.campaign, ""),
+    route: Route.campaign,
+  });
+  useApiOps({
+    fn: () => fetchApiData(Route.requirements, ""),
+    route: Route.requirements,
+  });
+  // <RequirementType, ApiDataResponse<RequirementType>>
   async function fetchData() {
     const token = await getToken();
     if (token) {
       LOCAL_STORAGE.save("token", token);
-      // store the user in the session
-      // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
     }
   }
 

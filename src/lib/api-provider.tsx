@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { ApiDataResponse, CampaignType, CompanyType, PricePlanType, UserType } from '../types/api-types';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ApiDataResponse, CampaignType, CompanyType, PricePlanType, RequirementType, UserType } from '../types/api-types';
 import { IUser, useUserstore } from './stores/user-stores';
 import { useCompanyStore } from './stores/companie-store';
 import { usePriceStore } from './stores/price-store';
 import { useCampaignStore } from './stores/campaign-store';
 import { Route } from './route';
+import { useRequirementsStore } from './stores/requirements-store';
 
 export interface IAppProps<Q> {
     query?: string;
@@ -21,10 +22,11 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     const setCompany = useCompanyStore((state) => state.setCompany);
     const setPricePlan = usePriceStore((state) => state.setPricePlan);
     const setCampaigns = useCampaignStore((state) => state.setCampaigns);
+    const setRequirements = useRequirementsStore((state) => state.setRequirements);
 
 
     // this function is a global api call fetch for fetching the resouce located at the route specified.
-    const fetchData = () => {
+    const fetchData = useCallback(() => {
         fn()
             .then((response) => {
                 if (response?.status?.toString().startsWith("2"))
@@ -36,7 +38,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
             }).finally(() => {
                 setIsLoading(false);
             });
-    };
+    }, [fn]);
 
     useEffect(() => {
         fetchData();
@@ -44,7 +46,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
 
     const refetch = () => fetchData();
 
-
+    console.log(route)
 
     if (data) {
         if (route?.includes("users")) {
@@ -63,12 +65,16 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
             setCampaigns(data as unknown as CampaignType[]);
             // console.log('campains from store', data)
         }
+        if (route?.includes("requirements")) {
+            setRequirements(data as unknown as RequirementType[] | any[]);
+            console.log('requirements from store', data)
+        }
     }
-    // console.log("fro provider service: ", data)
+    console.log("fro provider service: ", data)
     return {
         data,
         // error,
-        // isLoading
+        // isLoading,
         refetch
     }
 }

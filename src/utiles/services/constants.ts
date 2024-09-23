@@ -1,4 +1,3 @@
-import { ChapterMetaData } from "@/components/atoms/colums-of-tables/chapter";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";

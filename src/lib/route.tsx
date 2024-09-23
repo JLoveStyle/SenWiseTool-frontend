@@ -25,6 +25,7 @@ export type AvailableRoute =
   | "projects"
   | "campaign"
   | "trainingProject"
+  | "requirements"
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -51,4 +52,5 @@ export const Route: Record<AvailableRoute, string> = {
   projects: "projects",
   createCompany: "create-compay",
   campaign: 'campaigns',
+  requirements: "requirements"
 };
