@@ -10,7 +10,7 @@ interface Props {
   onClick: () => void;
   deployProject: () => void;
   filename: string;
-  handleExitPage?: () => void
+  handleExitPage?: () => void;
 }
 
 const PrintContent: React.FC<Props> = (props) => {
@@ -38,15 +38,19 @@ const PrintContent: React.FC<Props> = (props) => {
     <div>
       <div ref={formRef}>{props.children}</div>
       <div className="flex justify-center mx-auto gap-4 pb-10 ">
-        <Button
-          className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1"
-          onClick={props.handleExitPage}
-        >
-          BACK
-        </Button>
-        <Button className="px-10" onClick={props.onClick}>
-          Edit
-        </Button>
+        {props.handleExitPage && (
+          <Button
+            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1"
+            onClick={props.handleExitPage}
+          >
+            BACK
+          </Button>
+        )}
+        {props.onClick && (
+          <Button className="px-10" onClick={props.onClick}>
+            Edit
+          </Button>
+        )}
         <Button className="" onClick={handlePrint}>
           Download
         </Button>
