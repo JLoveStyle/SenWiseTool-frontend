@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const [autoEvalutionProjects, setAutoEvaluationProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,17 +29,15 @@ export default function Home({ }: Props) {
       .then((response) => {
         console.log("all initial_inspection projects", response);
         setIsLoading((prev) => !prev);
-        setAutoEvaluationProjects(() => {
-          if (response.data) {
-            return response.data;
-          } else return [];
-        });
+        setAutoEvaluationProjects(response.data);
       })
       .catch((error) => {
         console.log(error);
         setIsLoading((prev) => !prev);
       });
   }
+
+  console.log('isLoading from autoevaluation', isLoading)
 
   useEffect(() => {
     console.log("Auto-evaluation");
@@ -48,12 +46,19 @@ export default function Home({ }: Props) {
 
   return (
     <LayoutDashboard
-      projectsPerType={autoEvalutionProjects as ProjectType[]}
+      projectsPerType={
+        autoEvalutionProjects?.length
+          ? (autoEvalutionProjects as ProjectType[])
+          : []
+      }
       typeOfProject={"AUTO_EVALUATION"}
     >
       <ProjectDisplay
-        projects={autoEvalutionProjects?.length ? autoEvalutionProjects as ProjectType[] : []}
-
+        projects={
+          autoEvalutionProjects?.length
+            ? (autoEvalutionProjects as ProjectType[])
+            : []
+        }
         // projects={[]}
         isLoading={isLoading}
       />

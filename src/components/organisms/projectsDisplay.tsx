@@ -26,6 +26,8 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
 
   const company = useCompanyStore((state) => state.company);
 
+  console.log("from project display: ", company);
+
   const handleSelectedProjects = (projects: ProjectType[]) => {
     setSelectedProjects(projects);
   };
@@ -34,6 +36,8 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
   const handleCloseDialog = (val: boolean) => {
     setOpenModal(val);
   };
+
+  console.log('loading from projectdisplay', isLoading)
 
   return (
     <>

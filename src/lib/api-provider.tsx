@@ -57,7 +57,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
         }
         if (route?.includes("campaigns")) {
             setCampaigns(data as unknown as CampaignType[]);
-            // console.log('campains from store', data)
+            console.log('campains from store', data)
         }
     }
     // console.log("fro provider service: ", data)

@@ -52,6 +52,7 @@ export default function LayoutDashboard({
       baseUrl: "",
     })
   );
+  console.log(campaigns)
 
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [

@@ -11,13 +11,12 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const [initialInspectionProjects, setInitialInspectioProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
   const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
-
 
   // Fetch all projects with type "INITIAL_INSPECTION" and pass it as props to Layout
   async function fetchAllInitialInspectionProject() {
@@ -31,11 +30,7 @@ export default function Home({ }: Props) {
       .then((response) => {
         console.log("all initial_inspection projects", response);
         setIsLoading((prev) => !prev);
-        setInitialInspectioProjects(() => {
-          if (response.data) {
-            return response.data
-          } else return []
-        });
+        setInitialInspectioProjects(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -44,16 +39,27 @@ export default function Home({ }: Props) {
   }
 
   useEffect(() => {
-    fetchAllInitialInspectionProject()
+    fetchAllInitialInspectionProject();
     console.log("initial_inspection");
   }, [currentCampaign?.id, Route]);
 
-  console.log('init', initialInspectionProjects)
+  console.log("init", initialInspectionProjects);
 
   return (
-    <LayoutDashboard projectsPerType={initialInspectionProjects as ProjectType[]} typeOfProject={"INITIAL_INSPECTION"}>
+    <LayoutDashboard
+      projectsPerType={
+        initialInspectionProjects?.length
+          ? (initialInspectionProjects as ProjectType[])
+          : []
+      }
+      typeOfProject={"INITIAL_INSPECTION"}
+    >
       <ProjectDisplay
-        projects={initialInspectionProjects?.length ? initialInspectionProjects as ProjectType[] : []}
+        projects={
+          initialInspectionProjects?.length
+            ? (initialInspectionProjects as ProjectType[])
+            : []
+        }
         // projects={[]}
         isLoading={isLoading}
       />

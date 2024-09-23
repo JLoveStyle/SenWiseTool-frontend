@@ -22,4 +22,11 @@ export class LOCAL_STORAGE {
       return JSON.parse(data);
     }
   }
+
+  static remove(key: string) {
+    if (typeof window !== "undefined") {
+      return localStorage.removeItem(key)
+    }
+    return
+  }
 }
