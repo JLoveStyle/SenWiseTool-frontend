@@ -29,7 +29,8 @@ export async function createProject(project: Partial<Project>) {
  * @returns The response from the API, or an error if the call fails
  */
 export const fetchApiData = async <T = any>(route: string, valueTofetch?: string, ...args: any[]): Promise<T> => {
-  const data = await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
+  console.log("route to api: ", `${API_URL}/${route}/${valueTofetch}`)
+  const data = await apiCall.GET(`${API_URL}/${route}`);
   // console.log("from query function: ", data);
   return data;
 }

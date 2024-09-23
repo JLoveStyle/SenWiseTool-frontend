@@ -15,7 +15,7 @@ export default function Home({}: Props) {
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
+  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
 
   // Fetech all projects xwith ["INTERNAL_INSPECTION"] and pass it as props to layout
   async function fetchAllInternalInspectionProject() {
@@ -23,18 +23,13 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "INSPECTION_INTERN",
-      company?.id,
+      "?type=INSPECTION_INTERN",
       currentCampaign?.id
     )
       .then((response) => {
         console.log("all initial_inspection projects", response);
         if (response.statusCode.toString().startsWith("2")) {
-          setInternalInspectionProjects(() => {
-            if (response.data) {
-              return response.data
-            } else return []
-          });
+          setInternalInspectionProjects(response.data);
         }
         setIsLoading((prev) => !prev);
       })
@@ -47,15 +42,24 @@ export default function Home({}: Props) {
   useEffect(() => {
     fetchAllInternalInspectionProject();
     console.log("inspection interne");
-  }, []);
+  }, [currentCampaign?.id, company?.id]);
+
 
   return (
     <LayoutDashboard
       typeOfProject={"INTERNAL_INSPECTION"}
-      projectsPerType={interanlInspectionProjects as ProjectType[]}
+      projectsPerType={
+        interanlInspectionProjects?.length
+          ? (interanlInspectionProjects as ProjectType[])
+          : []
+      }
     >
       <ProjectDisplay
-        projects={interanlInspectionProjects as ProjectType[]}
+        projects={
+          interanlInspectionProjects?.length
+            ? (interanlInspectionProjects as ProjectType[])
+            : []
+        }
         // projects={[]}
         isLoading={isLoading}
       />

@@ -33,7 +33,7 @@ export const Route: Record<AvailableRoute, string> = {
   services: "services",
   signIn: "sign-in",
   signUp: "sign-up",
-  dashboard: "dashboard",
+  dashboard: "/dashboard",
   trainingProject: "/dashboard/training",
   profile: "profile",
   login: "login",

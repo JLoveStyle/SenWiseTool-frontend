@@ -37,6 +37,8 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
     setOpenModal(val);
   };
 
+  console.log('loading from projectdisplay', isLoading)
+
   return (
     <>
       <div className="flex justify-between pb-4 pt-2 px-6">

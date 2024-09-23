@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
 import { LocalTrainingProps, TrainingProps } from "@/types/formData";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import {
   Archive,
   MoveLeft,
@@ -71,7 +71,7 @@ export default function TrainingDetails() {
     fetchData();
   }, []);
 
-  useEffect(() => {}, [currentTrainingData]);
+  useEffect(() => { }, [currentTrainingData]);
 
   return (
     <LayoutDashboard
@@ -141,10 +141,7 @@ export default function TrainingDetails() {
                       <div>
                         <span className="text-gray-700">Au </span>
                         <span className="text-gray-400">
-                          {dayjs(
-                            currentTrainingData.end_date,
-                            "YYYY/MM/DD"
-                          ).toISOString()}
+                          {currentTrainingData.end_date}
                         </span>
                       </div>
                     </div>
@@ -219,7 +216,7 @@ export default function TrainingDetails() {
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span>Formulaires disponibles</span>
+              <span>No Fiche de presence</span>
               <span>0</span>
             </div>
             <div className="flex justify-between items-center gap-5 bg-transparent absolute bottom-5">

@@ -34,9 +34,7 @@ import ProjectDetailsForm from "@/components/organisms/projectFormDetails/create
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { ProjectStatus, ProjectType } from "@/types/api-types";
-
-
-
+import { Spinner } from "@/components/atoms/spinner/spinner";
 
 const AddFormFromLibrary = dynamic(
   () => import("@/components/molecules/addFormFromLibrary"),
@@ -54,7 +52,7 @@ const EditProjectFormDatails = dynamic(
 type Props = {
   params: {
     projectId: string;
-  }
+  };
 };
 
 export default function page({ params: { projectId } }: Props) {
@@ -66,9 +64,16 @@ export default function page({ params: { projectId } }: Props) {
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);
   const [displayChapThree, setDisplayChapThree] = useState<boolean>(false);
-  const [projectData, setProjectData] = useState<{ id: string, title: string }>({
+  const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: projectDetails.title,
     id: projectDetails.id,
+    description: projectDetails.description,
+    start_date: projectDetails.start_date,
+    end_date: projectDetails.end_date,
+    sector_activity: projectDetails.sector_activity,
+    country: projectDetails.country,
+    city: projectDetails.city,
+    state: projectDetails.state,
   });
 
   const [chap1, chap2, chap3] = requirements;
@@ -82,7 +87,7 @@ export default function page({ params: { projectId } }: Props) {
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const data: { id: string, title: string } = {
+    const data = {
       ...projectData,
       [event.target.name]: event.target.value,
     };
@@ -99,8 +104,7 @@ export default function page({ params: { projectId } }: Props) {
     setIsSaving((prev) => !prev);
     // get data from localStorage
     const id = LOCAL_STORAGE.get("projectId");
-    const metaData: { [key: string]: string }[] =
-      LOCAL_STORAGE.get("formMetadata");
+    const metaData: string[] = LOCAL_STORAGE.get("formMetadata");
     let chapitre: any = [];
     let constructedRequirements: DeployableFormMetadata[] = [];
     for (let i = 0; i <= 5; i++) {
@@ -134,14 +138,12 @@ export default function page({ params: { projectId } }: Props) {
     LOCAL_STORAGE.save("finalJson", finalJson);
     console.log("finalJson =>", finalJson);
 
-    router.push(Route.editProject + `/${projectId}/pdf`);
+    // router.push(Route.editProject + `/${projectId}/pdf`);
 
     for (let i = 0; i < 5; i++) {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(`chap_one_req${i}`);
-        localStorage.removeItem(`chap_two_req${i}`);
-        localStorage.removeItem(`chap_three_req${i}`);
-      }
+      LOCAL_STORAGE.remove(`chap_one_req${i}`);
+      LOCAL_STORAGE.remove(`chap_two_req${i}`);
+      LOCAL_STORAGE.remove(`chap_three_req${i}`);
     }
 
     // Make a patch request with the project id
@@ -154,26 +156,39 @@ export default function page({ params: { projectId } }: Props) {
     )
       .then((response) => {
         console.log("here is the response", response);
-        router.push(Route.editProject + `/${projectId}/pdf`);
-        toast("Project saved", {
+
+        if (response.status <= 205) {
+          toast.success("Project saved", {
+            transition: Bounce,
+            autoClose: 1000,
+          });
+          router.push(Route.editProject + `/${projectId}/pdf`);
+          setIsSaving((prev) => !prev);
+        } else {
+          toast.error("Something went wrong. Please try again", {
+            transition: Bounce,
+            autoClose: 1000,
+          });
+          setIsSaving((prev) => !prev);
+        }
+      })
+      .catch((error) => {
+        toast.error("Something went wrong. Please try again", {
           transition: Bounce,
           autoClose: 1000,
         });
-      })
-      .catch((error) => {
+        setIsSaving((prev) => !prev);
         console.log("An error occured", error);
       });
   }
 
   const discartProjectForm = () => {
-    if (typeof window !== "undefined") {
-      for (let i = 0; i < 5; i++) {
-        localStorage.removeItem(`chap_one_req${i}`);
-        localStorage.removeItem(`chap_two_req${i}`);
-        localStorage.removeItem(`chap_three_req${i}`);
-      }
+    for (let i = 0; i < 5; i++) {
+      LOCAL_STORAGE.remove(`chap_one_req${i}`);
+      LOCAL_STORAGE.remove(`chap_two_req${i}`);
+      LOCAL_STORAGE.remove(`chap_three_req${i}`);
     }
-    router.push(Route.inspectionInitial); // conditionally
+    router.push(Route.dashboard); // conditionally
     toast.success("Discarded", {
       autoClose: 1000,
       transition: Bounce,
@@ -182,29 +197,31 @@ export default function page({ params: { projectId } }: Props) {
 
   return (
     <div>
-      <nav className="flex gap-10 justify-between px-3 bg-tertiary shadow-md z-50 py-2 w-full">
+      <nav className="flex gap-10 justify-between px-3 bg-tertiary shadow-md z-50 py-2 w-full text-gray-100">
         <Link href={Route.home}>
           <Logo size="very-large" />
         </Link>
-        <div className="flex flex-col my-auto md:w-[80%]">
+        <div className="flex my-auto md:w-[80%] items-center gap-5">
           <label htmlFor="projectTitle" className="font-semibold">
-            PROJECT
+            PROJECT TITLE
           </label>
-          <input
-            type="text"
-            required
-            name="title"
-            value={projectData.title}
-            onChange={(e) => handleInputChange(e)}
-            className="border mt-1 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
-          />
+          <div className="flex-1">
+            <input
+              type="text"
+              required
+              name="title"
+              value={projectData.title}
+              onChange={(e) => handleInputChange(e)}
+              className="border mt-1 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+            />
+          </div>
         </div>
         <div className="flex justify-between my-auto md:w-[140px] pr-3 gap-2">
           <Button
             onClick={handleProjectDraft}
             className={isSaving ? "hover:cursor-wait opacity-70 px-4" : " px-6"}
           >
-            {isSaving ? "please wait..." : "Save"}
+            {isSaving ? <Spinner /> : "Save"}
           </Button>
           <Dialog>
             <DialogTrigger asChild>

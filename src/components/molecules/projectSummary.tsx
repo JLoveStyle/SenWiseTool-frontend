@@ -1,5 +1,6 @@
 "use client";
 import { Route } from "@/lib/route";
+import { ProjectType } from "@/types/api-types";
 import { Project } from "@/types/gestion";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import {
@@ -12,13 +13,13 @@ import {
 import { useRouter } from "next/navigation";
 
 type Props = {
-  projectObject: Project | undefined;
+  projectObject: ProjectType | undefined;
   showData: (val: boolean) => void;
 };
 
 export default function ProjectSummary({ projectObject, showData }: Props) {
   const router = useRouter();
-  const id = LOCAL_STORAGE.get("projectId");
+  const project = LOCAL_STORAGE.get("project");
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
@@ -39,18 +40,16 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
       text: "Edit form",
       secondIcon: <ChevronRight />,
       function: () => {
-        router.push(Route.editProject + `/${id}`);
+        router.push(Route.editProject + `/${project?.id}`);
       },
     },
     {
       firstIcon: <Eye />,
       text: "View form",
       secondIcon: <ChevronRight />,
-      function: () => router.push(Route.editProject + `/${id}/pdf`),
+      function: () => router.push(Route.editProject + `/${project?.id}/pdf`),
     },
   ];
-
-  // console.log("here =>", projectObject);
 
   return (
     <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
@@ -68,7 +67,14 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
                 <span className="bg-green-200 text-sm px-2 rounded-lg">
-                  {projectObject?.status[0]}
+                  {projectObject?.status}
+                </span>
+              </div>
+              {/* project title */}
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Title</span>
+                <span className="bg-green-200 text-sm px-2 rounded-lg">
+                  {projectObject?.title}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
@@ -79,12 +85,7 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
                   </span>
                 )}
               </div>
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Owner</span>
-                <span className=" text-sm text-semibold">
-                  {projectObject?.creator}
-                </span>
-              </div>
+
             </div>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">

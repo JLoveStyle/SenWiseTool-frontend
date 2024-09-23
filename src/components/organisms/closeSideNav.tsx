@@ -14,10 +14,10 @@ import { ProjectType } from "@/types/api-types";
 
 type Props = {
   typeOfProject?:
-    | "INTERNAL_INSPECTION"
-    | "INITIAL_INSPECTION"
-    | "AUTO_EVALUATION"
-    | "TRAINING";
+  | "INTERNAL_INSPECTION"
+  | "INITIAL_INSPECTION"
+  | "AUTO_EVALUATION"
+  | "TRAINING";
 
   projectsPerType: ProjectType[];
   newForm?: React.ReactNode;
@@ -57,13 +57,15 @@ export default function CloseSiveNav({
   const archiveProjects = projectsPerType?.filter(
     (item) => item.status === "ARCHIVED"
   );
+  
   return (
     <div
-    // className={
-    //   pathname.includes("/details") // Hide this component on the detail page
-    //     ? "hidden"
-    //     : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
-    // }
+      className={
+        pathname.includes("/details") // Hide this component on the detail page
+          ? "hidden"
+          : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
+      }
+      // className="bg-gray-100 h-screen"
     >
       <div className="flex flex-col gap-3 p-2">
         {pathname.includes("/training") ? (

@@ -30,10 +30,7 @@ export default function Home({ }: Props) {
     route: Route.user,
   });
 
-  useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
-    fn: () => fetchApiData(Route.companies, "current"),
-    route: Route.companies,
-  });
+
 
   async function fetchData() {
     const token = await getToken();

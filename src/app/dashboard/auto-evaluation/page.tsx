@@ -15,7 +15,7 @@ export default function Home({}: Props) {
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
+  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
 
   // Fetch all projects with type ["AUTO_EVALUATION"] and pass it as props to Layout
   async function fetchAllAutoEvaluationProject() {
@@ -23,18 +23,13 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "AUTO_EVALUATION",
-      company?.id,
+      "?type=AUTO_EVALUATION",
       currentCampaign?.id
     )
       .then((response) => {
         console.log("all initial_inspection projects", response);
         setIsLoading((prev) => !prev);
-        setAutoEvaluationProjects(() => {
-          if (response.data) {
-            return response.data;
-          } else return [];
-        });
+        setAutoEvaluationProjects(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -42,19 +37,29 @@ export default function Home({}: Props) {
       });
   }
 
+  console.log('isLoading from autoevaluation', isLoading)
+
   useEffect(() => {
     console.log("Auto-evaluation");
     fetchAllAutoEvaluationProject();
-  }, []);
+  }, [currentCampaign?.id]);
 
   return (
     <LayoutDashboard
-      projectsPerType={autoEvalutionProjects as ProjectType[]}
+      projectsPerType={
+        autoEvalutionProjects?.length
+          ? (autoEvalutionProjects as ProjectType[])
+          : []
+      }
       typeOfProject={"AUTO_EVALUATION"}
     >
       <ProjectDisplay
-        // projects={autoEvalutionProjects as ProjectType[]}
-        projects={[]}
+        projects={
+          autoEvalutionProjects?.length
+            ? (autoEvalutionProjects as ProjectType[])
+            : []
+        }
+        // projects={[]}
         isLoading={isLoading}
       />
     </LayoutDashboard>
