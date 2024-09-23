@@ -14,6 +14,7 @@ import { Bounce, toast } from "react-toastify";
 import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { ProjectType } from "@/types/api-types";
+import { Spinner } from "@/components/atoms/spinner/spinner";
 
 type Props = {
   onClick: (val1: boolean) => void;
@@ -254,7 +255,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             type="submit"
             className={isLoading ? "hover:cursor-wait opacity-70" : ""}
           >
-            {isLoading ? "Processing..." : "EDIT PROJECT"}
+            {isLoading ? <Spinner /> : "EDIT PROJECT"}
           </Button>
         </div>
       </form>

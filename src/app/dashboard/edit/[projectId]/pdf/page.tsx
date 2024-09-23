@@ -87,6 +87,7 @@ export default function page({}: Props) {
       filename="fiche d'inspection"
       deployProject={() => deployProject()}
       onClick={() => router.push(Route.editProject + `/${projectData?.id}`)}
+      handleExitPage={() => router.push(Route.dashboard)}
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
