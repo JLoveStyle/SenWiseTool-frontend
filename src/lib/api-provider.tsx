@@ -4,6 +4,7 @@ import { IUser, useUserstore } from './stores/user-stores';
 import { useCompanyStore } from './stores/companie-store';
 import { usePriceStore } from './stores/price-store';
 import { useCampaignStore } from './stores/campaign-store';
+import { Route } from './route';
 
 export interface IAppProps<Q> {
     query?: string;
@@ -20,6 +21,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     const setCompany = useCompanyStore((state) => state.setCompany);
     const setPricePlan = usePriceStore((state) => state.setPricePlan);
     const setCampaigns = useCampaignStore((state) => state.setCampaigns);
+
 
     // this function is a global api call fetch for fetching the resouce located at the route specified.
     const fetchData = () => {
@@ -42,6 +44,8 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
 
     const refetch = () => fetchData();
 
+
+
     if (data) {
         if (route?.includes("users")) {
             setCurrentUser(data as unknown as UserType);
@@ -49,7 +53,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
         }
         if (route?.includes("companies")) {
             setCompany(data as unknown as CompanyType);
-            console.log('company from store', data)
+            // console.log('company from store', data)
         }
         if (route?.includes("price_plans")) {
             setPricePlan(data as unknown as PricePlanType);
@@ -57,7 +61,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
         }
         if (route?.includes("campaigns")) {
             setCampaigns(data as unknown as CampaignType[]);
-            console.log('campains from store', data)
+            // console.log('campains from store', data)
         }
     }
     // console.log("fro provider service: ", data)

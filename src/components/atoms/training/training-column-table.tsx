@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Route } from "@/lib/route";
+import { TrainingTableDisplayType } from "@/types/api-types";
 import { TrainingProps } from "@/types/formData";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { ColumnDef } from "@tanstack/react-table";
@@ -18,7 +19,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Bounce, toast } from "react-toastify";
 
-export const trainingColumnTable: ColumnDef<TrainingProps>[] = [
+export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
   {
     id: "select",
     header: ({ table }) => (

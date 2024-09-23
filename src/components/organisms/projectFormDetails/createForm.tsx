@@ -22,10 +22,10 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject?:
-    | "INTERNAL_INSPECTION"
-    | "INITIAL_INSPECTION"
-    | "AUTO_EVALUATION"
-    | "TRAINING";
+  | "INTERNAL_INSPECTION"
+  | "INITIAL_INSPECTION"
+  | "AUTO_EVALUATION"
+  | "TRAINING";
   project?: Project;
 };
 

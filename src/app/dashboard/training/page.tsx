@@ -3,7 +3,7 @@
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import { ApiDataResponse, CompanyType } from "@/types/api-types";
+import { ApiDataResponse, CompanyType, TrainingTableDisplayType, TrainingType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 
 import { Archive, Trash2, UserPlus } from "lucide-react";
@@ -17,31 +17,46 @@ import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import { TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
+import { db_get_trainings } from "@/utiles/services/training";
 
 export default function Training() {
-  const { data: companyData } = useApiOps<
-    CompanyType,
-    ApiDataResponse<CompanyType>
-  >({
-    fn: () => fetchApiData(Route.companies, "current"),
-    route: Route.companies,
+  const { data: trainings, refetch } = useApiOps<TrainingType[], ApiDataResponse<TrainingType[]>>({
+    fn: () => fetchApiData<ApiDataResponse<TrainingType[]>>(Route.training, ""),
+    route: Route.training,
   });
 
   const [data, setData] = useState<TrainingProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [trainingDatas, setTrainingDatas] = useState<TrainingProps[]>([]);
+  const [trainingDatas, setTrainingDatas] = useState<TrainingType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await trainingList("cm0job09a0004wrr2scsyu3a3");
-      setTrainingDatas(result);
-      setIsLoading(false);
+      db_get_trainings().then((result) => {
+        console.log("data training: ", result)
+
+        setTrainingDatas(result as TrainingType[]);
+        setIsLoading(false);
+      }).catch((err) => console.error(err));
     };
 
     fetchData();
-  }, []);
+  }, [trainingDatas]);
 
-  useEffect(() => { }, [trainingDatas]);
+  const valueToDisplay = (args: TrainingType[]) => {
+    return args?.map((training) => ({
+      id: training.id,
+      title: training.title,
+      start_date: training.start_date,
+      end_date: training.end_date,
+      location: training.location,
+      // modules: training.modules.map((module: string, index: number) => ({
+      //   id: index,
+      //   value: module,
+      // })),
+    }))
+  }
+
+  useEffect(() => { refetch() }, [trainingDatas]);
 
   return (
     <LayoutDashboard
@@ -73,9 +88,9 @@ export default function Training() {
         </div>
       </div>
       <div className="px-6">
-        <DataTable
+        <DataTable<TrainingTableDisplayType, any>
           incomingColumns={trainingColumnTable}
-          incomingData={trainingDatas?.length ? trainingDatas : []}
+          incomingData={trainingDatas?.length ? valueToDisplay(trainingDatas) : trainings?.length ? valueToDisplay(trainings as TrainingType[]) : []}
           onSelecteItem={() => { }}
           isLoading={isLoading}
         />

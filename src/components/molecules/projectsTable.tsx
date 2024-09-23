@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "../atoms/spinner/spinner";
 import {
@@ -33,7 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
-import { ProjectType } from "@/types/api-types";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
@@ -55,8 +53,6 @@ export function DataTable<TData, TValue>({
 
   const data = useMemo(() => incomingData, [incomingData]);
   const columns = useMemo(() => incomingColumns, []);
-
-  console.log('loadx for datatable', isLoading)
 
   const table = useReactTable({
     data,
@@ -138,9 +134,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

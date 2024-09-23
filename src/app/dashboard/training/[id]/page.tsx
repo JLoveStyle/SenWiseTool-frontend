@@ -9,8 +9,10 @@ import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
+import { TrainingType } from "@/types/api-types";
 import { LocalTrainingProps, TrainingProps } from "@/types/formData";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { db_get_trainings } from "@/utiles/services/training";
 // import dayjs from "dayjs";
 import {
   Archive,
@@ -30,8 +32,14 @@ interface Props {
   displayForm: boolean;
 }
 
-export default function TrainingDetails() {
-  const { id } = useParams();
+type TProps = {
+  params: {
+    id: string;
+  }
+}
+
+export default function TrainingDetails({ params: { id } }: TProps) {
+  // const { id } = useParams();
 
   // const { value: displayForm, toggle: toggleForm } = useToggle();
   const [currentTrainingData, setCurrentTrainingData] =
@@ -45,12 +53,13 @@ export default function TrainingDetails() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await LOCAL_STORAGE.get("trainings");
+      // const result = await LOCAL_STORAGE.get("trainings");
 
-      const training = result.find(
-        (training: LocalTrainingProps) => training.id == id
-      );
-      setDbCurrentTrainingData(training);
+      // const training = result.find(
+      //   (training: LocalTrainingProps) => training.id == id
+      // );
+      const training = await db_get_trainings(id!) as TrainingType;
+      // setDbCurrentTrainingData(training);
 
       if (training) {
         setCurrentTrainingData({

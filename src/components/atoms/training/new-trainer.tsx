@@ -56,7 +56,7 @@ export function NewTraining() {
       start_date: new Date(formData.start_date).toISOString(),
       end_date: new Date(formData.end_date).toISOString(),
       location: formData.location,
-      company_id: "cm0job09a0004wrr2scsyu3a3", //company?.id
+      company_id: company?.id,
       modules: formData.modules.map((item) => item.value),
     };
 
@@ -65,7 +65,7 @@ export function NewTraining() {
     console.log("daaaaata:::::::::", serverResponse);
 
     if (serverResponse.status === "error") {
-      toast.error(serverResponse.response.message.message);
+      toast.error("Updating training failed");
       setIsLoading(false);
       return;
     }
@@ -73,8 +73,8 @@ export function NewTraining() {
     toast.success("Your project are created successfull");
     setIsLoading(false);
     toggleOpenModal();
+    router.refresh();
     router.push(Route.trainingProject);
-    revalidatePath('/dashboard/training')
     return;
   };
 
