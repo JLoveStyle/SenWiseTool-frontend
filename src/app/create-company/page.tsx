@@ -72,7 +72,7 @@ export default function Home({ }: Props) {
     setIsLoading((prev) => !prev);
 
     if (user?.id && companyLogo) {
-      
+
       const res = await createOrganization(formData, user.id);
       console.log(res)
 
@@ -110,7 +110,7 @@ export default function Home({ }: Props) {
             autoClose: 1000,
           });
         });
-      
+
     }
   }
 

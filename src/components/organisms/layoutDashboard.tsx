@@ -16,7 +16,6 @@ import {
   ProjectType,
   UserType,
 } from "@/types/api-types";
-import { useUserstore } from "@/lib/stores/user-stores";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useApiOps } from "@/lib/api-provider";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
@@ -52,7 +51,7 @@ export default function LayoutDashboard({
       baseUrl: "",
     })
   );
-  console.log(campaigns)
+  // console.log(campaigns)
 
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [

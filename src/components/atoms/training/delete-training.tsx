@@ -32,8 +32,8 @@ export const DeleteTraining = ({ training, header }: Props) => {
 
     const serverResponse = await db_delete_training(training.id);
 
-    if (serverResponse.status === "error") {
-      toast.error(serverResponse.response.message.message);
+    if (serverResponse.error) {
+      toast.error(serverResponse.error.message);
       setIsLoading(false);
       return;
     }

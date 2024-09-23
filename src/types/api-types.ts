@@ -193,3 +193,11 @@ export type CampaignType = {
     updated_at: Date;
 
 }
+
+export type OmitStrict<T, K extends keyof T> = Omit<T, K>
+
+export type TrainingTableDisplayType =
+    Pick<
+        TrainingType, "id" | "title" | "start_date" | "end_date" | "location"
+    >
+
