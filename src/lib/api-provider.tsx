@@ -21,10 +21,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     const setPricePlan = usePriceStore((state) => state.setPricePlan);
     const setCampaigns = useCampaignStore((state) => state.setCampaigns);
 
-
-
-    /** TODO : REFACTOR THIS HOOK LATER */
-
+    // this function is a global api call fetch for fetching the resouce located at the route specified.
     const fetchData = () => {
         fn()
             .then((response) => {
@@ -48,7 +45,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     if (data) {
         if (route?.includes("users")) {
             setCurrentUser(data as unknown as UserType);
-            console.log('users from store', data)
+            // console.log('users from store', data)
         }
         if (route?.includes("companies")) {
             setCompany(data as unknown as CompanyType);
@@ -56,11 +53,11 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
         }
         if (route?.includes("price_plans")) {
             setPricePlan(data as unknown as PricePlanType);
-            console.log('price plan from store', data)
+            // console.log('price plan from store', data)
         }
         if (route?.includes("campaigns")) {
             setCampaigns(data as unknown as CampaignType[]);
-            console.log('campains from store', data)
+            // console.log('campains from store', data)
         }
     }
     // console.log("fro provider service: ", data)
@@ -71,29 +68,3 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
         refetch
     }
 }
-/**
- * useApiOps is a custom hook that is a wrapper around the native React.useState and React.useEffect hooks.
- * It provides a way to fetch data from an API and store it in the state of the component.
- * It also provides a way to refetch the data when the component is rerendered.
- *
- * The hook takes in 3 parameters:
- * - query: The query string to fetch the data from the API.
- * - fn: The function that makes the API request.
- * - route: The route of the API request.
- *
- * The hook returns an object with 3 properties:
- * - data: The data fetched from the API.
- * - error: The error message if the API request fails.
- * - isLoading: A boolean that indicates if the API request is in progress.
- * - refetch: A function that can be used to refetch the data.
- *
- * The hook uses the React.useEffect hook to fetch the data when the component is mounted.
- * It uses the React.useState hook to store the data in the state of the component.
- * It also uses the React.useState hook to store the error message and the isLoading boolean.
- * The hook uses the React.useCallback hook to memoize the refetch function.
- *
- * The hook is generic and can be used with any type of API request.
- *
- * @param {{ query: string; fn: () => Promise<T>; route?: string }} props
- * @returns {{ data: T | undefined | null; error: Error | null; isLoading: boolean; refetch: () => void }}
- */

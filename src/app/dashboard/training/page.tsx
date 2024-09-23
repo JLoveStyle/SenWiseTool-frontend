@@ -41,7 +41,7 @@ export default function Training() {
     fetchData();
   }, []);
 
-  useEffect(() => {}, [trainingDatas]);
+  useEffect(() => { }, [trainingDatas]);
 
   return (
     <LayoutDashboard
@@ -75,8 +75,8 @@ export default function Training() {
       <div className="px-6">
         <DataTable
           incomingColumns={trainingColumnTable}
-          incomingData={trainingDatas}
-          onSelecteItem={() => {}}
+          incomingData={trainingDatas?.length ? trainingDatas : []}
+          onSelecteItem={() => { }}
           isLoading={isLoading}
         />
       </div>

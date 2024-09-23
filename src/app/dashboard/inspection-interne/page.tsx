@@ -6,16 +6,17 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const [interanlInspectionProjects, setInternalInspectionProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
+  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
 
   // Fetech all projects xwith ["INTERNAL_INSPECTION"] and pass it as props to layout
   async function fetchAllInternalInspectionProject() {
@@ -23,8 +24,7 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "INSPECTION_INTERN",
-      company?.id,
+      "?type=INSPECTION_INTERN",
       currentCampaign?.id
     )
       .then((response) => {
@@ -47,7 +47,7 @@ export default function Home({}: Props) {
   useEffect(() => {
     fetchAllInternalInspectionProject();
     console.log("inspection interne");
-  }, []);
+  }, [currentCampaign?.id, company?.id]);
 
   return (
     <LayoutDashboard
@@ -55,7 +55,7 @@ export default function Home({}: Props) {
       projectsPerType={interanlInspectionProjects as ProjectType[]}
     >
       <ProjectDisplay
-        projects={interanlInspectionProjects as ProjectType[]}
+        projects={interanlInspectionProjects?.length ? interanlInspectionProjects as ProjectType[] : []}
         // projects={[]}
         isLoading={isLoading}
       />

@@ -102,7 +102,10 @@ export default function LayoutDashboard({
       },
     },
   ];
-
+  useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
+  });
   const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
     fn: () => fetchApiData(Route.campaign, ""),
     route: Route.campaign,
@@ -115,7 +118,7 @@ export default function LayoutDashboard({
 
   return (
     <div className="flex w-screen h-screen absolute overflow-hidden scrool-bar-hidden">
-      <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2">
+      <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2 text-white">
         <SideNav options={dashboardSidebarOptions} />
       </div>
       <div className="w-[calc(100vw-100px)]">

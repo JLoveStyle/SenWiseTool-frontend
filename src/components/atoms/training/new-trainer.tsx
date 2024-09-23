@@ -24,6 +24,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
 import { FormTraining } from "./form-training";
+import { revalidatePath } from "next/cache";
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -73,6 +74,7 @@ export function NewTraining() {
     setIsLoading(false);
     toggleOpenModal();
     router.push(Route.trainingProject);
+    revalidatePath('/dashboard/training')
     return;
   };
 
@@ -91,7 +93,7 @@ export function NewTraining() {
       }
 
       handleCreateTraining(formData);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
