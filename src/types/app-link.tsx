@@ -1,4 +1,3 @@
-
 export interface AppLink {
   label: React.ReactNode;
   id?: string;
@@ -16,4 +15,9 @@ export interface footerLink {
 export interface DashboardSidebarOption {
   option: AppLink;
   details?: AppLink[];
+}
+
+export interface DashboardStatPanelData {
+  structure: AppLink;
+  data: Function;
 }

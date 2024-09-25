@@ -3,14 +3,11 @@ import { useToggle } from "@/hooks/use-toggle";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
+import { ApiDataResponse, CampaignType, CompanyType } from "@/types/api-types";
 import {
-  ApiDataResponse,
-  CampaignType,
-  CompanyType,
-  ProjectType,
-} from "@/types/api-types";
-import { DashboardSidebarOption } from "@/types/app-link";
-import { ProjectClientType } from "@/types/client-types";
+  DashboardSidebarOption,
+  DashboardStatPanelData,
+} from "@/types/app-link";
 import { fetchApiData } from "@/utiles/services/queries";
 import React, { useEffect } from "react";
 import { BsPersonVcard } from "react-icons/bs";
@@ -23,24 +20,25 @@ import {
   RxStack,
   RxTwitterLogo,
 } from "react-icons/rx";
+import Navbar from "../atoms/dashboard/navbar";
+import Sidebar from "../atoms/dashboard/sidebar";
+import StatPanel from "../atoms/dashboard/stat-panel";
 import FloatingButton from "../atoms/disign-system/floating-button";
-import SideNav from "../molecules/sideNav";
+import { FeaturesMenu } from "../organisms/navigationMenu";
 import { Session } from "../templates/session";
-import CloseSideNav from "./closeSideNav";
-import NavDashboard from "./navDashboard";
-import { FeaturesMenu } from "./navigationMenu";
+// import CloseSideNav from "./closeSideNav";
 type Props = {
   children: React.ReactNode;
-  typeOfProject?: ProjectClientType;
-  projectsPerType: ProjectType[];
   newForm?: React.ReactNode;
+  title?: string;
+  statPanelDatas?: DashboardStatPanelData[];
 };
 
-export default function LayoutDashboard({
+export default function LayoutDashboardTemplate({
   children,
-  typeOfProject,
-  projectsPerType,
+  title,
   newForm,
+  statPanelDatas,
 }: Props) {
   // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
   const campaigns = useCampaignStore((state) => state.campaigns).map(
@@ -106,31 +104,30 @@ export default function LayoutDashboard({
     fn: () => fetchApiData(Route.companies, "current"),
     route: Route.companies,
   });
+
   const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
     fn: () => fetchApiData(Route.campaign, ""),
     route: Route.campaign,
   });
+
   useEffect(() => {
     refetch();
   }, []);
+
   const { value: displayCloseSideNav, toggle: toggleDisplayCloseSideNav } =
-    useToggle({ initial: true });
+    useToggle({ initial: newForm || statPanelDatas ? true : false });
 
   return (
     <Session>
       <div className="flex w-screen h-screen absolute overflow-hidden scrool-bar-hidden">
         <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2 text-white">
-          <SideNav options={dashboardSidebarOptions} />
+          <Sidebar options={dashboardSidebarOptions} />
         </div>
         <div className="w-[calc(100vw-100px)]">
-          <NavDashboard />
+          <Navbar title={title} />
           <div className="flex">
             {displayCloseSideNav && (
-              <CloseSideNav
-                projectsPerType={projectsPerType}
-                typeOfProject={typeOfProject}
-                newForm={newForm}
-              />
+              <StatPanel newForm={newForm} statPanelDatas={statPanelDatas} />
             )}
             <div className="w-full ">
               <div className="px-6 pt-1 pb-3 flex justify-center items-center">
@@ -140,16 +137,16 @@ export default function LayoutDashboard({
             </div>
           </div>
         </div>
-        {/* {newForm && ( */}
-        <FloatingButton
-          className="rounded-full bg-white text-black"
-          positionLeft={70}
-          positionTop={400}
-          action={toggleDisplayCloseSideNav}
-        >
-          <HiViewGridAdd />
-        </FloatingButton>
-        {/* )} */}
+        {(newForm || statPanelDatas) && (
+          <FloatingButton
+            className="rounded-full bg-white text-black"
+            positionLeft={70}
+            positionTop={400}
+            action={toggleDisplayCloseSideNav}
+          >
+            <HiViewGridAdd />
+          </FloatingButton>
+        )}
       </div>
     </Session>
   );

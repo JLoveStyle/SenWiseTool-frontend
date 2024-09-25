@@ -12,7 +12,6 @@ export type AvailableRoute =
   | "dashboard"
   | "training"
   | "trainingProject"
-  | "profile"
   | "login"
   | "inspectionInterne"
   | "inspectionInitial"
@@ -26,6 +25,9 @@ export type AvailableRoute =
   | "campaign"
   | "trainingProject"
 
+  // tracability
+  | "receipt";
+
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
   aboutUs: "/about-us",
@@ -35,7 +37,6 @@ export const Route: Record<AvailableRoute, string> = {
   signUp: "/sign-up",
   dashboard: "/dashboard",
   trainingProject: "/dashboard/training",
-  profile: "/profile",
   login: "/login",
   inspectionInterne: "/dashboard/inspection-interne",
   inspectionInitial: "/dashboard/inspection-initial",
@@ -50,5 +51,8 @@ export const Route: Record<AvailableRoute, string> = {
   companies: "companies",
   projects: "projects",
   createCompany: "create-compay",
-  campaign: 'campaigns',
+  campaign: "campaigns",
+
+  // tracability
+  receipt: "/dashboard/tracability/receipt",
 };
