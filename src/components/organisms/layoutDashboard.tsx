@@ -13,6 +13,7 @@ import {
   ApiDataResponse,
   CampaignType,
   CompanyType,
+  PricePlanType,
   ProjectType,
   RequirementType,
   UserType,
@@ -103,23 +104,25 @@ export default function LayoutDashboard({
       },
     },
   ];
-  /**
-   *   useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
-      fn: () => fetchApiData(Route.companies, "current"),
-      route: Route.companies,
-    });
-    const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
-      fn: () => fetchApiData(Route.campaign, ""),
-      route: Route.campaign,
-    });
-    useApiOps<RequirementType, ApiDataResponse<RequirementType>>({
-      fn: () => fetchApiData(Route.requirements, ""),
-      route: Route.requirements,
-    });
-   */
 
+  useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
+  });
+  useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
+    fn: () => fetchApiData(Route.campaign, ""),
+    route: Route.campaign,
+  });
+  useApiOps<RequirementType, ApiDataResponse<RequirementType>>({
+    fn: () => fetchApiData(Route.requirements, ""),
+    route: Route.requirements,
+  });
+  useApiOps<PricePlanType, ApiDataResponse<PricePlanType>>({
+    fn: () => fetchApiData(Route.pricing, "current"),
+    route: Route.pricing,
+  });
   useEffect(() => {
-    // refetch();
+
   }, []);
 
   const { value: displayCloseSideNav, toggle: togglrDisplayCloseSideNav } =

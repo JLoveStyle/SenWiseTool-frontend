@@ -46,8 +46,6 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
 
     const refetch = () => fetchData();
 
-    console.log(route)
-
     if (data) {
         if (route?.includes("users")) {
             setCurrentUser(data as unknown as UserType);
@@ -73,8 +71,8 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({ query,
     console.log("fro provider service: ", data)
     return {
         data,
-        // error,
-        // isLoading,
+        error,
+        isLoading,
         refetch
     }
 }
