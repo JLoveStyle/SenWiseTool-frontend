@@ -1,6 +1,7 @@
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
+import { allRequirements } from "@/utils/requirements";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 // export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
@@ -269,156 +270,8 @@ export let tableRaw: Project[] = [
 ]
 
 
-export const requirements = [
-  {
-    chapter1: [
-      {
-        title: "Gestion",
-        numero: "1.1",
-        content: [
-          {
-            principal_requirement: "La direction du groupe fait preuve de son engagement pour l'agriculture durable en dédiant des ressources et du personnel appropriés à la mise en oeuvre de la Norme pour l'Agriculture Durable de Rainforest Alliance.",
-            number: "1.1.1",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "no",
-              grande_exp_agri: "no"
-            }
-          },
-          {
-            principal_requirement: "La Direction du groupe améliore ses capacités de gestion et inclut des actions dans le plan de gestion.",
-            number: "1.1.2",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "no",
-              grande_exp_agri: "no"
-            }
-          },
-          {
-            principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-            number: "1.1.3",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "yes",
-              grande_exp_agri: "yes"
-            }
-          },
-          {
-            principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-            number: "1.1.4",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "yes",
-              grande_exp_agri: "yes"
-            }
-          },
-          {
-            principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-            number: "1.1.5",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "yes",
-              grande_exp_agri: "yes"
-            }
-          },
-          {
-            principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-            number: "1.1.6",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "yes",
-              grande_exp_agri: "yes"
-            }
-          },
-        ]
-      },
-      {
-        title: "Administration",
-        numero: "1.2",
-        content: [
-          {
-            principal_requirement: "La direction se conforme aux lois applicables et aux conventions collectives (CC) au sein du champ d'application de la Norme pour l'agriculture durable de Rainforest Alliance. Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
-            number: "1.2.1",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "yes",
-              grande_exp_agri: "yes"
-            }
-          },
-          {
-            principal_requirement: "Une liste actualisée des prestataires de services, fournisseurs, intermédiaires et sous-traitants est disponible. Des mécanismes sont mis en place pour garantir leur conformité avec les exigences applicables de la Norme pour leurs activités qui entrent dans le champ d’application de la certification.",
-            number: "1.2.2",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "no",
-              grande_exp_agri: "yes"
-            }
-          }
-        ]
-      },
+export const requirements = allRequirements;
 
-    ],
-
-  },
-  {
-    chapitre2: [
-      {
-        title: "Traçabilité",
-        numero: "2.1",
-        content: [
-          {
-            principal_requirement: "La production totale certifiée et la production certifiée pour chaque producteur (en kg, en tiges pour les fleurs) est estimée une fois par an. Les calculs sont basés sur une méthodologie fiable d’estimation des rendements (en kg/ha, en tiges/ha pour les fleurs) d'un échantillon représentatif d’exploitations agricoles ou d’unités agricoles. La méthodologie et les calculs sont documentés.",
-            number: "2.1.1",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "no",
-              grande_exp_agri: "yes"
-            }
-          },
-          {
-            principal_requirement: "La direction fait annuellement le bilan de",
-            number: "2.1.2",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "no",
-              grande_exp_agri: "yes"
-            }
-          },
-
-        ]
-      }
-    ]
-  },
-  {
-    chapitre3: [
-      {
-        title: "Coûts de Production et Revenu Vital",
-        numero: "3.1",
-        content: [
-          {
-            principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
-            number: "3.1.1",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "no",
-              grande_exp_agri: "no"
-            }
-          },
-          {
-            principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-            number: "3.1.2",
-            certication_de_group: {
-              direction_de_group: "yes",
-              petit_exp_agri: "no",
-              grande_exp_agri: "no"
-            }
-          },
-
-        ]
-      }
-    ]
-  }
-]
 
 export const deployedPro: DeployableFormMetadata[] = [
   {
