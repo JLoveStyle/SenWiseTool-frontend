@@ -8,7 +8,7 @@ export const allRequirements = [{
             "content": [
                 {
                     "num": "1.1.1",
-                    " text": "La  <u>direction du groupe</u> fait preuve de son engagement pour l&#39;agriculture durable en dédiant des ressources et du personnel appropriés à la mise en œuvre de la Norme pour l&#39;Agriculture Durable de Rainforest Alliance. \n\n Tous les trois ans au minimum, la direction du groupe évalue sa capacité à utiliser l&#39;outil d&#39;évaluation des capacités de gestion &#40;Annexe S02&#41;. La direction obtient au minimum un point par thématique dans l&#39;outil au cours de la première année de certification, et s&#39;améliore au fil des prochaines évaluations. \n\n <strong>Indicateur </strong>: • <ul><li>Scores sur chacune des thématiques de l&#39;Outil d&#39;évaluation des capacités de gestion</li></ul>",
+                    "principal_requirement": "La  <u>direction du groupe</u> fait preuve de son engagement pour l&#39;agriculture durable en dédiant des ressources et du personnel appropriés à la mise en œuvre de la Norme pour l&#39;Agriculture Durable de Rainforest Alliance. \n\n Tous les trois ans au minimum, la direction du groupe évalue sa capacité à utiliser l&#39;outil d&#39;évaluation des capacités de gestion &#40;Annexe S02&#41;. La direction obtient au minimum un point par thématique dans l&#39;outil au cours de la première année de certification, et s&#39;améliore au fil des prochaines évaluations. \n\n <strong>Indicateur </strong>: • <ul><li>Scores sur chacune des thématiques de l&#39;Outil d&#39;évaluation des capacités de gestion</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "yes",
                         "petite_exploitation_agricole": "no",
@@ -17,7 +17,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "1.1.2",
-                    " text": "La <u>direction du groupe</u> améliore ses capacités de gestion et inclut des actions dans le plan de gestion. \n\n  <strong>Indicateur </strong>: • <ul><li>SScores de chacune des thématiques de l&#39;Outil d&#39;évaluation des capacités de gestion</li></ul>",
+                    "principal_requirement": "La <u>direction du groupe</u> améliore ses capacités de gestion et inclut des actions dans le plan de gestion. \n\n  <strong>Indicateur </strong>: • <ul><li>SScores de chacune des thématiques de l&#39;Outil d&#39;évaluation des capacités de gestion</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "yes",
                         "petite_exploitation_agricole": "no",
@@ -26,7 +26,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "1.1.3",
-                    " text": "Il existe un plan de gestion clairement documenté et mis en œuvre répondant à chaque exigence applicable de la chaîne d'approvisionnement de Rainforest Alliance. Les procédures documentées incluent le contrôle des produits certifiés pour tous les processus applicables, compris dans le champ d'application du certificat, pour conserver l&#39;intégrité du produit.",
+                    "principal_requirement": "Il existe un plan de gestion clairement documenté et mis en œuvre répondant à chaque exigence applicable de la chaîne d'approvisionnement de Rainforest Alliance. Les procédures documentées incluent le contrôle des produits certifiés pour tous les processus applicables, compris dans le champ d'application du certificat, pour conserver l&#39;intégrité du produit.",
                     "certif_de_group": {
                         "direction_du_group": "",
                         "petite_exploitation_agricole": "",
@@ -35,7 +35,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "1.1.4",
-                    " text": "Le titulaire de certificat de la chaîne d'approvisionnement a conçu, adopté et diffusé une ou plusieurs politiques pour garantir une conduite responsable de l&#39;entreprise au niveau de ses propres opérations, de sa chaîne d'approvisionnement et de ses autres relations commerciales. Les politiques traitent les impacts négatifs directs et indirects sur les droits humains et sur l&#39;environnement. <br/><br/> <ul> <li>Les politiques s&#39;engagent et se réfèrent au Guide OCDE sur le devoir de diligence pour une conduite responsable des entreprises. Les références et les engagements envers les Principes directeurs de l&#39;OCDE à l&#39;intention des entreprises multinationales ou envers les Principes directeurs relatifs aux entreprises et aux droits humains des Nations Unies sont également acceptables. </li> <li>La supervision et la responsabilité de ces politiques et de leur mise en œuvre sont assignées aux instances dirigeantes. Les politiques et leurs attentes sont spécifiées dans les accords avec les fournisseurs et dans les autres relations commerciales, dont les contrats et autres accords écrits.</li></ul><li>Les politiques et leurs attentes sont spécifiées dans les accords avec les fournisseurs et dans les autres relations commerciales, dont les contrats et autres accords écrits.</li><li>Un outil possible pour la conformité est d&#39;avoir mis en place un code de conduite pour les fournisseurs</li><li>Au minimum, cette politique requiert du titulaire de certificat de la chaîne d'approvisionnement, de ses fournisseurs et des autres relations commerciales :<br/>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;Une conformité avec les lois applicables et les normes appropriées au niveau des droits humains, des conditions et des droits des travailleurs, de la santé et de la sécurité.<br/>&nbsp;&nbsp;&nbsp;-&nbsp;Une conformité avec les lois applicables et les normes appropriées au niveau de la protection de l&#39;environnement, de la déforestation, de la biodiversité,  des déchets et de la gestion des eaux usées.</li> <br /><br />En ce qui concerne une politique type pour les chaînes d&#39;approvisionnement agricoles responsables, veuillez consulter le Guide OCDE pour des filières agricoles responsables, page 25-29.",
+                    "principal_requirement": "Le titulaire de certificat de la chaîne d'approvisionnement a conçu, adopté et diffusé une ou plusieurs politiques pour garantir une conduite responsable de l&#39;entreprise au niveau de ses propres opérations, de sa chaîne d'approvisionnement et de ses autres relations commerciales. Les politiques traitent les impacts négatifs directs et indirects sur les droits humains et sur l&#39;environnement. <br/><br/> <ul> <li>Les politiques s&#39;engagent et se réfèrent au Guide OCDE sur le devoir de diligence pour une conduite responsable des entreprises. Les références et les engagements envers les Principes directeurs de l&#39;OCDE à l&#39;intention des entreprises multinationales ou envers les Principes directeurs relatifs aux entreprises et aux droits humains des Nations Unies sont également acceptables. </li> <li>La supervision et la responsabilité de ces politiques et de leur mise en œuvre sont assignées aux instances dirigeantes. Les politiques et leurs attentes sont spécifiées dans les accords avec les fournisseurs et dans les autres relations commerciales, dont les contrats et autres accords écrits.</li></ul><li>Les politiques et leurs attentes sont spécifiées dans les accords avec les fournisseurs et dans les autres relations commerciales, dont les contrats et autres accords écrits.</li><li>Un outil possible pour la conformité est d&#39;avoir mis en place un code de conduite pour les fournisseurs</li><li>Au minimum, cette politique requiert du titulaire de certificat de la chaîne d'approvisionnement, de ses fournisseurs et des autres relations commerciales :<br/>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;Une conformité avec les lois applicables et les normes appropriées au niveau des droits humains, des conditions et des droits des travailleurs, de la santé et de la sécurité.<br/>&nbsp;&nbsp;&nbsp;-&nbsp;Une conformité avec les lois applicables et les normes appropriées au niveau de la protection de l&#39;environnement, de la déforestation, de la biodiversité,  des déchets et de la gestion des eaux usées.</li> <br /><br />En ce qui concerne une politique type pour les chaînes d&#39;approvisionnement agricoles responsables, veuillez consulter le Guide OCDE pour des filières agricoles responsables, page 25-29.",
                     "certif_de_group": {
                         "direction_du_group": "",
                         "petite_exploitation_agricole": "",
@@ -44,7 +44,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "1.1.5",
-                    " text": "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d&#39;un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d&#39;une problématique : <br/><br/> <ul><li><u>Mécanisme de Réclamation</u> &#40;veuillez consulter le 1.5&#41;</li><li><u> Égalité des Genres</u>  &#40;veuillez consulter le 1.6&#41;</li><li><u> Évaluation-et-Résolution</u>  du <u>travail des enfants</u>,du<u>travail des enfants</u>,de la<u>discrimination</u>,de la<u>discrimie la violence et du harcèlement au travailnation</u>&#40;veuillez consulter le 5.1&#41;</li></ul> <br>Le&#40;s&#41; comité&#40;s&#41; : <br> &nbsp;-&nbsp; sont bien informés des problématiques et ont un pouvoir de décision. <br> &nbsp;-&nbsp; impliquent des responsables qui représentent les membres du groupe pour les petites exploitations agricoles ou les travailleurs dans les grandes exploitations/les opérations de la chaîne d&#39;approvisionnement, désignés par les autres membres travailleurs.  <br> &nbsp;-&nbsp; sont impartiaux, accessibles, sensibles à la question des genres. Ils ont acquis la confiance des membres/travailleurs issus des différents groupes, y compris les groupes vulnérables. <br> &nbsp;-&nbsp; Le comité qui s&#39;occupe de l&#39;égalité des genres comprend au moins une femme. <br/><br/>Au sein des groupes de petites exploitations agricoles : plutôt que de créer un comité, il est possible de désigner un seul responsable des questions d&#39;égalité des genres ainsi que de l&#39;approche par évaluation et résolution. ",
+                    "principal_requirement": "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d&#39;un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d&#39;une problématique : <br/><br/> <ul><li><u>Mécanisme de Réclamation</u> &#40;veuillez consulter le 1.5&#41;</li><li><u> Égalité des Genres</u>  &#40;veuillez consulter le 1.6&#41;</li><li><u> Évaluation-et-Résolution</u>  du <u>travail des enfants</u>,du<u>travail des enfants</u>,de la<u>discrimination</u>,de la<u>discrimie la violence et du harcèlement au travailnation</u>&#40;veuillez consulter le 5.1&#41;</li></ul> <br>Le&#40;s&#41; comité&#40;s&#41; : <br> &nbsp;-&nbsp; sont bien informés des problématiques et ont un pouvoir de décision. <br> &nbsp;-&nbsp; impliquent des responsables qui représentent les membres du groupe pour les petites exploitations agricoles ou les travailleurs dans les grandes exploitations/les opérations de la chaîne d&#39;approvisionnement, désignés par les autres membres travailleurs.  <br> &nbsp;-&nbsp; sont impartiaux, accessibles, sensibles à la question des genres. Ils ont acquis la confiance des membres/travailleurs issus des différents groupes, y compris les groupes vulnérables. <br> &nbsp;-&nbsp; Le comité qui s&#39;occupe de l&#39;égalité des genres comprend au moins une femme. <br/><br/>Au sein des groupes de petites exploitations agricoles : plutôt que de créer un comité, il est possible de désigner un seul responsable des questions d&#39;égalité des genres ainsi que de l&#39;approche par évaluation et résolution. ",
                     "certif_de_group": {
                         "petite_exploitation_agricole": "NO",
                         "direction_du_group": "YES",
@@ -420,7 +420,7 @@ export const allRequirements = [{
             "numero": "2.1",
             "content": [
                 {
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>La production totale certifiée et la production certifiée pour chaque producteur (en kg, en tiges pour les fleurs) est estimée une fois par an. Les calculs sont basés sur une méthodologie fiable d&#39;estimation des rendements (en kg/ha, en tiges/ha pour les fleurs) d'un échantillon représentatif d&#39;exploitations agricoles ou d&#39;unités agricoles. La méthodologie et les calculs sont documentés. <strong>Indicateur </strong>: • <ul><li>Estimation du volume de production certifié (kg ou tiges)</li></ul> &#13; Veuillez consulter le SA-G-SD-8 Document d&#39;orientation G : Estimation du rendement",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>La production totale certifiée et la production certifiée pour chaque producteur (en kg, en tiges pour les fleurs) est estimée une fois par an. Les calculs sont basés sur une méthodologie fiable d&#39;estimation des rendements (en kg/ha, en tiges/ha pour les fleurs) d'un échantillon représentatif d&#39;exploitations agricoles ou d&#39;unités agricoles. La méthodologie et les calculs sont documentés. <strong>Indicateur </strong>: • <ul><li>Estimation du volume de production certifié (kg ou tiges)</li></ul> &#13; Veuillez consulter le SA-G-SD-8 Document d&#39;orientation G : Estimation du rendement",
                     "num": "2.1.1",
                     "certif_de_group": {
                         "direction_du_group": "NO",
@@ -431,7 +431,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.2",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>La direction fait annuellement le bilan de :  <ul><li>La production totale récoltée certifiée (en kg, en tiges pour les fleurs)</li><li>Le solde des produits achetés, produits, vendus et en stock</li></ul> &#13;Si la différence entre la production estimée et la production réalisée est >15%, une justification raisonnable doit être donnée et des mesures doivent être prises pour empêcher la survenue de telles différences à l&#39;avenir. Pour les groupes, les différences sont vérifiées et justifiées à la fois au niveau du groupe et au niveau des membres individuels. &#13;   <strong>Indicateur </strong>: <ul><li>Production totale récoltée du produit agricole certifié (en kg ou tiges)</li></ul>",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>La direction fait annuellement le bilan de :  <ul><li>La production totale récoltée certifiée (en kg, en tiges pour les fleurs)</li><li>Le solde des produits achetés, produits, vendus et en stock</li></ul> &#13;Si la différence entre la production estimée et la production réalisée est >15%, une justification raisonnable doit être donnée et des mesures doivent être prises pour empêcher la survenue de telles différences à l&#39;avenir. Pour les groupes, les différences sont vérifiées et justifiées à la fois au niveau du groupe et au niveau des membres individuels. &#13;   <strong>Indicateur </strong>: <ul><li>Production totale récoltée du produit agricole certifié (en kg ou tiges)</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "YES",
@@ -441,7 +441,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.3",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les produits certifiés sont visuellement séparés des produits non certifiés à toutes les étapes, y compris durant le transport, le stockage et la transformation. Cette mesure ne s&#39;applique pas aux produits en bilan massique.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les produits certifiés sont visuellement séparés des produits non certifiés à toutes les étapes, y compris durant le transport, le stockage et la transformation. Cette mesure ne s&#39;applique pas aux produits en bilan massique.",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "NO",
@@ -451,7 +451,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.4",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>La Direction a cartographié le parcours des produits jusqu&#39;à la destination finale du <u>champ d'application du certificat</u>, y compris tous les intermédiaires (points de collecte, transport, unités de transformation, entrepôts, etc.) et les activités réalisées sur le produit.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>La Direction a cartographié le parcours des produits jusqu&#39;à la destination finale du <u>champ d'application du certificat</u>, y compris tous les intermédiaires (points de collecte, transport, unités de transformation, entrepôts, etc.) et les activités réalisées sur le produit.",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "NO",
@@ -461,7 +461,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.5",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les produits qui sont vendus comme certifiés peuvent être suivis jusqu&#39;à/aux l&#39;exploitation(s) agricole(s) certifiée(s) où ils ont été produits. &#13;&#13;La direction conserve les documents d&#39;achats et de ventes liés aux livraisons physiques provenant des produits certifiés, multi-certifiés et non certifiés. Elle s&#39;assure que tous les intermédiaires font la même chose. Les documents d&#39;achat et de vente comprennent les données, le type de produit, le (pourcentage du) volume certifié, le membre du groupe et, le cas échéant, le type de traçabilité. &#13; Dans le cas d'une certification de groupe, la direction du groupe garantit que les membres du groupe reçoivent un reçu pour chaque livraison du membre du groupe au groupe ou à un intermédiaire, en précisant le nom du membre du groupe, l&#39;identité du membre du groupe, la date, le type de produit et le volume.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les produits qui sont vendus comme certifiés peuvent être suivis jusqu&#39;à/aux l&#39;exploitation(s) agricole(s) certifiée(s) où ils ont été produits. &#13;&#13;La direction conserve les documents d&#39;achats et de ventes liés aux livraisons physiques provenant des produits certifiés, multi-certifiés et non certifiés. Elle s&#39;assure que tous les intermédiaires font la même chose. Les documents d&#39;achat et de vente comprennent les données, le type de produit, le (pourcentage du) volume certifié, le membre du groupe et, le cas échéant, le type de traçabilité. &#13; Dans le cas d'une certification de groupe, la direction du groupe garantit que les membres du groupe reçoivent un reçu pour chaque livraison du membre du groupe au groupe ou à un intermédiaire, en précisant le nom du membre du groupe, l&#39;identité du membre du groupe, la date, le type de produit et le volume.",
                     "certif_de_group": {
                         "petite_exploitation_agricole": "NO",
                         "direction_du_group": "NO",
@@ -471,7 +471,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.6",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les envois de produits certifiés ne dépassent pas la production totale (pour les exploitations agricoles), les achats de produits certifiés plus les stocks restants de l&#39;année précédente.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les envois de produits certifiés ne dépassent pas la production totale (pour les exploitations agricoles), les achats de produits certifiés plus les stocks restants de l&#39;année précédente.",
                     "certif_de_group": {
                         "petite_exploitation_agricole": "NO",
                         "direction_du_group": "NO",
@@ -481,7 +481,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.7",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les envois de produits certifiés ne dépassent pas la production totale (pour les exploitations agricoles), les achats de produits certifiés plus les stocks restants de l&#39;année précédente.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les envois de produits certifiés ne dépassent pas la production totale (pour les exploitations agricoles), les achats de produits certifiés plus les stocks restants de l&#39;année précédente.",
                     "certif_de_group": {
                         "petite_exploitation_agricole": "NO",
                         "direction_du_group": "NO",
@@ -491,7 +491,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.8",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les membres du groupe conservent les reçus des ventes (électronique ou physique), y compris le nom du membre du groupe, le numéro d'identification du membre, la date, le type de produit et le volume.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>Les membres du groupe conservent les reçus des ventes (électronique ou physique), y compris le nom du membre du groupe, le numéro d'identification du membre, la date, le type de produit et le volume.",
                     "certif_de_group": {
                         "petite_exploitation_agricole": "YES",
                         "direction_du_group": "YES",
@@ -501,7 +501,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.9",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>La méthodologie correcte utilisée pour le calcul des facteurs de conversion est démontrée et documentée pour chaque produit certifié et rapportée en conséquence dans la <u>plateforme de traçabilité.</u>",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>La méthodologie correcte utilisée pour le calcul des facteurs de conversion est démontrée et documentée pour chaque produit certifié et rapportée en conséquence dans la <u>plateforme de traçabilité.</u>",
                     "certif_de_group": {
                         "petite_exploitation_agricole": "NO",
                         "direction_du_group": "YES",
@@ -511,7 +511,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "2.1.10",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/><br/>L&#39;équipement utilisé pour définir le poids ou le volume de produit certifié est calibré annuellement.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/><br/>L&#39;équipement utilisé pour définir le poids ou le volume de produit certifié est calibré annuellement.",
                     "certif_de_group": {
                         "petite_exploitation_agricole": "NO",
                         "direction_du_group": "YES",
@@ -634,7 +634,7 @@ export const allRequirements = [{
             "content": [
                 {
                     "num": "3.1.1",
-                    " text": "<h1>N&#176;:Amélioration librement choisie</h1><br/>La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c&#39;est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe. &#13; <strong>Indicateur </strong>: <ul><li>Coûts de production par kg de produit récolté</li><li>Revenu net issu de la culture certifiée par kg de produit récolté.</li></ul>",
+                    "principal_requirement": "<h1>N&#176;:Amélioration librement choisie</h1><br/>La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c&#39;est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe. &#13; <strong>Indicateur </strong>: <ul><li>Coûts de production par kg de produit récolté</li><li>Revenu net issu de la culture certifiée par kg de produit récolté.</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "NO",
@@ -644,7 +644,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "3.1.2",
-                    " text": "<h1>N&#176;:Amélioration librement choisie</h1><br/>Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres. <ul><li>La production totale récoltée certifiée (en kg, en tiges pour les fleurs)  &#13; <strong>Indicateur </strong>: <ul><li>Revenu net moyen et médian</li><li>Écart moyen et médian par rapport à la valeur de référence du revenu vital (monétaire et %)</li><li>&#37; de producteurs atteignant la référence du revenu vital</li></ul>",
+                    "principal_requirement": "<h1>N&#176;:Amélioration librement choisie</h1><br/>Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres. <ul><li>La production totale récoltée certifiée (en kg, en tiges pour les fleurs)  &#13; <strong>Indicateur </strong>: <ul><li>Revenu net moyen et médian</li><li>Écart moyen et médian par rapport à la valeur de référence du revenu vital (monétaire et %)</li><li>&#37; de producteurs atteignant la référence du revenu vital</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "NO",
@@ -816,7 +816,7 @@ export const allRequirements = [{
             "numero": "4.1",
             "content": [
                 {
-                    " text": "<h1>N&#176;:Amélioration librement choisie</h1><br/>Les variétés de plantes pour les plantations, le greffage et la rénovation sont sélectionnées en fonction de la qualité, de la productivité, de la résistance aux ravageurs et aux maladies et de leur adéquation au climat durant la durée de vie des plantes. Ceci est effectué conformément aux résultats de l&#39;Évaluation des risques liés au climat (1.3.5), dans le cas où elle a été réalisée. &#13; Les matériaux de plantation sont indemnes de ravageurs et de maladies.",
+                    "principal_requirement": "<h1>N&#176;:Amélioration librement choisie</h1><br/>Les variétés de plantes pour les plantations, le greffage et la rénovation sont sélectionnées en fonction de la qualité, de la productivité, de la résistance aux ravageurs et aux maladies et de leur adéquation au climat durant la durée de vie des plantes. Ceci est effectué conformément aux résultats de l&#39;Évaluation des risques liés au climat (1.3.5), dans le cas où elle a été réalisée. &#13; Les matériaux de plantation sont indemnes de ravageurs et de maladies.",
                     "num": "4.1.1",
                     "certif_de_group": {
                         "direction_du_group": "YES",
@@ -827,7 +827,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "4.1.2",
-                    " text": "Les nouvelles plantations possèdent un système de culture bien établi qui prend en compte par exemple : &#13; <ul><li>Les exigences de la variété utilisée</li><li>Les conditions agronomiques, écologiques et géographiques</li><li>La diversification et les cultures intercalaires avec différentes profondeurs de racines et d'usages des sols pour améliorer la qualité et la santé des sols</li><li>La densité de plantation</li></ul>",
+                    "principal_requirement": "Les nouvelles plantations possèdent un système de culture bien établi qui prend en compte par exemple : &#13; <ul><li>Les exigences de la variété utilisée</li><li>Les conditions agronomiques, écologiques et géographiques</li><li>La diversification et les cultures intercalaires avec différentes profondeurs de racines et d'usages des sols pour améliorer la qualité et la santé des sols</li><li>La densité de plantation</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "YES",
@@ -837,7 +837,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "4.1.3 N1",
-                    " text": "Les producteurs mettent en œuvre des mesures pour préserver les cultures des ravageurs et des maladies et pour casser leurs cycles biologiques, pour renforcer la santé des sols et améliorer la gestion des mauvaises herbes. Au nombre de ces mesures figurent des cultures intercalaires, et des mesures prises entre les cycles de cultures telles que la rotation des cultures ou la jachère.",
+                    "principal_requirement": "Les producteurs mettent en œuvre des mesures pour préserver les cultures des ravageurs et des maladies et pour casser leurs cycles biologiques, pour renforcer la santé des sols et améliorer la gestion des mauvaises herbes. Au nombre de ces mesures figurent des cultures intercalaires, et des mesures prises entre les cycles de cultures telles que la rotation des cultures ou la jachère.",
                     "certif_de_group": {
                         "direction_du_group": "YES",
                         "petite_exploitation_agricole": "YES",
@@ -1243,7 +1243,7 @@ export const allRequirements = [{
             "numero": "5.1",
             "content": [
                 {
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/>Engagement: &#13; La direction s&#39;engage à évaluer-et-résoudre <u>le travail des enfants, le travail forcé, la discrimination et la violence et le harcèlement au travail</u> en mettant en œuvre les points suivants : &#13; &#35; Le désignation d&#39;un représentant de la direction responsable du système Évaluation-et-Résolution (Voir l&#39;Exigence 1.1.5)Le comité : &#13; <ul><li>Coordonne avec la direction et la personne responsable, la gestion des réclamations et des questions liées au genre</li><li>sensibilise la direction et le personnel (groupe) sur ces quatre problèmes, au moins une fois par an</li><li>informe les membres du groupe/travailleurs par écrit sur le fait que le travail des enfants, le travail forcé, la discrimination et la violence et le harcèlement au travail ne sont pas tolérés et que la direction possède un système actif pour évaluer et résoudre les problèmes qui y sont liés. Ces informations sont affichées en permanence et de manière visible dans les lieux principaux.</li></ul>",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/>Engagement: &#13; La direction s&#39;engage à évaluer-et-résoudre <u>le travail des enfants, le travail forcé, la discrimination et la violence et le harcèlement au travail</u> en mettant en œuvre les points suivants : &#13; &#35; Le désignation d&#39;un représentant de la direction responsable du système Évaluation-et-Résolution (Voir l&#39;Exigence 1.1.5)Le comité : &#13; <ul><li>Coordonne avec la direction et la personne responsable, la gestion des réclamations et des questions liées au genre</li><li>sensibilise la direction et le personnel (groupe) sur ces quatre problèmes, au moins une fois par an</li><li>informe les membres du groupe/travailleurs par écrit sur le fait que le travail des enfants, le travail forcé, la discrimination et la violence et le harcèlement au travail ne sont pas tolérés et que la direction possède un système actif pour évaluer et résoudre les problèmes qui y sont liés. Ces informations sont affichées en permanence et de manière visible dans les lieux principaux.</li></ul>",
                     "num": "5.1.1",
                     "certif_de_group": {
                         "direction_du_group": "NO",
@@ -1254,7 +1254,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "5.1.2",
-                    " text": "Atténuation des risques : &#13; Le comité/représentant de la direction inclut dans le plan de gestion (1.3.2) les mesures d&#39;atténuation telles qu&#39;elles sont identifiées dans l&#39;Évaluation des risques de base (1.3.1) et met en œuvre les mesures correspondantes.L&#39;Évaluation de base des risques pour les exploitations agricoles se déroule au moins tous les trois ans.",
+                    "principal_requirement": "Atténuation des risques : &#13; Le comité/représentant de la direction inclut dans le plan de gestion (1.3.2) les mesures d&#39;atténuation telles qu&#39;elles sont identifiées dans l&#39;Évaluation des risques de base (1.3.1) et met en œuvre les mesures correspondantes.L&#39;Évaluation de base des risques pour les exploitations agricoles se déroule au moins tous les trois ans.",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "YES",
@@ -1264,7 +1264,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "5.1.3",
-                    " text": "Suivi: &#13; Le comité/représentant de la direction &#13; <ul><li>Fait le suivi des risques et de la mise en œuvre des mesures d&#39;atténuation des risques</li><li>Rapporte à la direction et au comité des réclamations les cas possibles de <u>travail d&#39;enfants</u>, de <u>travail forcé</u>, de <u>discrimination</u> et de <u>violence et de harcèlement au travail</u>.</li><li>Fait le suivi des activités de résolutions (voir 5.1.4)</li></ul> &#13;L&#39;intensité du système de suivi est ajustée au niveau de risques et au problème. <br/> <strong>Indicateur: </strong><ul><li>Le nombre de cas possibles identifiés par le système de suivi et référés au mécanisme de réclamation (par genre, âge et type de problème)</li></ul>",
+                    "principal_requirement": "Suivi: &#13; Le comité/représentant de la direction &#13; <ul><li>Fait le suivi des risques et de la mise en œuvre des mesures d&#39;atténuation des risques</li><li>Rapporte à la direction et au comité des réclamations les cas possibles de <u>travail d&#39;enfants</u>, de <u>travail forcé</u>, de <u>discrimination</u> et de <u>violence et de harcèlement au travail</u>.</li><li>Fait le suivi des activités de résolutions (voir 5.1.4)</li></ul> &#13;L&#39;intensité du système de suivi est ajustée au niveau de risques et au problème. <br/> <strong>Indicateur: </strong><ul><li>Le nombre de cas possibles identifiés par le système de suivi et référés au mécanisme de réclamation (par genre, âge et type de problème)</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "YES",
                         "petite_exploitation_agricole": "YES",
@@ -1274,7 +1274,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "5.1.4",
-                    " text": "<u>Résolution:</u> &#13; Dans le <u>plan de gestion</u>, le comité/représentant de la direction expose comment résoudre les cas de <u>travail d&#39;enfants</u>, de <u>travail forcé</u>, de <u>discrimination</u> et de <u>violence et de harcèlement au travail</u>. Les cas confirmés sont résolus et documentés suivant le Protocole de résolution de Rainforest Alliance. La sécurité et la <u>confidentialité</u> des victimes sont garanties durant tout le processus. <br/> <strong>Indicateur: </strong><ul><li>Le nombre et le pourcentage de cas confirmés résolus de travail des enfants, de travail forcé, de discrimination et de violence et harcèlement au travail grâce au protocole de résolution (par genre, âge et type de problème)</li></ul>",
+                    "principal_requirement": "<u>Résolution:</u> &#13; Dans le <u>plan de gestion</u>, le comité/représentant de la direction expose comment résoudre les cas de <u>travail d&#39;enfants</u>, de <u>travail forcé</u>, de <u>discrimination</u> et de <u>violence et de harcèlement au travail</u>. Les cas confirmés sont résolus et documentés suivant le Protocole de résolution de Rainforest Alliance. La sécurité et la <u>confidentialité</u> des victimes sont garanties durant tout le processus. <br/> <strong>Indicateur: </strong><ul><li>Le nombre et le pourcentage de cas confirmés résolus de travail des enfants, de travail forcé, de discrimination et de violence et harcèlement au travail grâce au protocole de résolution (par genre, âge et type de problème)</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "YES",
                         "petite_exploitation_agricole": "YES",
@@ -1289,7 +1289,7 @@ export const allRequirements = [{
             "numero": "5.1",
             "content": [
                 {
-                    " text": "<h1>N&#176;:Les exigences d&#39;amélioration obligatoires s&#39;appliquent en cas de risque moyen/élevé de travail des enfants et/ou de travail forcé selon les cartes des risques de travail des enfants et de travail forcé de Rainforest Alliance.<br/>Les grandes exploitations agricoles et les exploitations agricoles certifiées individuellement mettent en œuvre en permanence des     de discrimination, de violence et le harcèlement au travail.</h1><br/>Au cours de la première année de certification, le comité/représentant de la direction: &#13; <ul><li>Applique l&#39;évaluation approfondie des risques de l&#39;évaluation et Résolution pour le(s) problème(s) à risque moyen/haut</li><li>Incorpore les mesures d&#39;atténuation correspondantes dans le plan de gestion (1.3.2)</li><li>Met en œuvre ces mesures</li></ul> <br/> L&#39;évaluation approfondie des risques de l&#39;Évaluation-et-Résolution est répétée au moins tous les trois ans.",
+                    "principal_requirement": "<h1>N&#176;:Les exigences d&#39;amélioration obligatoires s&#39;appliquent en cas de risque moyen/élevé de travail des enfants et/ou de travail forcé selon les cartes des risques de travail des enfants et de travail forcé de Rainforest Alliance.<br/>Les grandes exploitations agricoles et les exploitations agricoles certifiées individuellement mettent en œuvre en permanence des     de discrimination, de violence et le harcèlement au travail.</h1><br/>Au cours de la première année de certification, le comité/représentant de la direction: &#13; <ul><li>Applique l&#39;évaluation approfondie des risques de l&#39;évaluation et Résolution pour le(s) problème(s) à risque moyen/haut</li><li>Incorpore les mesures d&#39;atténuation correspondantes dans le plan de gestion (1.3.2)</li><li>Met en œuvre ces mesures</li></ul> <br/> L&#39;évaluation approfondie des risques de l&#39;Évaluation-et-Résolution est répétée au moins tous les trois ans.",
                     "num": "5.1.5 N1",
                     "certif_de_group": {
                         "direction_du_group": "NO",
@@ -1300,7 +1300,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "5.1.6 N1",
-                    " text": "Le comité/représentant de la direction organise des formations ou des sensibilisations sur le travail des enfants, le <u>travail forcé</u>, la discrimination et la violence et le harcèlement au travail pour tous les membres du groupe <u>(des petites exploitations agricoles)</u> ou pour les travailleurs (des grandes exploitations agricoles ou des exploitations agricoles certifiées individuellement).",
+                    "principal_requirement": "Le comité/représentant de la direction organise des formations ou des sensibilisations sur le travail des enfants, le <u>travail forcé</u>, la discrimination et la violence et le harcèlement au travail pour tous les membres du groupe <u>(des petites exploitations agricoles)</u> ou pour les travailleurs (des grandes exploitations agricoles ou des exploitations agricoles certifiées individuellement).",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "YES",
@@ -1310,7 +1310,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "5.1.3 N1",
-                    " text": "La direction encourage activement la présence à l&#39;école des enfants du personnel (des groupes), des membres du groupe et des travailleurs des membres du groupe.",
+                    "principal_requirement": "La direction encourage activement la présence à l&#39;école des enfants du personnel (des groupes), des membres du groupe et des travailleurs des membres du groupe.",
                     "certif_de_group": {
                         "direction_du_group": "No",
                         "petite_exploitation_agricole": "NO",
@@ -1325,7 +1325,7 @@ export const allRequirements = [{
             "numero": "5.1",
             "content": [
                 {
-                    " text": "<h1>Compteur Intelligent obligatoire</h1><br/><br/><h1>N&#176;:Les exigences d&#39;amélioration obligatoires s&#39;appliquent en cas de risque moyen/élevé de travail des enfants et/ou de travail forcé selon les cartes des risques de travail des enfants et de travail forcé de Rainforest Alliance. <br/>Les grandes exploitations agricoles et les exploitations agricoles certifiées individuellement mettent en œuvre en permanence des améliorations en matière de discrimination, de violence et le harcèlement au travail.</h1><br/>La direction assure le bon fonctionnement du système d&#39;Évaluation-et-Résolution. A cette fin, à partir de la première année, une évaluation annuelle du système d&#39;Evaluation-et-Résolution pour les problèmes appropriés est réalisée,en fonction des cinq éléments suivants : &#13; <ul><li>Mise en œuvre efficace des mesures d&#39;atténuation</li><li>Formation efficace sur les sujets appropriés de l&#39;Evaluation-et-Résolution</li><li>Coopération efficace avec les acteurs externes</li><li>Suivi efficace du système d&#39;Évaluation-et-Résolution</li><li>Collaboration interne efficace sur les sujets de l&#39;Evaluation-et-Résolution</li></ul> <br/> <strong>Indicateur :</strong><br/><ul><li>Scores des éléments du système d&#39;Evaluation-et-Résolution</li></ul>",
+                    "principal_requirement": "<h1>Compteur Intelligent obligatoire</h1><br/><br/><h1>N&#176;:Les exigences d&#39;amélioration obligatoires s&#39;appliquent en cas de risque moyen/élevé de travail des enfants et/ou de travail forcé selon les cartes des risques de travail des enfants et de travail forcé de Rainforest Alliance. <br/>Les grandes exploitations agricoles et les exploitations agricoles certifiées individuellement mettent en œuvre en permanence des améliorations en matière de discrimination, de violence et le harcèlement au travail.</h1><br/>La direction assure le bon fonctionnement du système d&#39;Évaluation-et-Résolution. A cette fin, à partir de la première année, une évaluation annuelle du système d&#39;Evaluation-et-Résolution pour les problèmes appropriés est réalisée,en fonction des cinq éléments suivants : &#13; <ul><li>Mise en œuvre efficace des mesures d&#39;atténuation</li><li>Formation efficace sur les sujets appropriés de l&#39;Evaluation-et-Résolution</li><li>Coopération efficace avec les acteurs externes</li><li>Suivi efficace du système d&#39;Évaluation-et-Résolution</li><li>Collaboration interne efficace sur les sujets de l&#39;Evaluation-et-Résolution</li></ul> <br/> <strong>Indicateur :</strong><br/><ul><li>Scores des éléments du système d&#39;Evaluation-et-Résolution</li></ul>",
                     "num": "5.1.8",
                     "certif_de_group": {
                         "direction_du_group": "NO",
@@ -1843,7 +1843,7 @@ export const allRequirements = [{
             "numero": "6.1",
             "content": [
                 {
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/>Depuis le 1er janvier 2014, les forêts naturelles et les autres écosystèmes naturels n’ont pas été convertispour la production agricole ou pour d’autres usages des terres.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/>Depuis le 1er janvier 2014, les forêts naturelles et les autres écosystèmes naturels n’ont pas été convertispour la production agricole ou pour d’autres usages des terres.",
                     "num": "6.1.1",
                     "certif_de_group": {
                         "direction_du_group": "YES",
@@ -1854,7 +1854,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "6.1.2",
-                    " text": "La production ou la transformation n’a pas lieu dans les aires protégées ou leurs zones tampons désignées officiellement, sauf là où elle est conforme à la législation applicable.",
+                    "principal_requirement": "La production ou la transformation n’a pas lieu dans les aires protégées ou leurs zones tampons désignées officiellement, sauf là où elle est conforme à la législation applicable.",
                     "certif_de_group": {
                         "direction_du_group": "YES",
                         "petite_exploitation_agricole": "YES",
@@ -1864,7 +1864,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "6.1.3",
-                    " text": "La direction inclut les mesures d’atténuation provenant de l’Outil d’évaluation des risques dans la section 1.3.1 en regard des Hautes valeurs de conservation dans le plan de gestion (1.3.2). La direction met en œuvre ces mesures.",
+                    "principal_requirement": "La direction inclut les mesures d’atténuation provenant de l’Outil d’évaluation des risques dans la section 1.3.1 en regard des Hautes valeurs de conservation dans le plan de gestion (1.3.2). La direction met en œuvre ces mesures.",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "YES",
@@ -1874,7 +1874,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "6.1.4",
-                    " text": "<h1>N&#176;:Amélioration obligatoire</h1><br/>La direction inclut les mesures d’atténuation provenant de l’Outil d’évaluation des risques dans la section 1.3.1 en regard des Hautes valeurs de conservation dans le plan de gestion (1.3.2). La direction met en œuvre ces mesures.",
+                    "principal_requirement": "<h1>N&#176;:Amélioration obligatoire</h1><br/>La direction inclut les mesures d’atténuation provenant de l’Outil d’évaluation des risques dans la section 1.3.1 en regard des Hautes valeurs de conservation dans le plan de gestion (1.3.2). La direction met en œuvre ces mesures.",
                     "certif_de_group": {
                         "direction_du_group": "NO",
                         "petite_exploitation_agricole": "NO",
@@ -1889,7 +1889,7 @@ export const allRequirements = [{
             "numero": "6.2",
             "content": [
                 {
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/>La direction élabore et met en œuvre un plan pour conserver les écosystèmes naturels. Le plan se base sur la carte requise dans la section 1.2.10 et la section sur les écosystèmes naturels de l’Outil d’évaluation des risques dans la section 1.3.1 et est mis à jour annuellement.",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/>La direction élabore et met en œuvre un plan pour conserver les écosystèmes naturels. Le plan se base sur la carte requise dans la section 1.2.10 et la section sur les écosystèmes naturels de l’Outil d’évaluation des risques dans la section 1.3.1 et est mis à jour annuellement.",
                     "num": "6.2.1",
                     "certif_de_group": {
                         "direction_du_group": "NO",
@@ -1900,7 +1900,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "6.2.2 ",
-                    " text": "Les exploitations agricoles conservent tous les arbres des forêts restantes, sauf lorsqu'ils constituent un danger pour les personnes ou les infrastructures. Les autres arbres  autochtones de l’exploitation agricole et leurs coupes sont gérés durablement de manière à ce que la même quantité et la mêmequalité d’arbres soient maintenues sur l’exploitation agricole.",
+                    "principal_requirement": "Les exploitations agricoles conservent tous les arbres des forêts restantes, sauf lorsqu'ils constituent un danger pour les personnes ou les infrastructures. Les autres arbres  autochtones de l’exploitation agricole et leurs coupes sont gérés durablement de manière à ce que la même quantité et la mêmequalité d’arbres soient maintenues sur l’exploitation agricole.",
                     "certif_de_group": {
                         "direction_du_group": "YES",
                         "petite_exploitation_agricole": "YES",
@@ -1910,7 +1910,7 @@ export const allRequirements = [{
                 },
                 {
                     "num": "6.2.3",
-                    " text": "<h1>N&#176;:Exigences principales</h1><br/>Les producteurs maintiennent le couvert de végétation naturelle et la direction en fait le suivi et rédige des apports annuels sur l’indicateur dès la première année <br/>S'il y a moins de 10% de la surface totale sous couvert de végétation naturelle ou moins de 15% pour les exploitations agricoles cultivant des cultures tolérantes à l’ombre, alors la direction établit des objectifs et prend des mesures pour que les exploitations agricoles atteignent ces seuils comme le requiert la section 6.2.4. <br/>La végétation naturelle est composée en majorité d’espèces indigènes ou adaptées localement, ressemblant à la composition en espèces et à la structure de la végétation qui existe ou existerait en l’absence d’interférence humaine. La végétation naturelle peut inclure l'un ou plusieurs des types suivant (non exclusifs) : &#58; <br/> <ul>Zones ripariennes tampons<li></li><li>Zones de conservation au sein de l’exploitation agricole</li><li>Végétation naturelle dans les systèmes agroforestiers</li><li>Plantations aux niveaux des limites/frontières, barrières et palissades vivantes autour des logements et des infrastructures ou autres façons.</li><li>Zones de conservation et de restauration en dehors de l’exploitation agricole certifiée qui fournissent effacement une protection à long terme des zones concernées (pour au moins 25 ans) et produisent une valeur de conservation et un statut de protection supplémentaires au statu quo</li></ul> <br/> <strong>Indicateur :</strong><br/> <ul><li>&#37; de la superficie totale de l’exploitation agricole sous couverture de végétation naturelle</li></ul>",
+                    "principal_requirement": "<h1>N&#176;:Exigences principales</h1><br/>Les producteurs maintiennent le couvert de végétation naturelle et la direction en fait le suivi et rédige des apports annuels sur l’indicateur dès la première année <br/>S'il y a moins de 10% de la surface totale sous couvert de végétation naturelle ou moins de 15% pour les exploitations agricoles cultivant des cultures tolérantes à l’ombre, alors la direction établit des objectifs et prend des mesures pour que les exploitations agricoles atteignent ces seuils comme le requiert la section 6.2.4. <br/>La végétation naturelle est composée en majorité d’espèces indigènes ou adaptées localement, ressemblant à la composition en espèces et à la structure de la végétation qui existe ou existerait en l’absence d’interférence humaine. La végétation naturelle peut inclure l'un ou plusieurs des types suivant (non exclusifs) : &#58; <br/> <ul>Zones ripariennes tampons<li></li><li>Zones de conservation au sein de l’exploitation agricole</li><li>Végétation naturelle dans les systèmes agroforestiers</li><li>Plantations aux niveaux des limites/frontières, barrières et palissades vivantes autour des logements et des infrastructures ou autres façons.</li><li>Zones de conservation et de restauration en dehors de l’exploitation agricole certifiée qui fournissent effacement une protection à long terme des zones concernées (pour au moins 25 ans) et produisent une valeur de conservation et un statut de protection supplémentaires au statu quo</li></ul> <br/> <strong>Indicateur :</strong><br/> <ul><li>&#37; de la superficie totale de l’exploitation agricole sous couverture de végétation naturelle</li></ul>",
                     "certif_de_group": {
                         "direction_du_group": "YES",
                         "petite_exploitation_agricole": "YES",
@@ -1925,7 +1925,7 @@ export const allRequirements = [{
             "numero": "6.1",
             "content": [
                 {
-                    " text": "<h1>Amélioration obligatoire</h1><br/><br/><h1><br/>Il y a une couverture de végétation naturelle<ul><li>sur au moins 10% de la surface totale des exploitations agricoles cultivant des cultures non tolérantes à l’ombre</li><li>sur au moins 15% de la surface totale des exploitations agricoles cultivant des cultures tolérantes à l’ombre</li><li></ul>",
+                    "principal_requirement": "<h1>Amélioration obligatoire</h1><br/><br/><h1><br/>Il y a une couverture de végétation naturelle<ul><li>sur au moins 10% de la surface totale des exploitations agricoles cultivant des cultures non tolérantes à l’ombre</li><li>sur au moins 15% de la surface totale des exploitations agricoles cultivant des cultures tolérantes à l’ombre</li><li></ul>",
                     "num": "6.1.8",
                     "certif_de_group": {
                         "direction_du_group": "NO",

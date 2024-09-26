@@ -7,6 +7,7 @@ import {
   ApiDataResponse,
   CampaignType,
   CompanyType,
+  PricePlanType,
   ProjectType,
   RequirementType,
   UserType,
@@ -108,13 +109,16 @@ export default function LayoutDashboard({
     fn: () => fetchApiData(Route.companies, "current"),
     route: Route.companies,
   });
-  const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
+  useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
     fn: () => fetchApiData(Route.campaign, ""),
     route: Route.campaign,
   });
-  useEffect(() => {
-    // refetch();
-  }, []);
+
+  useApiOps<PricePlanType, ApiDataResponse<PricePlanType>>({
+    fn: () => fetchApiData(Route.pricing, "current"),
+    route: Route.pricing,
+  });
+
 
   const { value: displayCloseSideNav, toggle: togglrDisplayCloseSideNav } =
     useToggle({ initial: true });

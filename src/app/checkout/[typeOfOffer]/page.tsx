@@ -297,7 +297,7 @@ export default function page({ }: Props) {
                 <PaypalPaypements />
               ) : (
                 <Button className="cursor-wait flex gap-3 py-6 bg-primary hover:cursor-not-allowed opacity-70 font-semibold text-white w-full">
-                  <Spinner/>
+                  <Spinner />
                   <span>loading paypal checkout...</span>
                 </Button>
               )

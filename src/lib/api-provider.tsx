@@ -75,6 +75,6 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
         data,
         error,
         isLoading,
-        refetch,
-    };
+        refetch
+    }
 }
