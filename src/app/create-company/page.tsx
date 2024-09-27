@@ -74,6 +74,7 @@ export default function Home({ }: Props) {
     if (user?.id && companyLogo) {
 
       const res = await createOrganization(formData, user.id);
+
       console.log(res)
 
       await mutateApiData(Route.companies, {
@@ -87,7 +88,7 @@ export default function Home({ }: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        status: "INACTIVE",
+        // status: "INACTIVE",
       })
         .then((response) => {
           console.log("create company res =>", response);
