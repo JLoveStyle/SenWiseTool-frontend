@@ -10,8 +10,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { LayoutTemplate, PenLine } from "lucide-react";
+import { LayoutTemplate, LucideX, PenLine } from "lucide-react";
 import { useState } from "react";
+import { ButtonUI } from "../../disign-system/button-ui";
+import { useToggle } from '@/hooks/use-toggle';
 
 type Props = {
   // children: React.ReactNode;
@@ -24,15 +26,24 @@ export default function FormLayout({ heading, form }: Props) {
     "CHOOSE"
   );
 
+  const {value: openModal, toggle: toggleOpenModel} = useToggle({initial: false})
+
+  const closeDialog = () => {
+    setFormStep("CHOOSE")
+    toggleOpenModel()
+  }
+
   return (
-    <Dialog /*open={openModal}*/>
+    <Dialog open={openModal}>
       <DialogTrigger asChild>
-        <Button className="px-10 mb-4" /*onClick={toggleOpenModal}*/>
+        <Button className="px-10 mb-4" onClick={toggleOpenModel}>
           New Form
         </Button>
       </DialogTrigger>
-      <DialogClose className="text-white">x</DialogClose>
       <DialogContent className="sm:max-w-[800px] w-full h-fit bg-white rounded-lg">
+      <Button onClick={closeDialog} className="absolute top-4 right-4 bg-transparent hover:bg-transparent text-white hover:text-white focus:outline-none">
+    <LucideX />
+  </Button>
         <DialogHeader className="p-5 flex h-[80px] bg-black justify-between rounded-t-lg">
           <DialogTitle className="text-xl p-4 font-semibold text-white">
             {heading}

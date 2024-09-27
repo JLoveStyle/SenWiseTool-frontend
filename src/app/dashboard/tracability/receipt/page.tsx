@@ -1,108 +1,152 @@
 "use client";
 
-import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import {
-  ApiDataResponse,
-  TrainingTableDisplayType,
-  TrainingType,
-} from "@/types/api-types";
-import { fetchApiData } from "@/utiles/services/queries";
 
 import { Archive, FilePenLine, Rocket, Trash2, UserPlus } from "lucide-react";
 
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 
-import { trainingColumnTable } from "@/components/atoms/training/training-column-table";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-import { NewFormReceipt } from "@/components/organisms/tracability/receipt/new-form-receipt";
+import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { DashboardStatPanelData } from "@/types/app-link";
-import { TrainingProps } from "@/types/formData";
-import { db_get_trainings } from "@/utiles/services/training";
+import { ReceiptProps, ReceiptTableProps } from "@/types/tracability/receipt";
+import { db_get_receipts } from "@/utiles/services/tracability/receipt";
+import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
 
 export default function Receipt() {
-  const { data: trainings, refetch } = useApiOps<
-    TrainingType[],
-    ApiDataResponse<TrainingType[]>
-  >({
-    fn: () => fetchApiData<ApiDataResponse<TrainingType[]>>(Route.training, ""),
-    route: Route.training,
-  });
-
-  const [data, setData] = useState<TrainingProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [trainingDatas, setTrainingDatas] = useState<TrainingType[]>([]);
+  const [receiptDatas, setReceiptDatas] = useState<ReceiptProps[]>([]);
+
+  const columns = columnTable<ReceiptTableProps>(
+    {
+      id: "id",
+      market_id: "marché",
+      village: "village",
+      farmer_id: "cultivateur",
+      date: "date",
+      net_weight_in_kg: "poids net",
+      quantity_in_bags: "quantité",
+      buyer: "Acheteur",
+    },
+    Route.receipt
+  );
 
   useEffect(() => {
     const fetchData = async () => {
-      db_get_trainings()
+      db_get_receipts()
         .then((result) => {
           console.log("data training: ", result);
 
-          setTrainingDatas(result as TrainingType[]);
+          setReceiptDatas(result as ReceiptProps[]);
           setIsLoading(false);
         })
         .catch((err) => console.error(err));
     };
 
     fetchData();
-  }, [trainingDatas]);
+  }, [receiptDatas]);
 
-  const valueToDisplay = (args: TrainingType[]) => {
-    return args?.map((training) => ({
-      id: training.id,
-      title: training.title,
-      start_date: training.start_date,
-      end_date: training.end_date,
-      location: training.location,
+  const valueToDisplay = (args: ReceiptProps[]) => {
+    return args?.map((receipt) => ({
+      id: receipt.id,
+      market_id: receipt.market_id,
+      village: receipt.village,
+      farmer_id: receipt.farmer_id,
+      date: receipt.date,
+      net_weight_in_kg: receipt.net_weight_in_kg,
+      quantity_in_bags: receipt.quantity_in_bags,
+      buyer: receipt.buyer,
     }));
   };
 
   useEffect(() => {
-    refetch();
-  }, [trainingDatas]);
+    // refetch();
+  }, [receiptDatas]);
+
+  // const statPanelDatas: DashboardStatPanelData[] = [
+  //   {
+  //     structure: {
+  //       label: "Deployed",
+  //       baseUrl: "",
+  //       icon: Rocket,
+  //     },
+  //     data: () => {
+  //       return 0;
+  //     },
+  //   },
+  //   {
+  //     structure: {
+  //       label: "Draft",
+  //       baseUrl: "",
+  //       icon: FilePenLine,
+  //     },
+  //     data: () => {
+  //       return 0;
+  //     },
+  //   },
+  //   {
+  //     structure: {
+  //       label: "Archive",
+  //       baseUrl: "",
+  //       icon: Archive,
+  //     },
+  //     data: () => {
+  //       return 0;
+  //     },
+  //   },
+  // ];
 
   const statPanelDatas: DashboardStatPanelData[] = [
     {
       structure: {
-        label: "Deployed",
+        label: "Ventes",
         baseUrl: "",
         icon: Rocket,
       },
       data: () => {
-        return 0;
+        return receiptStatData.totalSale;
       },
     },
     {
       structure: {
-        label: "Draft",
+        label: "Marchés",
         baseUrl: "",
         icon: FilePenLine,
       },
       data: () => {
-        return 0;
+        return receiptStatData.distinctMarketCount;
       },
     },
     {
       structure: {
-        label: "Archive",
+        label: "Quantités",
         baseUrl: "",
         icon: Archive,
       },
       data: () => {
-        return 0;
+        return receiptStatData.totalQuantity;
+      },
+    },
+    {
+      structure: {
+        label: "Poids.Net",
+        baseUrl: "",
+        icon: Archive,
+      },
+      data: () => {
+        return receiptStatData.totalNetWeight;
       },
     },
   ];
 
   return (
     <LayoutDashboardTemplate
-      newForm={<NewFormReceipt />}
+      // newForm={<NewFormReceipt />}
       title="Traçabilité - Les Reçus"
-      // statPanelDatas={statPanelDatas}
+      statPanelDatas={statPanelDatas}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Projects</h1>
@@ -119,13 +163,13 @@ export default function Receipt() {
         </div>
       </div>
       <div className="px-6">
-        <DataTable<TrainingTableDisplayType, any>
-          incomingColumns={trainingColumnTable}
+        <DataTable<ReceiptTableProps, any>
+          incomingColumns={columns}
           incomingData={
-            trainingDatas?.length
-              ? valueToDisplay(trainingDatas)
-              : trainings?.length
-              ? valueToDisplay(trainings as TrainingType[])
+            receiptDatas?.length
+              ? valueToDisplay(receiptDatas)
+              : receiptDatas?.length
+              ? valueToDisplay(receiptDatas as ReceiptProps[])
               : []
           }
           onSelecteItem={() => {}}

@@ -94,7 +94,7 @@ export function NewFormReceipt() {
       />
       <ButtonUI
         type="submit"
-        className={clsx("bg-green-600 hover:bg-green-500")}
+        className={clsx("bg-green-600 hover:bg-green-500 mt-2")}
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >

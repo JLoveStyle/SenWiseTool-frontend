@@ -12,10 +12,11 @@ export default function StatPanel({ newForm, statPanelDatas }: Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   return (
-    <div className="bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg">
+    <div className="bg-[#f7f6f6] w-fit h-screen px-1 pt-2 shadow-lg">
       <div className="flex flex-col gap-3 p-2">
-        <NewForm form={newForm} />
-        <div className="flex flex-col gap-5 p-2">
+        {newForm && <NewForm form={newForm} />}
+        
+        {statPanelDatas && <div className="flex flex-col gap-5 p-2">
           {statPanelDatas?.map((data) => (
             <div className="flex justify-between gap-2 hover:cursor-pointer">
               <div className="flex gap-2 flex-1 ">
@@ -27,7 +28,7 @@ export default function StatPanel({ newForm, statPanelDatas }: Props) {
               </span>
             </div>
           ))}
-        </div>
+        </div>}
       </div>
     </div>
   );
