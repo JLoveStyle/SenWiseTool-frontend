@@ -11,7 +11,7 @@ import { useEffect } from "react";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { session } = useSession();
   const { user } = useUser();
@@ -28,8 +28,6 @@ export default function Home({}: Props) {
     const token = await getToken();
     if (token) {
       LOCAL_STORAGE.save("token", token);
-      // store the user in the session
-      // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
     }
   }
 

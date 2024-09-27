@@ -32,7 +32,6 @@ import {
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { Requirements } from "@/components/atoms/colums-of-tables/chapter";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
@@ -136,9 +135,9 @@ export function ChaptersRequirements<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

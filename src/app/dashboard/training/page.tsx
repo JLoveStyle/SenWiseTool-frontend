@@ -18,6 +18,8 @@ import CustomHoverCard from "@/components/organisms/hoverCard";
 import { TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
 import { db_get_trainings } from "@/utiles/services/training";
+import dynamic from "next/dynamic";
+
 
 export default function Training() {
   const { data: trainings, refetch } = useApiOps<TrainingType[], ApiDataResponse<TrainingType[]>>({
@@ -62,7 +64,7 @@ export default function Training() {
     <LayoutDashboard
       projectsPerType={[]}
       typeOfProject={"TRAINING"}
-      newForm={<NewTraining />}
+    // newForm={<NewTraining />}
     >
       {/* <div className="flex flex-col justify-between gap-10  w-full">
         <div className="flex justify-between items-center py-3 mr-10">

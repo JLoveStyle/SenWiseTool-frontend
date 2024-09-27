@@ -8,6 +8,8 @@ import {
   CampaignType,
   CompanyType,
   ProjectType,
+  RequirementType,
+  UserType,
 } from "@/types/api-types";
 import { DashboardSidebarOption } from "@/types/app-link";
 import { ProjectClientType } from "@/types/client-types";
@@ -111,9 +113,10 @@ export default function LayoutDashboard({
     route: Route.campaign,
   });
   useEffect(() => {
-    refetch();
+    // refetch();
   }, []);
-  const { value: displayCloseSideNav, toggle: toggleDisplayCloseSideNav } =
+
+  const { value: displayCloseSideNav, toggle: togglrDisplayCloseSideNav } =
     useToggle({ initial: true });
 
   return (
@@ -145,7 +148,7 @@ export default function LayoutDashboard({
           className="rounded-full bg-white text-black"
           positionLeft={70}
           positionTop={400}
-          action={toggleDisplayCloseSideNav}
+          action={togglrDisplayCloseSideNav}
         >
           <HiViewGridAdd />
         </FloatingButton>

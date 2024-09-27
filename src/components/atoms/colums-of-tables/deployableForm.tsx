@@ -89,7 +89,7 @@ export const printableFormColumns: ColumnDef<DeployableFormMetadata>[] = [
         ),
       }),
     ],
-    
+
   }),
   {
     id: "select",
