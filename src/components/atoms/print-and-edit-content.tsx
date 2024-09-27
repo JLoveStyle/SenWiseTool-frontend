@@ -10,7 +10,7 @@ interface Props {
   onClick: () => void;
   deployProject: () => void;
   filename: string;
-  handleExitPage?: () => void
+  handleExitPage?: () => void;
 }
 
 const PrintContent: React.FC<Props> = (props) => {
@@ -25,7 +25,7 @@ const PrintContent: React.FC<Props> = (props) => {
       html2canvas: { scale: 2 },
       jsPDF: {
         unit: "in",
-        format: "letter",
+        format: "land-scape",
         orientation: "portrait",
       },
     };
@@ -47,8 +47,11 @@ const PrintContent: React.FC<Props> = (props) => {
         <Button className="px-10" onClick={props.onClick}>
           Edit
         </Button>
-        <Button className="" onClick={handlePrint}>
-          Download
+        <Button
+          className="flex gap-1 items-center bg-black hover:bg-black hover:rounded-full"
+          onClick={handlePrint}
+        >
+          Print to PDF
         </Button>
         <Button className="" onClick={props.deployProject}>
           Deploy

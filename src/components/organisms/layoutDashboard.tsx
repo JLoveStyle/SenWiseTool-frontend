@@ -4,19 +4,16 @@ import NavDashboard from "./navDashboard";
 import SideNav from "../molecules/sideNav";
 import { NavigationMenuDemo } from "./navigationMenu";
 import { useToggle } from "@/hooks/use-toggle";
-import { Project } from "@/types/gestion";
 import { HiViewGridAdd } from "react-icons/hi";
 import FloatingButton from "../atoms/disign-system/floating-button";
 import CloseSideNav from "./closeSideNav";
-import { ProjectClientType } from "@/types/client-types";
 import {
   ApiDataResponse,
   CampaignType,
   CompanyType,
+  ProjectsType,
   ProjectType,
-  UserType,
 } from "@/types/api-types";
-import { useUserstore } from "@/lib/stores/user-stores";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useApiOps } from "@/lib/api-provider";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
@@ -31,9 +28,10 @@ import {
 } from "react-icons/rx";
 import { IoMdShareAlt } from "react-icons/io";
 import { BsPersonVcard } from "react-icons/bs";
+
 type Props = {
   children: React.ReactNode;
-  typeOfProject?: ProjectClientType;
+  typeOfProject: ProjectsType;
   projectsPerType: ProjectType[];
   newForm?: React.ReactNode;
 };
@@ -140,7 +138,6 @@ export default function LayoutDashboard({
           </div>
         </div>
       </div>
-      {/* {newForm && ( */}
       <FloatingButton
         className="rounded-full bg-white text-black"
         positionLeft={70}

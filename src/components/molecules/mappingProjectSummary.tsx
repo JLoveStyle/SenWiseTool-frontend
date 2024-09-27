@@ -92,8 +92,8 @@ export default function ProjectSummary({
       text: "Edit form",
       secondIcon: <ChevronRight />,
       function: () => {
-        // router.push(Route.editProject + `/${project?.id}`);
-        router.push(Route.editProject + `/${id}`);
+        router.push(Route.editProject + `/${projectObject?.id}`);
+        // router.push(Route.editProject + `/${id}`);
       },
     },
     {
@@ -111,7 +111,14 @@ export default function ProjectSummary({
       <div className="md:w-[70%]">
         <p className="">Project details</p>
         <div className="bg-white md:w-full p-5 shadow">
-          <div className="border-b pb-4">
+          {/* project title */}
+          <div className="flex gap-4 justify-center m-auto py-4 border-b">
+            <span className="text-sm text-gray-500 ">Title: </span>
+            <span className=" font-semibold text-sm px-2 rounded-lg">
+              {projectObject?.title}
+            </span>
+          </div>
+          <div className="border-b py-4">
             <span className="text-sm font-semibold text-gray-500">
               Description
             </span>
@@ -125,37 +132,10 @@ export default function ProjectSummary({
                   {projectObject?.status}
                 </span>
               </div>
-              {/* project title */}
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Title</span>
-                <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
-                  {projectObject?.title}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">N° Questions</span>
-                {projectObject?.project_structure && (
-                  <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
-                    3
-                  </span>
-                )}
-              </div>
             </div>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
             <div className="flex md:w-[500px] justify-between">
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Start date</span>
-                <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.start_date}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">End date</span>
-                <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.end_date}
-                </span>
-              </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last update</span>
                 <span className=" text-sm rounded-lg font-semibold">
@@ -179,21 +159,9 @@ export default function ProjectSummary({
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Region</span>
-                <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.state}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Ville</span>
+                <span className="text-sm text-gray-500 ">village</span>
                 <span className=" text-sm rounded-lg font-semibold">
                   {projectObject?.city}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Business sector</span>
-                <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.sector_activity}
                 </span>
               </div>
             </div>

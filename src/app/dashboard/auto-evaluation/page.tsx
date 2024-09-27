@@ -1,4 +1,5 @@
 "use client";
+import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import { Route } from "@/lib/route";
@@ -37,7 +38,7 @@ export default function Home({}: Props) {
       });
   }
 
-  console.log('isLoading from autoevaluation', isLoading)
+  console.log("isLoading from autoevaluation", isLoading);
 
   useEffect(() => {
     console.log("Auto-evaluation");
@@ -54,6 +55,7 @@ export default function Home({}: Props) {
       typeOfProject={"AUTO_EVALUATION"}
     >
       <ProjectDisplay
+        columnListProjects={columnListProjects}
         projects={
           autoEvalutionProjects?.length
             ? (autoEvalutionProjects as ProjectType[])

@@ -1,4 +1,5 @@
 "use client";
+import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import { Route } from "@/lib/route";
@@ -44,7 +45,6 @@ export default function Home({}: Props) {
     console.log("inspection interne");
   }, [currentCampaign?.id, company?.id]);
 
-
   return (
     <LayoutDashboard
       typeOfProject={"INTERNAL_INSPECTION"}
@@ -62,6 +62,7 @@ export default function Home({}: Props) {
         }
         // projects={[]}
         isLoading={isLoading}
+        columnListProjects={columnListProjects}
       />
     </LayoutDashboard>
   );

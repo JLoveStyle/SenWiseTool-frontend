@@ -1,4 +1,5 @@
 "use client";
+import Print from "@/components/atoms/print";
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
 import { Route } from "@/lib/route";
@@ -35,6 +36,7 @@ export default function page({}: Props) {
     setPersonalInfo(data);
   };
 
+  // To display view project when coming from details page
   async function getProjectById() {
     await fetchApiData(Route.projects, projectData?.id)
       .then((response) => {
@@ -83,11 +85,11 @@ export default function page({}: Props) {
   }
 
   return (
-    <PrintContent
-      filename="fiche d'inspection"
-      deployProject={() => deployProject()}
-      onClick={() => router.push(Route.editProject + `/${projectData?.id}`)}
+    <Print
       handleExitPage={() => router.push(Route.dashboard)}
+      onClick={() => router.push(Route.editProject + `/${projectData?.id}`)}
+      deployProject={() => deployProject()}
+      fileName="inspection-form"
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
@@ -162,13 +164,8 @@ export default function page({}: Props) {
         {/* LIST OF REQUIREMENTS TABULATED */}
         <div className=" mx-auto pt-5">
           <FinalFormData selectedProjects={finalJson.requirements} />
-          {/* <PrintableFormTable
-            // incomingColumns={deployableFormColumn}
-            incomingColumns={printableFormColumns}
-            incomingData={deployedPro}
-          /> */}
         </div>
       </div>
-    </PrintContent>
+    </Print>
   );
 }

@@ -14,18 +14,14 @@ import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { ProjectType } from "@/types/api-types";
+import { ProjectsType, ProjectType } from "@/types/api-types";
 import { Bounce, toast } from "react-toastify";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject?:
-    | "INTERNAL_INSPECTION"
-    | "INITIAL_INSPECTION"
-    | "AUTO_EVALUATION"
-    | "TRAINING";
+  typeOfProject: ProjectsType
   project?: Project;
 };
 
@@ -50,8 +46,7 @@ export default function ProjectDetailsForm({
     ""
   );
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
-  const [projectData, setProjectData] = useState<Project>({
-    id: "", // this might be harmfull
+  const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
     sector_activity: "",
     country: "",
@@ -71,7 +66,7 @@ export default function ProjectDetailsForm({
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
-    const data: Project = {
+    const data = {
       ...projectData,
       [e.target.name]: e.target.value,
     };
@@ -171,7 +166,7 @@ export default function ProjectDetailsForm({
     <CardLayout
       heading={`Create a project (${typeOfProject}): Project details`}
     >
-      <form className="w-full flex flex-col px-6 py-2" onSubmit={handleSubmit}>
+      <form className="w-full flex flex-col px-4 py-2" onSubmit={handleSubmit}>
         <em>
           <strong>NB</strong>: The Rain forest Alliances' and company logos will
           be added by default on this project form
@@ -236,7 +231,7 @@ export default function ProjectDetailsForm({
             onChange={(e) => handleChangeEvent(e)}
             label="Country"
             arrayOfItems={countries}
-            value={projectData.country}
+            value={projectData.country as string}
             className="md:w-[33.33%]"
           />
           <CustomSelectTag
@@ -244,7 +239,7 @@ export default function ProjectDetailsForm({
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
-            value={projectData.state}
+            value={projectData.state as string}
             className="md:w-[33.33%]"
           />
           {/* <div className="flex flex-col ">
@@ -261,7 +256,7 @@ export default function ProjectDetailsForm({
             onChange={(e) => handleChangeEvent(e)}
             label="City"
             arrayOfItems={city}
-            value={projectData.city}
+            value={projectData.city as string}
             className="md:w-[33.33%]"
           />
         </div>

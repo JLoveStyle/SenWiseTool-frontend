@@ -16,6 +16,7 @@ export default function Home({ params: { id } }: Props) {
   // Fetch all projects with type ["INTERNAL_INSPECTION"] and pass it as props to Layout
 
   const [projectData, setProjectData] = useState<ProjectType>();
+  console.log('id =>', id)
 
   const fecthDetailProjectData = async () => {
     const rest = await fetchApiData(
@@ -35,8 +36,8 @@ export default function Home({ params: { id } }: Props) {
 
   return (
     <LayoutDashboard
-      projectsPerType={[]}
-      typeOfProject={"INTERNAL_INSPECTION"}
+      projectsPerType={[]} // not usefull here coz the closeSideNav is not displayed on this page
+      typeOfProject={"INTERNAL_INSPECTION"} // not usefull on this page
     >
       <ProjectDetails projectDetails={projectData as ProjectType} />
     </LayoutDashboard>

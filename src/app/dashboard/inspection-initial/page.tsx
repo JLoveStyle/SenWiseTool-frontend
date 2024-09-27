@@ -7,7 +7,7 @@ import { fetchApiData } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { ProjectType } from "@/types/api-types";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
 
 type Props = {};
 
@@ -62,6 +62,7 @@ export default function Home({}: Props) {
         }
         // projects={[]}
         isLoading={isLoading}
+        columnListProjects={columnListProjects}
       />
     </LayoutDashboard>
   );

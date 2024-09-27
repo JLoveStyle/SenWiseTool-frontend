@@ -17,6 +17,121 @@ export const businessActivity: string[] = [
   "Other",
 ];
 
+// MAPPING DATA COLUMNS
+export const MappingTableColumns: string[] = ["No", "Farmer name", "Farmer status", "Farmer contact", "NID number", "Farm creation date", "Village", "Mapper name", "Mapping date", "Farm surface area", "Farm picture", "Farmer picture", "Coordinates"]
+
+// EXAMPLE OF MAPPING DATA FROM FIELD
+export const mappingData: {[key: string]: any}[] =[
+  {
+    nom_producteur: "Onana Jeqn de Dieu",
+    statut_producteur: "Propritaire",
+    contact_du_producteur: "670710054",
+    no_cni: 145614851135,
+    date_de_creation_plant: '10/10/2001',
+    village: "Ndokayo",
+    nom_du_mappeur: "Jean Blaise Piment",
+    date: '10/05/2021',
+    superficie_estimé: "10ha",
+    photo_plantation: 'https://edgestore/plantation.jpg',
+    photo_planteur: 'https://edgestore/planteur.jpeg',
+    coordinate: [
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      }
+    ]
+
+  },
+  {
+    nom_producteur: "Parfait Essono Bijock",
+    statut_producteur: "Locataire",
+    contact_du_producteur: "670710054",
+    no_cni: 145614851135,
+    date_de_creation_plant: '10/10/2001',
+    village: "Ntui",
+    nom_du_mappeur: "Jean pierre Fokong",
+    date: '10/05/2021',
+    superficie_estimé: "50ha",
+    photo_plantation: 'https://edgestore/plantation.jpg',
+    photo_planteur: 'https://edgestore/planteur.jpeg',
+    coordinate: [
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      }
+    ]
+
+  },
+  {
+    nom_producteur: "Marguerite de la fontaine",
+    statut_producteur: "Propritaire",
+    contact_du_producteur: "670710054",
+    no_cni: 145614851135,
+    date_de_creation_plant: '10/10/2001',
+    village: "Mbeng",
+    nom_du_mappeur: "Pascal Azombo",
+    date: '10/05/2021',
+    superficie_estimé: "80ha",
+    photo_plantation: 'https://edgestore/plantation.jpg',
+    photo_planteur: 'https://edgestore/planteur.jpeg',
+    coordinate: [
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      }
+    ]
+
+  }
+]
+
 // META DATA OPTIONS
 export const metaDataOptions: {[key: string]: string}[] = [
   {
