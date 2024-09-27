@@ -63,7 +63,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
         }
         if (route?.includes("price_plans")) {
             setPricePlan(data as unknown as PricePlanType);
-            // console.log('price plan from store', data)
+            console.log('price plan from store', data)
         }
         if (route?.includes("campaigns")) {
             setCampaigns(data as unknown as CampaignType[]);
