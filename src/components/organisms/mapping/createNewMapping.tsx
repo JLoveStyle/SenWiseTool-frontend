@@ -46,44 +46,45 @@ export default function CreateNewMapping({ onClick }: Props) {
         title: mappingData?.title,
         description: mappingData?.description,
         city: mappingData?.city,
-        created_at: "10/05/2024",
-        updated_at: "11/05/2024",
+        created_at: Date.now() as unknown as string,
+        updated_at: Date.now() as unknown as string,
+        status: "DRAFT",
       },
     ];
     LOCAL_STORAGE.save("mappingProjects", data);
-    setDiscardModel(false);
+    onClick(discardModel);
+    setIsLoading((prev) => !prev);
     // mappingProjects.push(data);
 
-    await mutateApiData(Route.projects, {
-      title: mappingData?.title,
-      city: mappingData?.city,
-      description: mappingData?.description,
-      company_id: company?.id,
-      campaign_id: campains[0]?.id,
-      status: "DRAFT",
-      type: "MAPPING",
-    })
-      .then((res) => {
-        if (res.status.toString().startsWith("2")) {
-          setIsLoading((prev) => !prev);
-          setDiscardModel(false);
-          LOCAL_STORAGE.save("project", res.data);
-        }
-        setIsLoading((prev) => !prev);
-        toast.error("Something went wrong", {
-          transition: Bounce,
-          autoClose: 3000,
-        });
-      })
-      .catch((err) => {
-        console.log("error occured while creating project", err);
-        toast.error("Something went wrong. Please try again", {
-          transition: Bounce,
-          autoClose: 3000
-        })
-        setIsLoading((prev) => !prev);
-      });
-    
+    // await mutateApiData(Route.projects, {
+    //   title: mappingData?.title,
+    //   city: mappingData?.city,
+    //   description: mappingData?.description,
+    //   company_id: company?.id,
+    //   campaign_id: campains[0]?.id,
+    //   status: "DRAFT",
+    //   type: "MAPPING",
+    // })
+    //   .then((res) => {
+    //     if (res.status.toString().startsWith("2")) {
+    //       setIsLoading((prev) => !prev);
+    //       setDiscardModel(false);
+    //       LOCAL_STORAGE.save("project", res.data);
+    //     }
+    //     setIsLoading((prev) => !prev);
+    //     toast.error("Something went wrong", {
+    //       transition: Bounce,
+    //       autoClose: 3000,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log("error occured while creating project", err);
+    //     toast.error("Something went wrong. Please try again", {
+    //       transition: Bounce,
+    //       autoClose: 3000
+    //     })
+    //     setIsLoading((prev) => !prev);
+    //   });
   }
 
   return (

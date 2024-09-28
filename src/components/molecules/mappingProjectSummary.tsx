@@ -30,6 +30,10 @@ export default function ProjectSummary({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const id = LOCAL_STORAGE.get("projectId");
+  const allMappingProject = LOCAL_STORAGE.get("mappingProjects");
+  const mapProject = allMappingProject.find(
+    (item: { id: string }) => item.id === id
+  );
   const project = LOCAL_STORAGE.get("project");
   const lienRapide: { [key: string]: any } = [
     {
@@ -115,21 +119,27 @@ export default function ProjectSummary({
           <div className="flex gap-4 justify-center m-auto py-4 border-b">
             <span className="text-sm text-gray-500 ">Title: </span>
             <span className=" font-semibold text-sm px-2 rounded-lg">
-              {projectObject?.title}
+              {mapProject?.title}
             </span>
           </div>
           <div className="border-b py-4">
             <span className="text-sm font-semibold text-gray-500">
               Description
             </span>
-            <p className="font-semibold">{projectObject?.description} </p>
+            <p className="font-semibold">{mapProject?.description} </p>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
             <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
                 <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
-                  {projectObject?.status}
+                  {mapProject?.status}
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Creation date</span>
+                <span className=" text-sm rounded-lg font-semibold">
+                  {mapProject?.created_at}
                 </span>
               </div>
             </div>
@@ -139,13 +149,13 @@ export default function ProjectSummary({
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last update</span>
                 <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.updated_at}
+                  {mapProject?.updated_at}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last deployment</span>
                 <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.deployed_at}
+                  {mapProject?.deployed_at}
                 </span>
               </div>
             </div>
@@ -155,13 +165,13 @@ export default function ProjectSummary({
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Country</span>
                 <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.country}
+                  {mapProject?.country}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">village</span>
                 <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.city}
+                  {mapProject?.city}
                 </span>
               </div>
             </div>

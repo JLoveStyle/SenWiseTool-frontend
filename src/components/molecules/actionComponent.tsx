@@ -11,7 +11,8 @@ import { Project } from "@/types/gestion";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import { Route } from "@/lib/route";
 import { Bounce, toast } from "react-toastify";
-import { ProjectType } from "@/types/api-types";
+import { ApiDataResponse, ProjectType } from "@/types/api-types";
+import { ApiError } from "next/dist/server/api-utils";
 
 type Props = {
   shareProject: boolean;
@@ -37,10 +38,10 @@ export default function ActionComponent({
     setIsLoading((prev) => !prev)
 
     for (const project of projects) {
-      await mutateDelApiData(Route.projects + `${project.id}`)
+      await mutateDelApiData<ApiDataResponse<ProjectType>>(Route.projects, `${project.id}`)
         .then((res) => {
-          if (res.statusCode >= 205) {
-            console.log("Deleted successfully", res);
+          if (res && res?.status >= 205) {
+            console.log("Deleted Project failed", res);
             toast.error("Something went wrong", {
               transition: Bounce,
               autoClose: 3000,
@@ -177,10 +178,10 @@ export default function ActionComponent({
   const heading = shareProject
     ? "Share project"
     : deleteProject
-    ? "Delete project"
-    : archiveProject
-    ? "Archive project"
-    : "";
+      ? "Delete project"
+      : archiveProject
+        ? "Archive project"
+        : "";
 
   const description = {};
   console.log(heading);

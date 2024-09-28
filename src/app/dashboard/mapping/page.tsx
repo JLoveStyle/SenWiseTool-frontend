@@ -35,7 +35,7 @@ export default function Home({}: Props) {
       });
   }
 
-  const mappingProjects = LOCAL_STORAGE.get("mappingProjects").slice(2, 9)
+  const mappingProjects = LOCAL_STORAGE.get("mappingProjects").slice(2, 50)
   console.log(mappingProjects)
 
 

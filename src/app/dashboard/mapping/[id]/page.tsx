@@ -47,7 +47,7 @@ export default function Home({ params: { id } }: Props) {
   }
 
   useEffect(() => {
-    fetchProjectById()
+    // fetchProjectById()
   }, [])
 
   return (

@@ -14,7 +14,7 @@ import slugify from "slugify";
 
 type Props = {};
 
-export default function page({}: Props) {
+export default function page({ }: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
   const [isLoading, setIsLoading] = useState<boolean>(false);

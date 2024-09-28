@@ -50,7 +50,7 @@ export default function LayoutDashboard({
       baseUrl: "",
     })
   );
-  console.log(campaigns)
+  // console.log(campaigns)
 
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
@@ -134,7 +134,7 @@ export default function LayoutDashboard({
             <div className="px-6 pt-1 pb-3 flex justify-center items-center">
               <NavigationMenuDemo />
             </div>
-            <div className="overflow-y-auto">{children}</div>
+            <div className="overflow-y-auto max-h-[calc(100vh-130px)] overflow-hidden">{children}</div>
           </div>
         </div>
       </div>

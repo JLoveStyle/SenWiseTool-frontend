@@ -11,7 +11,7 @@ import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfPr
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const [initialInspectionProjects, setInitialInspectioProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);

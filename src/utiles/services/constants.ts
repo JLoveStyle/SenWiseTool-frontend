@@ -4,8 +4,8 @@ import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [
@@ -133,7 +133,7 @@ export const mappingData: {[key: string]: any}[] =[
 ]
 
 // META DATA OPTIONS
-export const metaDataOptions: {[key: string]: string}[] = [
+export const metaDataOptions: { [key: string]: string }[] = [
   {
     name: "Nom du planteur",
     value: "nom_planteur"
