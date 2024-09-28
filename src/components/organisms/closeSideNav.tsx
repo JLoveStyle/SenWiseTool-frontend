@@ -10,15 +10,11 @@ import { Button } from "../ui/button";
 import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
-import { ProjectType } from "@/types/api-types";
+import { ProjectsType, ProjectType } from "@/types/api-types";
+import CreateNewMapping from "./mapping/createNewMapping";
 
 type Props = {
-  typeOfProject?:
-  | "INTERNAL_INSPECTION"
-  | "INITIAL_INSPECTION"
-  | "AUTO_EVALUATION"
-  | "TRAINING";
-
+  typeOfProject: ProjectsType;
   projectsPerType: ProjectType[];
   newForm?: React.ReactNode;
 };
@@ -43,6 +39,10 @@ export default function CloseSiveNav({
     setShowProjectOptions(value2);
   };
 
+  const closeModal = (val: boolean) => {
+    setOpenModal(val)
+  }
+
   const handleShowProjectDetails = (value1: boolean, value2: boolean) => {
     setShowProjectDetailsForm(value1);
     setShowProjectOptions(value2);
@@ -57,11 +57,11 @@ export default function CloseSiveNav({
   const archiveProjects = projectsPerType?.filter(
     (item) => item.status === "ARCHIVED"
   );
-  
+
   return (
     <div
       className={
-        pathname.includes("/details") // Hide this component on the detail page
+        (pathname.includes("/details") || pathname.includes("/mapping/")) // Hide this component on the detail page
           ? "hidden"
           : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
       }
@@ -95,8 +95,12 @@ export default function CloseSiveNav({
                 typeOfProject={typeOfProject}
               />
             )}
-            {showProjectOptions && (
+            {showProjectOptions && pathname.includes("/mapping") ? (
+              <CreateNewMapping onClick={closeModal}/>
+            ) : showProjectOptions ? (
               <CreateProjectOptions onClick={handleOpenProjectOptions} />
+            ) : (
+              ""
             )}
           </DialogContent>
         </Dialog>

@@ -17,7 +17,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Bounce, toast } from "react-toastify";
 
-export const columnListProjects: ColumnDef<ProjectType>[] = [
+export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -58,28 +58,20 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
     ),
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "city",
+    header: "Village",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("city")}</div>
     ),
+  },
+  {
+    accessorKey: "created_at",
+    header: "Creation date",
   },
   {
     accessorKey: "updated_at",
     header: "Last update",
     // cell: (row) => DateTime.fromISO(row.getValue()).toLocalString(DateTime.DATE_MED)
-  },
-  {
-    accessorKey: "deployed_at",
-    header: "Deployment date",
-  },
-  {
-    accessorKey: "start_date",
-    header: "Start date",
-  },
-  {
-    accessorKey: "end_date",
-    header: "End date"
   },
   {
     id: "actions",
@@ -109,7 +101,7 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
               Copy project ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Link href={Route.details + `/${project.id}`}>
+            <Link href={Route.mapping + `/${project.id}`}>
               <DropdownMenuItem
                 onClick={() => LOCAL_STORAGE.save("projectId", project.id)}
               >

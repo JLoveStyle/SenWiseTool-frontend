@@ -1,8 +1,6 @@
 "use client";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
-import { tableRaw } from "@/utiles/services/constants";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { OrganizationSwitcher } from "@clerk/nextjs";
 import { ClipboardType } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -52,9 +50,10 @@ export default function NavDashboard({}: Props) {
           <h1 className="font-bold text-center">INTERNAL INSPECTION</h1>
         ) : pathname === Route.trainingProject ? (
           <h1 className="font-bold text-center">FORMATIONS</h1>
-        ) : (
-          ""
-        )}
+        ) : pathname === Route.mapping ? (
+          <h1 className="font-bold text-center">MAPPING</h1>
+        ) : ""
+      }
       </div>
       {/* CREATE SUB ACCOUNT BUTTON */}
       <OrganizationSwitcher

@@ -17,6 +17,121 @@ export const businessActivity: string[] = [
   "Other",
 ];
 
+// MAPPING DATA COLUMNS
+export const MappingTableColumns: string[] = ["No", "Farmer name", "Farmer status", "Farmer contact", "NID number", "Farm creation date", "Village", "Mapper name", "Mapping date", "Farm surface area", "Farm picture", "Farmer picture", "Coordinates"]
+
+// EXAMPLE OF MAPPING DATA FROM FIELD
+export const mappingData: {[key: string]: any}[] =[
+  {
+    nom_producteur: "Onana Jeqn de Dieu",
+    statut_producteur: "Propritaire",
+    contact_du_producteur: "670710054",
+    no_cni: 145614851135,
+    date_de_creation_plant: '10/10/2001',
+    village: "Ndokayo",
+    nom_du_mappeur: "Jean Blaise Piment",
+    date: '10/05/2021',
+    superficie_estimé: "10ha",
+    photo_plantation: 'https://edgestore/plantation.jpg',
+    photo_planteur: 'https://edgestore/planteur.jpeg',
+    coordinate: [
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      }
+    ]
+
+  },
+  {
+    nom_producteur: "Parfait Essono Bijock",
+    statut_producteur: "Locataire",
+    contact_du_producteur: "670710054",
+    no_cni: 145614851135,
+    date_de_creation_plant: '10/10/2001',
+    village: "Ntui",
+    nom_du_mappeur: "Jean pierre Fokong",
+    date: '10/05/2021',
+    superficie_estimé: "50ha",
+    photo_plantation: 'https://edgestore/plantation.jpg',
+    photo_planteur: 'https://edgestore/planteur.jpeg',
+    coordinate: [
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      }
+    ]
+
+  },
+  {
+    nom_producteur: "Marguerite de la fontaine",
+    statut_producteur: "Propritaire",
+    contact_du_producteur: "670710054",
+    no_cni: 145614851135,
+    date_de_creation_plant: '10/10/2001',
+    village: "Mbeng",
+    nom_du_mappeur: "Pascal Azombo",
+    date: '10/05/2021',
+    superficie_estimé: "80ha",
+    photo_plantation: 'https://edgestore/plantation.jpg',
+    photo_planteur: 'https://edgestore/planteur.jpeg',
+    coordinate: [
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      },
+      {
+        log: "145354541544533",
+        lat: "145300558515387"
+      }
+    ]
+
+  }
+]
+
 // META DATA OPTIONS
 export const metaDataOptions: { [key: string]: string }[] = [
   {
@@ -99,7 +214,7 @@ export const optionsGestions: {
     },
     {
       title: "Mapping",
-      href: "/docs/primitives/scroll-area",
+      href: Route.mapping,
       description: "Visually or semantically separates content.",
     },
     {
@@ -121,7 +236,7 @@ export const optionsGestions: {
         "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
     },
     {
-      title: "Reclamation mechanosms",
+      title: "Reclamation mechanism",
       href: "/docs/primitives/tooltip",
       description:
         "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
@@ -216,59 +331,6 @@ export const tableHead: string[] = [
 
 // DIFFERENTS CHAMPTERS
 export const chapters: string[] = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
-
-// THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
-export let tableRaw: Project[] = [
-  {
-    id: "1",
-    end_date: "2020-03-01",
-    start_date: "2020-01-01",
-    type: "INITIAL_INSPECTION",
-    title: "Projet de figil",
-    description: "Campagn de distribtion des angraits bio pour la culture des oignions dans le village Figile",
-    sector_activity: "",
-    country: "Cameroon",
-    status: "DEPLOYED",
-    deployed_at: "2024/01/16",
-    creator: "Gael",
-    updated_at: "2024/03/20",
-    city: "",
-    state: ""
-  },
-  {
-    id: "2",
-    end_date: "2021-03-01",
-    start_date: "2021-01-05",
-    type: "INITIAL_INSPECTION",
-    title: "Projet d'Akonolinga",
-    description: "Projet de construcion des pépinière de pistier dans le village Akonolinga",
-    sector_activity: "",
-    country: "Cameroon",
-    status: "DRAFT",
-    deployed_at: "2024/01/16",
-    creator: "Bigael",
-    updated_at: "2024/03/20",
-    city: "",
-    state: ""
-  },
-  {
-    id: "3",
-    end_date: "2020-10-11",
-    start_date: "2020-03-21",
-    type: "INITIAL_INSPECTION",
-    title: "Projet de Cacao",
-    description: "Recolte de cacao dans le village de Yokadouma",
-    sector_activity: "",
-    country: "Cameroon",
-    status: "DRAFT",
-    deployed_at: "2024/01/16",
-    creator: "Daniella",
-    updated_at: "2024/03/20",
-    city: "",
-    state: ""
-  }
-]
-
 
 export const requirements = [
   {

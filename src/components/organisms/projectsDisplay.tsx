@@ -10,23 +10,22 @@ import ActionComponent from "../molecules/actionComponent";
 import { CompanyType, ProjectsType, ProjectType } from "@/types/api-types";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { DataTable } from "../molecules/projectsTable";
-import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
+import { ColumnDef } from "@tanstack/react-table";
 
 type Props = {
   projects: ProjectType[];
   isLoading: boolean;
+  columnListProjects: ColumnDef<ProjectType>[]
 };
 
-export default function ProjectDisplay({ projects, isLoading }: Props) {
+export default function ProjectDisplay({ projects, isLoading, columnListProjects }: Props) {
   const [shareProject, setShareProject] = useState<boolean>(false);
   const [deleteProject, setDeleteProjet] = useState<boolean>(false);
   const [archiveProject, setArchiveProiect] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedProjects, setSelectedProjects] = useState<ProjectType[]>();
 
-  const company = useCompanyStore((state) => state.company);
-
-  console.log("from project display: ", company);
+  // const company = useCompanyStore((state) => state.company);
 
   const handleSelectedProjects = (projects: ProjectType[]) => {
     setSelectedProjects(projects);
@@ -36,8 +35,7 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
   const handleCloseDialog = (val: boolean) => {
     setOpenModal(val);
   };
-
-  console.log('loading from projectdisplay', isLoading)
+  console.log('selectedPro ', selectedProjects)
 
   return (
     <>
@@ -47,7 +45,7 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
           <CustomHoverCard content="Share project">
             <UserPlus
               onClick={() => {
-                if (!selectedProjects?.length) {
+                if (selectedProjects?.length) {
                   setOpenModal((prev) => !prev);
                   setShareProject(true);
                   setArchiveProiect(false);
@@ -55,7 +53,7 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
                 }
               }}
               className={
-                !selectedProjects?.length
+                selectedProjects?.length
                   ? "hover:cursor-pointer text-black"
                   : ""
               }
@@ -64,7 +62,7 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
           <CustomHoverCard content="archive project">
             <Archive
               onClick={() => {
-                if (!selectedProjects?.length) {
+                if (selectedProjects?.length) {
                   setOpenModal((prev) => !prev);
                   setArchiveProiect(true);
                   setShareProject(false);
@@ -72,7 +70,7 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
                 }
               }}
               className={
-                !selectedProjects?.length
+                selectedProjects?.length
                   ? "hover:cursor-pointer text-black"
                   : ""
               }
@@ -81,7 +79,7 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
           <CustomHoverCard content="Delete Project">
             <Trash2
               onClick={() => {
-                if (!selectedProjects?.length) {
+                if (selectedProjects?.length) {
                   setOpenModal((prev) => !prev);
                   setDeleteProjet(true);
                   setShareProject(false);
@@ -89,7 +87,7 @@ export default function ProjectDisplay({ projects, isLoading }: Props) {
                 }
               }}
               className={
-                !selectedProjects?.length
+                selectedProjects?.length
                   ? "hover:cursor-pointer text-black"
                   : ""
               }

@@ -1,36 +1,33 @@
 "use client";
-import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
+import { mappingColumnListProjects } from "@/components/organisms/mapping/mappingProjectColimns";
 import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-export default function Home({ }: Props) {
-  const [autoEvalutionProjects, setAutoEvaluationProjects] =
-    useState<ProjectType[]>();
+export default function Home({}: Props) {
+  const [allMappingPaojects, setAllMappingProjects] =
+    useState<Partial<ProjectType[]>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
   const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
 
-  // Fetch all projects with type ["AUTO_EVALUATION"] and pass it as props to Layout
-  async function fetchAllAutoEvaluationProject() {
+  // get all mapping projects
+  async function fetchAllMappingProjects() {
     if (!currentCampaign && !company) return;
     setIsLoading((prev) => !prev);
-    await fetchApiData(
-      Route.projects,
-      "?type=AUTO_EVALUATION",
-      currentCampaign?.id
-    )
+    await fetchApiData(Route.projects, "?type=MAPPING", currentCampaign?.id)
       .then((response) => {
-        console.log("all initial_inspection projects", response);
+        console.log("all mapping projects", response);
         setIsLoading((prev) => !prev);
-        setAutoEvaluationProjects(response.data);
+        setAllMappingProjects(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -38,31 +35,30 @@ export default function Home({ }: Props) {
       });
   }
 
-  console.log("isLoading from autoevaluation", isLoading);
+  const mappingProjects = LOCAL_STORAGE.get("mappingProjects").slice(2, 50)
+  console.log(mappingProjects)
+
 
   useEffect(() => {
-    console.log("Auto-evaluation");
-    fetchAllAutoEvaluationProject();
-  }, [currentCampaign?.id]);
+    fetchAllMappingProjects();
+  }, []);
 
   return (
     <LayoutDashboard
       projectsPerType={
-        autoEvalutionProjects?.length
-          ? (autoEvalutionProjects as ProjectType[])
-          : []
+        allMappingPaojects?.length ? (allMappingPaojects as ProjectType[]) : []
       }
-      typeOfProject={"AUTO_EVALUATION"}
+      typeOfProject={"MAPPING"}
     >
       <ProjectDisplay
-        columnListProjects={columnListProjects}
-        projects={
-          autoEvalutionProjects?.length
-            ? (autoEvalutionProjects as ProjectType[])
-            : []
-        }
-        // projects={[]}
+        // projects={
+        //   allMappingPaojects?.length
+        //     ? (allMappingPaojects as ProjectType[])
+        //     : []
+        // }
+        projects={mappingProjects as ProjectType[]}
         isLoading={isLoading}
+        columnListProjects={mappingColumnListProjects}
       />
     </LayoutDashboard>
   );
