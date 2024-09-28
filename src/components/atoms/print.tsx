@@ -15,7 +15,7 @@ type Props = {
 };
 
 const Print: React.FC<Props> = (props) => {
-  const formRef = useRef<HTMLDivElement>();
+  const formRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname()
 
   const handlePrint = () => {
