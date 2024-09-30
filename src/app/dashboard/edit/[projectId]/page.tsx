@@ -57,7 +57,7 @@ type Props = {
 
 export default function page({ params: { projectId } }: Props) {
   const router = useRouter();
-  const projectDetails: Project = LOCAL_STORAGE.get("project"); // Only for project title editoring
+  const projectDetails: ProjectType = LOCAL_STORAGE.get("project"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -73,7 +73,7 @@ export default function page({ params: { projectId } }: Props) {
     sector_activity: projectDetails.sector_activity,
     country: projectDetails.country,
     city: projectDetails.city,
-    state: projectDetails.state,
+    region: projectDetails.region,
   });
 
   const [chap1, chap2, chap3] = requirements;
