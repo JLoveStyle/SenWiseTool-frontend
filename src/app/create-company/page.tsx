@@ -82,7 +82,7 @@ export default function Home({}: Props) {
         name: formData.companyName,
         headOfficeEmail: formData.headOfficeEmail,
         country: formData.country,
-        state: formData.state,
+        region: formData.state,
         city: formData.city,
         sector_of_activity: activity,
         // logo: uploadedLogo.url,
@@ -92,8 +92,14 @@ export default function Home({}: Props) {
         status: "INACTIVE",
       })
         .then((response) => {
-          console.log("create company res =>", response);
-          if (!response.statusCode.toString().startsWith("2")) {
+          if (response.status.toString() === "201") {
+            toast.success("Company registed", {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading(false);
+            router.push(Route.dashboard);
+          } else {
             toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
@@ -101,8 +107,6 @@ export default function Home({}: Props) {
             setIsLoading(false);
             return;
           }
-          setIsLoading(false);
-          router.push(Route.dashboard);
         })
         .catch((error) => {
           console.log("An error occured", error);
@@ -267,9 +271,7 @@ export default function Home({}: Props) {
             onChange={(event) => handleInputChange(event)}
             className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
-            <option selected>
-              -- Select --
-            </option>
+            <option selected>-- Select --</option>
             {businessActivity?.map((item: any, index) => (
               <option key={index} value={item}>
                 {item}

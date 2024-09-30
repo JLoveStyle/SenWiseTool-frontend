@@ -52,7 +52,7 @@ export default function ProjectDetailsForm({
     country: "",
     description: "",
     city: "",
-    state: "",
+    region: "",
     start_date: "",
     end_date: "",
     status: "DRAFT",
@@ -78,7 +78,7 @@ export default function ProjectDetailsForm({
     }
     if (state) {
       for (const item of state) {
-        if (item.name === data.state) {
+        if (item.name === data.region) {
           setCity(
             City.getCitiesOfState(selectedCountryObject.isoCode, item.isoCode)
           );
@@ -128,10 +128,11 @@ export default function ProjectDetailsForm({
       sector_activity: projectData.sector_activity,
       country: projectData.country,
       city: projectData.city,
-      state: projectData.state,
+      region: projectData.region,
       status: projectData.status,
-      start_date: new Date(projectData.start_date).toISOString(),
-      end_date: new Date(projectData.end_date).toISOString(),
+      anotherLogo: companyLogo,
+      start_date: new Date(projectData.start_date as string).toISOString(),
+      end_date: new Date(projectData.end_date as string).toISOString(),
       campaign_id: compains[0]?.id,
     })
       .then((res) => {
@@ -239,7 +240,7 @@ export default function ProjectDetailsForm({
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
-            value={projectData.state as string}
+            value={projectData.region as string}
             className="md:w-[33.33%]"
           />
           {/* <div className="flex flex-col ">

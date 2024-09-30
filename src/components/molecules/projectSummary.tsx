@@ -181,7 +181,7 @@ export default function ProjectSummary({
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Region</span>
                 <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.state}
+                  {projectObject?.region}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">

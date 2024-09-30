@@ -88,7 +88,7 @@ export type ProjectType = {
     description: string;
     sector_activity: string;
     country: string;
-    state: string;
+    region: string;
     city: string;
     status: ProjectStatus;
     start_date: string;
