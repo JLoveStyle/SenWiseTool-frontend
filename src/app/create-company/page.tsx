@@ -92,21 +92,9 @@ export default function Home({ }: Props) {
         description: formData.description,
       })
         .then((response) => {
-<<<<<<< HEAD
-          if (response.status.toString() === "201") {
-            toast.success("Company registed", {
-              transition: Bounce,
-              autoClose: 3000,
-            });
-            setIsLoading(false);
-            router.push(Route.dashboard);
-          } else {
-            toast.error(`Sorry something went wrong`, {
-=======
           console.log("create company res =>", response);
           if (!response.status.toString().startsWith("2")) {
             return toast.error(`Sorry something went wrong`, {
->>>>>>> fb8e191 (update the compamy creation if condition by removing logo)
               transition: Bounce,
               autoClose: 3000,
             });
@@ -117,10 +105,7 @@ export default function Home({ }: Props) {
             });
             router.push(Route.dashboard);
           }
-<<<<<<< HEAD
-=======
 
->>>>>>> fb8e191 (update the compamy creation if condition by removing logo)
         })
         .catch((error) => {
           console.log("An error occured", error);
@@ -286,7 +271,9 @@ export default function Home({ }: Props) {
             onChange={(event) => handleInputChange(event)}
             className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
-            <option selected>-- Select --</option>
+            <option selected>
+              -- Select --
+            </option>
             {businessActivity?.map((item: any, index) => (
               <option key={index} value={item}>
                 {item}

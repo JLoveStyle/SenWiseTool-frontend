@@ -14,7 +14,6 @@ const PRODUCTSTATUS = {
 } as const;
 
 const PROJECTTYPE = {
-    INTERNAL_INSPECTION: "INTERNAL_INSPECTION",
     INITIAL_INSPECTION: "INITIAL_INSPECTION",
     AUTO_EVALUATION: "AUTO_EVALUATION",
     TRAINING: "TRAINING",
@@ -114,7 +113,6 @@ export type CompanyType = {
     country: string,
     email: string,
     logo: string,
-    head_office_email: string,
     payment_mode: string,
     company_paypal_email: string,
     paypal_id: string,
@@ -122,7 +120,7 @@ export type CompanyType = {
     website: string,
     address: string,
     phone_number: string,
-    region: string,
+    state: string,
     city: string,
     description: string,
     created_at: string,
@@ -203,3 +201,18 @@ export type TrainingTableDisplayType =
         TrainingType, "id" | "title" | "start_date" | "end_date" | "location"
     >
 
+export interface RequirementType {
+    title: string // eg. Gestion
+    numero: string // eg. 1.1
+    content: ChapterMetaDataType[]
+}
+
+export type ChapterMetaDataType = {
+    number: string; // eg. 1.1.1
+    principal_requirement: string;
+    certication_de_group: {
+        petit_exp_agri: string;
+        grande_exp_agri: string;
+        direction_de_group: string;
+    };
+};
