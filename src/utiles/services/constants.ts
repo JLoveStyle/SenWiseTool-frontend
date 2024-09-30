@@ -4,8 +4,8 @@ import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [
@@ -21,7 +21,7 @@ export const businessActivity: string[] = [
 export const MappingTableColumns: string[] = ["No", "Farmer name", "Farmer status", "Farmer contact", "NID number", "Farm creation date", "Village", "Mapper name", "Mapping date", "Farm surface area", "Farm picture", "Farmer picture", "Coordinates"]
 
 // EXAMPLE OF MAPPING DATA FROM FIELD
-export const mappingData: {[key: string]: any}[] =[
+export const mappingData: { [key: string]: any }[] = [
   {
     nom_producteur: "Onana Jeqn de Dieu",
     statut_producteur: "Propritaire",
