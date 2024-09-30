@@ -24,7 +24,7 @@ import { Spinner } from "@/components/atoms/spinner/spinner";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const countries: any[] = Country.getAllCountries();
@@ -42,6 +42,7 @@ export default function Home({ }: Props) {
   const [formData, setFormData] = useState<FormData>({
     companyEmail: "",
     companyName: "",
+    headOfficeEmail: "",
     country: "",
     hasAgree: false,
     state: "",
@@ -65,20 +66,21 @@ export default function Home({ }: Props) {
       activity = formData.otherBusiness;
     } else activity = formData.businessActivity;
 
+    // if has not agree to terms and conditions returns
     if (!isChecked) {
       setHasAgree((prev) => !prev);
       return;
     }
     setIsLoading((prev) => !prev);
 
-    if (user?.id && companyLogo) {
-
+    if (user?.id) {
       const res = await createOrganization(formData, user.id);
-      console.log(res)
+      console.log(res);
 
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
         name: formData.companyName,
+        headOfficeEmail: formData.headOfficeEmail,
         country: formData.country,
         state: formData.state,
         city: formData.city,
@@ -91,13 +93,13 @@ export default function Home({ }: Props) {
       })
         .then((response) => {
           console.log("create company res =>", response);
-          if (!response.statusCode.toString().startsWith('2')) {
+          if (!response.statusCode.toString().startsWith("2")) {
             toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
             });
             setIsLoading(false);
-            return
+            return;
           }
           setIsLoading(false);
           router.push(Route.dashboard);
@@ -110,7 +112,6 @@ export default function Home({ }: Props) {
             autoClose: 1000,
           });
         });
-
     }
   }
 
@@ -161,6 +162,7 @@ export default function Home({ }: Props) {
 
   const handleCloseModal = (value: boolean) => {
     setIsModalOpen(value);
+    console.log("from function", value);
   };
 
   const fetchToken = async () => {
@@ -173,7 +175,7 @@ export default function Home({ }: Props) {
     fetchToken();
   }, []);
 
-  console.log(isLoading)
+  console.log(isLoading);
 
   return (
     <div className="h-full">
@@ -214,7 +216,7 @@ export default function Home({ }: Props) {
             label="Head office email"
             inputName="headOfficeEmail"
             type="email"
-            value={formData.companyEmail}
+            value={formData.headOfficeEmail}
             onChange={(e) => handleInputChange(e)}
           />
           <InputField
@@ -265,7 +267,7 @@ export default function Home({ }: Props) {
             onChange={(event) => handleInputChange(event)}
             className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
-            <option selected disabled>
+            <option selected>
               -- Select --
             </option>
             {businessActivity?.map((item: any, index) => (
@@ -319,13 +321,13 @@ export default function Home({ }: Props) {
             >
               {isLoading ? <Spinner /> : "Register"}
             </Button>
-
+            {/* 
             <Button
               className="text-red-500 bg-white border border-red-500 hover:bg-[#ef44441e]"
               onClick={handleCancel}
             >
-              Cancel
-            </Button>
+              Skip
+            </Button> */}
           </div>
         </form>
       </div>

@@ -32,7 +32,7 @@ export default function CustomSelectTag({
           required
           className="border mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
         >
-          <option selected disabled>
+          <option selected >
             -- Select --
           </option>
           {arrayOfItems?.map((ctry: any, index: number) => (

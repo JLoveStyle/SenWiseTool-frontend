@@ -1,6 +1,7 @@
 export interface FormData {
   companyName: string;
   companyEmail: string;
+  headOfficeEmail: string;
   hasAgree: boolean;
   country: string;
   state: string;
