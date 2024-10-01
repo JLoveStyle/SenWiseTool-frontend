@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const [allMappingPaojects, setAllMappingProjects] =
     useState<Partial<ProjectType[]>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,8 +35,8 @@ export default function Home({}: Props) {
       });
   }
 
-  const mappingProjects = LOCAL_STORAGE.get("mappingProjects").slice(2, 50)
-  console.log(mappingProjects)
+  // const mappingProjects = LOCAL_STORAGE.get("mappingProjects").slice(2, 50)
+  // console.log(mappingProjects)
 
 
   useEffect(() => {
@@ -51,12 +51,12 @@ export default function Home({}: Props) {
       typeOfProject={"MAPPING"}
     >
       <ProjectDisplay
-        // projects={
-        //   allMappingPaojects?.length
-        //     ? (allMappingPaojects as ProjectType[])
-        //     : []
-        // }
-        projects={mappingProjects as ProjectType[]}
+        projects={
+          allMappingPaojects?.length
+            ? (allMappingPaojects as ProjectType[])
+            : []
+        }
+        // projects={mappingProjects as ProjectType[]}
         isLoading={isLoading}
         columnListProjects={mappingColumnListProjects}
       />

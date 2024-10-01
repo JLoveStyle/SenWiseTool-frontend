@@ -57,7 +57,7 @@ type Props = {
 
 export default function page({ params: { projectId } }: Props) {
   const router = useRouter();
-  const projectDetails: Project = LOCAL_STORAGE.get("project"); // Only for project title editoring
+  const projectDetails: ProjectType = LOCAL_STORAGE.get("project"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -73,7 +73,7 @@ export default function page({ params: { projectId } }: Props) {
     sector_activity: projectDetails.sector_activity,
     country: projectDetails.country,
     city: projectDetails.city,
-    state: projectDetails.state,
+    region: projectDetails.region,
   });
 
   const [chap1, chap2, chap3] = requirements;
@@ -160,14 +160,14 @@ export default function page({ params: { projectId } }: Props) {
         if (response.status <= 205) {
           toast.success("Project saved", {
             transition: Bounce,
-            autoClose: 1000,
+            autoClose: 3000,
           });
           router.push(Route.editProject + `/${projectId}/pdf`);
           setIsSaving((prev) => !prev);
         } else {
           toast.error("Something went wrong. Please try again", {
             transition: Bounce,
-            autoClose: 1000,
+            autoClose: 3000,
           });
           setIsSaving((prev) => !prev);
         }
@@ -175,7 +175,7 @@ export default function page({ params: { projectId } }: Props) {
       .catch((error) => {
         toast.error("Something went wrong. Please try again", {
           transition: Bounce,
-          autoClose: 1000,
+          autoClose: 3000,
         });
         setIsSaving((prev) => !prev);
         console.log("An error occured", error);

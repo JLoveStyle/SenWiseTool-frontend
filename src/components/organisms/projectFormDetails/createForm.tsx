@@ -14,7 +14,7 @@ import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { ProjectsType, ProjectType } from "@/types/api-types";
+import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
 import { Bounce, toast } from "react-toastify";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
@@ -52,7 +52,7 @@ export default function ProjectDetailsForm({
     country: "",
     description: "",
     city: "",
-    state: "",
+    region: "",
     start_date: "",
     end_date: "",
     status: "DRAFT",
@@ -78,7 +78,7 @@ export default function ProjectDetailsForm({
     }
     if (state) {
       for (const item of state) {
-        if (item.name === data.state) {
+        if (item.name === data.region) {
           setCity(
             City.getCitiesOfState(selectedCountryObject.isoCode, item.isoCode)
           );
@@ -119,6 +119,7 @@ export default function ProjectDetailsForm({
       // load the company logo in the companys' table
     }
 
+    console.log(compains[0])
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
@@ -128,18 +129,20 @@ export default function ProjectDetailsForm({
       sector_activity: projectData.sector_activity,
       country: projectData.country,
       city: projectData.city,
-      state: projectData.state,
+      region: projectData.region,
       status: projectData.status,
-      start_date: new Date(projectData.start_date).toISOString(),
-      end_date: new Date(projectData.end_date).toISOString(),
+      another_logo: companyLogo,
+      start_date: new Date(projectData.start_date as string).toISOString(),
+      end_date: new Date(projectData.end_date as string).toISOString(),
       campaign_id: compains[0]?.id,
     })
-      .then((res) => {
+      .then((res: ApiDataResponse<ProjectType>) => {
         console.log("project cereated", res);
-        if (res.status.toString().startsWith("2")) {
+        if (res.status === 201) {
           setIsLoading((prev) => !prev);
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
+          return;
         }
         setIsLoading((prev) => !prev);
         toast.error("Something went wrong", {
@@ -235,11 +238,11 @@ export default function ProjectDetailsForm({
             className="md:w-[33.33%]"
           />
           <CustomSelectTag
-            selectName="state"
+            selectName="region"
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
-            value={projectData.state as string}
+            value={projectData.region as string}
             className="md:w-[33.33%]"
           />
           {/* <div className="flex flex-col ">

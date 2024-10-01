@@ -10,11 +10,11 @@ type Props = {
 
 export default function CancelModal({ onClose }: Props) {
   const router = useRouter();
-  const [closeModal, setCloseModal] = useState<boolean>(true)
+  const [closeModal, setCloseModal] = useState<boolean>(false)
 
   return (
     <main className="md:w-[450px] w-[96%] h-fit p-5 bg-white rounded-[12px] mx-auto md:mx-3">
-      <h1 className="font-semibold text-xl py-3">Cancel registration ?</h1>
+      <h1 className="font-semibold text-xl py-3">Skip company registration ?</h1>
       <p className="">Are you sure you don't want to register your company ?</p>
       <p className="">You can still do this from your dashboard</p>
       <div className="flex py-4 gap-3">

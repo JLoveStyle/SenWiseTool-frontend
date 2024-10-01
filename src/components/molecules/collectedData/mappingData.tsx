@@ -1,29 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { mappingData, MappingTableColumns } from "@/utiles/services/constants";
 import React, { useState } from "react";
-import XLSX from "sheetjs-style";
-import * as FileSaver from "file-saver";
 import xlsx, { IJsonSheet } from "json-as-xlsx";
+import tokml from "tokml";
+import slugify from "slugify";
 
 type Props = {};
 
 export default function MappingData({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // const exportExcel = () => {
-  //   const fileType =
-  //     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset-UTF-8";
-  //   const fileExtention = ".xlsx";
-  //   const fileName = "données_mapping";
-
-  //   const ws = XLSX.utils.json_to_sheet(mappingData);
-  //   const wb = { Sheets: { data: ws }, sheetNames: ["data"] };
-  //   console.log(wb)
-  //   const excellBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-  //   console.log(excellBuffer)
-  //   const data = new Blob([excellBuffer], { type: fileType });
-  //   FileSaver.saveAs(data, fileName + fileExtention);
-  // };
+  const [kmlFile, setKmlFile] = useState("");
 
   const downloadExcell = () => {
     const columns: IJsonSheet[] = [
@@ -86,10 +72,56 @@ export default function MappingData({}: Props) {
       writeOptions: {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
     };
 
-    xlsx(columns, settings);
+    // xlsx(columns, settings);
   };
 
-  
+  const convertTokml = (name: string, village: string, surfaceArea: string, code: string) => {
+    const polygon = {
+      type: "Feature",
+      properties: {
+        name: name,
+        code: code,
+        superficie: surfaceArea,
+        village: village,
+        description: `Ce polygone montre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [100.0, 0.0],
+            [101.0, 0.0],
+            [101.0, 1.0],
+            [100.0, 1.0],
+            [100.0, 0.0],
+          ],
+        ],
+      },
+    };
+
+    let kml = tokml(polygon, {
+      name: name,
+
+      description: `Ce polygone montre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `,
+    });
+    setKmlFile(kml);
+
+  };
+
+  const downloadTokml = () => {
+    const obj: any[] = [];
+    let selObject: any[] = []
+    for (const data of mappingData) {
+      obj.push(data.coordinate);
+    }
+    console.log(obj[0]);
+    console.log(Object.values(obj[0][0]));
+    for (const coord of obj) {
+      selObject.push(Object.values(coord))
+      console.log(Object.values(Object.values(coord)))
+    }
+    console.log('selObject =>', selObject)
+  }
 
   // FETCH ALL PROJECTS OF TYPE MAPPING
 
@@ -127,19 +159,26 @@ export default function MappingData({}: Props) {
                 <td className="px-2 border flex flex-col gap-2 max-h-[250px] overflow-y-scroll">
                   {item.coordinate?.map((coord: any, i: number) => (
                     <>
-                      <span key={i}>long:{coord.log}</span>
-                      <span className="border-b" key={i}>
+                      <span key={i + 1}>long:{coord.log}</span>
+                      <span className="border-b" key={i + 1}>
                         lat:{coord.lat}
                       </span>
                     </>
                   ))}
-                  <button className="bg-tertiary text-white mb-2 py-1 rounded-lg">
-                    Export
+                  <button
+                    onClick={() => convertTokml(item.nom_producteur, item.village, item.superficie_estimé, item.code_du_planteur,)}
+                    className="bg-tertiary text-white mb-2 py-1 rounded-lg"
+                  >
+                    <a
+                      href={`data:application/vnd.google-earth,${encodeURIComponent(
+                        kmlFile
+                      )}`}
+                      download={slugify(item.nom_producteur) + ".kml"}
+                    >
+                      Export
+                    </a>
                   </button>
                 </td>
-                {/* <td className="px-2 border">
-                  <button>Export</button>
-                </td> */}
               </tr>
             ))}
           </tbody>
@@ -154,9 +193,9 @@ export default function MappingData({}: Props) {
           <Button
             variant={"outline"}
             className="mt-4 border hover:bg-green-500 bg-green-500 text-white  hover:rounded-full"
-            
+            onClick={downloadTokml}
           >
-            Export as kml
+            Export all as kml
           </Button>
         </div>
       </div>

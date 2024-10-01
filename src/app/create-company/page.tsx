@@ -21,6 +21,7 @@ import { createOrganization } from "@/utiles/services/createOrg";
 import { Textarea } from "@/components/ui/textarea";
 import { Bounce, toast } from "react-toastify";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { ApiDataResponse, CompanyType, ProjectType } from "@/types/api-types";
 
 type Props = {};
 
@@ -42,6 +43,7 @@ export default function Home({ }: Props) {
   const [formData, setFormData] = useState<FormData>({
     companyEmail: "",
     companyName: "",
+    headOfficeEmail: "",
     country: "",
     hasAgree: false,
     state: "",
@@ -65,52 +67,55 @@ export default function Home({ }: Props) {
       activity = formData.otherBusiness;
     } else activity = formData.businessActivity;
 
+    // if has not agree to terms and conditions returns
     if (!isChecked) {
       setHasAgree((prev) => !prev);
       return;
     }
     setIsLoading((prev) => !prev);
 
-    if (user?.id && companyLogo) {
-
+    if (user?.id) {
       const res = await createOrganization(formData, user.id);
-      console.log(res)
+      console.log(res);
 
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
         name: formData.companyName,
+        head_office_email: formData.headOfficeEmail,
         country: formData.country,
-        state: formData.state,
+        region: formData.state,
         city: formData.city,
         sector_of_activity: activity,
         // logo: uploadedLogo.url,
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        status: "INACTIVE",
       })
         .then((response) => {
           console.log("create company res =>", response);
-          if (!response.statusCode.toString().startsWith('2')) {
-            toast.error(`Sorry something went wrong`, {
+          if (!response.status.toString().startsWith("2")) {
+            return toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
             });
-            setIsLoading(false);
-            return
+          } else {
+            toast.success(`Success! routing to dashboard`, {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            router.push(Route.dashboard);
           }
-          setIsLoading(false);
-          router.push(Route.dashboard);
+
         })
         .catch((error) => {
           console.log("An error occured", error);
-          setIsLoading((prev) => !prev);
           toast.error("Fail to create company", {
             transition: Bounce,
             autoClose: 1000,
           });
-        });
-
+        }).finally(() => {
+          setIsLoading((prev) => !prev);
+        })
     }
   }
 
@@ -161,6 +166,7 @@ export default function Home({ }: Props) {
 
   const handleCloseModal = (value: boolean) => {
     setIsModalOpen(value);
+    console.log("from function", value);
   };
 
   const fetchToken = async () => {
@@ -173,7 +179,7 @@ export default function Home({ }: Props) {
     fetchToken();
   }, []);
 
-  console.log(isLoading)
+  console.log(isLoading);
 
   return (
     <div className="h-full">
@@ -214,7 +220,7 @@ export default function Home({ }: Props) {
             label="Head office email"
             inputName="headOfficeEmail"
             type="email"
-            value={formData.companyEmail}
+            value={formData.headOfficeEmail}
             onChange={(e) => handleInputChange(e)}
           />
           <InputField
@@ -265,7 +271,7 @@ export default function Home({ }: Props) {
             onChange={(event) => handleInputChange(event)}
             className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
-            <option selected disabled>
+            <option selected>
               -- Select --
             </option>
             {businessActivity?.map((item: any, index) => (
@@ -319,13 +325,13 @@ export default function Home({ }: Props) {
             >
               {isLoading ? <Spinner /> : "Register"}
             </Button>
-
+            {/* 
             <Button
               className="text-red-500 bg-white border border-red-500 hover:bg-[#ef44441e]"
               onClick={handleCancel}
             >
-              Cancel
-            </Button>
+              Skip
+            </Button> */}
           </div>
         </form>
       </div>
