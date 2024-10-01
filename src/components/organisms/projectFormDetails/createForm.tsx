@@ -1,24 +1,27 @@
-import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
-import { businessActivity } from "@/utiles/services/constants";
-import { mutateApiData } from "@/utiles/services/mutations";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { City, Country, State } from "country-state-city";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import InputField from "../../molecules/inputField";
+import { Project } from "@/types/gestion";
 import CustomSelectTag from "../../molecules/select";
-import CardLayout from "../../templates/cardLayout";
+import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { Route } from "@/lib/route";
+import { useRouter } from "next/navigation";
+import { businessActivity } from "@/utiles/services/constants";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import CardLayout from "../../templates/cardLayout";
+import { Textarea } from "../../ui/textarea";
+import { mutateApiData } from "@/utiles/services/mutations";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
+import { Bounce, toast } from "react-toastify";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject?: [
-    | "INTERNAL_INSPECTION"
-    | "INITIAL_INSPECTION"
-    | "AUTO_EVALUATION"
-    | "TRAINING"
-  ];
+  typeOfProject: ProjectsType
   project?: Project;
 };
 
@@ -27,11 +30,12 @@ export default function ProjectDetailsForm({
   typeOfProject,
   project,
 }: Props) {
-  let fakeProject: { [key: string]: any } = {};
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
   const showProjectDetails: boolean = false;
   const router = useRouter();
+  const company = useCompanyStore((state) => state.company);
+  const compains = useCampaignStore((state) => state.campaigns);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -42,8 +46,7 @@ export default function ProjectDetailsForm({
     ""
   );
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
-  const [projectData, setProjectData] = useState<Project>({
-    id: "", // this might be harmfull
+  const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
     sector_activity: "",
     country: "",
@@ -53,17 +56,17 @@ export default function ProjectDetailsForm({
     start_date: "",
     end_date: "",
     status: "DRAFT",
-    type: undefined, // Project type ['AUTO_EVALUATION', 'INITIAL_INSPECTION', etc]
+    type: typeOfProject, // Project type 'AUTO_EVALUATION' | 'INITIAL_INSPECTION' | etc
   });
 
-  // const animatedComponents = makeAnimated(); // For react-select
+  const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
-    const data: Project = {
+    const data = {
       ...projectData,
       [e.target.name]: e.target.value,
     };
@@ -116,10 +119,11 @@ export default function ProjectDetailsForm({
       // load the company logo in the companys' table
     }
 
-    // CREATE NEW RECORD IN THE PROJECTS' TABLE
+    console.log(compains[0])
+    // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
-      company_id: "",
+      company_id: company?.id,
       title: projectData.title,
       description: projectData.description,
       sector_activity: projectData.sector_activity,
@@ -127,22 +131,33 @@ export default function ProjectDetailsForm({
       city: projectData.city,
       region: projectData.region,
       status: projectData.status,
-      anotherLogo: companyLogo,
+      another_logo: companyLogo,
       start_date: new Date(projectData.start_date as string).toISOString(),
       end_date: new Date(projectData.end_date as string).toISOString(),
       campaign_id: compains[0]?.id,
-      start_date: projectData.start_date,
-      end_date: projectData.end_date,
     })
-      .then((res) => {
+      .then((res: ApiDataResponse<ProjectType>) => {
         console.log("project cereated", res);
+        if (res.status === 201) {
+          setIsLoading((prev) => !prev);
+          router.push(Route.editProject + `/${res.data.id}`);
+          LOCAL_STORAGE.save("project", res.data);
+          return;
+        }
         setIsLoading((prev) => !prev);
-        router.push(Route.editProject + `/45`);
+        toast.error("Something went wrong", {
+          transition: Bounce,
+          autoClose: 3000,
+        });
       })
       .catch((err) => {
-        console.log("error occured while creating", err);
+        console.log("error occured while creating project", err);
+        toast.error("Something went wrong. Please try again", {
+          transition: Bounce,
+          autoClose: 3000
+        })
+        setIsLoading((prev) => !prev);
       });
-
     // get the id of the project response and route to that ID
   }
 
@@ -154,52 +169,30 @@ export default function ProjectDetailsForm({
     <CardLayout
       heading={`Create a project (${typeOfProject}): Project details`}
     >
-      <form className="w-full flex flex-col px-6 py-4" onSubmit={handleSubmit}>
+      <form className="w-full flex flex-col px-4 py-2" onSubmit={handleSubmit}>
         <em>
-          <strong>NB</strong>: The Rain forest Alliances' logo will be added by
-          default on this project form
+          <strong>NB</strong>: The Rain forest Alliances' and company logos will
+          be added by default on this project form
         </em>
-        <div className="flex justify-between py-5">
-          {/* The existence of the company logo in the company object will checked here. This input field will be displayed based on that */}
-          {/* <div className="flex flex-col">
-            <label htmlFor="company_logo">
-              <strong>Company logo</strong>
-            </label>
-            <input type="file" onChange={(e) => handlecompanyLogo(e)} />
-          </div> */}
-          <div className="flex flex-col">
-            <label htmlFor="company_logo">
-              <strong>Add another logo</strong>
-            </label>
-            <input type="file" onChange={(e) => handleOtherLogo(e)} />
-          </div>
+        <div className="flex flex-col py-2">
+          <label htmlFor="company_logo">
+            <strong>Add another logo</strong>
+          </label>
+          <input type="file" onChange={(e) => handleOtherLogo(e)} />
         </div>
-        <div className="flex justify-between gap-4">
-          <div className="md:w-1/2">
-            <InputField
-              label="Project title"
-              inputName="title"
-              type="text"
-              value={projectData.title}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div>
-          <div className="md:w-1/2">
-            <InputField
-              label="Description"
-              inputName="description"
-              type="text"
-              value={projectData.description}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div>
-        </div>
+        <InputField
+          label="Project title"
+          inputName="title"
+          type="text"
+          value={projectData.title}
+          onChange={(e) => handleChangeEvent(e)}
+        />
         <div className="flex justify-between gap-4">
           <div className="md:w-1/2">
             <InputField
               label="Start date"
               inputName="start_date"
-              type="date"
+              type="datetime-local"
               value={projectData.start_date}
               onChange={(e) => handleChangeEvent(e)}
             />
@@ -208,7 +201,7 @@ export default function ProjectDetailsForm({
             <InputField
               label="End date"
               inputName="end_date"
-              type="date"
+              type="datetime-local"
               value={projectData.end_date}
               onChange={(e) => handleChangeEvent(e)}
             />
@@ -241,16 +234,15 @@ export default function ProjectDetailsForm({
             onChange={(e) => handleChangeEvent(e)}
             label="Country"
             arrayOfItems={countries}
-            value={projectData.country}
+            value={projectData.country as string}
             className="md:w-[33.33%]"
           />
           <CustomSelectTag
-            selectName="state"
+            selectName="region"
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
             value={projectData.region as string}
-            value={projectData.state}
             className="md:w-[33.33%]"
           />
           {/* <div className="flex flex-col ">
@@ -267,20 +259,22 @@ export default function ProjectDetailsForm({
             onChange={(e) => handleChangeEvent(e)}
             label="City"
             arrayOfItems={city}
-            value={projectData.city}
+            value={projectData.city as string}
             className="md:w-[33.33%]"
           />
         </div>
-        {/* <Textarea
-          placeholder="Enter project description"
+        <label className="font-semibold" htmlFor="activity">
+          Project description
+        </label>
+        <Textarea
+          placeholder="Enter description"
           value={projectData.description}
-          name='description'
-
+          name="description"
           onChange={(e) => handleChangeEvent(e)}
-        /> */}
-        <div className="flex justify-end gap-4">
+        />
+        <div className="flex justify-end py-2 gap-4">
           <Button
-            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow"
+            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1"
             onClick={(e: any) => {
               e.preventDefault;
               onClick(showProjectDetails, showProjectOptions);
@@ -290,9 +284,9 @@ export default function ProjectDetailsForm({
           </Button>
           <Button
             type="submit"
-            className={isLoading ? "hover:cursor-wait opacity-70" : ""}
+            className={isLoading ? "hover:cursor-wait opacity-70" : "active:transition-y-1"}
           >
-            {isLoading ? "Processing..." : "CREATE PROJECT"}
+            {isLoading ? <Spinner /> : "CREATE PROJECT"}
           </Button>
         </div>
       </form>

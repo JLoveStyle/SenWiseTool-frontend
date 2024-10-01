@@ -160,14 +160,14 @@ export default function page({ params: { projectId } }: Props) {
         if (response.status <= 205) {
           toast.success("Project saved", {
             transition: Bounce,
-            autoClose: 1000,
+            autoClose: 3000,
           });
           router.push(Route.editProject + `/${projectId}/pdf`);
           setIsSaving((prev) => !prev);
         } else {
           toast.error("Something went wrong. Please try again", {
             transition: Bounce,
-            autoClose: 1000,
+            autoClose: 3000,
           });
           setIsSaving((prev) => !prev);
         }
@@ -175,7 +175,7 @@ export default function page({ params: { projectId } }: Props) {
       .catch((error) => {
         toast.error("Something went wrong. Please try again", {
           transition: Bounce,
-          autoClose: 1000,
+          autoClose: 3000,
         });
         setIsSaving((prev) => !prev);
         console.log("An error occured", error);
