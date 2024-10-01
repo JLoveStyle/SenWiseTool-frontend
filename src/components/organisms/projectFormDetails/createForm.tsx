@@ -14,7 +14,7 @@ import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { ProjectsType, ProjectType } from "@/types/api-types";
+import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
 import { Bounce, toast } from "react-toastify";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
@@ -126,6 +126,7 @@ export default function ProjectDetailsForm({
     } else console.log("greater than");
     // return;
 
+    console.log(compains[0])
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
@@ -137,17 +138,18 @@ export default function ProjectDetailsForm({
       city: projectData.city,
       region: projectData.region,
       status: projectData.status,
-      anotherLogo: companyLogo,
+      another_logo: companyLogo,
       start_date: new Date(projectData.start_date as string).toISOString(),
       end_date: new Date(projectData.end_date as string).toISOString(),
       campaign_id: compains[0]?.id,
     })
-      .then((res) => {
+      .then((res: ApiDataResponse<ProjectType>) => {
         console.log("project cereated", res);
-        if (res.status.toString() === "201") {
+        if (res.status === 201) {
           setIsLoading((prev) => !prev);
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
+          return;
         }
         setIsLoading((prev) => !prev);
         toast.error("Something went wrong", {

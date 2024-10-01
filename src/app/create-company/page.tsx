@@ -21,10 +21,11 @@ import { createOrganization } from "@/utiles/services/createOrg";
 import { Textarea } from "@/components/ui/textarea";
 import { Bounce, toast } from "react-toastify";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { ApiDataResponse, CompanyType, ProjectType } from "@/types/api-types";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const countries: any[] = Country.getAllCountries();
@@ -89,33 +90,32 @@ export default function Home({}: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        status: "INACTIVE",
       })
         .then((response) => {
-          if (response.status.toString() === "201") {
-            toast.success("Company registed", {
+          console.log("create company res =>", response);
+          if (!response.status.toString().startsWith("2")) {
+            return toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
             });
-            setIsLoading(false);
-            router.push(Route.dashboard);
           } else {
-            toast.error(`Sorry something went wrong`, {
+            toast.success(`Success! routing to dashboard`, {
               transition: Bounce,
               autoClose: 3000,
             });
-            setIsLoading(false);
-            return;
+            router.push(Route.dashboard);
           }
+
         })
         .catch((error) => {
           console.log("An error occured", error);
-          setIsLoading((prev) => !prev);
           toast.error("Fail to create company", {
             transition: Bounce,
             autoClose: 1000,
           });
-        });
+        }).finally(() => {
+          setIsLoading((prev) => !prev);
+        })
     }
   }
 
@@ -271,7 +271,9 @@ export default function Home({}: Props) {
             onChange={(event) => handleInputChange(event)}
             className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
-            <option selected>-- Select --</option>
+            <option selected>
+              -- Select --
+            </option>
             {businessActivity?.map((item: any, index) => (
               <option key={index} value={item}>
                 {item}

@@ -158,11 +158,11 @@ export default function ProjectDetails({ projectDetails }: Props) {
         {formActive && pathname.includes("/mapping/") ? (
           <MappingForm />
         ) : // <p>sdivosidvsd</p>
-        formActive ? (
-          <p>inspection data</p>
-        ) : (
-          ""
-        )}
+          formActive ? (
+            <p>inspection data</p>
+          ) : (
+            ""
+          )}
         {settingsActive && <p>Show settings</p>}
       </div>
     </div>

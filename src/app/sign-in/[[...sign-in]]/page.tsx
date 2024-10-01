@@ -7,6 +7,9 @@ import React from "react";
 type Props = {};
 
 export default function page({}: Props) {
+  
+
+
   return (
     <main className="">
       <div className="md:w-1/2 w-[96%] flex justify-center mx-auto mt-10 ">

@@ -47,12 +47,11 @@ export default function ActionComponent({
     )
       .then((res) => {
         if (res && res?.status <= 205) {
-          
           toast.success("Deleted", {
             transition: Bounce,
             autoClose: 3000,
           });
-          
+
           setIsLoading((prev) => !prev);
         } else {
           console.log("Deleted Project failed", res);
