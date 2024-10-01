@@ -64,6 +64,9 @@ export default function page({ params: { projectId } }: Props) {
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);
   const [displayChapThree, setDisplayChapThree] = useState<boolean>(false);
+  const [displayChapFour, setDisplayChapFour] = useState<boolean>(false);
+  const [displayChapFive, setDisplayChapFive] = useState<boolean>(false);
+  const [displayChapSix, setDisplayChapSix] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: projectDetails.title,
     id: projectDetails.id,
@@ -76,10 +79,13 @@ export default function page({ params: { projectId } }: Props) {
     region: projectDetails.region,
   });
 
-  const [chap1, chap2, chap3] = requirements;
-  const chapitre1 = chap1.chapter1;
-  const chapitre2 = chap2.chapitre2;
-  const chapitre3 = chap3.chapitre3;
+  const [chap1, chap2, chap3, chap4, chap5, chap6] = requirements;
+  const chapitre1 = chap1.content;
+  const chapitre2 = chap2.content;
+  const chapitre3 = chap3.content;
+  const chapitre4 = chap4.content;
+  const chapitre5 = chap5.content;
+  const chapitre6 = chap6.content;
 
   // Fetch all requirements
   useEffect(() => {
@@ -111,6 +117,9 @@ export default function page({ params: { projectId } }: Props) {
       chapitre.push(LOCAL_STORAGE.get(`chap_one_req${i}`));
       chapitre.push(LOCAL_STORAGE.get(`chap_two_req${i}`));
       chapitre.push(LOCAL_STORAGE.get(`chap_three_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_four_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_five_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_six_req${i}`));
     }
     // remove undefined items in the array
     const res = chapitre.filter((item: any) => item !== undefined).flat();
@@ -144,6 +153,9 @@ export default function page({ params: { projectId } }: Props) {
       LOCAL_STORAGE.remove(`chap_one_req${i}`);
       LOCAL_STORAGE.remove(`chap_two_req${i}`);
       LOCAL_STORAGE.remove(`chap_three_req${i}`);
+      LOCAL_STORAGE.remove(`chap_four_req${i}`);
+      LOCAL_STORAGE.remove(`chap_five_req${i}`);
+      LOCAL_STORAGE.remove(`chap_six_req${i}`);
     }
 
     // Make a patch request with the project id
@@ -319,14 +331,44 @@ export default function page({ params: { projectId } }: Props) {
                       setDisplayChapOne(true);
                       setDisplayChapTwo(false);
                       setDisplayChapThree(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
                     } else if (chap === "Chapter 2") {
                       setDisplayChapOne(false);
                       setDisplayChapTwo(true);
                       setDisplayChapThree(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
                     } else if (chap === "Chapter 3") {
                       setDisplayChapThree(true);
                       setDisplayChapOne(false);
                       setDisplayChapTwo(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
+                    } else if (chap === "Chapter 4") {
+                      setDisplayChapThree(false);
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(false);
+                      setDisplayChapFour(true);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
+                    } else if (chap === "Chapter 5") {
+                      setDisplayChapThree(false);
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(true);
+                      setDisplayChapSix(false);
+                    } else if (chap === "Chapter 6") {
+                      setDisplayChapThree(false);
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(true);
                     }
                   }}
                 >
@@ -379,6 +421,54 @@ export default function page({ params: { projectId } }: Props) {
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
                     key2localStorage={`chap_three_req${idx}`}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+          {displayChapFour && (
+            <>
+              {chapitre4?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage={`chap_four_req${idx}`}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+          {displayChapFive && (
+            <>
+              {chapitre5?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage={`chap_five_req${idx}`}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+          {displayChapSix && (
+            <>
+              {chapitre6?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage={`chap_six_req${idx}`}
                   />
                 </div>
               ))}

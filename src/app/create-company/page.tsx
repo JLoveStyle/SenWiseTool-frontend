@@ -80,7 +80,7 @@ export default function Home({}: Props) {
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
         name: formData.companyName,
-        headOfficeEmail: formData.headOfficeEmail,
+        head_office_email: formData.headOfficeEmail,
         country: formData.country,
         region: formData.state,
         city: formData.city,

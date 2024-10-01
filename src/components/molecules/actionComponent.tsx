@@ -35,36 +35,43 @@ export default function ActionComponent({
 
   // DELETE PROJECT
   async function handleDeleteProject() {
-    setIsLoading((prev) => !prev)
+    setIsLoading((prev) => !prev);
+    const allId: string[] = [];
 
     for (const project of projects) {
-      await mutateDelApiData<ApiDataResponse<ProjectType>>(Route.projects, `${project.id}`)
-        .then((res) => {
-          if (res && res?.status >= 205) {
-            console.log("Deleted Project failed", res);
-            toast.error("Something went wrong", {
-              transition: Bounce,
-              autoClose: 3000,
-            });
-            setIsLoading((prev) => !prev);
-          } else {
-            toast.success("Deleted", {
-              transition: Bounce,
-              autoClose: 3000,
-            });
-            setIsLoading((prev) => !prev);
-            closeDialog(false); // close dialogue
-          }
-        })
-        .catch((error) => {
-          console.log("An error occured while archiving project", error);
-          setIsLoading((prev) => !prev);
-          toast.error("Fail to archive project", {
+      allId.push(project.id as string);
+    }
+    await mutateDelApiData<ApiDataResponse<ProjectType>>(
+      Route.projects,
+      `${allId}`
+    )
+      .then((res) => {
+        if (res && res?.status <= 205) {
+          
+          toast.success("Deleted", {
             transition: Bounce,
             autoClose: 3000,
           });
+          
+          setIsLoading((prev) => !prev);
+        } else {
+          console.log("Deleted Project failed", res);
+          toast.error("Something went wrong", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+          setIsLoading((prev) => !prev);
+          closeDialog(false); // close dialogue
+        }
+      })
+      .catch((error) => {
+        console.log("An error occured while deleting project", error);
+        setIsLoading((prev) => !prev);
+        toast.error("Something went wrong. Please try again", {
+          transition: Bounce,
+          autoClose: 3000,
         });
-    }
+      });
   }
 
   // SHARE PROJECT
@@ -178,10 +185,10 @@ export default function ActionComponent({
   const heading = shareProject
     ? "Share project"
     : deleteProject
-      ? "Delete project"
-      : archiveProject
-        ? "Archive project"
-        : "";
+    ? "Delete project"
+    : archiveProject
+    ? "Archive project"
+    : "";
 
   const description = {};
   console.log(heading);

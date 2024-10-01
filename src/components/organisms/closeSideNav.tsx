@@ -40,8 +40,8 @@ export default function CloseSiveNav({
   };
 
   const closeModal = (val: boolean) => {
-    setOpenModal(val)
-  }
+    setOpenModal(val);
+  };
 
   const handleShowProjectDetails = (value1: boolean, value2: boolean) => {
     setShowProjectDetailsForm(value1);
@@ -61,7 +61,7 @@ export default function CloseSiveNav({
   return (
     <div
       className={
-        (pathname.includes("/details") || pathname.includes("/mapping/")) // Hide this component on the detail page
+        pathname.includes("/details") || pathname.includes("/mapping/") // Hide this component on the detail page
           ? "hidden"
           : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
       }
@@ -95,13 +95,16 @@ export default function CloseSiveNav({
                 typeOfProject={typeOfProject}
               />
             )}
-            {showProjectOptions && pathname.includes("/mapping") ? (
+            {showProjectOptions && (
+              <CreateProjectOptions onClick={handleOpenProjectOptions} />
+            )}
+            {/* {showProjectOptions && pathname.includes("/mapping") ? (
               <CreateNewMapping onClick={closeModal}/>
             ) : showProjectOptions ? (
               <CreateProjectOptions onClick={handleOpenProjectOptions} />
             ) : (
               ""
-            )}
+            )} */}
           </DialogContent>
         </Dialog>
         <div className="flex justify-between gap-2 hover:cursor-pointer">

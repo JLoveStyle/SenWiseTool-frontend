@@ -10,12 +10,12 @@ export interface Requirements {
 }
 
 export type ChapterMetaData = {
-  number: string; // eg. 1.1.1
+  num: string; // eg. 1.1.1
   principal_requirement: string;
-  certication_de_group: {
-    petit_exp_agri: string;
-    grande_exp_agri: string;
-    direction_de_group: string;
+  certif_de_group: {
+    petite_exploitation_agricole: string;
+    grande_exploitation_agricole: string;
+    direction_du_group: string;
   };
 };
 
@@ -54,7 +54,7 @@ export const groupedColumns: ColumnDef<ChapterMetaData>[] = [
   //   header: () => <span>Thème</span>
   // },
   {
-    accessorKey: "number",
+    accessorKey: "num",
     header: "No",
   },
   {
@@ -65,17 +65,17 @@ export const groupedColumns: ColumnDef<ChapterMetaData>[] = [
     header: "Certification de group",
     columns: [
       // Accessor Column
-      columnHelper.accessor("certication_de_group.petit_exp_agri", {
+      columnHelper.accessor("certif_de_group.petite_exploitation_agricole", {
         header: () => <span>Petit expl. agri</span>,
         footer: (props) => props.column.id,
       }),
       // Accessor Column
-      columnHelper.accessor("certication_de_group.grande_exp_agri", {
+      columnHelper.accessor("certif_de_group.grande_exploitation_agricole", {
         header: "Grande expl. agri",
         footer: (props) => props.column.id,
       }),
       // Accessor Column
-      columnHelper.accessor("certication_de_group.direction_de_group", {
+      columnHelper.accessor("certif_de_group.direction_du_group", {
         header: "Direction de group",
         footer: (props) => props.column.id,
       }),

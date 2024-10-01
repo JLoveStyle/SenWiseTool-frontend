@@ -21,7 +21,7 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject: ProjectsType
+  typeOfProject: ProjectsType;
   project?: Project;
 };
 
@@ -118,6 +118,13 @@ export default function ProjectDetailsForm({
     if (companyLogo) {
       // load the company logo in the companys' table
     }
+    console.log("start date =>", projectData.start_date?.slice(0, 11));
+    console.log("today date =>", new Date().toISOString());
+    let currentDate = new Date().toISOString();
+    if (currentDate.slice(0, 11) === projectData.start_date?.slice(0, 11)) {
+      console.log("less then");
+    } else console.log("greater than");
+    // return;
 
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
@@ -137,7 +144,7 @@ export default function ProjectDetailsForm({
     })
       .then((res) => {
         console.log("project cereated", res);
-        if (res.status.toString().startsWith("2")) {
+        if (res.status.toString() === "201") {
           setIsLoading((prev) => !prev);
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
@@ -152,8 +159,8 @@ export default function ProjectDetailsForm({
         console.log("error occured while creating project", err);
         toast.error("Something went wrong. Please try again", {
           transition: Bounce,
-          autoClose: 3000
-        })
+          autoClose: 3000,
+        });
         setIsLoading((prev) => !prev);
       });
     // get the id of the project response and route to that ID
@@ -168,16 +175,23 @@ export default function ProjectDetailsForm({
       heading={`Create a project (${typeOfProject}): Project details`}
     >
       <form className="w-full flex flex-col px-4 py-2" onSubmit={handleSubmit}>
-        <em>
-          <strong>NB</strong>: The Rain forest Alliances' and company logos will
-          be added by default on this project form
-        </em>
-        <div className="flex flex-col py-2">
-          <label htmlFor="company_logo">
-            <strong>Add another logo</strong>
-          </label>
-          <input type="file" onChange={(e) => handleOtherLogo(e)} />
-        </div>
+        {typeOfProject === "MAPPING" ? (
+          ""
+        ) : (
+          <>
+            <em>
+              <strong>NB</strong>: The Rain forest Alliances' and company logos
+              will be added by default on this project form
+            </em>
+            <div className="flex flex-col py-2">
+              <label htmlFor="company_logo">
+                <strong>Add another logo</strong>
+              </label>
+              <input type="file" onChange={(e) => handleOtherLogo(e)} />
+            </div>
+          </>
+        )}
+
         <InputField
           label="Project title"
           inputName="title"
@@ -217,9 +231,7 @@ export default function ProjectDetailsForm({
           onChange={(event) => handleChangeEvent(event)}
           className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
         >
-          <option selected disabled>
-            -- Select --
-          </option>
+          <option>-- Select --</option>
           {businessActivity?.map((item: any, index) => (
             <option key={index} value={item}>
               {item}
@@ -236,7 +248,7 @@ export default function ProjectDetailsForm({
             className="md:w-[33.33%]"
           />
           <CustomSelectTag
-            selectName="state"
+            selectName="region"
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
@@ -282,7 +294,11 @@ export default function ProjectDetailsForm({
           </Button>
           <Button
             type="submit"
-            className={isLoading ? "hover:cursor-wait opacity-70" : "active:transition-y-1"}
+            className={
+              isLoading
+                ? "hover:cursor-wait opacity-70"
+                : "active:transition-y-1"
+            }
           >
             {isLoading ? <Spinner /> : "CREATE PROJECT"}
           </Button>
