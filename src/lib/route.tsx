@@ -24,6 +24,7 @@ export type AvailableRoute =
   | "projects"
   | "campaign"
   | "trainingProject"
+  | "saleSlip"
 
   // tracability
   | "receipt";
@@ -55,4 +56,5 @@ export const Route: Record<AvailableRoute, string> = {
 
   // tracability
   receipt: "/dashboard/tracability/receipt",
+  saleSlip: "/dashboard/tracability/sale-slip",
 };

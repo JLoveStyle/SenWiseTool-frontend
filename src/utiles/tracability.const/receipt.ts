@@ -15,7 +15,7 @@ export const receiptData: ReceiptProps[] = [
 
     buyer: "Buyer A",
     picture_of_sale: {
-      url: "https://example.com/picture1.jpg",
+      url: "https://fr.journalducameroun.com/wp-content/uploads/2024/01/cacao-ex-780x440.jpg",
       gps_location: "12.3456, 78.9012",
       date_hour: "2023-09-01T10:00:00Z",
     },
@@ -36,12 +36,14 @@ export const receiptData: ReceiptProps[] = [
 
     buyer: "Buyer B",
     picture_of_sale: {
-      url: "https://example.com/picture2.jpg",
+      url: "https://c7.alamy.com/compfr/ae2479/reste-les-travailleurs-sur-les-sacs-de-feves-de-cacao-la-cote-d-ivoire-ae2479.jpg",
       gps_location: "13.3456, 79.9012",
       date_hour: "2023-09-02T11:00:00Z",
     },
-    buyer_signature: "https://example.com/signature_buyer_b.png",
-    farmer_signature: "https://example.com/signature_farmer2.png",
+    buyer_signature:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Autograph_of_Benjamin_Franklin.svg/1280px-Autograph_of_Benjamin_Franklin.svg.png",
+    farmer_signature:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Gandhi_signature.svg/1280px-Gandhi_signature.svg.png",
   },
   {
     id: "rec3",
@@ -57,7 +59,7 @@ export const receiptData: ReceiptProps[] = [
 
     buyer: "Buyer C",
     picture_of_sale: {
-      url: "https://example.com/picture3.jpg",
+      url: "https://www.lebledparle.com/wp-content/uploads/2023/09/Cacao-Camer-758x426.jpg",
       gps_location: "14.3456, 80.9012",
       date_hour: "2023-09-03T12:00:00Z",
     },

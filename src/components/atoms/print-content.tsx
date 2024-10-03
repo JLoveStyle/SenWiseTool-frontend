@@ -15,7 +15,34 @@ const PrintContent: React.FC<Props> = (props) => {
     const element = formRef.current;
 
     if (element) {
-      html2pdf().from(element).save();
+      // Sélectionner toutes les images dans le composant
+      const images = Array.from(element.getElementsByTagName("img"));
+
+      // Créer une promesse pour chaque image
+      const loadPromises = images.map((img) => {
+        if (img.complete && img.naturalHeight !== 0) {
+          return Promise.resolve(); // Si l'image est déjà complètement chargée
+        } else {
+          return new Promise((resolve, reject) => {
+            img.onload = resolve; // Résoudre lorsque l'image est chargée
+            img.onerror = reject; // Rejeter si l'image échoue à se charger
+          });
+        }
+      });
+
+      // Attendre que toutes les images soient chargées
+      Promise.all(loadPromises)
+        .then(() => {
+          console.log("Toutes les images sont chargées, génération du PDF...");
+          // Générer le PDF après le chargement des images
+          html2pdf().from(element).save();
+        })
+        .catch((error) => {
+          console.error(
+            "Une erreur est survenue lors du chargement des images",
+            error
+          );
+        });
     }
   };
 
