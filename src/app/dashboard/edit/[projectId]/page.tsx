@@ -113,7 +113,7 @@ export default function page({ params: { projectId } }: Props) {
     const metaData: string[] = LOCAL_STORAGE.get("formMetadata");
     let chapitre: any = [];
     let constructedRequirements: DeployableFormMetadata[] = [];
-    for (let i = 0; i <= 5; i++) {
+    for (let i = 0; i <= 10; i++) {
       chapitre.push(LOCAL_STORAGE.get(`chap_one_req${i}`));
       chapitre.push(LOCAL_STORAGE.get(`chap_two_req${i}`));
       chapitre.push(LOCAL_STORAGE.get(`chap_three_req${i}`));
@@ -133,8 +133,8 @@ export default function page({ params: { projectId } }: Props) {
           C: false,
         },
         principal_requirement: res[i].principal_requirement,
-        certication_de_group: res[i].certication_de_group,
-        number: res[i].number,
+        certif_de_group: res[i].certif_de_group,
+        number: res[i].num,
         comment: "",
       });
     }
@@ -149,7 +149,7 @@ export default function page({ params: { projectId } }: Props) {
 
     // router.push(Route.editProject + `/${projectId}/pdf`);
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       LOCAL_STORAGE.remove(`chap_one_req${i}`);
       LOCAL_STORAGE.remove(`chap_two_req${i}`);
       LOCAL_STORAGE.remove(`chap_three_req${i}`);

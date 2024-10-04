@@ -2,30 +2,36 @@
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import React, { useEffect, useState } from "react";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import { fetchApiData } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { ProjectType } from "@/types/api-types";
 import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
+import dynamic from "next/dynamic";
+
+const ProjectDisplay = dynamic(
+  () => import("@/components/organisms/projectsDisplay"),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const [initialInspectionProjects, setInitialInspectioProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
   const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
 
-  console.log("currentCampaign: ", currentCampaign)
   // Fetch all projects with type "INITIAL_INSPECTION" and pass it as props to Layout
   async function fetchAllInitialInspectionProject() {
     if (!currentCampaign && !company) return;
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "?type=INSPECTION_INITIAL",
+      "?type=INITIAL_INSPECTION",
       currentCampaign?.id
     )
       .then((response) => {
@@ -42,9 +48,7 @@ export default function Home({ }: Props) {
   useEffect(() => {
     fetchAllInitialInspectionProject();
     console.log("initial_inspection");
-  }, [currentCampaign?.id, Route]);
-
-  console.log("init", initialInspectionProjects);
+  }, [currentCampaign?.id, company?.id]);
 
   return (
     <LayoutDashboard
@@ -61,7 +65,6 @@ export default function Home({ }: Props) {
             ? (initialInspectionProjects as ProjectType[])
             : []
         }
-        // projects={[]}
         isLoading={isLoading}
         columnListProjects={columnListProjects}
       />

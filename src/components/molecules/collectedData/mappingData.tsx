@@ -12,6 +12,7 @@ export default function MappingData({}: Props) {
   const [kmlFile, setKmlFile] = useState("");
 
   const downloadExcell = () => {
+    console.log("excell sheet");
     const columns: IJsonSheet[] = [
       {
         sheet: "Données_Mapping",
@@ -72,10 +73,17 @@ export default function MappingData({}: Props) {
       writeOptions: {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
     };
 
-    // xlsx(columns, settings);
+    console.log("excell cheatsheet");
+    xlsx(columns, settings);
   };
 
-  const convertTokml = (name: string, village: string, surfaceArea: string, code: string) => {
+  const convertTokml = (
+    name: string,
+    village: string,
+    surfaceArea: string,
+    code: string,
+    geoPoints: any
+  ) => {
     const polygon = {
       type: "Feature",
       properties: {
@@ -83,19 +91,11 @@ export default function MappingData({}: Props) {
         code: code,
         superficie: surfaceArea,
         village: village,
-        description: `Ce polygone montre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `
+        description: `Ce polygone illustre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `,
       },
       geometry: {
         type: "Polygon",
-        coordinates: [
-          [
-            [100.0, 0.0],
-            [101.0, 0.0],
-            [101.0, 1.0],
-            [100.0, 1.0],
-            [100.0, 0.0],
-          ],
-        ],
+        coordinates: geoPoints,
       },
     };
 
@@ -105,23 +105,22 @@ export default function MappingData({}: Props) {
       description: `Ce polygone montre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `,
     });
     setKmlFile(kml);
-
   };
 
   const downloadTokml = () => {
     const obj: any[] = [];
-    let selObject: any[] = []
+    let selObject: any[] = [];
     for (const data of mappingData) {
       obj.push(data.coordinate);
     }
     console.log(obj[0]);
     console.log(Object.values(obj[0][0]));
     for (const coord of obj) {
-      selObject.push(Object.values(coord))
-      console.log(Object.values(Object.values(coord)))
+      selObject.push(Object.values(coord));
+      console.log(Object.values(Object.values(coord)));
     }
-    console.log('selObject =>', selObject)
-  }
+    console.log("selObject =>", selObject);
+  };
 
   // FETCH ALL PROJECTS OF TYPE MAPPING
 
@@ -159,14 +158,24 @@ export default function MappingData({}: Props) {
                 <td className="px-2 border flex flex-col gap-2 max-h-[250px] overflow-y-scroll">
                   {item.coordinate?.map((coord: any, i: number) => (
                     <>
-                      <span key={i + 1}>long:{coord.log}</span>
-                      <span className="border-b" key={i + 1}>
+                      <span className="" key={i+1.1}>long:{coord.log}</span>
+                      <span className="border-b">lat:{coord.lat}</span>
+                      {/* <span key={i + 110}>long:{coord.log}</span>
+                      <span className="border-b" key={i + 1.5}>
                         lat:{coord.lat}
-                      </span>
+                      </span> */}
                     </>
                   ))}
                   <button
-                    onClick={() => convertTokml(item.nom_producteur, item.village, item.superficie_estimé, item.code_du_planteur,)}
+                    onClick={() =>
+                      convertTokml(
+                        item.nom_producteur,
+                        item.village,
+                        item.superficie_estimé,
+                        item.code_du_planteur,
+                        item.geoPoints
+                      )
+                    }
                     className="bg-tertiary text-white mb-2 py-1 rounded-lg"
                   >
                     <a

@@ -3,16 +3,13 @@ import React, { useState } from "react";
 import CardLayout from "../templates/cardLayout";
 import { Button } from "../ui/button";
 import { Spinner } from "../atoms/spinner/spinner";
-import { InputUI } from "../atoms/disign-system/form/input-ui";
 import { ModuleProps } from "@/types/formData";
 import InputField from "./inputField";
 import { RxCross2 } from "react-icons/rx";
-import { Project } from "@/types/gestion";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import { Route } from "@/lib/route";
 import { Bounce, toast } from "react-toastify";
 import { ApiDataResponse, ProjectType } from "@/types/api-types";
-import { ApiError } from "next/dist/server/api-utils";
 
 type Props = {
   shareProject: boolean;
@@ -33,44 +30,48 @@ export default function ActionComponent({
   const [emails, setEmails] = useState<ModuleProps[]>([]);
   const [email, setEmail] = useState<ModuleProps>();
 
+  const allId: string[] = [];
+
+  for (const project of projects) {
+    allId.push(project.id as string);
+  }
+
   // DELETE PROJECT
   async function handleDeleteProject() {
     setIsLoading((prev) => !prev);
-    const allId: string[] = [];
 
     for (const project of projects) {
-      allId.push(project.id as string);
-    }
-    await mutateDelApiData<ApiDataResponse<ProjectType>>(
-      Route.projects,
-      `${allId}`
-    )
-      .then((res) => {
-        if (res && res?.status <= 205) {
-          toast.success("Deleted", {
-            transition: Bounce,
-            autoClose: 3000,
-          });
+      await mutateDelApiData<ApiDataResponse<ProjectType>>(
+        Route.projects,
+        project?.id
+      )
+        .then((res) => {
+          if (res && res?.status <= 205) {
+            toast.success("Deleted", {
+              transition: Bounce,
+              autoClose: 3000,
+            });
 
+            setIsLoading((prev) => !prev);
+          } else {
+            console.log("Deleted Project failed", res);
+            toast.error("Something went wrong", {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            setIsLoading((prev) => !prev);
+            closeDialog(false); // close dialogue
+          }
+        })
+        .catch((error) => {
+          console.log("An error occured while deleting project", error);
           setIsLoading((prev) => !prev);
-        } else {
-          console.log("Deleted Project failed", res);
-          toast.error("Something went wrong", {
+          toast.error("Something went wrong. Please try again", {
             transition: Bounce,
             autoClose: 3000,
           });
-          setIsLoading((prev) => !prev);
-          closeDialog(false); // close dialogue
-        }
-      })
-      .catch((error) => {
-        console.log("An error occured while deleting project", error);
-        setIsLoading((prev) => !prev);
-        toast.error("Something went wrong. Please try again", {
-          transition: Bounce,
-          autoClose: 3000,
         });
-      });
+    }
   }
 
   // SHARE PROJECT
@@ -81,42 +82,45 @@ export default function ActionComponent({
 
   // ARCHIVE PROJECT
   async function handleArchiveProject() {
+    console.log(projects);
+    console.log(allId);
     setIsLoading((prev) => !prev);
-    // Loop through all projects an update one by one
-    for (const project of projects) {
-      await mutateUpApiData(
-        Route.projects,
-        {
-          status: "ARCHIVE",
-        },
-        project.id
-      )
-        .then((res) => {
-          if (res.statusCode >= 205) {
-            console.log("archived successfully", res);
-            toast.error("Something went wrong", {
-              transition: Bounce,
-              autoClose: 3000,
-            });
-            setIsLoading((prev) => !prev);
-          } else {
-            toast.success("Project archived", {
-              transition: Bounce,
-              autoClose: 3000,
-            });
-            setIsLoading((prev) => !prev);
-            closeDialog(false); // close dialogue
-          }
-        })
-        .catch((error) => {
-          console.log("An error occured while archiving project", error);
-          setIsLoading((prev) => !prev);
-          toast.error("Fail to archive project", {
+
+    await mutateUpApiData(
+      Route.projects,
+      {
+        status: "ARCHIVED",
+      },
+      // projects[0]?.id
+      `${allId}`
+    )
+      .then((res) => {
+        if (res.status <= 205) {
+          console.log("archived successfully", res);
+          closeDialog(false);
+          toast.success("Project archived", {
             transition: Bounce,
             autoClose: 3000,
           });
+          setIsLoading(false);
+        } else {
+          console.log(res);
+          toast.error("Something went wrong.", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+          setIsLoading(false);
+          closeDialog(false); // close dialogue
+        }
+      })
+      .catch((error) => {
+        console.log("An error occured while archiving project", error);
+        setIsLoading(false);
+        toast.error("Fail to archive project. Please try again", {
+          transition: Bounce,
+          autoClose: 3000,
         });
-    }
+      });
   }
 
   const handleEmailUpdate = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -132,6 +136,7 @@ export default function ActionComponent({
     setEmails(filteredEmail);
   };
 
+  // JSX for share project action
   const shareProjectcontent = (
     <div className="">
       <InputField
@@ -162,6 +167,7 @@ export default function ActionComponent({
     </div>
   );
 
+  // JSX for archive action
   const archiveProjectcontent = (
     <div className="">
       <h2 className="font-semibold text-xl text-center pb-2">
@@ -172,6 +178,7 @@ export default function ActionComponent({
     </div>
   );
 
+  // JSX for delete action
   const deleteProjectContent = (
     <div className="pb-4">
       <h2 className="">

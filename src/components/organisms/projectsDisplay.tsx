@@ -15,10 +15,14 @@ import { ColumnDef } from "@tanstack/react-table";
 type Props = {
   projects: ProjectType[];
   isLoading: boolean;
-  columnListProjects: ColumnDef<ProjectType>[]
+  columnListProjects: ColumnDef<ProjectType>[];
 };
 
-export default function ProjectDisplay({ projects, isLoading, columnListProjects }: Props) {
+export default function ProjectDisplay({
+  projects,
+  isLoading,
+  columnListProjects,
+}: Props) {
   const [shareProject, setShareProject] = useState<boolean>(false);
   const [deleteProject, setDeleteProjet] = useState<boolean>(false);
   const [archiveProject, setArchiveProiect] = useState<boolean>(false);
@@ -35,10 +39,9 @@ export default function ProjectDisplay({ projects, isLoading, columnListProjects
   const handleCloseDialog = (val: boolean) => {
     setOpenModal(val);
   };
-  console.log('selectedPro ', selectedProjects)
 
   return (
-    <>
+    <div>
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Projects</h1>
         <div className="flex gap-4 text-gray-500">
@@ -102,7 +105,9 @@ export default function ProjectDisplay({ projects, isLoading, columnListProjects
                 shareProject={shareProject}
                 archiveProject={archiveProject}
                 deleteProject={deleteProject}
-                projects={projects}
+                projects={
+                  selectedProjects ? (selectedProjects as ProjectType[]) : []
+                }
                 closeDialog={handleCloseDialog}
               />
             </DialogContent>
@@ -117,6 +122,6 @@ export default function ProjectDisplay({ projects, isLoading, columnListProjects
           onSelecteItem={handleSelectedProjects}
         />
       </div>
-    </>
+    </div>
   );
 }

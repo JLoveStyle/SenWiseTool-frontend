@@ -1,7 +1,7 @@
 "use client";
 import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
-import ProjectDisplay from "@/components/organisms/projectsDisplay";
+import dynamic from "next/dynamic";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
@@ -9,9 +9,16 @@ import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import React, { useEffect, useState } from "react";
 
+const ProjectDisplay = dynamic(
+  () => import("@/components/organisms/projectsDisplay"),
+  {
+    ssr: false,
+  }
+);
+
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const [autoEvalutionProjects, setAutoEvaluationProjects] =
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -25,10 +32,10 @@ export default function Home({ }: Props) {
     await fetchApiData(
       Route.projects,
       "?type=AUTO_EVALUATION",
+      company?.id,
       currentCampaign?.id
     )
       .then((response) => {
-        console.log("all initial_inspection projects", response);
         setIsLoading((prev) => !prev);
         setAutoEvaluationProjects(response.data);
       })
@@ -37,8 +44,6 @@ export default function Home({ }: Props) {
         setIsLoading((prev) => !prev);
       });
   }
-
-  console.log("isLoading from autoevaluation", isLoading);
 
   useEffect(() => {
     console.log("Auto-evaluation");

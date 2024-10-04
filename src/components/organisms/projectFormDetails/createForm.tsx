@@ -6,7 +6,7 @@ import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Route } from "@/lib/route";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { businessActivity } from "@/utiles/services/constants";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -45,6 +45,8 @@ export default function ProjectDetailsForm({
   const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>(
     ""
   );
+  const [errorDate, setErrorDate] = useState<string>("");
+  const [errorEndDate, setErrorEndDate] = useState<string>("")
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
@@ -58,6 +60,7 @@ export default function ProjectDetailsForm({
     status: "DRAFT",
     type: typeOfProject, // Project type 'AUTO_EVALUATION' | 'INITIAL_INSPECTION' | etc
   });
+  const pathname = usePathname()
 
   const animatedComponents = makeAnimated(); // For react-select
 
@@ -70,6 +73,21 @@ export default function ProjectDetailsForm({
       ...projectData,
       [e.target.name]: e.target.value,
     };
+
+    // CONVERT DATE INTO NUMBER
+    const startDate = new Date(`${data.start_date?.slice(0, 10)}`);
+    const endDate = new Date(`${data.end_date?.slice(0, 10)}`);
+    let currentDate = new Date().toISOString().slice(0, 10);
+    const todayDate = new Date(`${currentDate}`);
+
+    if (startDate?.getTime() < todayDate.getTime()) {
+      setErrorDate("Start date must be greater than or equals to today's date");
+    } else setErrorDate("")
+    if (endDate?.getTime() < todayDate.getTime()) {
+      setErrorEndDate("End date must be greater than or equals to today's date");
+    } else setErrorEndDate("")
+
+
     setProjectData(data);
     for (const country of countries) {
       if (country.name === data.country) {
@@ -114,19 +132,28 @@ export default function ProjectDetailsForm({
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    setIsLoading((prev) => !prev);
     if (companyLogo) {
       // load the company logo in the companys' table
     }
-    console.log("start date =>", projectData.start_date?.slice(0, 11));
-    console.log("today date =>", new Date().toISOString());
-    let currentDate = new Date().toISOString();
-    if (currentDate.slice(0, 11) === projectData.start_date?.slice(0, 11)) {
-      console.log("less then");
-    } else console.log("greater than");
-    // return;
 
-    console.log(compains[0])
+    // CONVERT DATE INTO NUMBER
+    const startDate = new Date(`${projectData.start_date?.slice(0, 10)}`);
+    const endDate = new Date(`${projectData.end_date?.slice(0, 10)}`);
+    let currentDate = new Date().toISOString().slice(0, 10);
+    const todayDate = new Date(`${currentDate}`);
+
+    if (startDate?.getTime() < todayDate.getTime()) {
+      setErrorDate("Start date must be greater than today's date");
+      return;
+    }
+    if (endDate?.getTime() < todayDate.getTime()) {
+      setErrorDate("End date must be greater than today's date");
+      return;
+    }
+
+    setIsLoading((prev) => !prev);
+    console.log(compains[0]);
+    setErrorDate("")
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
@@ -147,6 +174,15 @@ export default function ProjectDetailsForm({
         console.log("project cereated", res);
         if (res.status === 201) {
           setIsLoading((prev) => !prev);
+          toast.success('Success', {
+            transition: Bounce,
+            autoClose: 3000
+          })
+          if (pathname.includes("mapping")) {
+            // CLOSE MODAL
+            router.push(Route.mapping)
+            return
+          }
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
           return;
@@ -210,6 +246,7 @@ export default function ProjectDetailsForm({
               value={projectData.start_date}
               onChange={(e) => handleChangeEvent(e)}
             />
+            {errorDate && <span className="text-red-500 mt-4"><em>{errorDate}</em></span>}
           </div>
           <div className="md:w-1/2">
             <InputField
@@ -219,6 +256,7 @@ export default function ProjectDetailsForm({
               value={projectData.end_date}
               onChange={(e) => handleChangeEvent(e)}
             />
+            {errorEndDate && <span className="text-red-500 mt-4"><em>{errorEndDate}</em></span>}
           </div>
         </div>
         <label className="font-semibold" htmlFor="activity">

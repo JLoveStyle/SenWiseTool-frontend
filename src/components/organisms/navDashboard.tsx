@@ -1,28 +1,44 @@
 "use client";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
-import { OrganizationSwitcher } from "@clerk/nextjs";
+import { OrganizationSwitcher, useSession } from "@clerk/nextjs";
 import { ClipboardType } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "../atoms/logo";
+import Link from "next/link";
+import { fetchApiData } from "@/utiles/services/queries";
+import { useApiOps } from "@/lib/api-provider";
+import { ApiDataResponse, CompanyType } from "@/types/api-types";
 
 type Props = {};
 
 export default function NavDashboard({}: Props) {
   const [selectedProject, setSelectedProject] = useState<Project | undefined>();
   const [id, setId] = useState<string | undefined | null>("");
+  const { session } = useSession();
   const pathname = usePathname();
 
-  useEffect(() => {}, []);
+  // FETCH CURRENT company
+  const { refetch } = useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
+  });
+
+  useEffect(() => {
+    refetch();
+    console.log("on navbar mount");
+  }, [session?.id]);
 
   return (
     <nav className=" bg-tertiary  text-white z-50 flex justify-between ">
       <div className=" px-2 items-center flex justify-between mr-0 top-0  left-[100px]">
         {/* LOGO & PROJECT NAME IF DEFINED */}
         <div className="flex justify-between gap-10">
-          <Logo variant="text" />
-          <div
+          <Link href={Route.dashboard}>
+            <Logo variant="text" />
+          </Link>
+          {/* <div
             className={
               pathname === Route.details + `/455`
                 ? "flex gap-4 my-auto absolute left-[330px] top-6"
@@ -31,7 +47,7 @@ export default function NavDashboard({}: Props) {
           >
             <ClipboardType />
             <p className="text-xl font-semibold ">{"selectedProject?.title"}</p>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -52,8 +68,9 @@ export default function NavDashboard({}: Props) {
           <h1 className="font-bold text-center">FORMATIONS</h1>
         ) : pathname === Route.mapping ? (
           <h1 className="font-bold text-center">MAPPING</h1>
-        ) : ""
-      }
+        ) : (
+          ""
+        )}
       </div>
       {/* CREATE SUB ACCOUNT BUTTON */}
       <OrganizationSwitcher

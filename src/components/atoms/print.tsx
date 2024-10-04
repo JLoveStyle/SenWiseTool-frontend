@@ -20,14 +20,16 @@ const Print: React.FC<Props> = (props) => {
 
   const handlePrint = () => {
     const input = formRef.current;
+    const pages = []
     html2canvas(input as HTMLDivElement, { scale: 1 }).then((canvas) => {
       const imgData = canvas.toDataURL("imag/png");
-      const pdf = new jsPDF("l", "mm", "a4");
+      const pdf = new jsPDF("l", "mm", "a4"); // lanscape orientation and A4 format
       const xOffset = 10;
       const yOffset = 10;
       const imgWidth = pdf.internal.pageSize.getWidth() - 10;
       const imgHeight = pdf.internal.pageSize.getHeight() - 10;
       pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
+      console.log({imgHeight, imgWidth})
       pdf.save(`${props.fileName}.pdf`);
     });
   };

@@ -5,7 +5,7 @@ import { Project } from "@/types/gestion";
 import { allRequirements } from "@/utils/requirements";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;sss
 export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
@@ -21,9 +21,58 @@ export const businessActivity: string[] = [
 // MAPPING DATA COLUMNS
 export const MappingTableColumns: string[] = ["No", "Farmer name", "Farmer status", "Farmer contact", "NID number", "Farm creation date", "Village", "Mapper name", "Mapping date", "Farm surface area", "Farm picture", "Farmer picture", "Coordinates"]
 
+// GEOJSON POINTS FOR POLYGON
+export const tenPoints = [
+  [
+    [-122.4194, 37.7749], // Point 1
+    [-122.4185, 37.7758], // Point 2
+    [-122.4176, 37.7767], // Point 3
+    [-122.4167, 37.7776], // Point 4
+    [-122.4158, 37.7785], // Point 5
+    [-122.4149, 37.7794], // Point 6
+    [-122.4140, 37.7803], // Point 7
+    [-122.4131, 37.7812], // Point 8
+    [-122.4122, 37.7821], // Point 9
+    [-122.4113, 37.7830], // Point 10
+    [-122.4194, 37.7749] // Closing point (same as Point 1)
+  ]
+]
+export const eightPoints = [
+  [
+    [-118.24, 34.05], // Vertex 1
+    [-119.25, 35.06], // Vertex 2
+    [-120.26, 36.05], // Vertex 3
+    [-123.25, 40.04], // Vertex 4
+    [-234.24, 52.05], // Vertex 5
+    [-245.23, 43.06], // Vertex 6
+    [-118.22, 34.05], // Vertex 7
+    [-118.23, 34.04], // Vertex 8
+    [-118.24, 34.05] // Back to Vertex 1 to close the polygon
+  ]
+]
+
+export const thirteen = [
+  [
+    [-118.24, 34.05], // Point 1
+    [-119.25, 31.06], // Point 2
+    [-120.26, 35.05], // Point 3
+    [-118.25, 31.04], // Point 4
+    [-120.24, 39.05], // Point 5
+    [-136.23, 30.06], // Point 6
+    [-125.22, 45.05], // Point 7
+    [-140.23, 29.04], // Point 8
+    [-130.24, 46.05], // Point 9
+    [-120.25, 43.06], // Point 10
+    [-141.26, 38.05], // Point 11
+    [-151.25, 40.04], // Point 12
+    [-118.24, 34.05] // Point 13
+  ]
+]
+
 // EXAMPLE OF MAPPING DATA FROM FIELD
 export const mappingData: { [key: string]: any }[] = [
   {
+    geoPoints: tenPoints,
     nom_producteur: "Onana Jeqn de Dieu",
     statut_producteur: "Propritaire",
     contact_du_producteur: "670710054",
@@ -38,25 +87,55 @@ export const mappingData: { [key: string]: any }[] = [
     photo_planteur: 'https://edgestore/planteur.jpeg',
     coordinate: [
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -122.4194,
+        lat: 37.7749
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -122.4185,
+        lat: 37.7758
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -122.4176,
+        lat: 37.7767
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
-      }
+        log: -122.4167,
+        lat: 37.7776
+      },
+      {
+        log: -122.4158,
+        lat: 37.7785
+      },
+      {
+        log: -122.4149,
+        lat: 37.7794
+      },
+
+      {
+        log: -122.4140,
+        lat: 37.7803
+      },
+      {
+        log: -122.4131,
+        lat: 37.7812
+      },
+      {
+        log: -122.4122,
+        lat: 37.7821
+      },
+      {
+        log: -122.4113,
+        lat: 37.7830
+      },
+      {
+        log: -122.4194,
+        lat: 37.7749
+      },
     ]
 
   },
   {
+    geoPoints: eightPoints,
     nom_producteur: "Parfait Essono Bijock",
     statut_producteur: "Locataire",
     contact_du_producteur: "670710054",
@@ -71,25 +150,46 @@ export const mappingData: { [key: string]: any }[] = [
     photo_planteur: 'https://edgestore/planteur.jpeg',
     coordinate: [
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -118.24,
+        lat: 34.05
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -119.25,
+        lat: 35.06
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -120.26,
+        lat: 36.05
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
-      }
+        log: -123.25,
+        lat: 40.04
+      },
+      {
+        log: -234.24,
+        lat: 52.05
+      },
+      {
+        log: -245.23,
+        lat: 43.06
+      },
+      {
+        log: -118.22,
+        lat: 34.05
+      },
+      {
+        log: -135.23,
+        lat: 34.04
+      },
+      {
+        log: -118.24,
+        lat: 34.05
+      },
     ]
 
   },
   {
+    geoPoints: thirteen,
     nom_producteur: "Marguerite de la fontaine",
     statut_producteur: "Propritaire",
     contact_du_producteur: "670710054",
@@ -104,33 +204,57 @@ export const mappingData: { [key: string]: any }[] = [
     photo_planteur: 'https://edgestore/planteur.jpeg',
     coordinate: [
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -118.24,
+        lat: 34.05
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -119.25,
+        lat: 31.06
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -120.26,
+        lat: 35.05
+      },,
+      {
+        log: -118.25,
+        lat: 31.04
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -120.24,
+        lat: 39.05
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -136.23,
+        lat: 30.06
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
+        log: -125.22,
+        lat: 45.05
       },
       {
-        log: 145354541544533,
-        lat: 145300558515387
-      }
+        log: -140.23,
+        lat: 29.04
+      },
+      {
+        log: -130.24,
+        lat: 46.05
+      },
+      {
+        log: -120.25,
+        lat: 43.06
+      },
+      {
+        log: -141.26,
+        lat:  38.05
+      },
+      {
+        log: -151.25,
+        lat: 40.04
+      },
+      {
+        log: -118.24,
+        lat: 34.05
+      },
     ]
 
   }
@@ -337,222 +461,3 @@ export const tableHead: string[] = [
 export const chapters: string[] = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
 
 export const requirements = allRequirements
-
-// export const requirements = [
-//   {
-//     chapter1: [
-//       {
-//         title: "Gestion",
-//         numero: "1.1",
-//         content: [
-//           {
-//             principal_requirement: "La direction du groupe fait preuve de son engagement pour l'agriculture durable en dédiant des ressources et du personnel appropriés à la mise en oeuvre de la Norme pour l'Agriculture Durable de Rainforest Alliance.",
-//             number: "1.1.1",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "no",
-//               grande_exp_agri: "no"
-//             }
-//           },
-//           {
-//             principal_requirement: "La Direction du groupe améliore ses capacités de gestion et inclut des actions dans le plan de gestion.",
-//             number: "1.1.2",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "no",
-//               grande_exp_agri: "no"
-//             }
-//           },
-//           {
-//             principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-//             number: "1.1.3",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "yes",
-//               grande_exp_agri: "yes"
-//             }
-//           },
-//           {
-//             principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-//             number: "1.1.4",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "yes",
-//               grande_exp_agri: "yes"
-//             }
-//           },
-//           {
-//             principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-//             number: "1.1.5",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "yes",
-//               grande_exp_agri: "yes"
-//             }
-//           },
-//           {
-//             principal_requirement: "La direction désigne au moins un représentant du personnel pour se charger des questions listées ci-dessous. Il sera également responsable de la création d'un ou plusieurs comités qui traiteront de ces questions. Un comité peut travailler sur plus d'une problématique :",
-//             number: "1.1.6",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "yes",
-//               grande_exp_agri: "yes"
-//             }
-//           },
-//         ]
-//       },
-//       {
-//         title: "Administration",
-//         numero: "1.2",
-//         content: [
-//           {
-//             principal_requirement: "La direction se conforme aux lois applicables et aux conventions collectives (CC) au sein du champ d'application de la Norme pour l'agriculture durable de Rainforest Alliance. Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
-//             number: "1.2.1",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "yes",
-//               grande_exp_agri: "yes"
-//             }
-//           },
-//           {
-//             principal_requirement: "Une liste actualisée des prestataires de services, fournisseurs, intermédiaires et sous-traitants est disponible. Des mécanismes sont mis en place pour garantir leur conformité avec les exigences applicables de la Norme pour leurs activités qui entrent dans le champ d’application de la certification.",
-//             number: "1.2.2",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "no",
-//               grande_exp_agri: "yes"
-//             }
-//           }
-//         ]
-//       },
-
-//     ],
-
-//   },
-//   {
-//     chapitre2: [
-//       {
-//         title: "Traçabilité",
-//         numero: "2.1",
-//         content: [
-//           {
-//             principal_requirement: "La production totale certifiée et la production certifiée pour chaque producteur (en kg, en tiges pour les fleurs) est estimée une fois par an. Les calculs sont basés sur une méthodologie fiable d’estimation des rendements (en kg/ha, en tiges/ha pour les fleurs) d'un échantillon représentatif d’exploitations agricoles ou d’unités agricoles. La méthodologie et les calculs sont documentés.",
-//             number: "2.1.1",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "no",
-//               grande_exp_agri: "yes"
-//             }
-//           },
-//           {
-//             principal_requirement: "La direction fait annuellement le bilan de",
-//             number: "2.1.2",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "no",
-//               grande_exp_agri: "yes"
-//             }
-//           },
-
-//         ]
-//       }
-//     ]
-//   },
-//   {
-//     chapitre3: [
-//       {
-//         title: "Coûts de Production et Revenu Vital",
-//         numero: "3.1",
-//         content: [
-//           {
-//             principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
-//             number: "3.1.1",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "no",
-//               grande_exp_agri: "no"
-//             }
-//           },
-//           {
-//             principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-//             number: "3.1.2",
-//             certication_de_group: {
-//               direction_de_group: "yes",
-//               petit_exp_agri: "no",
-//               grande_exp_agri: "no"
-//             }
-//           },
-
-//         ]
-//       }
-//     ]
-//   }
-// ]
-
-export const deployedPro: DeployableFormMetadata[] = [
-  {
-    // id: "1",
-    principal_requirement: "La direction du groupe collecte les données sur les facteurs déterminants des coûts de production (ex : coûts des engrais, des produits agrochimiques, travail payé, équipement) et calcule le revenu net d'un culture agricole certifié pour un échantillon des membres du groupe (c’est-à-dire : revenu brut – coûts de production = revenu net) . La direction du groupe partage les données analysées avec les membres du groupe.",
-    number: "2.1.1",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    },
-    comment: "",
-    status: {
-      C: false,
-      NC: false,
-      NA: false
-    }
-  },
-  {
-    // id: "2",
-    principal_requirement: "Dans le cas où une législation applicable ou une CC est plus stricte qu'une exigence de la norme, cette législation ou cette CC prévaudra, sauf si cette législation est devenue obsolète. Dans le cas où une législation applicable ou une CC est moins stricte qu'une exigence de la norme, l’exigence de la norme prévaudra, sauf si l’exigence permet de manière explicite que cette loi ou CC s’applique.",
-    number: "2.1.2",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    },
-    comment: "",
-    status: {
-      C: false,
-      NC: false,
-      NA: false
-    }
-  },
-  {
-    // id: "3",
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "2.1.3",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    },
-    comment: "",
-    status: {
-      C: false,
-      NC: false,
-      NA: false
-    }
-  },
-  {
-    // id: "4",
-    principal_requirement: "Le revenu net réel des ménages des membres du groupe est évalué sur la base de la valeur de référence du revenu vital appliqué à un échantillon de membres.",
-    number: "2.1.4",
-    certication_de_group: {
-      direction_de_group: "yes",
-      petit_exp_agri: "no",
-      grande_exp_agri: "no"
-    },
-    comment: "jkdbvsdv osdv usdvu",
-    status: {
-      C: false,
-      NC: false,
-      NA: false
-    }
-  },
-
-]

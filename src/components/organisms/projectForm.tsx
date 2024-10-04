@@ -1,77 +1,52 @@
-"use client";
-import Print from "@/components/atoms/print";
-import PrintContent from "@/components/atoms/print-and-edit-content";
-import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
-import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
-import { mutateUpApiData } from "@/utiles/services/mutations";
-import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import Image from "next/image";
+import { Route } from "@/lib/route";
+import Print from "../atoms/print";
+import { mutateUpApiData } from "@/utiles/services/mutations";
 import { Bounce, toast } from "react-toastify";
+import FinalFormData from "../molecules/chapters-table-data/finalFormData";
 import slugify from "slugify";
 
-type Props = {};
+type Props = {
+  projectObject: ProjectType | undefined;
+};
 
-export default function page({ }: Props) {
+export default function ProjectForm({ projectObject }: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [project, setProject] = useState<ProjectType>();
-  const projectData = LOCAL_STORAGE.get("project");
-  const finalJson = LOCAL_STORAGE.get("finalJson");
 
-  const firstHalfMetaData = finalJson.metaData.slice(
+  const jsonString = JSON.stringify(projectObject?.project_structure)
+  const finalJson = JSON.parse(jsonString)
+
+  const firstHalfMetaData = finalJson?.metaData.slice(
     0,
-    Math.round(finalJson.metaData.length / 2)
+    Math.round(finalJson?.metaData.length / 2)
   );
-  const secondHalfMetaData = finalJson.metaData.slice(
-    Math.round(finalJson.metaData.length / 2),
-    finalJson.metaData.length
+  const secondHalfMetaData = finalJson?.metaData.slice(
+    Math.round(finalJson?.metaData.length / 2),
+    finalJson?.metaData.length
   );
 
+
+  // HANDLE INPUT CHANGE
   const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const data = { ...personalInfo, [e.target.name]: e.target.value };
     setPersonalInfo(data);
   };
 
-  // To display view project when coming from details page
-  /*
-  async function getProjectById() {
-    await fetchApiData(Route.projects, projectData?.id)
-      .then((response) => {
-        console.log("Here is the response", response);
-        setProject(response);
-      })
-      .catch((error) => {
-        console.log("error occured", error);
-      });
-  }
-
-  useEffect(() => {
-    // Fetch project by id
-    getProjectById();
-  }, []);
-  */
-
+  // DEPLOY PROJECT
   async function deployProject() {
-    if (projectData.status === "DEPLOYED") {
-      toast.warning("Project deployed already", {
-        transition: Bounce,
-        autoClose: 3000
-      })
-    }
     setIsLoading((prev) => !prev);
     await mutateUpApiData(
       Route.projects,
       { status: "DEPLOYED" },
-      projectData?.id
+      projectObject?.id
     )
       .then((response) => {
         console.log(response);
-        setIsLoading(prev => !prev)
         if (response.status <= 204) {
           toast.success("Project deployed", {
             transition: Bounce,
@@ -87,31 +62,19 @@ export default function page({ }: Props) {
       })
       .catch((error) => {
         console.log("An error occured", error);
-        setIsLoading(prev => !prev)
         toast.error("Fail to deploy. Try again", {
           transition: Bounce,
-          autoClose: 3000,
+          autoClose: 1000,
         });
       });
   }
 
-  const handleBackBtn = () => {
-    if (projectData?.type == "AUTO_EVALUATION") {
-      router.push(Route.autoEvaluation)
-    } else if (projectData?.type == "INITIAL_INSPECTION") {
-      router.push(Route.inspectionInitial)
-    } else if (projectData?.type == "INTERNAL_INSPECTION") {
-      router.push(Route.inspectionInterne)
-    }
-  }
-
   return (
-    <PrintContent
-      isDeploying={isLoading}
-      handleExitPage={handleBackBtn}
-      onClick={() => router.push(Route.editProject + `/${projectData?.id}`)}
+    <Print
+      handleExitPage={() => router.push(Route.dashboard)}
+      onClick={() => router.push(Route.editProject + `/${projectObject?.id}`)}
       deployProject={() => deployProject()}
-      filename="formulaire-d'inspection"
+      fileName="inspection-form"
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
@@ -127,7 +90,7 @@ export default function page({ }: Props) {
           <Image
             src="/images/logo_forest.jpg"
             alt="rainforest aliance logo"
-            width={250}
+            width={100}
             height={100}
           />
           {/* Partner logo */}
@@ -139,7 +102,7 @@ export default function page({ }: Props) {
           />
         </div>
         <h1 className="font-bold text-2xl text-center py-8 ">
-          Project title: {projectData.title}
+          Project title: {projectObject?.title}
         </h1>
 
         {/* METADATA */}
@@ -185,9 +148,9 @@ export default function page({ }: Props) {
 
         {/* LIST OF REQUIREMENTS TABULATED */}
         <div className=" mx-auto pt-5">
-          <FinalFormData selectedProjects={finalJson.requirements} />
+          <FinalFormData selectedProjects={finalJson?.requirements} />
         </div>
       </div>
-    </PrintContent>
+    </Print>
   );
 }

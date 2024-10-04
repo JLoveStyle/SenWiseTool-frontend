@@ -28,6 +28,7 @@ import {
 } from "react-icons/rx";
 import { IoMdShareAlt } from "react-icons/io";
 import { BsPersonVcard } from "react-icons/bs";
+import { useSession } from "@clerk/nextjs";
 
 type Props = {
   children: React.ReactNode;
@@ -42,6 +43,10 @@ export default function LayoutDashboard({
   projectsPerType,
   newForm,
 }: Props) {
+  
+  // Session object from clerk
+  const { session } = useSession();
+
   // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
   const campaigns = useCampaignStore((state) => state.campaigns).map(
     (comp) => ({
@@ -101,17 +106,23 @@ export default function LayoutDashboard({
       },
     },
   ];
-  useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+
+  // FETCH CURRENT company
+  const { refetch } = useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
     fn: () => fetchApiData(Route.companies, "current"),
     route: Route.companies,
   });
-  const { refetch } = useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
+
+  // FETCH ALL CAMPAINS
+  useApiOps<CampaignType, ApiDataResponse<CampaignType>>({
     fn: () => fetchApiData(Route.campaign, ""),
     route: Route.campaign,
   });
   useEffect(() => {
     refetch();
-  }, []);
+    console.log('layoudashboard component rendered in useEffect')
+  }, [session?.id]);
+
   const { value: displayCloseSideNav, toggle: togglrDisplayCloseSideNav } =
     useToggle({ initial: true });
 
@@ -134,7 +145,9 @@ export default function LayoutDashboard({
             <div className="px-6 pt-1 pb-3 flex justify-center items-center">
               <NavigationMenuDemo />
             </div>
-            <div className="overflow-y-auto max-h-[calc(100vh-130px)] overflow-hidden">{children}</div>
+            <div className="overflow-y-auto max-h-[calc(100vh-130px)] overflow-hidden">
+              {children}
+            </div>
           </div>
         </div>
       </div>

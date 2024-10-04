@@ -10,12 +10,35 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Route } from "@/lib/route";
-import { ProjectType } from "@/types/api-types";
+import { ApiDataResponse, ProjectType } from "@/types/api-types";
+import { mutateDelApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { ColumnDef } from "@tanstack/react-table";
+import dayjs from "dayjs";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Bounce, toast } from "react-toastify";
+
+// DELETE PROJECT FUNCTION
+const handleDeleteProject = async (id: string) => {
+  console.log('delete project with id', id)
+  await mutateDelApiData<ApiDataResponse<ProjectType>>(
+    Route.projects,
+    id
+  ).then((res) => {
+    if (res && res?.status <= 205) {
+      toast.success('Deleted', {
+        transition: Bounce,
+        autoClose: 3000
+      })
+    } else {
+      toast.error('Something went wrong', {
+        transition: Bounce,
+        autoClose: 3000
+      })
+    }
+  })
+}
 
 export const columnListProjects: ColumnDef<ProjectType>[] = [
   {
@@ -67,19 +90,40 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
   {
     accessorKey: "updated_at",
     header: "Last update",
-    // cell: (row) => DateTime.fromISO(row.getValue()).toLocalString(DateTime.DATE_MED)
+    cell: ({ row }) => (
+      <span className="">
+        {dayjs(row.getValue("updated_at")).toString().slice(0, -13)}{" "}
+      </span>
+    ),
   },
   {
     accessorKey: "deployed_at",
     header: "Deployment date",
+    cell: ({ row }) => (
+      <span className="">
+        {(row.getValue("deployed_at") as string).includes("1969")
+          ? "--"
+          : dayjs(row.getValue("deployed_at")).toString().slice(0, -13)}{" "}
+      </span>
+    ),
   },
   {
     accessorKey: "start_date",
     header: "Start date",
+    cell: ({ row }) => (
+      <span className="">
+        {dayjs(row.getValue("start_date")).toString().slice(0, -13)}{" "}
+      </span>
+    ),
   },
   {
     accessorKey: "end_date",
-    header: "End date"
+    header: "End date",
+    cell: ({ row }) => (
+      <span className="">
+        {dayjs(row.getValue("end_date")).toString().slice(0, 13)}{" "}
+      </span>
+    ),
   },
   {
     id: "actions",
@@ -117,15 +161,8 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem
-              onClick={() => {
-                LOCAL_STORAGE.save("projectId", project.id);
-                // INSERT THE DELETE PROJECT FUNCTION HERE
-                toast.success("Project deleted", {
-                  autoClose: 1000,
-                  transition: Bounce,
-                });
-              }}
-              className="text-red-500"
+              onClick={() => handleDeleteProject(project.id as string)}
+              className="text-red-500 hover:text-red-500"
             >
               Delete project
             </DropdownMenuItem>

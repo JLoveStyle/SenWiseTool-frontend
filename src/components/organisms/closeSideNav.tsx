@@ -126,6 +126,7 @@ export default function CloseSiveNav({
         <div className="max-h-[200px] overflow-y-auto">
           {deployedProjects?.map((item) => (
             <p
+              key={item.id}
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
                 router.push(Route.details + `/${item.id}`);

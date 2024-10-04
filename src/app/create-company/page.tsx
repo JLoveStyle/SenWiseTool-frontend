@@ -57,6 +57,7 @@ export default function Home({ }: Props) {
   });
 
   const { isSignedIn, user } = useUser();
+  console.log('userId =>', user?.id)
 
   // REGISTER COMPANY
   async function handleSubmit(e: any) {
@@ -76,7 +77,7 @@ export default function Home({ }: Props) {
 
     if (user?.id) {
       const res = await createOrganization(formData, user.id);
-      console.log(res);
+      // console.log(res);
 
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
