@@ -78,7 +78,7 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
     accessorKey: "updated_at",
     header: "Last update",
     cell: ({ row }) => (
-      <span className="">
+      <span className="text-center">
         {(row.getValue("updated_at") as string).includes("1969")
           ? "--"
           : dayjs(row.getValue("updated_at")).toString().slice(0, -13)}

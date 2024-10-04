@@ -23,48 +23,43 @@ export const MappingTableColumns: string[] = ["No", "Farmer name", "Farmer statu
 // GEOJSON POINTS FOR POLYGON
 export const tenPoints = [
   [
-    [-122.4194, 37.7749], // Point 1
-    [-122.4185, 37.7758], // Point 2
-    [-122.4176, 37.7767], // Point 3
-    [-122.4167, 37.7776], // Point 4
-    [-122.4158, 37.7785], // Point 5
-    [-122.4149, 37.7794], // Point 6
-    [-122.4140, 37.7803], // Point 7
-    [-122.4131, 37.7812], // Point 8
-    [-122.4122, 37.7821], // Point 9
-    [-122.4113, 37.7830], // Point 10
-    [-122.4194, 37.7749] // Closing point (same as Point 1)
+    [13.3876, 52.5172], // Point 1
+    [13.3876, 52.6172], // Point 2
+    [13.4876, 52.6172], // Point 3
+    [13.4876, 52.5172], // Point 4
+    [13.3876, 52.5172], // Point 5 (same as Point 1 to close the polygon)
+    [13.2876, 52.5172], // Point 6
+    [13.2876, 52.6172], // Point 7
+    [13.3876, 52.6172], // Point 8
+    [13.3876, 52.5172], // Point 9
+    [13.3876, 52.5172] // Closing point (same as Point 1)
   ]
 ]
 export const eightPoints = [
   [
-    [-118.24, 34.05], // Vertex 1
-    [-119.25, 35.06], // Vertex 2
-    [-120.26, 36.05], // Vertex 3
-    [-123.25, 40.04], // Vertex 4
-    [-234.24, 52.05], // Vertex 5
-    [-245.23, 43.06], // Vertex 6
-    [-118.22, 34.05], // Vertex 7
-    [-118.23, 34.04], // Vertex 8
-    [-118.24, 34.05] // Back to Vertex 1 to close the polygon
+    [13.3876, 52.5172], // Point 1
+    [13.3876, 52.6172], // Point 2
+    [13.4876, 52.6172], // Point 3
+    [13.4876, 52.5172], // Point 4
+    [13.3876, 52.5172] // Back to Vertex 1 to close the polygon
   ]
 ]
 
 export const thirteen = [
   [
-    [-118.24, 34.05], // Point 1
-    [-119.25, 31.06], // Point 2
-    [-120.26, 35.05], // Point 3
-    [-118.25, 31.04], // Point 4
-    [-120.24, 39.05], // Point 5
-    [-136.23, 30.06], // Point 6
-    [-125.22, 45.05], // Point 7
-    [-140.23, 29.04], // Point 8
-    [-130.24, 46.05], // Point 9
-    [-120.25, 43.06], // Point 10
-    [-141.26, 38.05], // Point 11
-    [-151.25, 40.04], // Point 12
-    [-118.24, 34.05] // Point 13
+    [13.3876, 52.5172],
+    [13.3876, 52.6172],
+    [13.4876, 52.6172],
+    [13.4876, 52.5172],
+    [13.5876, 52.5172],
+    [13.5876, 52.6172],
+    [13.6876, 52.6172],
+    [13.6876, 52.5172],
+    [13.5876, 52.5172],
+    [13.5876, 52.4172],
+    [13.4876, 52.4172],
+    [13.4876, 52.5172],
+    [13.3876, 52.5172] // Point 13
   ]
 ]
 
@@ -176,14 +171,7 @@ export const mappingData: { [key: string]: any }[] = [
         log: -118.22,
         lat: 34.05
       },
-      {
-        log: -135.23,
-        lat: 34.04
-      },
-      {
-        log: -118.24,
-        lat: 34.05
-      },
+
     ]
 
   },
@@ -213,7 +201,7 @@ export const mappingData: { [key: string]: any }[] = [
       {
         log: -120.26,
         lat: 35.05
-      },,
+      }, ,
       {
         log: -118.25,
         lat: 31.04
@@ -244,7 +232,7 @@ export const mappingData: { [key: string]: any }[] = [
       },
       {
         log: -141.26,
-        lat:  38.05
+        lat: 38.05
       },
       {
         log: -151.25,
@@ -393,37 +381,37 @@ export const optionsTracabilité: {
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Reçus",
-    href: Route.receipt,
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Fiche d'accompagnement à l'usine",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Bordereaux de vente",
-    href: Route.saleSlip,
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Fiche de transmission et de déclaration",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Bon d'entrée au magasin",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-];
+    {
+      title: "Reçus",
+      href: Route.receipt,
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Fiche d'accompagnement à l'usine",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Bordereaux de vente",
+      href: Route.saleSlip,
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Fiche de transmission et de déclaration",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Bon d'entrée au magasin",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+  ];
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'REVENU ET RESPONSABILTE'
 export const optionsRevenu: {
@@ -431,25 +419,25 @@ export const optionsRevenu: {
   href: string;
   description: string;
 }[] = [
-  {
-    title: "Justificatifs de payement de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Plan de gestion de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Différentiel de durabilité",
-    href: "/docs/primitives/alert-dialog",
-    description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-];
+    {
+      title: "Justificatifs de payement de l'investissement de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Plan de gestion de l'investissement de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+    {
+      title: "Différentiel de durabilité",
+      href: "/docs/primitives/alert-dialog",
+      description:
+        "A modal dialog that interrupts the user with important content and expects a response.",
+    },
+  ];
 
 // THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
 export const tableHead: string[] = [

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import xlsx, { IJsonSheet } from "json-as-xlsx";
 import tokml from "tokml";
 import slugify from "slugify";
+import Link from "next/link";
 
 type Props = {};
 
@@ -153,12 +154,30 @@ export default function MappingData({}: Props) {
                 <td className="px-2 border">{item.nom_du_mappeur}</td>
                 <td className="px-2 border">{item.date}</td>
                 <td className="px-2 border">{item.superficie_estimé}</td>
-                <td className="px-2 border">{item.photo_plantation}</td>
-                <td className="px-2 border">{item.photo_planteur}</td>
+                <td className="px-2 border">
+                  <Link
+                    className=""
+                    target="_blank"
+                    href={item.photo_plantation}
+                  >
+                    <div className="w-[200px] hover:underline truncate text-blue-500">
+                      {item.photo_plantation}
+                    </div>
+                  </Link>
+                </td>
+                <td className="px-2 border">
+                  <Link target="_blank" href={item.photo_planteur}>
+                    <div className="w-[200px] hover:underline truncate text-blue-500">
+                      {item.photo_planteur}
+                    </div>
+                  </Link>
+                </td>
                 <td className="px-2 border flex flex-col gap-2 max-h-[250px] overflow-y-scroll">
                   {item.coordinate?.map((coord: any, i: number) => (
                     <>
-                      <span className="" key={i+1.1}>long:{coord.log}</span>
+                      <span className="" key={i + 1.1}>
+                        long:{coord.log}
+                      </span>
                       <span className="border-b">lat:{coord.lat}</span>
                       {/* <span key={i + 110}>long:{coord.log}</span>
                       <span className="border-b" key={i + 1.5}>

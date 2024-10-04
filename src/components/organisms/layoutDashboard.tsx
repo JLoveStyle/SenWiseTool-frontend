@@ -52,6 +52,7 @@ export default function LayoutDashboard({
   const { session } = useSession();
 
   // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
+
   const campaigns = useCampaignStore((state) => state.campaigns).map(
     (comp) => ({
       label: comp.name,
@@ -59,7 +60,7 @@ export default function LayoutDashboard({
       baseUrl: "",
     })
   );
-  // console.log(campaigns)
+  const sortedCampains = campaigns.sort((a, b) => a.label.localeCompare(b.label))
 
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
@@ -69,7 +70,7 @@ export default function LayoutDashboard({
         baseUrl: "",
         icon: RxStack,
       },
-      details: campaigns,
+      details: sortedCampains,
     },
     {
       option: {
