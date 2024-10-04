@@ -82,8 +82,8 @@ export const mappingData: { [key: string]: any }[] = [
     nom_du_mappeur: "Jean Blaise Piment",
     date: '10/05/2021',
     superficie_estimé: "10ha",
-    photo_plantation: 'https://edgestore/plantation.jpg',
-    photo_planteur: 'https://edgestore/planteur.jpeg',
+    photo_plantation: "https://senwisetool.s3.eu-west-1.amazonaws.com/inspectioninterne1728044055501-3032c6d8-a26a-467e-bc1a-2f0ab9526bed-16.03.2023_06.32.03_REC.png",
+    photo_planteur: "https://senwisetool.s3.eu-west-1.amazonaws.com/inspectioninterne1728044055502-3c9bf794-6794-4678-9e0e-d2fedd661755-automate-autom.PNG",
     coordinate: [
       {
         log: -122.4194,
@@ -145,8 +145,8 @@ export const mappingData: { [key: string]: any }[] = [
     nom_du_mappeur: "Jean pierre Fokong",
     date: '10/05/2021',
     superficie_estimé: "50ha",
-    photo_plantation: 'https://edgestore/plantation.jpg',
-    photo_planteur: 'https://edgestore/planteur.jpeg',
+    photo_plantation: "https://senwisetool.s3.eu-west-1.amazonaws.com/inspectioninterne1728044055502-3c44b0c9-9f79-496b-8d49-673ad6fbd836-Capture1.PNG",
+    photo_planteur: "https://senwisetool.s3.eu-west-1.amazonaws.com/inspectioninterne1728044055502-3c9bf794-6794-4678-9e0e-d2fedd661755-automate-autom.PNG",
     coordinate: [
       {
         log: -118.24,
@@ -199,8 +199,8 @@ export const mappingData: { [key: string]: any }[] = [
     nom_du_mappeur: "Pascal Azombo",
     date: '10/05/2021',
     superficie_estimé: "80ha",
-    photo_plantation: 'https://edgestore/plantation.jpg',
-    photo_planteur: 'https://edgestore/planteur.jpeg',
+    photo_plantation: "https://senwisetool.s3.eu-west-1.amazonaws.com/inspectioninterne1728044055502-df237f7b-308f-4f16-beb4-e713b91d3525-cahier.bmp",
+    photo_planteur: "https://senwisetool.s3.eu-west-1.amazonaws.com/inspectioninterne1728044055502-3c9bf794-6794-4678-9e0e-d2fedd661755-automate-autom.PNG",
     coordinate: [
       {
         log: -118.24,

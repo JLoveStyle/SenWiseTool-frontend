@@ -32,6 +32,7 @@ import SideNav from "../molecules/sideNav";
 import { Session } from "../templates/session";
 import NavDashboard from "./navDashboard";
 import { FeaturesMenu } from "./navigationMenu";
+import { usePathname } from "next/navigation";
 type Props = {
   children: React.ReactNode;
   typeOfProject: ProjectsType;
@@ -45,7 +46,8 @@ export default function LayoutDashboard({
   projectsPerType,
   newForm,
 }: Props) {
-  
+  const pathname = usePathname();
+
   // Session object from clerk
   const { session } = useSession();
 
@@ -122,11 +124,13 @@ export default function LayoutDashboard({
   });
   useEffect(() => {
     refetch();
-    console.log('layoudashboard component rendered in useEffect')
+    console.log("layoudashboard component rendered in useEffect");
   }, [session?.id]);
 
   const { value: displayCloseSideNav, toggle: toggleDisplayCloseSideNav } =
-    useToggle({ initial: true });
+    pathname === Route.dashboard
+      ? useToggle({ initial: false })
+      : useToggle({ initial: true });
 
   return (
     <Session>
@@ -148,7 +152,9 @@ export default function LayoutDashboard({
               <div className="px-6 pt-1 pb-3 flex justify-center items-center">
                 <FeaturesMenu />
               </div>
-              <div className="overflow-y-auto max-h-[calc(100vh-130px)] overflow-hidden">{children}</div>
+              <div className="overflow-y-auto max-h-[calc(100vh-130px)] overflow-hidden">
+                {children}
+              </div>
             </div>
             {/* <div className="overflow-y-auto max-h-[calc(100vh-130px)] overflow-hidden">
               {children}

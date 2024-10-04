@@ -13,7 +13,7 @@ import { db_get_receipts } from "@/utiles/services/tracability/receipt";
 import { Archive, MoveLeft, Trash2, UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { PiFilesFill, PiPrinterFill } from "react-icons/pi";
 interface Props {
@@ -255,13 +255,13 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
               <span>{currentReceipt?.humidity_level_of_product}</span>
             </div>
             <div className="flex justify-between items-center gap-5 bg-transparent absolute bottom-5">
-              <Button
+              {/* <Button
                 size="sm"
                 variant="outline"
                 className="flex gap-1 items-center"
               >
                 <PiFilesFill /> Tout voir
-              </Button>
+              </Button> */}
               <Button
                 size="sm"
                 className="flex gap-1 items-center bg-black hover:bg-gray-900"
