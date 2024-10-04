@@ -213,15 +213,6 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             value={projectData?.region as string}
             className="md:w-[33.33%]"
           />
-          {/* <div className="flex flex-col ">
-            <label htmlFor="region">Region</label>
-            <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              isMulti
-              options={state}
-            />
-          </div> */}
           <CustomSelectTag
             selectName="city"
             onChange={(e) => handleChangeEvent(e)}
