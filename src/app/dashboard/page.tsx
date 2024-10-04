@@ -41,7 +41,7 @@ export default function Home({}: Props) {
   console.log(session);
   return (
     <LayoutDashboard
-      /*typeOfProject={"INITIAL_INSPECTION"}*/ projectsPerType={[]}
+      /*typeOfProject={"INITIAL_INSPECTION"}.*/ projectsPerType={[]}
     >
       <div>
         <div className="flex items-center justify-center mt-24">
