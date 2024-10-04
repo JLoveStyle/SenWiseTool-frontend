@@ -28,7 +28,7 @@ export default function NavDashboard({}: Props) {
   useEffect(() => {
     refetch();
     console.log("on navbar mount");
-  }, [session?.id]);
+  }, []);
 
   return (
     <nav className=" bg-tertiary  text-white z-50 flex justify-between ">

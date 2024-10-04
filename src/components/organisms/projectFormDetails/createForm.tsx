@@ -153,6 +153,7 @@ export default function ProjectDetailsForm({
 
     setIsLoading((prev) => !prev);
     console.log(compains[0]);
+    console.log('company', company)
     setErrorDate("")
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
