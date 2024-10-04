@@ -12,8 +12,30 @@ export default function MappingData({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [kmlFile, setKmlFile] = useState("");
 
+  const coordinates: {[key: string]: string}[] =[]
+  for (const cord of mappingData) {
+    coordinates.push(cord.coordinate)
+  }
+
   const downloadExcell = () => {
     console.log("excell sheet");
+
+    const cordinateColumns: IJsonSheet[] = [
+      {
+        sheet: "Farm_cordinates",
+        columns: [
+          {
+            label: "Logitude",
+            value: "log"
+          },
+          {
+            label: "Latitude",
+            value: "lat"
+          }
+        ],
+        content: coordinates.flat()
+      }
+    ]
     const columns: IJsonSheet[] = [
       {
         sheet: "Données_Mapping",
@@ -76,6 +98,7 @@ export default function MappingData({}: Props) {
 
     console.log("excell cheatsheet");
     xlsx(columns, settings);
+    xlsx(cordinateColumns, settings)
   };
 
   const convertTokml = (
