@@ -2,13 +2,7 @@
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import { useUserstore } from "@/lib/stores/user-stores";
-import {
-  ApiDataResponse,
-  CampaignType,
-  CompanyType,
-  UserType,
-} from "@/types/api-types";
+import { ApiDataResponse, UserType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useUser } from "@clerk/nextjs";
@@ -17,10 +11,11 @@ import React, { useEffect } from "react";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   LOCAL_STORAGE.save("username", user?.firstName);
+  console.log("user", user);
 
   // fetch user and set him to the store
   const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
@@ -41,23 +36,22 @@ export default function Home({ }: Props) {
   }, []);
 
   return (
-    <>
-      <LayoutDashboard
-        typeOfProject={"INITIAL_INSPECTION"}
-        projectsPerType={[]}
-      >
-        <div>
-          <div className="flex items-center justify-center mt-28">
-            <Image
-              src="/svg/empty.svg"
-              height={250}
-              width={350}
-              alt="Empty illustation"
-              className="animate-empty-image"
-            />
-          </div>
+    <LayoutDashboard
+      /*typeOfProject={"INITIAL_INSPECTION"}*/ 
+      projectsPerType={[]}
+      typeOfProject={"INTERNAL_INSPECTION"}
+    >
+      <div>
+        <div className="flex items-center justify-center mt-24">
+          <Image
+            src="/svg/empty.svg"
+            height={250}
+            width={350}
+            alt="Empty illustation"
+            className="animate-empty-image"
+          />
         </div>
-      </LayoutDashboard>
-    </>
+      </div>
+    </LayoutDashboard>
   );
 }

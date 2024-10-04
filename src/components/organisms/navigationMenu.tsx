@@ -20,7 +20,7 @@ import {
   optionsTracabilité,
 } from "@/utiles/services/constants";
 
-export function NavigationMenuDemo() {
+export function FeaturesMenu() {
   return (
     <NavigationMenu>
       <NavigationMenuList>

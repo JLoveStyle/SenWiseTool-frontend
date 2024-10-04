@@ -1,4 +1,3 @@
-import { ChapterMetaData } from "@/components/atoms/colums-of-tables/chapter";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { Route } from "@/lib/route";
 import { Project } from "@/types/gestion";
@@ -264,57 +263,57 @@ export const mappingData: { [key: string]: any }[] = [
 export const metaDataOptions: { [key: string]: string }[] = [
   {
     name: "Nom du planteur",
-    value: "nom_planteur"
+    value: "nom_planteur",
   },
   {
     name: "Contact planteur",
-    value: "contact_planteur"
+    value: "contact_planteur",
   },
   {
     name: "Code du planteur",
-    value: "code_planteur"
+    value: "code_planteur",
   },
   {
     name: "N° CNI",
-    value: "cni"
+    value: "cni",
   },
   {
     name: "Date de l'inspection",
-    value: "date_de_inspection"
+    value: "date_de_inspection",
   },
   {
     name: "Village",
-    value: "village"
+    value: "village",
   },
   {
     name: "Annee de certification",
-    value: "annee_de_certification"
+    value: "annee_de_certification",
   },
   {
     name: "Nom de inspecteur",
-    value: "nom_de_inspecteur"
+    value: "nom_de_inspecteur",
   },
   {
     name: "Contact de inspecteur",
-    value: "contact_de_inspecteur"
+    value: "contact_de_inspecteur",
   },
   {
     name: "Angrais appliqué",
-    value: "angrais_appliqué"
+    value: "angrais_appliqué",
   },
   {
     name: "Quantité d'angrais appliqué",
-    value: "qte_angrais_appliqué"
+    value: "qte_angrais_appliqué",
   },
   {
     name: "Pesticide utiliser",
-    value: "pesticide_utiliser"
+    value: "pesticide_utiliser",
   },
   {
     name: "Quantité de Pesticide",
-    value: "qte_pesticide"
+    value: "qte_pesticide",
   },
-]
+];
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'GESTION'
 export const optionsGestions: {
@@ -394,37 +393,37 @@ export const optionsTracabilité: {
   href: string;
   description: string;
 }[] = [
-    {
-      title: "Reçus",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Fiche d'accompagnement à l'usine",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Bordereaux de vente",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Fiche de transmission et de déclaration",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Bon d'entrée au magasin",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-  ];
+  {
+    title: "Reçus",
+    href: Route.receipt,
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Fiche d'accompagnement à l'usine",
+    href: "/docs/primitives/alert-dialog",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Bordereaux de vente",
+    href: Route.saleSlip,
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Fiche de transmission et de déclaration",
+    href: "/docs/primitives/alert-dialog",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Bon d'entrée au magasin",
+    href: "/docs/primitives/alert-dialog",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+];
 
 // THESE ARE OPTIONS OF THE NAVIGATIONMENU UNDER 'REVENU ET RESPONSABILTE'
 export const optionsRevenu: {
@@ -432,32 +431,44 @@ export const optionsRevenu: {
   href: string;
   description: string;
 }[] = [
-    {
-      title: "Justificatifs de payement de l'investissement de durabilité",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Plan de gestion de l'investissement de durabilité",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Différentiel de durabilité",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-  ]
+  {
+    title: "Justificatifs de payement de l'investissement de durabilité",
+    href: "/docs/primitives/alert-dialog",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Plan de gestion de l'investissement de durabilité",
+    href: "/docs/primitives/alert-dialog",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+  {
+    title: "Différentiel de durabilité",
+    href: "/docs/primitives/alert-dialog",
+    description:
+      "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+];
 
 // THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
 export const tableHead: string[] = [
-  'Project name', "Status", "Creator", "Last update", "Deployment date", "Start date"
-]
+  "Project name",
+  "Status",
+  "Creator",
+  "Last update",
+  "Deployment date",
+  "Start date",
+];
 
 // DIFFERENTS CHAMPTERS
-export const chapters: string[] = ["Chapter 1", "Chapter 2", "Chapter 3", "Chapter 4", "Chapter 5", "Chapter 6"]
+export const chapters: string[] = [
+  "Chapter 1",
+  "Chapter 2",
+  "Chapter 3",
+  "Chapter 4",
+  "Chapter 5",
+  "Chapter 6",
+];
 
 export const requirements = allRequirements
