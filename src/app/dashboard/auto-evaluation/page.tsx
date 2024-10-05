@@ -32,7 +32,6 @@ export default function Home({}: Props) {
     await fetchApiData(
       Route.projects,
       "?type=AUTO_EVALUATION",
-      company?.id,
       currentCampaign?.id
     )
       .then((response) => {
