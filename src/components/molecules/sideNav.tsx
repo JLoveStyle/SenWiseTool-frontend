@@ -21,6 +21,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Logo } from "../atoms/logo";
 import { Spinner } from "../atoms/spinner/spinner";
+import React from "react";
 
 interface Props {
   options: DashboardSidebarOption[];

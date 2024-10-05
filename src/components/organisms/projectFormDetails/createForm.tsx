@@ -6,7 +6,7 @@ import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Route } from "@/lib/route";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { businessActivity } from "@/utiles/services/constants";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -21,7 +21,7 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
-  typeOfProject: ProjectsType
+  typeOfProject: ProjectsType;
   project?: Project;
 };
 
@@ -45,6 +45,7 @@ export default function ProjectDetailsForm({
   const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>(
     ""
   );
+  const [errorDate, setErrorDate] = useState<string>("");
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
@@ -58,8 +59,7 @@ export default function ProjectDetailsForm({
     status: "DRAFT",
     type: typeOfProject, // Project type 'AUTO_EVALUATION' | 'INITIAL_INSPECTION' | etc
   });
-
-  const animatedComponents = makeAnimated(); // For react-select
+  const pathname = usePathname();
 
   const handleChangeEvent = (
     e: React.ChangeEvent<
@@ -70,6 +70,7 @@ export default function ProjectDetailsForm({
       ...projectData,
       [e.target.name]: e.target.value,
     };
+
     setProjectData(data);
     for (const country of countries) {
       if (country.name === data.country) {
@@ -114,12 +115,23 @@ export default function ProjectDetailsForm({
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    setIsLoading((prev) => !prev);
     if (companyLogo) {
       // load the company logo in the companys' table
     }
 
-    console.log(compains[0])
+    // CONVERT DATE INTO NUMBER
+    const startDate = new Date(`${projectData.start_date?.slice(0, 10)}`);
+    const endDate = new Date(`${projectData.end_date?.slice(0, 10)}`);
+
+    if (startDate?.getTime() > endDate.getTime()) {
+      setErrorDate("Start date must not be greater than end date");
+      return;
+    }
+
+    setIsLoading((prev) => !prev);
+    console.log(compains[0]);
+    console.log("company", company);
+    setErrorDate("");
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
@@ -140,6 +152,15 @@ export default function ProjectDetailsForm({
         console.log("project cereated", res);
         if (res.status === 201) {
           setIsLoading((prev) => !prev);
+          toast.success("Success", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+          if (pathname.includes("mapping")) {
+            // CLOSE MODAL
+            router.push(Route.mapping);
+            return;
+          }
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
           return;
@@ -154,8 +175,8 @@ export default function ProjectDetailsForm({
         console.log("error occured while creating project", err);
         toast.error("Something went wrong. Please try again", {
           transition: Bounce,
-          autoClose: 3000
-        })
+          autoClose: 3000,
+        });
         setIsLoading((prev) => !prev);
       });
     // get the id of the project response and route to that ID
@@ -170,16 +191,23 @@ export default function ProjectDetailsForm({
       heading={`Create a project (${typeOfProject}): Project details`}
     >
       <form className="w-full flex flex-col px-4 py-2" onSubmit={handleSubmit}>
-        <em>
-          <strong>NB</strong>: The Rain forest Alliances' and company logos will
-          be added by default on this project form
-        </em>
-        <div className="flex flex-col py-2">
-          <label htmlFor="company_logo">
-            <strong>Add another logo</strong>
-          </label>
-          <input type="file" onChange={(e) => handleOtherLogo(e)} />
-        </div>
+        {typeOfProject === "MAPPING" ? (
+          ""
+        ) : (
+          <>
+            <em>
+              <strong>NB</strong>: The Rain forest Alliances' and company logos
+              will be added by default on this project form
+            </em>
+            <div className="flex flex-col py-2">
+              <label htmlFor="company_logo">
+                <strong>Add another logo</strong>
+              </label>
+              <input type="file" onChange={(e) => handleOtherLogo(e)} />
+            </div>
+          </>
+        )}
+
         <InputField
           label="Project title"
           inputName="title"
@@ -207,6 +235,7 @@ export default function ProjectDetailsForm({
             />
           </div>
         </div>
+        {errorDate && <span className="text-red-500 mt-4"><em>{errorDate}</em></span>}
         <label className="font-semibold" htmlFor="activity">
           Business sector
           <span className="text-red-500">*</span>
@@ -219,9 +248,7 @@ export default function ProjectDetailsForm({
           onChange={(event) => handleChangeEvent(event)}
           className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
         >
-          <option selected disabled>
-            -- Select --
-          </option>
+          <option>-- Select --</option>
           {businessActivity?.map((item: any, index) => (
             <option key={index} value={item}>
               {item}
@@ -284,7 +311,11 @@ export default function ProjectDetailsForm({
           </Button>
           <Button
             type="submit"
-            className={isLoading ? "hover:cursor-wait opacity-70" : "active:transition-y-1"}
+            className={
+              isLoading
+                ? "hover:cursor-wait opacity-70"
+                : "active:transition-y-1"
+            }
           >
             {isLoading ? <Spinner /> : "CREATE PROJECT"}
           </Button>

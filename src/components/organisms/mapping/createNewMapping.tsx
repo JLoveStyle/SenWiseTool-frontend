@@ -64,7 +64,6 @@ export default function CreateNewMapping({ onClick }: Props) {
       campaign_id: campains[0]?.id,
       status: "DRAFT",
       type: "MAPPING",
-      sector_activity: "",
     })
       .then((res) => {
         if (res.status.toString().startsWith("2")) {

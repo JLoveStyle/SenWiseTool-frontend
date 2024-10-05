@@ -27,9 +27,10 @@ export default function Home({ params: { id } }: Props) {
     await fetchApiData(Route.projects, id)
       .then((response) => {
         console.log("mappingproject per Id", response);
-        if (response.status.startsWith("2")) {
+        if (response.status === 200) {
           setIsLoading((prev) => !prev);
           setProjectObject(response.data);
+          return
         }
         toast.error("Something went wrong", {
           transition: Bounce,
@@ -47,7 +48,7 @@ export default function Home({ params: { id } }: Props) {
   }
 
   useEffect(() => {
-    // fetchProjectById()
+    fetchProjectById()
   }, [])
 
   return (

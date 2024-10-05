@@ -27,9 +27,15 @@ export default function FinalFormData({ selectedProjects }: Props) {
             <tr key={idx}>
               <td className="px-2 border">{item.number}</td>
               <td className="px-2 border">{item.principal_requirement}</td>
-              <td className="px-2 border">{item.certication_de_group.petit_exp_agri}</td>
-              <td className="px-2 border">{item.certication_de_group.grande_exp_agri}</td>
-              <td className="px-2 border">{item.certication_de_group.direction_de_group}</td>
+              <td className="px-2 border">
+                {item.certif_de_group.petite_exploitation_agricole}
+              </td>
+              <td className="px-2 border">
+                {item.certif_de_group.grande_exploitation_agricole}
+              </td>
+              <td className="px-2 border">
+                {item.certif_de_group.direction_du_group}
+              </td>
               <td className="px-2 border">
                 <input type="radio" id="C" name="C" />
               </td>
@@ -40,7 +46,7 @@ export default function FinalFormData({ selectedProjects }: Props) {
                 <input type="radio" id="NA" name="C" />
               </td>
               <td className="px-2 border">
-                <textarea className="p-2 border-none h-full"/>
+                <textarea className="p-2 border-none h-full" />
               </td>
             </tr>
           ))}

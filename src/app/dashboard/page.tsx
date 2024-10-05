@@ -5,7 +5,7 @@ import { Route } from "@/lib/route";
 import { ApiDataResponse, UserType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { useAuth, useSession, useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useEffect } from "react";
 
@@ -13,12 +13,11 @@ type Props = {};
 
 export default function Home({}: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
-  const { session } = useSession();
   const { user } = useUser();
   LOCAL_STORAGE.save("username", user?.firstName);
   console.log("user", user);
 
-  // create user and set him to the store
+  // fetch user and set him to the store
   const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
     fn: () => fetchApiData(Route.user, "current"),
     route: Route.user,
@@ -28,8 +27,6 @@ export default function Home({}: Props) {
     const token = await getToken();
     if (token) {
       LOCAL_STORAGE.save("token", token);
-      // store the user in the session
-      // apiObj().POST(`${API_URL}/v1/users`, {}, Headers);
     }
   }
 
@@ -38,7 +35,6 @@ export default function Home({}: Props) {
     refetch();
   }, []);
 
-  console.log(session);
   return (
     <LayoutDashboard typeOfProject={"INITIAL_INSPECTION"} projectsPerType={[]}>
       <div>

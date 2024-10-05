@@ -9,6 +9,7 @@ import MappingProjectSummary from "../molecules/mappingProjectSummary";
 import InspectionData from "../molecules/collectedData/inspectionData";
 import MappingData from "../molecules/collectedData/mappingData";
 import MappingForm from "./mapping/mappingForm";
+import ProjectForm from "./projectForm";
 
 type Props = {
   projectDetails: ProjectType;
@@ -151,18 +152,18 @@ export default function ProjectDetails({ projectDetails }: Props) {
         {dataActive && pathname.includes("/mapping/") ? (
           <MappingData />
         ) : dataActive ? (
-          <InspectionData projectType={projectDetails.type} />
+          <InspectionData projectType={projectDetails?.type} />
         ) : (
           ""
         )}
         {formActive && pathname.includes("/mapping/") ? (
           <MappingForm />
         ) : // <p>sdivosidvsd</p>
-          formActive ? (
-            <p>inspection data</p>
-          ) : (
-            ""
-          )}
+        formActive ? (
+          <ProjectForm projectObject={projectDetails ? projectDetails : undefined} />
+        ) : (
+          ""
+        )}
         {settingsActive && <p>Show settings</p>}
       </div>
     </div>

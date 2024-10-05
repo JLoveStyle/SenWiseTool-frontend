@@ -13,6 +13,7 @@ import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { ColumnDef } from "@tanstack/react-table";
+import dayjs from "dayjs";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Bounce, toast } from "react-toastify";
@@ -60,18 +61,40 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
   {
     accessorKey: "city",
     header: "Village",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("city")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("city")}</div>,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
   },
   {
     accessorKey: "created_at",
     header: "Creation date",
+    cell: ({ row }) => (
+      <span>{dayjs(row.getValue("created_at")).toString().slice(0, -13)} </span>
+    ),
   },
   {
     accessorKey: "updated_at",
     header: "Last update",
-    // cell: (row) => DateTime.fromISO(row.getValue()).toLocalString(DateTime.DATE_MED)
+    cell: ({ row }) => (
+      <span className="text-center">
+        {(row.getValue("updated_at") as string).includes("1969")
+          ? "--"
+          : dayjs(row.getValue("updated_at")).toString().slice(0, -13)}
+      </span>
+    ),
+  },
+  {
+    accessorKey: "deployed_at",
+    header: "deployement date",
+    cell: ({ row }) => (
+      <span className="text-center">
+        {(row.getValue("deployed_at") as string).includes("1969")
+          ? "--"
+          : dayjs(row.getValue("deployed_at")).toString().slice(0, -13)}
+      </span>
+    ),
   },
   {
     id: "actions",

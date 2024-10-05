@@ -37,7 +37,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     country: project?.country,
     description: project?.description,
     city: project?.city,
-    state: project?.state,
+    region: project?.region,
     start_date: project?.start_date,
     end_date: project?.end_date,
     status: "DRAFT",
@@ -68,7 +68,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     }
     if (state) {
       for (const item of state) {
-        if (item.name === data.state) {
+        if (item.name === data.region) {
           setCity(
             City.getCitiesOfState(selectedCountryObject.isoCode, item.isoCode)
           );
@@ -90,7 +90,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
         country: projectData?.country,
         city: projectData.city,
         sector_activity: projectData.sector_activity,
-        state: projectData.state,
+        region: projectData.region,
         start_date: projectData.start_date,
         end_data: projectData.end_date,
       },
@@ -210,18 +210,9 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
-            value={projectData.state as string}
+            value={projectData?.region as string}
             className="md:w-[33.33%]"
           />
-          {/* <div className="flex flex-col ">
-            <label htmlFor="region">Region</label>
-            <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              isMulti
-              options={state}
-            />
-          </div> */}
           <CustomSelectTag
             selectName="city"
             onChange={(e) => handleChangeEvent(e)}

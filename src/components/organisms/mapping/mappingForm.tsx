@@ -24,6 +24,7 @@ export default function MappingForm({}: Props) {
             </tr>
           </thead>
           <tbody>
+            {/* CREATE 20 LINES */}
             {[...Array(20)].map((item, idx) => (
               <tr key={idx}>
                 {[...Array(13)].map((item, idx) => (

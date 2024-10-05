@@ -19,8 +19,9 @@ import {
   optionsRevenu,
   optionsTracabilité,
 } from "@/utiles/services/constants";
+import { Route } from "@/lib/route";
 
-export function NavigationMenuDemo() {
+export function FeaturesMenu() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -77,21 +78,21 @@ export function NavigationMenuDemo() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem className="">
-          <Link href="/docs" legacyBehavior passHref>
+          <Link href={Route.agriculture} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               AGRICULTURE
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem className="">
-          <Link href="/docs" legacyBehavior passHref>
+          <Link href={Route.social} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               SOCIAL
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem className="">
-          <Link href="/docs" legacyBehavior passHref>
+          <Link href={Route.enviroment} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               ENVIRONNEMENT
             </NavigationMenuLink>

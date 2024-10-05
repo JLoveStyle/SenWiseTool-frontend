@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import React, { useRef } from "react";
 import html2pdf from "html2pdf.js";
 import { Route } from "@/lib/route";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { PiPrinterFill } from "react-icons/pi";
+import { Spinner } from "./spinner/spinner";
 
 interface Props {
   children: React.ReactNode;
@@ -11,10 +13,12 @@ interface Props {
   deployProject: () => void;
   filename: string;
   handleExitPage?: () => void;
+  isDeploying: boolean;
 }
 
 const PrintContent: React.FC<Props> = (props) => {
   const formRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   const handlePrint = () => {
     const element = formRef.current;
@@ -25,8 +29,8 @@ const PrintContent: React.FC<Props> = (props) => {
       html2canvas: { scale: 2 },
       jsPDF: {
         unit: "in",
-        format: "land-scape",
-        orientation: "portrait",
+        format: "letter",
+        orientation: "landscape",
       },
     };
     if (element) {
@@ -34,27 +38,34 @@ const PrintContent: React.FC<Props> = (props) => {
     }
   };
 
+
   return (
     <div>
       <div ref={formRef}>{props.children}</div>
       <div className="flex justify-center mx-auto gap-4 pb-10 ">
-        <Button
-          className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1"
-          onClick={props.handleExitPage}
+        <div
+          className={pathname.includes("/mapping") ? "hidden" : "flex gap-4"}
         >
-          BACK
-        </Button>
-        <Button className="px-10" onClick={props.onClick}>
-          Edit
-        </Button>
+          <Button
+            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1 hover:rounded-full"
+            onClick={props.handleExitPage}
+          >
+            BACK
+          </Button>
+          <Button className="px-10 hover:rounded-full" onClick={props.onClick}>
+            Edit
+          </Button>
+
+          <Button className="hover:rounded-full" onClick={props.deployProject}>
+            {props.isDeploying ? <Spinner/> : "Deploy"}
+          </Button>
+        </div>
         <Button
           className="flex gap-1 items-center bg-black hover:bg-black hover:rounded-full"
           onClick={handlePrint}
         >
+          <PiPrinterFill />
           Print to PDF
-        </Button>
-        <Button className="" onClick={props.deployProject}>
-          Deploy
         </Button>
       </div>
     </div>

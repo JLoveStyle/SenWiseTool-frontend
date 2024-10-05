@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { Spinner } from "../atoms/spinner/spinner";
+import dayjs from "dayjs";
 
 type Props = {
   projectObject: ProjectType | undefined;
@@ -30,7 +31,6 @@ export default function ProjectSummary({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const id = LOCAL_STORAGE.get("projectId");
-  const project = LOCAL_STORAGE.get("project");
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
@@ -106,11 +106,20 @@ export default function ProjectSummary({
     },
   ];
 
+  const jsonString = JSON.stringify(projectObject?.project_structure);
+
   return (
-    <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
+    <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-screen">
       <div className="md:w-[70%]">
         <p className="">Project details</p>
         <div className="bg-white md:w-full p-5 shadow">
+          {/* project title */}
+          <div className="flex gap-2 py-2 border-b pb-4">
+            <span className="text-sm text-gray-500 ">Title:</span>
+            <span className=" font-semibold text-sm px-2 rounded-lg">
+              {projectObject?.title}
+            </span>
+          </div>
           <div className="border-b pb-4">
             <span className="text-sm font-semibold text-gray-500">
               Description
@@ -118,60 +127,64 @@ export default function ProjectSummary({
             <p className="font-semibold">{projectObject?.description} </p>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
-            <div className="flex md:w-[500px] justify-between">
+            <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
-                <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
+                <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
                   {projectObject?.status}
                 </span>
               </div>
-              {/* project title */}
+
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Title</span>
-                <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
-                  {projectObject?.title}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">N° Questions</span>
+                <span className="text-sm text-gray-500 ">N° of Questions</span>
                 {projectObject?.project_structure && (
-                  <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
-                    3
+                  <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
+                    {JSON.parse(jsonString).requirements.length}
                   </span>
                 )}
+              </div>
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Project Type</span>
+                <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
+                  {projectObject?.type}
+                </span>
               </div>
             </div>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
-            <div className="flex md:w-[500px] justify-between">
+            <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Start date</span>
-                <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.start_date}
+                <span className=" text-sm text-center rounded-lg font-semibold">
+                  {dayjs(projectObject?.start_date).toString().slice(0, -13)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">End date</span>
-                <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.end_date}
+                <span className=" text-sm text-center rounded-lg font-semibold">
+                  {dayjs(projectObject?.end_date).toString().slice(0, -13)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last update</span>
                 <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.updated_at}
+                  {dayjs(projectObject?.updated_at).toString().slice(0, -13)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last deployment</span>
-                <span className=" text-sm rounded-lg font-semibold">
-                  {projectObject?.deployed_at}
+                <span className=" text-sm rounded-lg text-center font-semibold">
+                  {projectObject?.deployed_at.includes("1969")
+                    ? "--"
+                    : dayjs(projectObject?.deployed_at)
+                        .toString()
+                        .slice(0, -13)}
                 </span>
               </div>
             </div>
           </div>
           <div className="flex justify-between md:w-full pt-4">
-            <div className="flex md:w-[500px] justify-between">
+            <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Country</span>
                 <span className=" text-sm rounded-lg font-semibold">

@@ -3,6 +3,7 @@ import Print from "@/components/atoms/print";
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
 import { Route } from "@/lib/route";
+import { ProjectType } from "@/types/api-types";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
@@ -18,7 +19,7 @@ export default function page({ }: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [project, setProject] = useState<{ [key: string]: any }>({});
+  const [project, setProject] = useState<ProjectType>();
   const projectData = LOCAL_STORAGE.get("project");
   const finalJson = LOCAL_STORAGE.get("finalJson");
 
@@ -37,6 +38,7 @@ export default function page({ }: Props) {
   };
 
   // To display view project when coming from details page
+  /*
   async function getProjectById() {
     await fetchApiData(Route.projects, projectData?.id)
       .then((response) => {
@@ -52,8 +54,15 @@ export default function page({ }: Props) {
     // Fetch project by id
     getProjectById();
   }, []);
+  */
 
   async function deployProject() {
+    if (projectData.status === "DEPLOYED") {
+      toast.warning("Project deployed already", {
+        transition: Bounce,
+        autoClose: 3000
+      })
+    }
     setIsLoading((prev) => !prev);
     await mutateUpApiData(
       Route.projects,
@@ -62,6 +71,7 @@ export default function page({ }: Props) {
     )
       .then((response) => {
         console.log(response);
+        setIsLoading(prev => !prev)
         if (response.status <= 204) {
           toast.success("Project deployed", {
             transition: Bounce,
@@ -77,19 +87,31 @@ export default function page({ }: Props) {
       })
       .catch((error) => {
         console.log("An error occured", error);
+        setIsLoading(prev => !prev)
         toast.error("Fail to deploy. Try again", {
           transition: Bounce,
-          autoClose: 1000,
+          autoClose: 3000,
         });
       });
   }
 
+  const handleBackBtn = () => {
+    if (projectData?.type == "AUTO_EVALUATION") {
+      router.push(Route.autoEvaluation)
+    } else if (projectData?.type == "INITIAL_INSPECTION") {
+      router.push(Route.inspectionInitial)
+    } else if (projectData?.type == "INTERNAL_INSPECTION") {
+      router.push(Route.inspectionInterne)
+    }
+  }
+
   return (
-    <Print
-      handleExitPage={() => router.push(Route.dashboard)}
+    <PrintContent
+      isDeploying={isLoading}
+      handleExitPage={handleBackBtn}
       onClick={() => router.push(Route.editProject + `/${projectData?.id}`)}
       deployProject={() => deployProject()}
-      fileName="inspection-form"
+      filename="formulaire-d'inspection"
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
@@ -105,7 +127,7 @@ export default function page({ }: Props) {
           <Image
             src="/images/logo_forest.jpg"
             alt="rainforest aliance logo"
-            width={100}
+            width={250}
             height={100}
           />
           {/* Partner logo */}
@@ -166,6 +188,6 @@ export default function page({ }: Props) {
           <FinalFormData selectedProjects={finalJson.requirements} />
         </div>
       </div>
-    </Print>
+    </PrintContent>
   );
 }
