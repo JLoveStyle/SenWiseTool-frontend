@@ -11,7 +11,6 @@ import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
 import { ProjectsType, ProjectType } from "@/types/api-types";
-import CreateNewMapping from "./mapping/createNewMapping";
 
 type Props = {
   typeOfProject: ProjectsType;
@@ -61,7 +60,7 @@ export default function CloseSiveNav({
   return (
     <div
       className={
-        pathname.includes("/details") || pathname.includes("/mapping/") // Hide this component on the detail page
+        pathname.includes("/details") || pathname.includes("/mapping/") // Hide this component on the detail page or mapping pages
           ? "hidden"
           : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
       }
@@ -91,6 +90,7 @@ export default function CloseSiveNav({
           <DialogContent className="sm:max-w-[800px]">
             {showProjectDetailsForm && (
               <ProjectDetailsForm
+                closeModal={(value: boolean) => setOpenModal(value)}
                 onClick={handleShowProjectDetails}
                 typeOfProject={typeOfProject}
               />
@@ -98,13 +98,6 @@ export default function CloseSiveNav({
             {showProjectOptions && (
               <CreateProjectOptions onClick={handleOpenProjectOptions} />
             )}
-            {/* {showProjectOptions && pathname.includes("/mapping") ? (
-              <CreateNewMapping onClick={closeModal}/>
-            ) : showProjectOptions ? (
-              <CreateProjectOptions onClick={handleOpenProjectOptions} />
-            ) : (
-              ""
-            )} */}
           </DialogContent>
         </Dialog>
         <div className="flex justify-between gap-2 hover:cursor-pointer">

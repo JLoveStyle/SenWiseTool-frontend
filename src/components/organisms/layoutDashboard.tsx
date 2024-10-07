@@ -60,8 +60,18 @@ export default function LayoutDashboard({
       baseUrl: "",
     })
   );
-  const sortedCampains = campaigns.sort((a, b) => a.label.localeCompare(b.label))
+  const sortedCampains = campaigns.sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
 
+  const date = new Date();
+  console.log(date.getFullYear());
+  const todayDate = date.getFullYear().toString();
+  for (const campain of sortedCampains) {
+    if (campain.label.includes('2025')) {
+      console.log("yes", campain);
+    }
+  }
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
     {

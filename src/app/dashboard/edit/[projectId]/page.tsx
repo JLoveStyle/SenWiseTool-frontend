@@ -30,10 +30,9 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
-// import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
-import { ProjectStatus, ProjectType } from "@/types/api-types";
+import { ProjectType } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 
 const AddFormFromLibrary = dynamic(

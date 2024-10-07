@@ -23,12 +23,13 @@ type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject: ProjectsType;
   project?: Project;
+  closeModal: (val: boolean) => void
 };
 
 export default function ProjectDetailsForm({
   onClick,
   typeOfProject,
-  project,
+  closeModal,
 }: Props) {
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
@@ -158,7 +159,8 @@ export default function ProjectDetailsForm({
           });
           if (pathname.includes("mapping")) {
             // CLOSE MODAL
-            router.push(Route.mapping);
+            closeModal(false)
+            router.refresh();
             return;
           }
           router.push(Route.editProject + `/${res.data.id}`);

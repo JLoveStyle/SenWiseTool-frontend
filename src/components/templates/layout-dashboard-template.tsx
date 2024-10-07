@@ -26,6 +26,7 @@ import StatPanel from "../atoms/dashboard/stat-panel";
 import FloatingButton from "../atoms/disign-system/floating-button";
 import { FeaturesMenu } from "../organisms/navigationMenu";
 import { Session } from "../templates/session";
+import { useSession } from "@clerk/nextjs";
 // import CloseSideNav from "./closeSideNav";
 type Props = {
   children: React.ReactNode;
@@ -40,6 +41,9 @@ export default function LayoutDashboardTemplate({
   newForm,
   statPanelDatas,
 }: Props) {
+  // GET SESSION ID from clerk
+  const { session } = useSession();
+
   // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
   const campaigns = useCampaignStore((state) => state.campaigns).map(
     (comp) => ({
@@ -48,6 +52,10 @@ export default function LayoutDashboardTemplate({
       baseUrl: "",
     })
   );
+
+  // Sort all campains in ASC order
+  const sortedCampains = campaigns.sort((a, b) => a.label.localeCompare(b.label))
+
   // console.log(campaigns)
 
   // SIDEBAR OPTIONS
@@ -58,7 +66,7 @@ export default function LayoutDashboardTemplate({
         baseUrl: "",
         icon: RxStack,
       },
-      details: campaigns,
+      details: sortedCampains,
     },
     {
       option: {
@@ -112,7 +120,7 @@ export default function LayoutDashboardTemplate({
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [session?.id]);
 
   const { value: displayCloseSideNav, toggle: toggleDisplayCloseSideNav } =
     useToggle({ initial: newForm || statPanelDatas ? true : false });
