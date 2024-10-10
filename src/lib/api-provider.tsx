@@ -10,6 +10,7 @@ import { useCampaignStore } from "./stores/campaign-store";
 import { useCompanyStore } from "./stores/companie-store";
 import { usePriceStore } from "./stores/price-store";
 import { IUser, useUserstore } from "./stores/user-stores";
+import { Key } from "lucide-react";
 
 export interface IAppProps<Q> {
   query?: string;
@@ -29,7 +30,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
   const setCompany = useCompanyStore((state) => state.setCompany);
   const setPricePlan = usePriceStore((state) => state.setPricePlan);
   const setCampaigns = useCampaignStore((state) => state.setCampaigns);
-
+  const setCurrentCampaign = useCampaignStore((state) => state.setCurrentCampaign)
   // this function is a global api call fetch for fetching the resouce located at the route specified.
   const fetchData = () => {
     fn()
@@ -67,7 +68,15 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
     }
     if (route?.includes("campaigns")) {
       setCampaigns(data as unknown as CampaignType[]);
-      // console.log('campains from store', data)
+      // check current date and set current campain
+      const date = new Date();
+      console.log(date.getFullYear());
+      const todayDate = date.getFullYear().toString();
+      for (const campain of data as { [Key: string]: string }[]) {
+        if (campain.name.slice(0, 4) === todayDate) {
+          setCurrentCampaign(campain as unknown as CampaignType)
+        }
+      }
     }
   }
   // console.log("fro provider service: ", data)

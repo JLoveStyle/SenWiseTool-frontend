@@ -37,6 +37,7 @@ export default function ProjectDetailsForm({
   const router = useRouter();
   const company = useCompanyStore((state) => state.company);
   const compains = useCampaignStore((state) => state.campaigns);
+  const currentCampain = useCampaignStore((state) => state.currentCampaign)
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -130,9 +131,10 @@ export default function ProjectDetailsForm({
     }
 
     setIsLoading((prev) => !prev);
-    console.log(compains[0]);
-    console.log("company", company);
+    // console.log(currentCampain);
+    // console.log("company", company);
     setErrorDate("");
+    
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
@@ -147,13 +149,13 @@ export default function ProjectDetailsForm({
       another_logo: companyLogo,
       start_date: new Date(projectData.start_date as string).toISOString(),
       end_date: new Date(projectData.end_date as string).toISOString(),
-      campaign_id: compains[0]?.id,
+      campaign_id: currentCampain?.id,
     })
       .then((res: ApiDataResponse<ProjectType>) => {
         console.log("project cereated", res);
         if (res.status === 201) {
           setIsLoading((prev) => !prev);
-          toast.success("Success", {
+          toast.success("Success! redirecting", {
             transition: Bounce,
             autoClose: 3000,
           });
