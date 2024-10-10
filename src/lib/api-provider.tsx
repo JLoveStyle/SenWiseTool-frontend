@@ -70,7 +70,6 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
       setCampaigns(data as unknown as CampaignType[]);
       // check current date and set current campain
       const date = new Date();
-      console.log(date.getFullYear());
       const todayDate = date.getFullYear().toString();
       for (const campain of data as { [Key: string]: string }[]) {
         if (campain.name.slice(0, 4) === todayDate) {
