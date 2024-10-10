@@ -23,12 +23,13 @@ type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject: ProjectsType;
   project?: Project;
+  closeModal: (val: boolean) => void
 };
 
 export default function ProjectDetailsForm({
   onClick,
   typeOfProject,
-  project,
+  closeModal,
 }: Props) {
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
@@ -36,6 +37,7 @@ export default function ProjectDetailsForm({
   const router = useRouter();
   const company = useCompanyStore((state) => state.company);
   const compains = useCampaignStore((state) => state.campaigns);
+  const currentCampain = useCampaignStore((state) => state.currentCampaign)
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -129,9 +131,10 @@ export default function ProjectDetailsForm({
     }
 
     setIsLoading((prev) => !prev);
-    console.log(compains[0]);
-    console.log("company", company);
+    // console.log(currentCampain);
+    // console.log("company", company);
     setErrorDate("");
+    
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
       type: projectData.type,
@@ -146,19 +149,20 @@ export default function ProjectDetailsForm({
       another_logo: companyLogo,
       start_date: new Date(projectData.start_date as string).toISOString(),
       end_date: new Date(projectData.end_date as string).toISOString(),
-      campaign_id: compains[0]?.id,
+      campaign_id: currentCampain?.id,
     })
       .then((res: ApiDataResponse<ProjectType>) => {
         console.log("project cereated", res);
         if (res.status === 201) {
           setIsLoading((prev) => !prev);
-          toast.success("Success", {
+          toast.success("Success! redirecting", {
             transition: Bounce,
             autoClose: 3000,
           });
           if (pathname.includes("mapping")) {
             // CLOSE MODAL
-            router.push(Route.mapping);
+            closeModal(false)
+            router.refresh();
             return;
           }
           router.push(Route.editProject + `/${res.data.id}`);

@@ -19,6 +19,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Logo } from "../logo";
 import { Spinner } from "../spinner/spinner";
+import React from "react";
 
 interface Props {
   options: DashboardSidebarOption[];
@@ -30,6 +31,8 @@ export default function Sidebar({ options }: Props) {
     (state) => state.setCurrentCampaign
   );
   const campaigns = useCampaignStore((state) => state.campaigns);
+  const currentDate = new Date()
+  console.log(currentDate)
 
   async function handleCampagneObject(currentCampaign: CampaignType) {
     console.log("current campaign: ", currentCampaign);

@@ -4,7 +4,11 @@ import ProjectDetails from "@/components/organisms/projectDetails";
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
+// const LayoutDashboard = dynamic(() => import("@/components/organisms/layoutDashboard"), {
+//   ssr: false
+// })
 
 type Props = {
   params: {

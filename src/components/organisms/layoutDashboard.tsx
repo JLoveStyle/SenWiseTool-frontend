@@ -60,7 +60,9 @@ export default function LayoutDashboard({
       baseUrl: "",
     })
   );
-  const sortedCampains = campaigns.sort((a, b) => a.label.localeCompare(b.label))
+  const sortedCampains = campaigns.sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
 
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
