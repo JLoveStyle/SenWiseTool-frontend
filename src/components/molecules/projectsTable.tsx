@@ -74,12 +74,10 @@ export function DataTable<TData, TValue>({
   });
 
   useEffect(() => {
-    const selectedPro = table
-      .getSelectedRowModel()
-      .flatRows.map((pro) => {
-        // console.log(pro.original);
-        return pro.original;
-      });
+    const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
+      // console.log(pro.original);
+      return pro.original;
+    });
     console.log("selPro =>", selectedPro);
     onSelecteItem(selectedPro);
   }, [rowSelection]);
@@ -89,10 +87,10 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter projects..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
-          }
+          // value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
+          // onChange={(event) =>
+          //   table.getColumn("id")?.setFilterValue(event.target.value)
+          // }
           className="max-w-sm"
         />
 
@@ -134,9 +132,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}

@@ -12,6 +12,7 @@ import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { ReceiptProps, ReceiptTableProps } from "@/types/tracability/receipt";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { db_get_receipts } from "@/utiles/services/tracability/receipt";
 import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
@@ -34,6 +35,7 @@ export default function Receipt() {
     Route.receipt
   );
 
+  console.log(LOCAL_STORAGE.get("agents"));
   useEffect(() => {
     const fetchData = async () => {
       db_get_receipts()
@@ -47,7 +49,7 @@ export default function Receipt() {
     };
 
     fetchData();
-  }, [receiptDatas]);
+  }, []);
 
   const valueToDisplay = (args: ReceiptProps[]) => {
     return args?.map((receipt) => ({

@@ -29,6 +29,7 @@ export type AvailableRoute =
   | "social"
   | "enviroment"
   | "agriculture"
+  | "agents"
 
   // tracability
   | "receipt";
@@ -56,11 +57,12 @@ export const Route: Record<AvailableRoute, string> = {
   companies: "companies",
   projects: "projects",
   createCompany: "create-compay",
-  campaign: 'campaigns',
+  campaign: "campaigns",
   mapping: "/dashboard/mapping",
   social: "/dashboard/social",
   enviroment: "/dashboard/enviroment",
   agriculture: "/dashboard/agriculture",
+  agents: "/dashboard/agents",
 
   // tracability
   receipt: "/dashboard/tracability/receipt",

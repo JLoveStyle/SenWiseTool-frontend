@@ -15,6 +15,7 @@ interface Props {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   multiple?: boolean;
+  required?: boolean;
 }
 
 export const InputUI = ({
@@ -28,11 +29,13 @@ export const InputUI = ({
   onChange,
   onKeyDown,
   multiple,
+  required,
 }: Props) => {
   return (
     <div className="items-center gap-4 w-full">
       <Label htmlFor={id} className="text-right">
         {label}
+        {required && <span className="text-red-500 pl-1 pb-1">*</span>}
       </Label>
       <Input
         id={id}
@@ -49,6 +52,7 @@ export const InputUI = ({
         onKeyDown={onKeyDown}
         disabled={isLoading}
         multiple={multiple}
+        required={required}
       />
       {id in errors && (
         <span className="text-red-500 text-xs">{errors[id]}</span>
