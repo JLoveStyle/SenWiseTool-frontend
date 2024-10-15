@@ -29,7 +29,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
-import { AgentProps, CodeProjectProps } from "@/types/agent-props";
+import {
+  AgentProps,
+  AgentPropsFromDB,
+  CodeProjectProps,
+} from "@/types/agent-props";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { receiptStatData } from "@/utiles/tracability.const/statistics";
@@ -38,26 +42,28 @@ import { toast } from "react-toastify";
 
 export default function Receipt() {
   const [isLoading, setIsLoading] = useState(true);
-  const [agentDatas, setAgentDatas] = useState<AgentProps[]>([]);
-  const [agentSelected, setAgentSelected] = useState<AgentProps[]>([]);
+  const [agentDatas, setAgentDatas] = useState<AgentPropsFromDB[]>([]);
+  const [agentSelected, setAgentSelected] = useState<AgentPropsFromDB[]>([]);
   const [errors, setErrors] = useState({});
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
   });
+  const projectCodeSeparator = " ";
 
   const closeDialog = () => {
     toggleOpenModel();
   };
 
-  const columns = columnTable<AgentProps>(
+  const columns = columnTable<AgentPropsFromDB>(
     {
       id: "id",
       agentCode: "agentCode",
       fullName: "fullName",
       projectCodes: "projectCodes",
     },
-    Route.agents
+    Route.agents,
+    false
   );
 
   useEffect(() => {
@@ -65,8 +71,8 @@ export default function Receipt() {
       try {
         // const result = await db_get_agents();
         const result = LOCAL_STORAGE.get("agents");
-        console.log("data agent list: ", result);
-        setAgentDatas(result as AgentProps[]);
+        // console.log("data agent list: ", result);
+        setAgentDatas(result as AgentPropsFromDB[]);
       } catch (err) {
         console.error("Error fetching agents: ", err);
       } finally {
@@ -88,12 +94,15 @@ export default function Receipt() {
     fetchData();
   }, []);
 
-  const valueToDisplay = (args: AgentProps[]) => {
+  const valueToDisplay = (args: AgentPropsFromDB[]) => {
     return args?.map((agents) => ({
       id: agents.id,
       agentCode: agents.agentCode,
       fullName: agents.fullName,
-      projectCodes: agents.projectCodes, //?.join(","),
+      projectCodes:
+        typeof agents.projectCodes != "string"
+          ? agents.projectCodes?.join(projectCodeSeparator)
+          : agents.projectCodes,
     }));
   };
 
@@ -217,12 +226,17 @@ export default function Receipt() {
 
     if (agentSelected.length !== 0) {
       agentSelected.map((selected) => {
-        const selected_projectCodes: any[] = (selected.projectCodes || []).map(
-          (code: CodeProjectProps) => code
-        );
+        // const selected_projectCodes: any[] = (selected.projectCodes || []).map(
+        //   (code: CodeProjectProps) => code
+        // );
+        const selected_projectCodes =
+          typeof selected.projectCodes === "string"
+            ? selected.projectCodes?.split(projectCodeSeparator)
+            : selected.projectCodes;
+
         formProjectCode.map((projectCode) => {
-          if (!selected_projectCodes.includes(projectCode.value)) {
-            selected_projectCodes.push(projectCode.value);
+          if (!selected_projectCodes?.includes(projectCode.value)) {
+            selected_projectCodes?.push(projectCode.value);
           }
         });
 
@@ -304,13 +318,13 @@ export default function Receipt() {
         </div>
       </div>
       <div className="px-6">
-        <DataTable<AgentProps, any>
+        <DataTable<AgentPropsFromDB, any>
           incomingColumns={columns}
           incomingData={
             agentDatas?.length
               ? valueToDisplay(agentDatas)
               : agentDatas?.length
-              ? valueToDisplay(agentDatas as AgentProps[])
+              ? valueToDisplay(agentDatas as AgentPropsFromDB[])
               : []
           }
           onSelecteItem={(selects) => {

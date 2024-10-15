@@ -13,7 +13,7 @@ import { dasboardFormParams } from "@/types/formData";
 import { fetchApiData } from "@/utiles/services/queries";
 import React, { useEffect } from "react";
 import { BsPersonVcard } from "react-icons/bs";
-import { FaUsers } from "react-icons/fa";
+import { FaHandHoldingUsd, FaUsers } from "react-icons/fa";
 import { HiViewGridAdd } from "react-icons/hi";
 import { IoMdShareAlt } from "react-icons/io";
 import {
@@ -69,6 +69,13 @@ export default function LayoutDashboardTemplate({
         label: "Agents",
         baseUrl: Route.agents,
         icon: FaUsers,
+      },
+    },
+    {
+      option: {
+        label: "Marchés",
+        baseUrl: Route.markets,
+        icon: FaHandHoldingUsd,
       },
     },
     {

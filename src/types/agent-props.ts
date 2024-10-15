@@ -13,7 +13,7 @@ export interface AgentPropsFromDB {
   id: string;
   fullName?: string;
   agentCode: string;
-  projectCodes?: string[];
+  projectCodes?: string | string[];
 }
 
 export interface MultipleFormAgentProps {
