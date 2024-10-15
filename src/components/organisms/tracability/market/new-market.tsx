@@ -14,15 +14,19 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewMarketForm } from "./new-market-form";
 
-export function NewMarket() {
+interface Props {
+  closeDialog: () => void;
+}
+
+export function NewMarket({ closeDialog }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
-  const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
 
   const router = useRouter();
 
   const [formData, setFormData] = useState<MarketFormProps>({
     id: "",
+    location: "",
     price_of_day: 0,
     start_date: "",
     end_date: "",
@@ -37,16 +41,17 @@ export function NewMarket() {
   };
 
   const handleCreateMarket = async (formData: MarketFormProps) => {
-    const dataToDB = {
-      price_of_day: formData.price_of_day,
-      start_date: formData.start_date,
-      end_date: formData.end_date,
-      company_id: company?.id,
-      campaign_id: "",
-      description: "",
-    };
+    // const dataToDB = {
+    //   location: formData.location,
+    //   price_of_day: formData.price_of_day,
+    //   start_date: formData.start_date,
+    //   end_date: formData.end_date,
+    //   company_id: company?.id,
+    //   campaign_id: "",
+    //   description: "",
+    // };
 
-    const serverResponse = await db_create_market(dataToDB);
+    const serverResponse = await db_create_market(formData);
     // const serverResponse = await db_create_training(dataToDB);
 
     console.log("daaaaata:::::::::", serverResponse);
@@ -59,19 +64,21 @@ export function NewMarket() {
 
     toast.success("Your market are created successfull");
     setIsLoading(false);
-    toggleOpenModal();
+    closeDialog();
     router.refresh();
     router.push(Route.markets);
     return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    closeDialog();
     try {
       setIsLoading(true);
       e.preventDefault();
 
       const { isValid, errors } = await validatorForm(formData, {
-        price_of_day: "required",
+        price_of_day: "required|min:1",
+        location: "required",
         start_date: "required",
         end_date: "required",
       });

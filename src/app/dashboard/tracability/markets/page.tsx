@@ -12,17 +12,21 @@ import { NewMarket } from "@/components/organisms/tracability/market/new-market"
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useToggle } from "@/hooks/use-toggle";
-import { MarketCreateInput } from "@/types/api-types";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { db_get_markets } from "@/utiles/services/tracability/market";
 import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
-import { MarketFormProps } from "../../../../types/tracability/market";
+import {
+  MarketDBProps,
+  MarketDisplayProps,
+} from "../../../../types/tracability/market";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);
-  const [marketDatas, setmarketDatas] = useState<MarketFormProps[]>([]);
-  const [marketSelected, setmarketSelected] = useState<MarketFormProps[]>([]);
+  const [marketDatas, setmarketDatas] = useState<MarketDisplayProps[]>([]);
+  const [marketSelected, setmarketSelected] = useState<MarketDisplayProps[]>(
+    []
+  );
   const [errors, setErrors] = useState({});
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
@@ -34,24 +38,49 @@ export default function Market() {
     toggleOpenModel();
   };
 
-  const columns = columnTable<MarketFormProps>(
+  const columns = columnTable<MarketDisplayProps>(
     {
       id: "id",
+      campagne: "campagne",
+      location: "location",
       price_of_day: "price_of_day",
       start_date: "start_date",
       end_date: "end_date",
+      status: "status",
     },
     Route.markets,
     false
   );
 
+  const formatedDataFromDBToDisplay = (data: MarketDBProps) => {
+    return {
+      id: data.id,
+      campagne: data.campaign_id,
+      location: data.location,
+      price_of_day: data.price_of_day,
+      start_date: data.start_date,
+      end_date: data.end_date,
+      status: data.status,
+    };
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await db_get_markets();
-        // const result = LOCAL_STORAGE.get("markets");
-        // console.log("data market list: ", result);
-        setmarketDatas(result as MarketCreateInput[]);
+        const dataFormated: MarketDisplayProps[] = [];
+
+        if (result) {
+          if (Array.isArray(result)) {
+            result.forEach((res) => {
+              dataFormated.push(formatedDataFromDBToDisplay(res));
+            });
+          } else {
+            dataFormated.push(formatedDataFromDBToDisplay(result));
+          }
+
+          setmarketDatas(dataFormated);
+        }
       } catch (err) {
         console.error("Error fetching markets: ", err);
       } finally {
@@ -72,12 +101,14 @@ export default function Market() {
     fetchData();
   }, []);
 
-  const valueToDisplay = (args: MarketFormProps[]) => {
+  const valueToDisplay = (args: MarketDisplayProps[]) => {
     return args?.map((markets) => ({
       id: markets.id,
+      location: markets.location,
+      price_of_day: markets.price_of_day,
       start_date: markets.start_date,
       end_date: markets.end_date,
-      price_of_day: markets.price_of_day,
+      campagne: markets.campagne,
     }));
   };
 
@@ -164,8 +195,9 @@ export default function Market() {
     trigger_btn_label_form: "New Market",
     construct_form_btn_label: "New market form",
     existing_form_btn_label: "Use Existing Form",
-    new_form_title: "Generate a new market Coordinate",
+    new_form_title: "Définir un marché",
     construct_form_btn_icon: FaHandHoldingDollar,
+    closeDialog: closeDialog,
   };
 
   // const deletemarketAccounts = () => {
@@ -173,7 +205,7 @@ export default function Market() {
   //     const allmarketsAccounts = LOCAL_STORAGE.get("markets");
   //     const idSelecteds = marketSelected.map((objet) => objet.id);
 
-  //     allmarketsAccounts.map((item: marketProps) => {
+  //     allmarketsAccounts.map((item: MarketDisplayProps) => {
   //       if (!idSelecteds.includes(item.id)) {
   //         restAccount.push(item);
   //       }
@@ -186,7 +218,12 @@ export default function Market() {
 
   return (
     <LayoutDashboardTemplate
-      newForms={[{ title: "Nouveau marché", form: <NewMarket /> }]}
+      newForms={[
+        {
+          title: "Nouveau marché",
+          form: <NewMarket closeDialog={closeDialog} />,
+        },
+      ]}
       title="Gestion des marchés"
       formParams={formParams}
       statPanelDatas={statPanelDatas}
@@ -210,13 +247,13 @@ export default function Market() {
         </div>
       </div>
       <div className="px-6">
-        <DataTable<MarketFormProps, any>
+        <DataTable<MarketDisplayProps, any>
           incomingColumns={columns}
           incomingData={
             marketDatas?.length
               ? valueToDisplay(marketDatas)
               : marketDatas?.length
-              ? valueToDisplay(marketDatas as MarketFormProps[])
+              ? valueToDisplay(marketDatas as MarketDisplayProps[])
               : []
           }
           onSelecteItem={(selects) => {

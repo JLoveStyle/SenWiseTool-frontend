@@ -22,9 +22,10 @@ type Props = {
   // children: React.ReactNode;
   forms?: NewFormProps[];
   formParams?: dasboardFormParams;
+  closeModal?: boolean;
 };
 
-export default function FormLayout({ forms, formParams }: Props) {
+export default function FormLayout({ forms, formParams, closeModal }: Props) {
   const [formStep, setFormStep] = useState<"CHOOSE" | "NEW" | "EXIST">(
     "CHOOSE"
   );

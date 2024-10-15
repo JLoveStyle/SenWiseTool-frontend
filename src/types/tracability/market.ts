@@ -1,35 +1,39 @@
-export interface MarketProps {
+export interface MarketDisplayProps {
   id: string;
-  compagny: string;
-  campagne: string;
+  location: string;
   price_of_day: number;
   start_date: string;
   end_date: string;
+  status?: "OPEN" | "CLOSED";
+  campagne: string;
 }
 
 export interface MarketFormProps {
   id: string;
+  location: string;
   price_of_day: number;
   start_date: string;
   end_date: string;
+  description?: string;
 }
 
-export type DBMarketProps = {
-  id?: string;
+export type MarketDBProps = {
+  id: string;
+  location: string;
   price_of_day: number;
-  start_date: Date | string;
-  end_date: Date | string;
+  start_date: string;
+  end_date: string;
   // market_number: number;
   description?: string;
   // location: string
   // type_of_market?: $Enums.MarketType
   // bordereau_vente_url: string
   // bon_entree_magazin_url: string
-  status?: "WAITING" | "IN_PROGRESS" | "CLOSED";
+  status?: "OPEN" | "CLOSED";
   // code?: string | null
   // product_quantity: number
-  created_at?: Date | string;
-  updated_at?: Date | string;
+  created_at?: string;
+  updated_at?: string;
   campaign_id: string;
   company_id?: string;
   // company: CompanyCreateNestedOneWithoutMarketsInput

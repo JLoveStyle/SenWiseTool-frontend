@@ -56,13 +56,13 @@ export const validatorForm = async (
               break;
             case "min":
               if (value && parseInt(value) < parseInt(ruleParams)) {
-                error = `Ce champ doit avoir au moins ${ruleParams} caractères`;
+                error = `Ce champ ne doit pas être inférieur à ${ruleParams} caractères`;
                 isValid = false;
               }
               break;
             case "max":
               if (value && parseInt(value) > parseInt(ruleParams)) {
-                error = `Ce champ ne doit pas avoir plus de ${ruleParams} caractères`;
+                error = `Ce champ ne doit pas être superieur à ${ruleParams}`;
                 isValid = false;
               }
               break;
