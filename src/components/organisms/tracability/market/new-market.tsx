@@ -4,7 +4,7 @@ import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { MarketFormProps } from "@/types/tracability/market";
+import { DBMarketProps, MarketFormProps } from "@/types/tracability/market";
 import { db_create_market } from "@/utiles/services/tracability/market";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
@@ -21,7 +21,7 @@ export function NewMarket() {
 
   const router = useRouter();
 
-  const [formData, setFormData] = useState<MarketFormProps>({
+  const [formData, setFormData] = useState<Partial<DBMarketProps>>({
     id: "",
     price_of_day: 0,
     start_date: "",
@@ -32,11 +32,11 @@ export function NewMarket() {
   const company = useCompanyStore((state) => state.company);
 
   // Fonction de gestion pour la mise à jour des données du formulaire
-  const handleUpdatedFormData = (updatedFormData: MarketFormProps) => {
+  const handleUpdatedFormData = (updatedFormData: Partial<DBMarketProps>) => {
     setFormData(updatedFormData);
   };
 
-  const handleCreateMarket = async (formData: MarketFormProps) => {
+  const handleCreateMarket = async (formData: Partial<DBMarketProps>) => {
     const dataToDB = {
       price_of_day: formData.price_of_day,
       start_date: formData.start_date,
@@ -83,7 +83,7 @@ export function NewMarket() {
         setIsLoading(false);
         return;
       }
-
+      console.log('formData from handleSubmit', formData)
       handleCreateMarket(formData);
     } catch (error) {}
   };

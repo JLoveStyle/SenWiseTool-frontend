@@ -31,6 +31,7 @@ export type AvailableRoute =
   | "agriculture"
   | "agents"
   | "factoryAccompaniementSheet"
+  | "marketRequest"
 
   // tracability
   | "markets"
@@ -52,19 +53,22 @@ export const Route: Record<AvailableRoute, string> = {
   editProject: "/dashboard/edit",
   checkout: "/checkout",
   details: "/dashboard/details",
-  pricing: "price_plans",
-  training: "trainings",
   training_session: "training_sessions",
-  user: "users",
-  companies: "companies",
-  projects: "projects",
   createCompany: "create-compay",
-  campaign: "campaigns",
   mapping: "/dashboard/mapping",
   social: "/dashboard/social",
   enviroment: "/dashboard/enviroment",
   agriculture: "/dashboard/agriculture",
   agents: "/dashboard/agents",
+
+  // Api routes
+  companies: "companies",
+  projects: "projects",
+  campaign: "campaigns",
+  user: "users",
+  training: "trainings",
+  pricing: "price_plans",
+  marketRequest: "markets",
 
   // tracability
   markets: "/dashboard/tracability/markets",

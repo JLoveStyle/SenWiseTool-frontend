@@ -2,7 +2,7 @@ import { Route } from "@/lib/route";
 import { allRequirements } from "@/utils/requirements";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;sss
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
 export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES

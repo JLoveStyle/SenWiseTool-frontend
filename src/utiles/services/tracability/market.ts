@@ -11,8 +11,9 @@ import ApiCall from "../httpClients";
 import { fetchApiData } from "../queries";
 // import { LOCAL_STORAGE } from "./storage";
 
-export const db_create_market = async (data: DBMarketProps) => {
-  return mutateApiData(Route.markets, data)
+export const db_create_market = async (data: Partial<DBMarketProps>, user_id: string) => {
+  console.log('marketdata =>', data )
+  return mutateApiData(Route.marketRequest, data)
     .then((response) => {
       if (response.status === 201)
         return {
