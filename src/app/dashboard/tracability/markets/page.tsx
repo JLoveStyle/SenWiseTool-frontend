@@ -249,13 +249,7 @@ export default function Market() {
       <div className="px-6">
         <DataTable<MarketDisplayProps, any>
           incomingColumns={columns}
-          incomingData={
-            marketDatas?.length
-              ? valueToDisplay(marketDatas)
-              : marketDatas?.length
-              ? valueToDisplay(marketDatas as MarketDisplayProps[])
-              : []
-          }
+          incomingData={marketDatas?.length ? valueToDisplay(marketDatas) : []}
           onSelecteItem={(selects) => {
             setmarketSelected(selects);
           }}
