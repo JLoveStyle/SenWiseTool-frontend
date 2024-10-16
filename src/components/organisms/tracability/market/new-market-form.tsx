@@ -1,16 +1,12 @@
 "use client";
 
 import { InputUI } from "@/components/atoms/disign-system/form/input-ui";
-<<<<<<< HEAD
-import { DBMarketProps, MarketFormProps } from "@/types/tracability/market";
-=======
 import { TextareaUI } from "@/components/atoms/disign-system/form/textarea-ui";
-import { MarketFormProps } from "@/types/tracability/market";
->>>>>>> 66eaa012f9bbed756b5adcd1cf8c7d309a0e3395
+import { MarketFormProps, MarketDBProps } from "@/types/tracability/market";
 import { useEffect, useState } from "react";
 
 interface Props {
-  updatedFormData: (data: Partial<DBMarketProps>) => void;
+  updatedFormData: (data: Partial<MarketDBProps>) => void;
   initData?: MarketFormProps;
   errors: { [key: string]: any };
   isLoading: boolean;
@@ -22,7 +18,7 @@ export const NewMarketForm = ({
   errors,
   isLoading,
 }: Props) => {
-  const [formData, setFormData] = useState<Partial<DBMarketProps>>({
+  const [formData, setFormData] = useState<Partial<MarketDBProps>>({
     id: initData ? initData.id : "",
     location: initData ? initData.location : "",
     price_of_day: initData ? initData.price_of_day : 0,
@@ -52,19 +48,6 @@ export const NewMarketForm = ({
 
   return (
     <div className="flex flex-col gap-5">
-<<<<<<< HEAD
-      <InputUI
-        label="Prix du jour (en XAF)"
-        id="title"
-        type="number"
-        placeholder="Prix du jour"
-        isLoading={isLoading}
-        errors={errors}
-        value={formData.price_of_day}
-        onChange={(e) => handleChange(e)}
-      />
-=======
->>>>>>> 66eaa012f9bbed756b5adcd1cf8c7d309a0e3395
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
           label="Où se tiendra le marché ?"

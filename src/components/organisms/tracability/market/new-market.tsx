@@ -4,7 +4,6 @@ import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { MarketDBProps, MarketFormProps } from "@/types/tracability/market";
 import { db_create_market } from "@/utiles/services/tracability/market";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
@@ -13,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewMarketForm } from "./new-market-form";
+import { MarketDBProps } from "@/types/api-types";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 interface Props {
   closeDialog: () => void;
@@ -34,6 +35,7 @@ export function NewMarket({ closeDialog }: Props) {
 
   // load company state
   const company = useCompanyStore((state) => state.company);
+  const currentCampain = useCampaignStore((state) => state.currentCampaign)
 
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: Partial<MarketDBProps>) => {
@@ -51,7 +53,7 @@ export function NewMarket({ closeDialog }: Props) {
     //   description: "",
     // };
 
-    const serverResponse = await db_create_market(formData);
+    const serverResponse = await db_create_market({...formData, company_id: company?.id, campaign_id: currentCampain?.id});
     // const serverResponse = await db_create_training(dataToDB);
 
     console.log("daaaaata:::::::::", serverResponse);
@@ -90,7 +92,7 @@ export function NewMarket({ closeDialog }: Props) {
         setIsLoading(false);
         return;
       }
-      console.log('formData from handleSubmit', formData)
+      console.log('formData from handleSubmit', {...formData, company_id: company?.id, campaign_id: currentCampain?.id})
       handleCreateMarket(formData);
     } catch (error) {}
   };

@@ -16,10 +16,8 @@ import { DashboardStatPanelData } from "@/types/app-link";
 import { db_get_markets } from "@/utiles/services/tracability/market";
 import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
-import {
-  MarketDBProps,
-  MarketDisplayProps,
-} from "../../../../types/tracability/market";
+import { MarketDisplayProps } from "../../../../types/tracability/market";
+import { MarketDBProps } from "@/types/api-types";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);

@@ -1,7 +1,6 @@
 "use server";
 import { Route } from "@/lib/route";
-import { ApiDataResponse /*, MarketDBProps*/ } from "@/types/api-types";
-import { MarketDBProps, MarketFormProps } from "@/types/tracability/market";
+import { ApiDataResponse, MarketDBProps } from "@/types/api-types";
 import {
   mutateApiData,
   mutateDelApiData,
@@ -11,14 +10,10 @@ import ApiCall from "../httpClients";
 import { fetchApiData } from "../queries";
 // import { LOCAL_STORAGE } from "./storage";
 
-<<<<<<< HEAD
-export const db_create_market = async (data: Partial<DBMarketProps>, user_id: string) => {
+export const db_create_market = async (data: Partial<MarketDBProps>) => {
   console.log('marketdata =>', data )
+  console.log(Route.marketRequest)
   return mutateApiData(Route.marketRequest, data)
-=======
-export const db_create_market = async (data: MarketFormProps) => {
-  return mutateApiData(Route.markets, data)
->>>>>>> 66eaa012f9bbed756b5adcd1cf8c7d309a0e3395
     .then((response) => {
       if (response.status === 201)
         return {
@@ -38,7 +33,7 @@ export const db_create_market = async (data: MarketFormProps) => {
     });
 };
 
-export const db_update_market = async (data: MarketFormProps, id: string) => {
+export const db_update_market = async (data: MarketDBProps, id: string) => {
   return mutateUpApiData<ApiDataResponse<MarketDBProps>>(
     Route.markets,
     data,
@@ -66,10 +61,9 @@ export const db_update_market = async (data: MarketFormProps, id: string) => {
 export const db_get_markets = async (companyId?: string) => {
   const db = new ApiCall();
 
-  return await fetchApiData<ApiDataResponse<MarketDBProps[] | MarketDBProps>>(
-    Route.markets,
-    companyId
-  )
+  return await fetchApiData<
+    ApiDataResponse<MarketDBProps[] | MarketDBProps>
+  >(Route.markets, companyId)
     .then((response) => {
       if (typeof response != "undefined") {
         return response.data;
