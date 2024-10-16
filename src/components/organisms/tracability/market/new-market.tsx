@@ -4,7 +4,7 @@ import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { DBMarketProps, MarketFormProps } from "@/types/tracability/market";
+import { MarketDBProps, MarketFormProps } from "@/types/tracability/market";
 import { db_create_market } from "@/utiles/services/tracability/market";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
@@ -14,15 +14,19 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewMarketForm } from "./new-market-form";
 
-export function NewMarket() {
+interface Props {
+  closeDialog: () => void;
+}
+
+export function NewMarket({ closeDialog }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
-  const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
 
   const router = useRouter();
 
-  const [formData, setFormData] = useState<Partial<DBMarketProps>>({
+  const [formData, setFormData] = useState<Partial<MarketDBProps>>({
     id: "",
+    location: "",
     price_of_day: 0,
     start_date: "",
     end_date: "",
@@ -32,21 +36,22 @@ export function NewMarket() {
   const company = useCompanyStore((state) => state.company);
 
   // Fonction de gestion pour la mise à jour des données du formulaire
-  const handleUpdatedFormData = (updatedFormData: Partial<DBMarketProps>) => {
+  const handleUpdatedFormData = (updatedFormData: Partial<MarketDBProps>) => {
     setFormData(updatedFormData);
   };
 
-  const handleCreateMarket = async (formData: Partial<DBMarketProps>) => {
-    const dataToDB = {
-      price_of_day: formData.price_of_day,
-      start_date: formData.start_date,
-      end_date: formData.end_date,
-      company_id: company?.id,
-      campaign_id: "",
-      description: "",
-    };
+  const handleCreateMarket = async (formData: Partial<MarketDBProps>) => {
+    // const dataToDB = {
+    //   location: formData.location,
+    //   price_of_day: formData.price_of_day,
+    //   start_date: formData.start_date,
+    //   end_date: formData.end_date,
+    //   company_id: company?.id,
+    //   campaign_id: "",
+    //   description: "",
+    // };
 
-    const serverResponse = await db_create_market(dataToDB);
+    const serverResponse = await db_create_market(formData);
     // const serverResponse = await db_create_training(dataToDB);
 
     console.log("daaaaata:::::::::", serverResponse);
@@ -59,19 +64,21 @@ export function NewMarket() {
 
     toast.success("Your market are created successfull");
     setIsLoading(false);
-    toggleOpenModal();
+    closeDialog();
     router.refresh();
     router.push(Route.markets);
     return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    closeDialog();
     try {
       setIsLoading(true);
       e.preventDefault();
 
       const { isValid, errors } = await validatorForm(formData, {
-        price_of_day: "required",
+        price_of_day: "required|min:1",
+        location: "required",
         start_date: "required",
         end_date: "required",
       });
