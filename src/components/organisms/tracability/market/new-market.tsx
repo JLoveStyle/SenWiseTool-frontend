@@ -14,11 +14,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewMarketForm } from "./new-market-form";
 
-interface Props {
-  closeDialog: () => void;
-}
-
-export function NewMarket({ closeDialog }: Props) {
+export function NewMarket() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
 
@@ -38,6 +34,10 @@ export function NewMarket({ closeDialog }: Props) {
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: MarketFormProps) => {
     setFormData(updatedFormData);
+  };
+
+  const closeDialog = () => {
+    console.log("false");
   };
 
   const handleCreateMarket = async (formData: MarketFormProps) => {

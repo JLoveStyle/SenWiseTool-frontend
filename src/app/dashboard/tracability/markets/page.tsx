@@ -34,10 +34,6 @@ export default function Market() {
   });
   const projectCodeSeparator = " ";
 
-  const closeDialog = () => {
-    toggleOpenModel();
-  };
-
   const columns = columnTable<MarketDisplayProps>(
     {
       id: "id",
@@ -114,6 +110,8 @@ export default function Market() {
 
   useEffect(() => {
     // refetch();
+    // const company = useCompanyStore((state) => state.company);
+    // console.log("compagny", company);
   }, [marketDatas]);
 
   // const statPanelDatas: DashboardStatPanelData[] = [
@@ -197,7 +195,6 @@ export default function Market() {
     existing_form_btn_label: "Use Existing Form",
     new_form_title: "Définir un marché",
     construct_form_btn_icon: FaHandHoldingDollar,
-    closeDialog: closeDialog,
   };
 
   // const deletemarketAccounts = () => {
@@ -221,7 +218,7 @@ export default function Market() {
       newForms={[
         {
           title: "Nouveau marché",
-          form: <NewMarket closeDialog={closeDialog} />,
+          form: <NewMarket />,
         },
       ]}
       title="Gestion des marchés"
