@@ -2,7 +2,9 @@
 
 import { InputUI } from "@/components/atoms/disign-system/form/input-ui";
 import { TextareaUI } from "@/components/atoms/disign-system/form/textarea-ui";
-import { MarketFormProps, MarketDBProps } from "@/types/tracability/market";
+import { MarketDBProps } from "@/types/api-types";
+import { MarketFormProps } from "@/types/tracability/market";
+import { validateHeaderValue } from "node:http";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -25,13 +27,15 @@ export const NewMarketForm = ({
     start_date: initData ? initData.start_date : "",
     end_date: initData ? initData.end_date : "",
   });
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    console.log(value)
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let { name, value } = e.target;
+    console.log(value);
+    if (name === "price_of_day") {
+      console.log({ name: +value });
+      setFormData((prev) => ({ ...prev, [name]: +value }));
+    } else setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (e.target.value.trim().length === 0) {
       errors[name] = "Le code est requis";

@@ -57,7 +57,7 @@ export default function Home({ }: Props) {
   });
 
   const { isSignedIn, user } = useUser();
-  console.log('userId =>', user?.id)
+  console.log('userId from clerk =>', user?.id)
 
   // REGISTER COMPANY
   async function handleSubmit(e: any) {
