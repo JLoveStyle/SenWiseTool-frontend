@@ -63,12 +63,19 @@ export function NewMarket({ closeDialog }: Props) {
       company_id: formData.company_id,
       description: formData.description,
       start_date: new Date(formData.start_date as string).toISOString(),
-      end_date: new Date(formData.end_date as string).toISOString()
+      end_date: new Date(formData.end_date as string).toISOString(),
     })
       .then((response) => {
         console.log("response", response);
         if (response.status === 201) {
-          toast.success("Your market are created successfull");
+          toast.success("Market created successfull");
+          setIsLoading(false);
+          closeDialog();
+          router.refresh();
+          router.push(Route.markets);
+          return
+        } else if (response.message === 'Internal Server Error') {
+          toast.error('Internal Server Error')
         }
         setIsLoading(false);
         return;

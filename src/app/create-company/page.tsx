@@ -120,12 +120,6 @@ export default function Home({ }: Props) {
     }
   }
 
-  function handleCancel(e: any) {
-    e.preventDefault();
-    setIsModalOpen((prev) => !prev);
-    console.log("canceled");
-  }
-
   const handleInputChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -135,7 +129,6 @@ export default function Home({ }: Props) {
       ...formData,
       [event.target.name]: event.target.value,
     };
-    console.log(data);
     setFormData(data);
     for (const country of countries) {
       if (country.name === data.country) {

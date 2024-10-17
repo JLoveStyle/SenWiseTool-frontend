@@ -69,14 +69,14 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
     }
     if (route?.includes("campaigns")) {
       setCampaigns(data as unknown as CampaignType[]);
-      console.log('all campains from store', data)
+      // console.log('all campains from store', data)
       // check current date and set current campain
       const date = new Date();
       const todayDate = date.getFullYear().toString();
       for (const campain of data as { [Key: string]: string }[]) {
         if (campain.name.slice(0, 4) === todayDate) {
           setCurrentCampaign(campain as unknown as CampaignType)
-          console.log('current campain from store', campain)
+          // console.log('current campain from store', campain)
         }
       }
     }
