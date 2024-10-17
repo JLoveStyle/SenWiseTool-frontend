@@ -2,11 +2,13 @@
 
 import { InputUI } from "@/components/atoms/disign-system/form/input-ui";
 import { TextareaUI } from "@/components/atoms/disign-system/form/textarea-ui";
+import { MarketDBProps } from "@/types/api-types";
 import { MarketFormProps } from "@/types/tracability/market";
+import { validateHeaderValue } from "node:http";
 import { useEffect, useState } from "react";
 
 interface Props {
-  updatedFormData: (data: MarketFormProps) => void;
+  updatedFormData: (data: Partial<MarketDBProps>) => void;
   initData?: MarketFormProps;
   errors: { [key: string]: any };
   isLoading: boolean;
@@ -18,19 +20,22 @@ export const NewMarketForm = ({
   errors,
   isLoading,
 }: Props) => {
-  const [formData, setFormData] = useState<MarketFormProps>({
+  const [formData, setFormData] = useState<Partial<MarketDBProps>>({
     id: initData ? initData.id : "",
     location: initData ? initData.location : "",
     price_of_day: initData ? initData.price_of_day : 0,
     start_date: initData ? initData.start_date : "",
     end_date: initData ? initData.end_date : "",
   });
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let { name, value } = e.target;
+    console.log(value);
+    if (name === "price_of_day") {
+      console.log({ name: +value });
+      setFormData((prev) => ({ ...prev, [name]: +value }));
+    } else setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (e.target.value.trim().length === 0) {
       errors[name] = "Le code est requis";
@@ -79,7 +84,7 @@ export const NewMarketForm = ({
           errors={errors}
           required
           value={formData.start_date}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e)}
         />
 
         <InputUI
@@ -90,7 +95,7 @@ export const NewMarketForm = ({
           errors={errors}
           required
           value={formData.end_date}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e)}
         />
       </div>
       <TextareaUI

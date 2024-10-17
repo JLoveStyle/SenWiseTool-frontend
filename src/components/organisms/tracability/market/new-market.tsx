@@ -3,9 +3,10 @@
 import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { MarketFormProps } from "@/types/tracability/market";
-import { db_create_market } from "@/utiles/services/tracability/market";
+import { MarketDBProps } from "@/types/api-types";
+import { mutateApiData } from "@/utiles/services/mutations";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
@@ -20,7 +21,7 @@ export function NewMarket() {
 
   const router = useRouter();
 
-  const [formData, setFormData] = useState<MarketFormProps>({
+  const [formData, setFormData] = useState<Partial<MarketDBProps>>({
     id: "",
     location: "",
     price_of_day: 0,
@@ -30,17 +31,14 @@ export function NewMarket() {
 
   // load company state
   const company = useCompanyStore((state) => state.company);
+  const currentCampain = useCampaignStore((state) => state.currentCampaign);
 
   // Fonction de gestion pour la mise à jour des données du formulaire
-  const handleUpdatedFormData = (updatedFormData: MarketFormProps) => {
+  const handleUpdatedFormData = (updatedFormData: Partial<MarketDBProps>) => {
     setFormData(updatedFormData);
   };
 
-  const closeDialog = () => {
-    console.log("false");
-  };
-
-  const handleCreateMarket = async (formData: MarketFormProps) => {
+  const handleCreateMarket = async (formData: Partial<MarketDBProps>) => {
     // const dataToDB = {
     //   location: formData.location,
     //   price_of_day: formData.price_of_day,
@@ -51,27 +49,52 @@ export function NewMarket() {
     //   description: "",
     // };
 
-    const serverResponse = await db_create_market(formData);
+    // CREATE MARKET
+    console.log("market payload", formData);
+    await mutateApiData(Route.marketRequest, {
+      location: formData.location,
+      price_of_day: formData.price_of_day,
+      campaign_id: formData.campaign_id,
+      company_id: formData.company_id,
+      description: formData.description,
+      start_date: new Date(formData.start_date as string).toISOString(),
+      end_date: new Date(formData.end_date as string).toISOString(),
+    })
+      .then((response) => {
+        console.log("response", response);
+        if (response.status === 201) {
+          toast.success("Your market are created successfull");
+        }
+        setIsLoading(false);
+        return;
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+        return;
+      });
+
+    // const serverResponse = await db_create_market(formData);
     // const serverResponse = await db_create_training(dataToDB);
 
-    console.log("daaaaata:::::::::", serverResponse);
+    // console.log("daaaaata:::::::::", serverResponse);
 
-    if (serverResponse.status === "error") {
-      toast.error("Creating market failed");
-      setIsLoading(false);
-      return;
-    }
+    // if (serverResponse.status === "error") {
+    //   toast.error("Creating market failed");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
-    toast.success("Your market are created successfull");
-    setIsLoading(false);
-    closeDialog();
-    router.refresh();
-    router.push(Route.markets);
-    return;
+    // toast.success("Your market are created successfull");
+    // setIsLoading(false);
+    // closeDialog();
+    // router.refresh();
+    // router.push(Route.markets);
+    // return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    closeDialog();
+    // closeDialog();
     try {
       setIsLoading(true);
       e.preventDefault();
@@ -90,8 +113,16 @@ export function NewMarket() {
         setIsLoading(false);
         return;
       }
-
-      handleCreateMarket(formData);
+      console.log("formData from handleSubmit", {
+        ...formData,
+        company_id: company?.id,
+        campaign_id: currentCampain?.id,
+      });
+      handleCreateMarket({
+        ...formData,
+        company_id: company?.id,
+        campaign_id: currentCampain?.id,
+      });
     } catch (error) {}
   };
 

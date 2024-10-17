@@ -52,7 +52,10 @@ export default function LayoutDashboardTemplate({
       baseUrl: "",
     })
   );
-  // console.log(campaigns)
+  // sort campains
+  const sortedCampains = campaigns.sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
 
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
@@ -62,7 +65,7 @@ export default function LayoutDashboardTemplate({
         baseUrl: "",
         icon: RxStack,
       },
-      details: campaigns,
+      details: sortedCampains,
     },
     {
       option: {

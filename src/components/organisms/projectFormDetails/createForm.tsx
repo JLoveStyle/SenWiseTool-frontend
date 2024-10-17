@@ -36,6 +36,7 @@ export default function ProjectDetailsForm({
   const router = useRouter();
   const company = useCompanyStore((state) => state.company);
   const compains = useCampaignStore((state) => state.campaigns);
+  const currentCampain = useCampaignStore((state) => state.currentCampaign)
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -49,7 +50,7 @@ export default function ProjectDetailsForm({
   const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
-    sector_activity: "",
+    sector_activity: "", 
     country: "",
     description: "",
     city: "",
@@ -146,7 +147,7 @@ export default function ProjectDetailsForm({
       another_logo: companyLogo,
       start_date: new Date(projectData.start_date as string).toISOString(),
       end_date: new Date(projectData.end_date as string).toISOString(),
-      campaign_id: compains[0]?.id,
+      campaign_id: currentCampain?.id,
     })
       .then((res: ApiDataResponse<ProjectType>) => {
         console.log("project cereated", res);

@@ -1,9 +1,12 @@
-import React from 'react'
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 export default function Home({}: Props) {
   return (
-    <div>Agriculture</div>
-  )
+    <LayoutDashboardTemplate>
+      <div>Agriculture</div>
+    </LayoutDashboardTemplate>
+  );
 }

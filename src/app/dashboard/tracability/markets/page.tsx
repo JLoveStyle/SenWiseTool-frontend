@@ -16,14 +16,12 @@ import { DashboardStatPanelData } from "@/types/app-link";
 import { db_get_markets } from "@/utiles/services/tracability/market";
 import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
-import {
-  MarketDBProps,
-  MarketDisplayProps,
-} from "../../../../types/tracability/market";
+import { MarketDisplayProps } from "../../../../types/tracability/market";
+import { MarketDBProps } from "@/types/api-types";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);
-  const [marketDatas, setmarketDatas] = useState<MarketDisplayProps[]>([]);
+  const [marketDatas, setmarketDatas] = useState<Partial<MarketDBProps>[]>([]);
   const [marketSelected, setmarketSelected] = useState<MarketDisplayProps[]>(
     []
   );
@@ -48,7 +46,7 @@ export default function Market() {
     false
   );
 
-  const formatedDataFromDBToDisplay = (data: MarketDBProps) => {
+  const formatedDataFromDBToDisplay = (data: Partial<MarketDBProps>) => {
     return {
       id: data.id,
       campagne: data.campaign_id,
@@ -64,7 +62,7 @@ export default function Market() {
     const fetchData = async () => {
       try {
         const result = await db_get_markets();
-        const dataFormated: MarketDisplayProps[] = [];
+        const dataFormated: Partial<MarketDBProps>[] = [];
 
         if (result) {
           if (Array.isArray(result)) {
