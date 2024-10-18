@@ -2,7 +2,7 @@
 
 import { Route } from "@/lib/route";
 
-import { Archive, FilePenLine, Rocket, Trash2 } from "lucide-react";
+import { Archive, Trash2 } from "lucide-react";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 
@@ -12,12 +12,13 @@ import { NewMarket } from "@/components/organisms/tracability/market/new-market"
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useToggle } from "@/hooks/use-toggle";
-import { MarketDBProps } from "@/types/api-types";
-import { DashboardStatPanelData } from "@/types/app-link";
-import { marketData } from "@/utiles/services/constants";
-import { receiptStatData } from "@/utiles/tracability.const/statistics";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { AssigneeType, MarketDBProps } from "@/types/api-types";
+import { MarketDisplayProps } from "@/types/tracability/market";
+import { marketData, statPanelDatas } from "@/utiles/services/constants";
+import { fetchApiData } from "@/utiles/services/queries";
 import { useEffect, useState } from "react";
-import { MarketDisplayProps } from "../../../../types/tracability/market";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +32,16 @@ export default function Market() {
     initial: false,
   });
   const projectCodeSeparator = " ";
+
+  const closeDialog = () => {
+    toggleOpenModel();
+  };
+
+  // Load company object from store
+  const company = useCompanyStore((state) => state.company);
+
+  // load current campain object from store
+  const currentCampain = useCampaignStore((state) => state.currentCampaign);
 
   const columns = columnTable<MarketDisplayProps>(
     {
@@ -60,7 +71,22 @@ export default function Market() {
     };
   };
 
+  async function getAllMarket() {
+    await fetchApiData<AssigneeType>(
+      Route.assigne,
+      `?campaign_id=${currentCampain?.id}`,
+      company?.id
+    )
+      .then((response) => {
+        console.log("from useEffect", response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
+    getAllMarket();
     const fetchData = async () => {
       try {
         // const result = await db_get_markets();
@@ -149,48 +175,6 @@ export default function Market() {
   //   },
   // ];
 
-  const statPanelDatas: DashboardStatPanelData[] = [
-    {
-      structure: {
-        label: "Ventes",
-        baseUrl: "",
-        icon: Rocket,
-      },
-      data: () => {
-        return receiptStatData.totalSale;
-      },
-    },
-    {
-      structure: {
-        label: "Marchés",
-        baseUrl: "",
-        icon: FilePenLine,
-      },
-      data: () => {
-        return receiptStatData.distinctMarketCount;
-      },
-    },
-    {
-      structure: {
-        label: "Quantités",
-        baseUrl: "",
-        icon: Archive,
-      },
-      data: () => {
-        return receiptStatData.totalQuantity;
-      },
-    },
-    {
-      structure: {
-        label: "Poids.Net",
-        baseUrl: "",
-        icon: Archive,
-      },
-      data: () => {
-        return receiptStatData.totalNetWeight;
-      },
-    },
-  ];
   const formParams = {
     trigger_btn_label_form: "New Market",
     construct_form_btn_label: "New market form",

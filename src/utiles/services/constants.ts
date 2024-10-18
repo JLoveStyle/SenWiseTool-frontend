@@ -1,6 +1,9 @@
 import { Route } from "@/lib/route";
 import { MarketDBProps } from "@/types/api-types";
+import { DashboardStatPanelData } from "@/types/app-link";
 import { allRequirements } from "@/utils/requirements";
+import { Archive, FilePenLine, Rocket } from "lucide-react";
+import { receiptStatData } from "../tracability.const/statistics";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 // export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
@@ -426,6 +429,50 @@ export const optionsTracabilité: {
     href: "/docs/primitives/alert-dialog",
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
+  },
+];
+
+// pannel for sidebar of layoutDashboardTemplate component
+export const statPanelDatas: DashboardStatPanelData[] = [
+  {
+    structure: {
+      label: "Ventes",
+      baseUrl: "",
+      icon: Rocket,
+    },
+    data: () => {
+      return receiptStatData.totalSale;
+    },
+  },
+  {
+    structure: {
+      label: "Marchés",
+      baseUrl: "",
+      icon: FilePenLine,
+    },
+    data: () => {
+      return receiptStatData.distinctMarketCount;
+    },
+  },
+  {
+    structure: {
+      label: "Quantités",
+      baseUrl: "",
+      icon: Archive,
+    },
+    data: () => {
+      return receiptStatData.totalQuantity;
+    },
+  },
+  {
+    structure: {
+      label: "Poids.Net",
+      baseUrl: "",
+      icon: Archive,
+    },
+    data: () => {
+      return receiptStatData.totalNetWeight;
+    },
   },
 ];
 

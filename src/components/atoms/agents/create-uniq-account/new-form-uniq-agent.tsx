@@ -10,9 +10,10 @@ import clsx from "clsx";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 import { dbCreateAgent } from "../create-multiple-account/new-form-multiple-agent";
 import { FormUniqAgent } from "./form-uniq-agent";
+import { mutateApiData } from "@/utiles/services/mutations";
 
 export function NewFormUniqAgent() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -28,7 +29,7 @@ export function NewFormUniqAgent() {
     projectCodes: [],
   });
 
-  // load company state
+  // load company from state
   const company = useCompanyStore((state) => state.company);
 
   // Fonction de gestion pour la mise à jour des données du formulaire
@@ -66,24 +67,68 @@ export function NewFormUniqAgent() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    try {
-      setIsLoading(true);
-      e.preventDefault();
+    setIsLoading(true);
+    e.preventDefault();
 
-      const { isValid, errors } = await validatorForm(formData, {
-        agentCode: "required|size:4",
+    const { isValid, errors } = await validatorForm(formData, {
+      agentCode: "required|size:4",
+    });
+
+    if (!isValid) {
+      setErrors(errors);
+      toast.error("Something is wrong");
+      console.log(errors);
+      setIsLoading(false);
+      return;
+    }
+
+    // check if there is atleast a project code
+    if (!formData.projectCodes?.length) {
+      toast.error("Please enter atleast one project code");
+      return;
+    }
+    // Because projectCodes should be of type string[]
+    const formatProjectcode = []
+    for (const code of formData.projectCodes) {
+      formatProjectcode.push(code.value)
+    }
+    console.log(formatProjectcode)
+
+    await mutateApiData(Route.assigne, {
+      company_id: company?.id,
+      projectCodes: formatProjectcode,
+      agentCode: formData.agentCode,
+      fullName: formData.fullName,
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+          setIsLoading(false);
+          toast.success("Success", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+          // close modal
+          router.refresh();
+        } else if (response.status === 409) {
+          setIsLoading(false);
+          toast.warning(`Agent with code ${formData.agentCode} already exist`, {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+          return;
+        } else {
+          setIsLoading(false);
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Sorry something went wrong. Please try again");
       });
+    console.log("formData", { ...formData, company_id: company?.id });
 
-      if (!isValid) {
-        setErrors(errors);
-        toast.error("Something is wrong");
-        console.log(errors);
-        setIsLoading(false);
-        return;
-      }
-
-      handleCreateAgent(formData);
-    } catch (error) {}
+    // handleCreateAgent(formData);
   };
 
   return (
@@ -99,7 +144,7 @@ export function NewFormUniqAgent() {
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >
-        Créer
+        Create
       </ButtonUI>
     </form>
   );

@@ -23,7 +23,7 @@ export default function Home({}: Props) {
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   // Fetech all projects xwith ["INTERNAL_INSPECTION"] and pass it as props to layout
   async function fetchAllInternalInspectionProject() {

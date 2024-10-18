@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FormMultipleAgent } from "./form-multiple-agent";
+import { AssigneeType } from "@/types/api-types";
+import { mutateApiData } from "@/utiles/services/mutations";
 
 export function NewFormMiltipleAgent() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -38,41 +40,81 @@ export function NewFormMiltipleAgent() {
 
   const handleCreateAgent = async (formData: MultipleFormAgentProps) => {
     const serverResponses: any[] = [];
+    setIsLoading((prev) => !prev);
+    let assignees: Partial<AssigneeType>[] = [];
+    arrayNumber(formData.accountNumber).map(async () => {
+      const dataToDB = {
+        company_id: company?.id,
+        agentCode: generateUniqueCode(),
+        projectCodes: formData.projectCodes
+          ? formData.projectCodes.map((item) => item.value)
+          : [],
+      };
+      assignees.push(dataToDB);
+    });
+    console.log("Array", assignees);
 
-    const serverResponse = await Promise.all(
-      arrayNumber(formData.accountNumber).map(async () => {
-        const dataToDB = {
-          agentCode: generateUniqueCode(),
-          projectCodes: formData.projectCodes
-            ? formData.projectCodes.map((item) => item.value)
-            : [],
-        };
-
-        // const result = await db_create_agent(dataToDB);
-        const result = await dbCreateAgent(dataToDB);
-        return result;
-      })
-    );
-
-    serverResponses.push(...serverResponse);
-
-    for (const index in serverResponses) {
-      if (Object.prototype.hasOwnProperty.call(serverResponses, index)) {
-        const serverResponse = serverResponses[index];
-        if (serverResponse.status === "error") {
-          toast.error(`Faillure during agent ${index + 1} generation`);
+    await mutateApiData(Route.assigne + "/bulkCreate", assignees)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+          toast.success("Success");
           setIsLoading(false);
+          // closeDialog();
+          router.refresh();
+          router.push(Route.agents);
           return;
+        } else if (response.status === 409) {
+          setIsLoading(false);
+          toast.warning(`Agent with code ${response.agentCode} already exist`)
+          return
+        } else {
+          setIsLoading(false);
+          toast.error('Something went wrong')
+          return
         }
-      }
-    }
+      })
+      .catch((error) => {
+        console.log(error)
+        toast.error('Something went wrong. Please try again')
+      })
 
-    toast.success("All agents are generated successfull");
-    setIsLoading(false);
-    // closeDialog();
-    router.refresh();
-    router.push(Route.agents);
-    return;
+    // const serverResponse = await Promise.all(
+    //   arrayNumber(formData.accountNumber).map(async () => {
+    //     const dataToDB = {
+    //       agentCode: generateUniqueCode(),
+    //       projectCodes: formData.projectCodes
+    //         ? formData.projectCodes.map((item) => item.value)
+    //         : [],
+    //     };
+
+    //     console.log('dataToDB', dataToDB)
+
+    //     // const result = await db_create_agent(dataToDB);
+    //     // const result = await dbCreateAgent(dataToDB);
+    //     // return result;
+    //   })
+    // );
+
+    // serverResponses.push(...serverResponse);
+
+    // for (const index in serverResponses) {
+    //   if (Object.prototype.hasOwnProperty.call(serverResponses, index)) {
+    //     const serverResponse = serverResponses[index];
+    //     if (serverResponse.status === "error") {
+    //       toast.error(`Faillure during agent ${index + 1} generation`);
+    //       setIsLoading(false);
+    //       return;
+    //     }
+    //   }
+    // }
+
+    // toast.success("All agents are generated successfull");
+    // setIsLoading(false);
+    // // closeDialog();
+    // router.refresh();
+    // router.push(Route.agents);
+    // return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,7 +151,7 @@ export function NewFormMiltipleAgent() {
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >
-        Générer
+        Generate
       </ButtonUI>
     </form>
   );

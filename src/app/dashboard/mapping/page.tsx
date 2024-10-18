@@ -24,7 +24,7 @@ export default function Home({}: Props) {
     useState<Partial<ProjectType[]>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   // get all mapping projects
   async function fetchAllMappingProjects() {

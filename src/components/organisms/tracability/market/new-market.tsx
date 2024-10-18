@@ -63,13 +63,21 @@ export function NewMarket() {
       .then((response) => {
         console.log("response", response);
         if (response.status === 201) {
-          toast.success("Your market are created successfull");
+          toast.success("Market created successfull");
+          setIsLoading(false);
+          closeDialog();
+          router.refresh();
+          router.push(Route.markets);
+          return
+        } else if (response.message === 'Internal Server Error') {
+          toast.error('Internal Server Error')
         }
         setIsLoading(false);
         return;
       })
       .catch((error) => {
         console.log(error);
+        toast.error('Something went wrong')
         setIsLoading(false);
         return;
       });

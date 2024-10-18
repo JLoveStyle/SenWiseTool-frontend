@@ -79,7 +79,16 @@ export default function Sidebar({ options }: Props) {
                               {detail.icon && (
                                 <detail.icon className="mr-2 h-4 w-4" />
                               )}
-                              <span>{detail.label}</span>
+                              <span
+                                className={
+                                  (detail.label as string)?.slice(0, 4) ===
+                                  new Date().getFullYear().toString()
+                                    ? "text-primary"
+                                    : ""
+                                }
+                              >
+                                {detail.label}
+                              </span>
                               {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
                             </DropdownMenuItem>
                           ))}

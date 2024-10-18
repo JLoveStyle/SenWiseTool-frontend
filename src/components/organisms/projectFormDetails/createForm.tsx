@@ -130,6 +130,8 @@ export default function ProjectDetailsForm({
     }
 
     setIsLoading((prev) => !prev);
+    console.log(new Date(projectData.start_date as string).toISOString())
+
     console.log(compains[0]);
     console.log("company", company);
     setErrorDate("");
@@ -165,6 +167,13 @@ export default function ProjectDetailsForm({
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
           return;
+        } else if (res.message === 'Internal Server Error') {
+          toast.error('Internal Server Error', {
+            transition: Bounce,
+            autoClose: 3000
+          })
+          setIsLoading((prev) => !prev);
+          return
         }
         setIsLoading((prev) => !prev);
         toast.error("Something went wrong", {
