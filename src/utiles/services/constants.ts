@@ -1,4 +1,5 @@
 import { Route } from "@/lib/route";
+import { MarketDBProps } from "@/types/api-types";
 import { allRequirements } from "@/utils/requirements";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
@@ -475,3 +476,62 @@ export const chapters: string[] = [
 ];
 
 export const requirements = allRequirements;
+
+export const marketData: MarketDBProps[] = [
+  {
+    id: "1",
+    location: "Location A",
+    price_of_day: 1500,
+    start_date: "2024-10-01",
+    end_date: "2024-12-01",
+    description: "A market for high-quality cocoa",
+    type_of_market: "COCOA",
+    status: "OPEN",
+    code: "MK001",
+    product_quantity: 100,
+    created_at: "2024-10-01",
+    updated_at: "2024-10-10",
+    campaign_id: "CAMP123",
+    company_id: "COMP001",
+    company: "Company A",
+    market_audit: [], // Replace with specific objects if available
+    transaction: [], // Replace with specific objects if available
+    receipts: [], // Replace with specific objects if available
+  },
+  {
+    id: "2",
+    location: "Location B",
+    price_of_day: 2000,
+    start_date: "2024-11-01",
+    end_date: "2025-01-01",
+    description: "Banana export market",
+    type_of_market: "BANANA",
+    status: "CLOSED",
+    code: "MK002",
+    product_quantity: 200,
+    created_at: "2024-11-01",
+    updated_at: "2024-12-01",
+    campaign_id: "CAMP456",
+    company: "Company B",
+    market_audit: [], // Replace with specific objects if available
+    transaction: [], // Replace with specific objects if available
+  },
+  {
+    id: "3",
+    location: "Location C",
+    price_of_day: 1800,
+    start_date: "2024-10-15",
+    end_date: "2024-12-15",
+    type_of_market: "COFFEE",
+    status: "OPEN",
+    code: "MK003",
+    product_quantity: 300,
+    created_at: "2024-10-15",
+    updated_at: "2024-10-20",
+    campaign_id: "CAMP789",
+    company_id: "COMP002",
+    company: "Company C",
+    market_audit: [], // Replace with specific objects if available
+    transaction: [], // Replace with specific objects if available
+  },
+];

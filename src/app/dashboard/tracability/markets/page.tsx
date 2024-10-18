@@ -12,16 +12,16 @@ import { NewMarket } from "@/components/organisms/tracability/market/new-market"
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useToggle } from "@/hooks/use-toggle";
+import { MarketDBProps } from "@/types/api-types";
 import { DashboardStatPanelData } from "@/types/app-link";
-import { db_get_markets } from "@/utiles/services/tracability/market";
+import { marketData } from "@/utiles/services/constants";
 import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
 import { MarketDisplayProps } from "../../../../types/tracability/market";
-import { MarketDBProps } from "@/types/api-types";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);
-  const [marketDatas, setmarketDatas] = useState<Partial<MarketDBProps>[]>([]);
+  const [marketDatas, setmarketDatas] = useState<MarketDisplayProps[]>([]);
   const [marketSelected, setmarketSelected] = useState<MarketDisplayProps[]>(
     []
   );
@@ -35,6 +35,7 @@ export default function Market() {
   const columns = columnTable<MarketDisplayProps>(
     {
       id: "id",
+      code: "code",
       campagne: "campagne",
       location: "location",
       price_of_day: "price_of_day",
@@ -42,13 +43,14 @@ export default function Market() {
       end_date: "end_date",
       status: "status",
     },
-    Route.markets,
-    false
+    Route.markets
+    // false
   );
 
-  const formatedDataFromDBToDisplay = (data: Partial<MarketDBProps>) => {
+  const formatedDataFromDBToDisplay = (data: MarketDBProps) => {
     return {
       id: data.id,
+      code: data.code,
       campagne: data.campaign_id,
       location: data.location,
       price_of_day: data.price_of_day,
@@ -61,8 +63,9 @@ export default function Market() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await db_get_markets();
-        const dataFormated: Partial<MarketDBProps>[] = [];
+        // const result = await db_get_markets();
+        const result = await marketData;
+        const dataFormated: MarketDisplayProps[] = [];
 
         if (result) {
           if (Array.isArray(result)) {
@@ -97,7 +100,8 @@ export default function Market() {
 
   const valueToDisplay = (args: MarketDisplayProps[]) => {
     return args?.map((markets) => ({
-      id: markets.id,
+      id: markets.code ?? "",
+      code: markets.code,
       location: markets.location,
       price_of_day: markets.price_of_day,
       start_date: markets.start_date,

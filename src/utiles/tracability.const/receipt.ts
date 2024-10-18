@@ -3,7 +3,7 @@ import { ReceiptProps } from "@/types/tracability/receipt";
 export const receiptData: ReceiptProps[] = [
   {
     id: "rec1",
-    market_id: "mkt1",
+    market_id: "mk001",
     village: "Village A",
     farmer_id: "farmer1",
     date: "2023-09-01",
@@ -24,7 +24,7 @@ export const receiptData: ReceiptProps[] = [
   },
   {
     id: "rec2",
-    market_id: "mkt2",
+    market_id: "mk002",
     village: "Village A",
     farmer_id: "farmer2",
     date: "2023-09-02",
@@ -47,7 +47,7 @@ export const receiptData: ReceiptProps[] = [
   },
   {
     id: "rec3",
-    market_id: "mkt1",
+    market_id: "mk001",
     village: "Village B",
     farmer_id: "farmer3",
     date: "2023-09-03",
@@ -68,7 +68,7 @@ export const receiptData: ReceiptProps[] = [
   },
   {
     id: "rec4",
-    market_id: "mkt2",
+    market_id: "mk002",
     village: "Village A",
     farmer_id: "farmer4",
     date: "2023-09-04",
@@ -89,7 +89,7 @@ export const receiptData: ReceiptProps[] = [
   },
   {
     id: "rec5",
-    market_id: "mkt2",
+    market_id: "mkt002",
     village: "Village B",
     farmer_id: "farmer5",
     date: "2023-09-05",

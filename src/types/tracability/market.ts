@@ -1,5 +1,6 @@
 export interface MarketDisplayProps {
   id: string;
+  code?: string | null;
   location: string;
   price_of_day: number;
   start_date: Date | string;
