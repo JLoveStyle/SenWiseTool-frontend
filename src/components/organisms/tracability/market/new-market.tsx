@@ -82,6 +82,7 @@ export function NewMarket({ closeDialog }: Props) {
       })
       .catch((error) => {
         console.log(error);
+        toast.error('Something went wrong')
         setIsLoading(false);
         return;
       });

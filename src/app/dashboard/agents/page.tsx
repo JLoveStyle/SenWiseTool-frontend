@@ -4,10 +4,8 @@ import { Route } from "@/lib/route";
 
 import {
   Archive,
-  FilePenLine,
   LucideBlinds,
   LucideX,
-  Rocket,
   Trash2,
 } from "lucide-react";
 import { RiUserStarLine } from "react-icons/ri";
@@ -34,11 +32,10 @@ import {
   AgentPropsFromDB,
   CodeProjectProps,
 } from "@/types/agent-props";
-import { DashboardStatPanelData } from "@/types/app-link";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { statPanelDatas } from "@/utiles/services/constants";
 
 export default function Receipt() {
   const [isLoading, setIsLoading] = useState(true);
@@ -143,48 +140,6 @@ export default function Receipt() {
   //   },
   // ];
 
-  const statPanelDatas: DashboardStatPanelData[] = [
-    {
-      structure: {
-        label: "Ventes",
-        baseUrl: "",
-        icon: Rocket,
-      },
-      data: () => {
-        return receiptStatData.totalSale;
-      },
-    },
-    {
-      structure: {
-        label: "Marchés",
-        baseUrl: "",
-        icon: FilePenLine,
-      },
-      data: () => {
-        return receiptStatData.distinctMarketCount;
-      },
-    },
-    {
-      structure: {
-        label: "Quantités",
-        baseUrl: "",
-        icon: Archive,
-      },
-      data: () => {
-        return receiptStatData.totalQuantity;
-      },
-    },
-    {
-      structure: {
-        label: "Poids.Net",
-        baseUrl: "",
-        icon: Archive,
-      },
-      data: () => {
-        return receiptStatData.totalNetWeight;
-      },
-    },
-  ];
   const formParams = {
     trigger_btn_label_form: "New Agent",
     construct_form_btn_label: "Generate Sub Accounts",
@@ -289,8 +244,8 @@ export default function Receipt() {
   return (
     <LayoutDashboardTemplate
       newForms={[
-        { title: "Nouveau sous compte", form: <NewFormUniqAgent /> },
-        { title: "Génération de sous comptes", form: <NewFormMiltipleAgent /> },
+        { title: "New sub account", form: <NewFormUniqAgent /> },
+        { title: "Generate sub account", form: <NewFormMiltipleAgent /> },
       ]}
       title="Agent Manager"
       formParams={formParams}

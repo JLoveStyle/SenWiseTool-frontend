@@ -36,7 +36,7 @@ export const FormUniqAgent = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (e.target.value.trim().length !== 4) {
-      errors["agentCode"] = "Le code doit être à 4 caractères";
+      errors["agentCode"] = "Please enter 4 digits code";
       return;
     } else {
       delete errors["agentCode"];
@@ -52,7 +52,7 @@ export const FormUniqAgent = ({
     });
 
     if (e.target.value.trim().length !== 4) {
-      errors["projectCodes"] = "Le code doit être à 4 caractères";
+      errors["projectCodes"] = "Please enter 4 digits code";
       return;
     } else {
       delete errors["projectCodes"];
@@ -101,9 +101,9 @@ export const FormUniqAgent = ({
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Nom de l'agent"
+          label="Agent name"
           id="fullName"
-          placeholder="Entrer le nom de l'agent"
+          placeholder="Enter agent name "
           isLoading={isLoading}
           errors={errors}
           value={formData.fullName}
@@ -111,9 +111,9 @@ export const FormUniqAgent = ({
         />
 
         <InputUI
-          label="Code de l'agent"
+          label="Agent code"
           id="agentCode"
-          placeholder="Entrer un code à 4 chiffres"
+          placeholder="Enter a 4 digits code"
           required
           isLoading={isLoading}
           errors={errors}
@@ -123,7 +123,7 @@ export const FormUniqAgent = ({
       </div>
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="projectCodes" className="text-gray-400">
-          Les projet de {formData.fullName ?? "..."}
+          Projects of {formData.fullName ?? "..."}
         </Label>
         <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 overflow-y-scroll scrool-bar-hidden">
           {formData.projectCodes &&
@@ -146,9 +146,9 @@ export const FormUniqAgent = ({
         </div>
 
         <InputUI
-          label="Code du projet"
+          label="Project code"
           id="projectCodes"
-          placeholder="Entrer le code du projet"
+          placeholder="Enter code and hit enter"
           isLoading={isLoading}
           value={projectCode?.value}
           errors={errors}

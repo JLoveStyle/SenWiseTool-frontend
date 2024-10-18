@@ -1,6 +1,6 @@
 "use server";
 import { Route } from "@/lib/route";
-import { ApiDataResponse, MarketDBProps } from "@/types/api-types";
+import { ApiDataResponse, AssigneeType, MarketDBProps } from "@/types/api-types";
 import {
   mutateApiData,
   mutateDelApiData,
@@ -62,6 +62,7 @@ export const db_update_market = async (data: MarketDBProps, id: string) => {
 
 export const db_get_markets = async (companyId?: string) => {
   const db = new ApiCall();
+
 
   return await fetchApiData<
     ApiDataResponse<MarketDBProps[] | MarketDBProps>

@@ -11,6 +11,7 @@ interface Props {
   initData?: MultipleFormAgentProps;
   errors: { [key: string]: any };
   isLoading: boolean;
+  displayListOfProjects?: boolean
 }
 
 export const FormMultipleAgent = ({
@@ -18,6 +19,7 @@ export const FormMultipleAgent = ({
   initData,
   errors,
   isLoading,
+  displayListOfProjects
 }: Props) => {
   const [formData, setFormData] = useState<MultipleFormAgentProps>({
     id: initData ? initData.id : "",
@@ -88,9 +90,9 @@ export const FormMultipleAgent = ({
     <div className="flex flex-col gap-5">
       <div className="grid w-full items-center gap-1.5">
         <InputUI
-          label="Nombre de compte à générer"
+          label="Number of sub account to generate"
           id="accountNumber"
-          placeholder="Entrer le nombre de compte"
+          placeholder="Enter number of account"
           required
           isLoading={isLoading}
           errors={errors}
@@ -98,7 +100,7 @@ export const FormMultipleAgent = ({
           onChange={handleChange}
         />
       </div>
-
+      
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="projectCodes" className="text-gray-400">
           Liste des projets
@@ -124,9 +126,9 @@ export const FormMultipleAgent = ({
         </div>
 
         <InputUI
-          label="Code du projet"
+          label="Project code(s)"
           id="projectCodes"
-          placeholder="Entrer le code du projet"
+          placeholder="Enter project code and hit enter"
           isLoading={isLoading}
           value={projectCode?.value}
           errors={errors}

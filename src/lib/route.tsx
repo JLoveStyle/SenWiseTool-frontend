@@ -32,6 +32,7 @@ export type AvailableRoute =
   | "agents"
   | "factoryAccompaniementSheet"
   | "marketRequest"
+  | "assigne"
 
   // tracability
   | "markets"
@@ -69,6 +70,7 @@ export const Route: Record<AvailableRoute, string> = {
   training: "trainings",
   pricing: "price_plans",
   marketRequest: "markets",
+  assigne: "project_assignee",
 
   // tracability
   markets: "/dashboard/tracability/markets",

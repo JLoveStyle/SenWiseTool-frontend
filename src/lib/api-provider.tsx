@@ -57,11 +57,11 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
   if (data) {
     if (route?.includes("users")) {
       setCurrentUser(data as unknown as UserType);
-      console.log('users from store', data)
+      // console.log('users from store', data)
     }
     if (route?.includes("companies")) {
       setCompany(data as unknown as CompanyType);
-      console.log('company from store', data)
+      // console.log('company from store', data)
     }
     if (route?.includes("price_plans")) {
       setPricePlan(data as unknown as PricePlanType);

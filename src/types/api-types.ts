@@ -78,6 +78,17 @@ type ApiErroType = {
   };
 };
 
+export type AssigneeType = {
+  id?: string,
+  agentCode: string,
+  projectCode: string[],
+  fullName?: string,
+  company_id: string,
+  created_at: string,
+  updated_at: string,
+  deleted_at: string
+}
+
 export type ProjectType = {
   id?: string;
   type: ProjectsType;
