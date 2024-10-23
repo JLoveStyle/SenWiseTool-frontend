@@ -36,7 +36,6 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { statPanelDatas } from "@/utiles/services/constants";
-import { AssigneeType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { columnsListOfAgents } from "@/components/atoms/colums-of-tables/list-of-agets";
