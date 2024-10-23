@@ -25,6 +25,8 @@ import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
 import { FormTraining } from "./form-training";
 import { revalidatePath } from "next/cache";
+import { mutateApiData } from "@/utiles/services/mutations";
+import { format } from "path";
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -51,6 +53,43 @@ export function NewTraining() {
   };
 
   const handleCreateTraining = async (formData: TrainingProps) => {
+    console.log("forMData => ", formData);
+    const trainingModules: string[] = []
+    for(const module of formData.modules) {
+      trainingModules.push(module.value)
+    }
+
+    // Create training in DB
+    await mutateApiData(Route.training, {
+      location: formData.location,
+      title: formData.title,
+      start_date: new Date(formData.start_date as string).toISOString(),
+      end_date: new Date(formData.end_date as string).toISOString(),
+      company_id: company?.id,
+      status: "DEPLOYED",
+      modules: trainingModules
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+          toast.success("Training created");
+          // close modal
+          setIsLoading(false);
+          toggleOpenModal();
+          router.refresh();
+          router.push(Route.trainingProject);
+
+          return;
+        } else if (response.message === "Internal Server Error") {
+          toast.error("Internal Server Error");
+          return
+        } else toast.error("Something went wrong");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Something went wrong. Please try again");
+      });
+
     const dataToDB = {
       title: formData.title,
       start_date: new Date(formData.start_date).toISOString(),
@@ -60,22 +99,17 @@ export function NewTraining() {
       modules: formData.modules.map((item) => item.value),
     };
 
-    const serverResponse = await db_create_training(dataToDB);
+    // const serverResponse = await db_create_training(dataToDB);
 
-    console.log("daaaaata:::::::::", serverResponse);
+    // console.log("daaaaata:::::::::", serverResponse);
 
-    if (serverResponse.status === "error") {
-      toast.error("Updating training failed");
-      setIsLoading(false);
-      return;
-    }
+    // if (serverResponse.status === "error") {
+    //   toast.error("Updating training failed");
+    //   setIsLoading(false);
+    //   return;
+    // }
 
-    toast.success("Your project are created successfull");
-    setIsLoading(false);
-    toggleOpenModal();
-    router.refresh();
-    router.push(Route.trainingProject);
-    return;
+    // toast.success("Your project are created successfull");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -93,7 +127,7 @@ export function NewTraining() {
       }
 
       handleCreateTraining(formData);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
@@ -104,13 +138,10 @@ export function NewTraining() {
         </Button>
       </DialogTrigger>
       <DialogContent className="w-3/4">
-        <DialogHeader className="bg-orange-300 p-5">
-          <DialogTitle className="text-black text-2xl">
-            Nouveau Projet de Formation
-          </DialogTitle>
-          <DialogDescription className="text-gray-700">
-            Créez votre projet de formation en définissant les éléments
-            descriptifs suivants...
+        <DialogHeader className="bg-tertiary text-[#f1f1f1] p-5">
+          <DialogTitle className=" text-2xl">New training project</DialogTitle>
+          <DialogDescription className="">
+            Create your training project by defining the following:
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="px-5 pb-5">
@@ -122,11 +153,11 @@ export function NewTraining() {
           <DialogFooter className="mt-2">
             <ButtonUI
               type="submit"
-              className={clsx("bg-green-600 hover:bg-green-500")}
+              className={clsx("bg-tertiary hover:bg-tertiary")}
               isLoading={isLoading}
               icon={{ icon: Plus }}
             >
-              Créer
+              Create
             </ButtonUI>
           </DialogFooter>
         </form>

@@ -11,6 +11,12 @@ export type AvailableRoute =
   | "createCompany"
   | "dashboard"
   | "training"
+  | "listOfFarmers"
+  | "managementPlan"
+  | "map"
+  | "reclamationMecanism"
+  | "riskEvaluation"
+  | "organigram"
   | "trainingProject"
   | "login"
   | "inspectionInterne"
@@ -53,6 +59,11 @@ export const Route: Record<AvailableRoute, string> = {
   autoEvaluation: "/dashboard/auto-evaluation",
   editProject: "/dashboard/edit",
   checkout: "/checkout",
+  map: "/dashboard/map",
+  reclamationMecanism: "/dashboard/reclamation-mecanism",
+  riskEvaluation: "/dashboard/risk-evaluation",
+  organigram: "/dashboard/organigram",
+  managementPlan: "dashboard/management-plan",
   details: "/dashboard/details",
   training_session: "training_sessions",
   createCompany: "create-compay",
@@ -61,6 +72,7 @@ export const Route: Record<AvailableRoute, string> = {
   enviroment: "/dashboard/enviroment",
   agriculture: "/dashboard/agriculture",
   agents: "/dashboard/agents",
+  listOfFarmers: "/dashboard/farmers",
 
   // Api routes
   companies: "companies",

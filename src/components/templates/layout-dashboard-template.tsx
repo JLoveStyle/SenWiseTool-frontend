@@ -76,14 +76,14 @@ export default function LayoutDashboardTemplate({
     },
     {
       option: {
-        label: "Marchés",
+        label: "Markets",
         baseUrl: Route.markets,
         icon: FaHandHoldingUsd,
       },
     },
     {
       option: {
-        label: "Share to",
+        label: "Share",
         baseUrl: "",
         icon: IoMdShareAlt,
       },

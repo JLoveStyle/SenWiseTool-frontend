@@ -89,11 +89,50 @@ export type AssigneeType = {
   deleted_at: string
 }
 
+export interface FarmCoordinatesType {
+  id?: string
+}
+export interface FarmType {
+  id?: string
+  location: JSON
+  village: string
+  plantation_creation_date: string
+  farm_image_url: string
+  surface_area: number;
+  plantation_photos: string[]
+  mapping_coordinates: FarmCoordinatesType[]
+  created_at: string
+  updated_at: string
+
+}
+
+export type FarmerType = {
+  id?: string;
+  company_id: string
+  farmer_name: string
+  farmer_contact: string
+  farmer_ID_card_number: string
+  inspection_date: string
+  village: string
+  certification_year: string
+  inspector_name: string
+  inspector_contact: string
+  weed_application: string
+  weed_application_quantity?: number
+  pesticide_used: string
+  pesticide_quantity: string
+  farmer_photos?: string[]
+  farm: FarmType[]
+  created_at: string
+  updated_at: string
+}
+
 export type ProjectType = {
   id?: string;
   type: ProjectsType;
   company_id: string;
   title: string;
+  code: string;
   description: string;
   sector_activity: string;
   country: string;

@@ -36,12 +36,19 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { statPanelDatas } from "@/utiles/services/constants";
+import { AssigneeType } from "@/types/api-types";
+import { fetchApiData } from "@/utiles/services/queries";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { columnsListOfAgents } from "@/components/atoms/colums-of-tables/list-of-agets";
+
 
 export default function Receipt() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [agentDatas, setAgentDatas] = useState<AgentPropsFromDB[]>([]);
   const [agentSelected, setAgentSelected] = useState<AgentPropsFromDB[]>([]);
   const [errors, setErrors] = useState({});
+
+  let fetchedData: AgentProps[] = []
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
@@ -62,6 +69,37 @@ export default function Receipt() {
     Route.agents,
     false
   );
+
+  // Load company object from store
+  const company = useCompanyStore((state) => state.company)
+
+  async function getAllSubAccounts() {
+    // TODO: add company_id in the query of this function 
+    console.log('fetching data')
+    await fetchApiData(
+      Route.assigne,
+      'perCompany'
+      // company?.id
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          fetchedData = response.data
+          setAgentDatas(response.data)
+          console.log('from useEffect', response);
+          return
+        }
+        toast.error('Could not load sub accouts. Please try again')
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error('Internal Server Error')
+      });
+  }
+
+  useEffect(() => {
+    console.log('Hello world from useEffect')
+    getAllSubAccounts()
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +126,7 @@ export default function Receipt() {
     // .catch((err) => console.error(err));
     // };
 
-    fetchData();
+    // fetchData();
   }, []);
 
   const valueToDisplay = (args: AgentPropsFromDB[]) => {
@@ -186,7 +224,7 @@ export default function Receipt() {
         // );
         const selected_projectCodes =
           typeof selected.projectCodes === "string"
-            ? selected.projectCodes?.split(projectCodeSeparator)
+            ? selected.projectCodes.split(projectCodeSeparator)
             : selected.projectCodes;
 
         formProjectCode.map((projectCode) => {
@@ -273,19 +311,22 @@ export default function Receipt() {
         </div>
       </div>
       <div className="px-6">
-        <DataTable<AgentPropsFromDB, any>
-          incomingColumns={columns}
-          incomingData={
-            agentDatas?.length
-              ? valueToDisplay(agentDatas)
-              : agentDatas?.length
-              ? valueToDisplay(agentDatas as AgentPropsFromDB[])
-              : []
-          }
+        <DataTable
+          // incomingColumns={columns}
+          incomingColumns={columnsListOfAgents}
+          incomingData={agentDatas}
+          // incomingData={
+          //   agentDatas?.length
+          //     ? valueToDisplay(agentDatas)
+          //     : agentDatas?.length
+          //     ? valueToDisplay(agentDatas as AgentPropsFromDB[])
+          //     : []
+          // }
           onSelecteItem={(selects) => {
             setAgentSelected(selects);
           }}
           isLoading={isLoading}
+          inputPlaceholder="Filter by agent code..."
         />
       </div>
     </LayoutDashboardTemplate>

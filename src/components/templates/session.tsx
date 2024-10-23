@@ -29,7 +29,7 @@ export const Session = ({ children, sessionStatus }: Props) => {
   });
 
   if (sessionStatus === GUEST && !authUserIsLoading) {
-    if (!authUser) {
+    if (authUser) {
       return <>{children}</>;
     } else {
       router.push(Route.dashboard);

@@ -244,7 +244,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
           </Button>
           <Button
             type="submit"
-            className={isLoading ? "hover:cursor-wait opacity-70" : ""}
+            className={isLoading ? "hover:cursor-wait opacity-70 hover:bg-tertiary bg-tertiary" : "bg-tertiary hover:bg-tertiary"}
           >
             {isLoading ? <Spinner /> : "EDIT PROJECT"}
           </Button>

@@ -20,6 +20,7 @@ import { db_get_markets } from "@/utiles/services/tracability/market";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { fetchApiData } from "@/utiles/services/queries";
+import { toast } from "react-toastify";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);
@@ -43,6 +44,7 @@ export default function Market() {
 
   // load current campain object from store
   const currentCampain = useCampaignStore((state) => state.currentCampaign);
+  console.log(currentCampain)
 
   const columns = columnTable<MarketDisplayProps>(
     {
@@ -71,13 +73,13 @@ export default function Market() {
   };
 
   async function getAllMarket() {
-    await fetchApiData<AssigneeType>(
-      Route.assigne,
-      `?campaign_id=${currentCampain?.id}`,
-      company?.id
-    )
+    console.log('here is company', currentCampain?.id);
+    await fetchApiData(Route.marketRequest, company?.id)
       .then((response) => {
-        console.log('from useEffect', response);
+        console.log("from useEffect market", response);
+        if (response.status !== 200) {
+          toast.error("Could not load markets. Please try again");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -85,7 +87,7 @@ export default function Market() {
   }
 
   useEffect(() => {
-    getAllMarket()
+    getAllMarket();
     const fetchData = async () => {
       try {
         const result = await db_get_markets();
@@ -199,11 +201,11 @@ export default function Market() {
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "Nouveau marché",
+          title: "New market",
           form: <NewMarket closeDialog={closeDialog} />,
         },
       ]}
-      title="Gestion des marchés"
+      title="Markets management"
       formParams={formParams}
       statPanelDatas={statPanelDatas}
     >

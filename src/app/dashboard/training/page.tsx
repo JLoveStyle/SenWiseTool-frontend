@@ -3,7 +3,12 @@
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import { ApiDataResponse, CompanyType, TrainingTableDisplayType, TrainingType } from "@/types/api-types";
+import {
+  ApiDataResponse,
+  CompanyType,
+  TrainingTableDisplayType,
+  TrainingType,
+} from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 
 import { Archive, Trash2, UserPlus } from "lucide-react";
@@ -18,28 +23,62 @@ import CustomHoverCard from "@/components/organisms/hoverCard";
 import { TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
 import { db_get_trainings } from "@/utiles/services/training";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
+import { toast } from "react-toastify";
 
 export default function Training() {
-  const { data: trainings, refetch } = useApiOps<TrainingType[], ApiDataResponse<TrainingType[]>>({
+  const [data, setData] = useState<TrainingProps[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [trainingDatas, setTrainingDatas] = useState<TrainingType[]>([]);
+
+  // Load company from store
+  const company = useCompanyStore((state) => state.company);
+  // laod current campaigne
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
+
+  // Fetch all trainings
+  async function fetchTraining() {
+    if (!currentCampaign && !company) return;
+    setIsLoading((prev) => !prev);
+
+    await fetchApiData(Route.training, currentCampaign?.id)
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setTrainingDatas(response.data);
+          setIsLoading((prev) => !prev);
+          return;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      });
+  }
+
+  const { data: trainings, refetch } = useApiOps<
+    TrainingType[],
+    ApiDataResponse<TrainingType[]>
+  >({
     fn: () => fetchApiData<ApiDataResponse<TrainingType[]>>(Route.training, ""),
     route: Route.training,
   });
 
-  const [data, setData] = useState<TrainingProps[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [trainingDatas, setTrainingDatas] = useState<TrainingType[]>([]);
-
   useEffect(() => {
     const fetchData = async () => {
-      db_get_trainings().then((result) => {
-        console.log("data training: ", result)
+      db_get_trainings()
+        .then((result) => {
+          console.log("data training: ", result);
 
-        setTrainingDatas(result as TrainingType[]);
-        setIsLoading(false);
-      }).catch((err) => console.error(err));
+          setTrainingDatas(result as TrainingType[]);
+          setIsLoading(false);
+        })
+        .catch((err) => console.error(err));
     };
 
-    fetchData();
+    // fetchData();
+    fetchTraining();
   }, [trainingDatas]);
 
   const valueToDisplay = (args: TrainingType[]) => {
@@ -53,10 +92,12 @@ export default function Training() {
       //   id: index,
       //   value: module,
       // })),
-    }))
-  }
+    }));
+  };
 
-  useEffect(() => { refetch() }, [trainingDatas]);
+  useEffect(() => {
+    // refetch();
+  }, [trainingDatas]);
 
   return (
     <LayoutDashboard
@@ -90,8 +131,14 @@ export default function Training() {
       <div className="px-6">
         <DataTable<TrainingTableDisplayType, any>
           incomingColumns={trainingColumnTable}
-          incomingData={trainingDatas?.length ? valueToDisplay(trainingDatas) : trainings?.length ? valueToDisplay(trainings as TrainingType[]) : []}
-          onSelecteItem={() => { }}
+          incomingData={
+            trainingDatas?.length
+              ? valueToDisplay(trainingDatas)
+              : trainings?.length
+              ? valueToDisplay(trainings as TrainingType[])
+              : []
+          }
+          onSelecteItem={() => {}}
           isLoading={isLoading}
         />
       </div>

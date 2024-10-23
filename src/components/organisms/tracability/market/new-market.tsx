@@ -58,7 +58,7 @@ export function NewMarket({ closeDialog }: Props) {
     console.log("market payload", formData);
     await mutateApiData(Route.marketRequest, {
       location: formData.location,
-      price_of_day: formData.price_of_day,
+      price_of_theday: formData.price_of_day,
       campaign_id: formData.campaign_id,
       company_id: formData.company_id,
       description: formData.description,

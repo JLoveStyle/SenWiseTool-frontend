@@ -38,6 +38,7 @@ interface DataTableProps<TData, TValue> {
   incomingData: TData[];
   onSelecteItem: (value: TData[]) => void;
   isLoading?: boolean;
+  inputPlaceholder?: string
 }
 
 export function DataTable<TData, TValue>({
@@ -45,6 +46,7 @@ export function DataTable<TData, TValue>({
   incomingData,
   onSelecteItem,
   isLoading,
+  inputPlaceholder
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -78,7 +80,6 @@ export function DataTable<TData, TValue>({
       // console.log(pro.original);
       return pro.original;
     });
-    console.log("selPro =>", selectedPro);
     onSelecteItem(selectedPro);
   }, [rowSelection]);
 
@@ -86,7 +87,7 @@ export function DataTable<TData, TValue>({
     <>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter projects..."
+          placeholder={inputPlaceholder ?? "Filter projects..."}
           // value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           // onChange={(event) =>
           //   table.getColumn("id")?.setFilterValue(event.target.value)

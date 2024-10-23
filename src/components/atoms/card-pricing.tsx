@@ -22,7 +22,7 @@ export function PricingCard({ annualPricing }: Props) {
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 py-10">
       {cardDataPricing.map((cardData, index) => (
-        <Card className="w-auto mx-4 border-none" key={index}>
+        <Card className="w-auto mx-4 border-none" key={index+1}>
           <CardHeader className="p-0 m-0">
             <CardTitle className="relative h-56 w-full m-0 p-0">
               <Image

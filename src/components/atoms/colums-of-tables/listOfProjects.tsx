@@ -27,7 +27,7 @@ const handleDeleteProject = async (id: string) => {
     id
   ).then((res) => {
     if (res && res?.status <= 205) {
-      toast.success('Deleted', {
+      toast.success('Project deleted', {
         transition: Bounce,
         autoClose: 3000
       })
@@ -143,14 +143,14 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
-                navigator.clipboard.writeText(project.id as string);
+                navigator.clipboard.writeText(project.code as string);
                 toast.success("Copied", {
                   autoClose: 1000,
                   transition: Bounce,
                 });
               }}
             >
-              Copy project ID
+              Copy project code
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Link href={Route.details + `/${project.id}`}>

@@ -67,8 +67,8 @@ export function NewFormUniqAgent() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    setIsLoading(true);
     e.preventDefault();
+    setIsLoading(true);
 
     const { isValid, errors } = await validatorForm(formData, {
       agentCode: "required|size:4",
@@ -84,7 +84,8 @@ export function NewFormUniqAgent() {
 
     // check if there is atleast a project code
     if (!formData.projectCodes?.length) {
-      toast.error("Please enter atleast one project code");
+      toast.warning("Please enter atleast one project code. Hit enter to validate code");
+      setIsLoading(false);
       return;
     }
     // Because projectCodes should be of type string[]
@@ -95,7 +96,7 @@ export function NewFormUniqAgent() {
     console.log(formatProjectcode)
 
     await mutateApiData(Route.assigne, {
-      company_id: company?.id,
+      // company_id: company?.id,
       projectCodes: formatProjectcode,
       agentCode: formData.agentCode,
       fullName: formData.fullName,

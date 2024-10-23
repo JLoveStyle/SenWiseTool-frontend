@@ -25,8 +25,8 @@ export default function StatPanel({
 
         {statPanelDatas && (
           <div className="flex flex-col gap-5 p-2">
-            {statPanelDatas?.map((data) => (
-              <div className="flex justify-between gap-2 hover:cursor-pointer">
+            {statPanelDatas?.map((data, index) => (
+              <div key={index} className="flex justify-between gap-2 hover:cursor-pointer">
                 <div className="flex gap-2 flex-1 ">
                   {data.structure.icon && <data.structure.icon />}
                   <p className="font-semibold">{data.structure.label}</p>

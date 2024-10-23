@@ -323,8 +323,8 @@ export default function ProjectDetailsForm({
             type="submit"
             className={
               isLoading
-                ? "hover:cursor-wait opacity-70"
-                : "active:transition-y-1"
+                ? "hover:cursor-wait opacity-70 bg-tertiary hover:bg-tertiary"
+                : "active:transition-y-1 bg-tertiary hover:bg-tertiary"
             }
           >
             {isLoading ? <Spinner /> : "CREATE PROJECT"}

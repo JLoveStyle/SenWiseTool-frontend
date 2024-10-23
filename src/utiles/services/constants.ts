@@ -352,43 +352,43 @@ export const optionsGestions: {
   },
   {
     title: "Evalution risks tools",
-    href: "/docs/primitives/tabs",
+    href: Route.riskEvaluation,
     description:
       "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
   },
   {
     title: "Management plan",
-    href: "/docs/primitives/tooltip",
+    href: Route.managementPlan,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
     title: "Maps",
-    href: "/docs/primitives/tooltip",
+    href: Route.map,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
     title: "Reclamation mechanism",
-    href: "/docs/primitives/tooltip",
+    href: Route.reclamationMecanism,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
     title: "Organigramme du SGI",
-    href: "/docs/primitives/tooltip",
+    href: Route.organigram,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Formation",
+    title: "Training",
     href: Route.trainingProject,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Lists of farmers",
-    href: "/docs/primitives/tooltip",
+    title: "List of farmers",
+    href: Route.listOfFarmers,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
