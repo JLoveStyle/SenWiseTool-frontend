@@ -91,6 +91,7 @@ export default function CloseSiveNav({
           <DialogContent className="sm:max-w-[800px]">
             {showProjectDetailsForm && (
               <ProjectDetailsForm
+                closeModal={closeModal}
                 onClick={handleShowProjectDetails}
                 typeOfProject={typeOfProject}
               />

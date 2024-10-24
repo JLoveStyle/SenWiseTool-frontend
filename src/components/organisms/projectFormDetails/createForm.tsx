@@ -23,12 +23,14 @@ type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject: ProjectsType;
   project?: Project;
+  closeModal: (value: boolean) => void
 };
 
 export default function ProjectDetailsForm({
   onClick,
   typeOfProject,
   project,
+  closeModal
 }: Props) {
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
@@ -155,12 +157,13 @@ export default function ProjectDetailsForm({
         console.log("project cereated", res);
         if (res.status === 201) {
           setIsLoading((prev) => !prev);
-          toast.success("Success", {
+          toast.success("Success, redirecting...", {
             transition: Bounce,
             autoClose: 3000,
           });
           if (pathname.includes("mapping")) {
             // CLOSE MODAL
+            closeModal(false)
             router.push(Route.mapping);
             return;
           }

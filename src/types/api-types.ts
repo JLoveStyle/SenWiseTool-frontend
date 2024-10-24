@@ -39,6 +39,23 @@ export type ProductStatus = ObjectValue<typeof PRODUCTSTATUS>;
 export type ProjectsType = ObjectValue<typeof PROJECTTYPE>;
 export type ProjectStatus = ObjectValue<typeof PROJECT_STATUS>;
 
+export interface Answer {
+  num: string,
+  NC: boolean,
+  NA: boolean,
+  C: boolean,
+  comment: boolean
+}
+export interface AnalysisProps {
+  chap1: Answer[],
+  chap2: Answer[],
+  chap3: Answer[],
+  chap4: Answer[],
+  chap5: Answer[],
+  chap6: Answer[],
+
+}
+
 export type PricePlanType = {
   active: boolean;
   billing_cycle: string;
@@ -88,6 +105,7 @@ export type AssigneeType = {
   updated_at: string,
   deleted_at: string
 }
+
 
 export interface FarmCoordinatesType {
   id?: string

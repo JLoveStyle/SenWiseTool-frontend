@@ -1,6 +1,6 @@
 "use client";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
-import { mappingColumnListProjects } from "@/components/organisms/mapping/mappingProjectColimns";
+import { mappingColumnListProjects } from "@/components/organisms/mapping/mappingProjectColumns";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";

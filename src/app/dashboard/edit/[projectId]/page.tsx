@@ -21,19 +21,16 @@ import {
 } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
 import { chapters, requirements } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { Library, Pencil, Settings, X } from "lucide-react";
+import { Pencil, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
-import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
-// import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
-import { ProjectStatus, ProjectType } from "@/types/api-types";
+import { ProjectType } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 
 const AddFormFromLibrary = dynamic(
@@ -87,11 +84,6 @@ export default function page({ params: { projectId } }: Props) {
   const chapitre5 = chap5.content;
   const chapitre6 = chap6.content;
 
-  // Fetch all requirements
-  useEffect(() => {
-    // function to fetch all requirements and per chapters
-  }, []);
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = {
       ...projectData,
@@ -107,10 +99,19 @@ export default function page({ params: { projectId } }: Props) {
   }
 
   async function handleProjectDraft() {
-    setIsSaving((prev) => !prev);
     // get data from localStorage
     const id = LOCAL_STORAGE.get("projectId");
     const metaData: string[] = LOCAL_STORAGE.get("formMetadata");
+  
+    // Check if user has tick metadata
+    if (!metaData?.length) {
+      toast.warning('Please choose form metadata')
+      setOpenSheet(true)
+      return
+    }
+    
+    setIsSaving((prev) => !prev);
+
     let chapitre: any = [];
     let constructedRequirements: DeployableFormMetadata[] = [];
     for (let i = 0; i <= 10; i++) {

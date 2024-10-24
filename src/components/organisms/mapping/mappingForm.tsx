@@ -28,7 +28,7 @@ export default function MappingForm({}: Props) {
             {[...Array(20)].map((item, idx) => (
               <tr key={idx}>
                 {[...Array(13)].map((item, idx) => (
-                  <td>
+                  <td key={idx}>
                     <Input type="text" />
                   </td>
                 ))}

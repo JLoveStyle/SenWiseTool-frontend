@@ -24,7 +24,7 @@ export const MappingTableColumns: string[] = [
   "Farmer name",
   "Farmer status",
   "Farmer contact",
-  "NID number",
+  "ID card number",
   "Farm creation date",
   "Village",
   "Mapper name",
@@ -35,53 +35,9 @@ export const MappingTableColumns: string[] = [
   "Coordinates",
 ];
 
-// GEOJSON POINTS FOR POLYGON
-export const tenPoints = [
-  [
-    [13.3876, 52.5172], // Point 1
-    [13.3876, 52.6172], // Point 2
-    [13.4876, 52.6172], // Point 3
-    [13.4876, 52.5172], // Point 4
-    [13.3876, 52.5172], // Point 5 (same as Point 1 to close the polygon)
-    [13.2876, 52.5172], // Point 6
-    [13.2876, 52.6172], // Point 7
-    [13.3876, 52.6172], // Point 8
-    [13.3876, 52.5172], // Point 9
-    [13.3876, 52.5172], // Closing point (same as Point 1)
-  ],
-];
-export const eightPoints = [
-  [
-    [13.3876, 52.5172], // Point 1
-    [13.3876, 52.6172], // Point 2
-    [13.4876, 52.6172], // Point 3
-    [13.4876, 52.5172], // Point 4
-    [13.3876, 52.5172], // Back to Vertex 1 to close the polygon
-  ],
-];
-
-export const thirteen = [
-  [
-    [13.3876, 52.5172],
-    [13.3876, 52.6172],
-    [13.4876, 52.6172],
-    [13.4876, 52.5172],
-    [13.5876, 52.5172],
-    [13.5876, 52.6172],
-    [13.6876, 52.6172],
-    [13.6876, 52.5172],
-    [13.5876, 52.5172],
-    [13.5876, 52.4172],
-    [13.4876, 52.4172],
-    [13.4876, 52.5172],
-    [13.3876, 52.5172], // Point 13
-  ],
-];
-
 // EXAMPLE OF MAPPING DATA FROM FIELD
 export const mappingData: { [key: string]: any }[] = [
   {
-    geoPoints: tenPoints,
     nom_producteur: "Onana Jeqn de Dieu",
     statut_producteur: "Propritaire",
     contact_du_producteur: "670710054",
@@ -145,7 +101,6 @@ export const mappingData: { [key: string]: any }[] = [
     ],
   },
   {
-    geoPoints: eightPoints,
     nom_producteur: "Parfait Essono Bijock",
     statut_producteur: "Locataire",
     contact_du_producteur: "670710054",
@@ -192,7 +147,6 @@ export const mappingData: { [key: string]: any }[] = [
     ],
   },
   {
-    geoPoints: thirteen,
     nom_producteur: "Marguerite de la fontaine",
     statut_producteur: "Propritaire",
     contact_du_producteur: "670710054",
