@@ -21,7 +21,9 @@ import { createOrganization } from "@/utiles/services/createOrg";
 import { Textarea } from "@/components/ui/textarea";
 import { Bounce, toast } from "react-toastify";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { ApiDataResponse, CompanyType, ProjectType } from "@/types/api-types";
+import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
+import slugify from "slugify";
+
 
 type Props = {};
 
@@ -29,6 +31,7 @@ export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const countries: any[] = Country.getAllCountries();
+  const [files, setFiles] = useState<File[]>([]);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -36,7 +39,7 @@ export default function Home({ }: Props) {
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [hasOtherBusiness, setHasOtherBusiness] = useState<boolean>(false);
-  const [companyLogo, setCompanyLogo] = useState<File>();
+  const [companyLogo, setCompanyLogo] = useState();
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -75,6 +78,26 @@ export default function Home({ }: Props) {
     }
     setIsLoading((prev) => !prev);
 
+    // create bucket company S3 bucket
+    /*const { data, error } = await CreateBucketToS3({ bucketName: "companies" });
+    if (error) {
+      setIsLoading(false);
+      toast.error(`Error during bucket creation `);
+      return;
+    }
+
+    // upload logo image
+    if (data) {
+      const { data, error } = await UpdateFilesToS3({ files });
+      setCompanyLogo(data.URLs)
+      if (error) {
+        setIsLoading(prev => !prev)
+        toast.error('unable to upload logo')
+      }
+    }
+    */
+    
+
     if (user?.id) {
       const res = await createOrganization(formData, user.id);
       // console.log(res);
@@ -87,7 +110,7 @@ export default function Home({ }: Props) {
         region: formData.state,
         city: formData.city,
         sector_of_activity: activity,
-        // logo: uploadedLogo.url,
+        // logo: companyLogo,
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
@@ -173,7 +196,11 @@ export default function Home({ }: Props) {
     fetchToken();
   }, []);
 
-  console.log(isLoading);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFiles(Array.from(event.target.files)); // Convertir FileList en tableau
+    }
+  };
 
   return (
     <div className="h-full">
@@ -293,7 +320,7 @@ export default function Home({ }: Props) {
               type="file"
               accept=".png, .jpeg, .jpg"
               placeholder="Enter logo"
-              onChange={(e) => setCompanyLogo(e.target.files?.[0])}
+              onChange={(e) => handleFileChange(e)}
             />
           </div>
           <label className="font-semibold" htmlFor="description">

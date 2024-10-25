@@ -27,7 +27,6 @@ export default function NavDashboard({}: Props) {
 
   useEffect(() => {
     refetch();
-    console.log("on navbar mount");
   }, []);
 
   return (

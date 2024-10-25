@@ -102,7 +102,7 @@ export default function Training() {
 
   return (
     <LayoutDashboard
-      projectsPerType={[]}
+      projectsPerType={trainingDatas ?? []}
       typeOfProject={"TRAINING"}
       newForm={<NewTraining />}
     >

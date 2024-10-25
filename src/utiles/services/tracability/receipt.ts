@@ -36,7 +36,7 @@ export const db_update_receipt = async (data: DBTrainingProps, id: string) => {
 export const db_get_receipts = async (companyId?: string, id?: string) => {
   //Local datas ***************************************
 
-  return id ? receiptData.find((receipt) => receipt.id === id) : receiptData;
+  return id ? receiptData.filter((receipt) => receipt.id === id) : receiptData;
 
   // end Local datas ******************************
 

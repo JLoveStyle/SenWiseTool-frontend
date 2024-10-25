@@ -71,14 +71,14 @@ export default function Receipt() {
 
   // Load company object from store
   const company = useCompanyStore((state) => state.company)
+  console.log('fetching data with company_id', company?.id)
 
   async function getAllSubAccounts() {
     // TODO: add company_id in the query of this function 
-    console.log('fetching data')
+    console.log('fetching data with company_id', company?.id)
     await fetchApiData(
       Route.assigne,
-      'perCompany',
-      `?company_id=${company?.id}`
+      `perCompany?company_id=${company?.id}`
     )
       .then((response) => {
         if (response.status === 200) {
@@ -311,16 +311,16 @@ export default function Receipt() {
       </div>
       <div className="px-6">
         <DataTable
-          // incomingColumns={columns}
-          incomingColumns={columnsListOfAgents}
-          incomingData={agentDatas}
-          // incomingData={
-          //   agentDatas?.length
-          //     ? valueToDisplay(agentDatas)
-          //     : agentDatas?.length
-          //     ? valueToDisplay(agentDatas as AgentPropsFromDB[])
-          //     : []
-          // }
+          incomingColumns={columns}
+          // incomingColumns={columnsListOfAgents}
+          // incomingData={agentDatas}
+          incomingData={
+            agentDatas?.length
+              ? valueToDisplay(agentDatas)
+              : agentDatas?.length
+              ? valueToDisplay(agentDatas as AgentPropsFromDB[])
+              : []
+          }
           onSelecteItem={(selects) => {
             setAgentSelected(selects);
           }}

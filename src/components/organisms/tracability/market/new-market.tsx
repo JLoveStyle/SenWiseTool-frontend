@@ -3,8 +3,10 @@
 import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { db_create_market } from "@/utiles/services/tracability/market";
+import { MarketDBProps } from "@/types/api-types";
+import { mutateApiData } from "@/utiles/services/mutations";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
@@ -12,15 +14,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewMarketForm } from "./new-market-form";
-import { MarketDBProps } from "@/types/api-types";
-import { useCampaignStore } from "@/lib/stores/campaign-store";
-import { mutateApiData } from "@/utiles/services/mutations";
 
-interface Props {
-  closeDialog: () => void;
-}
-
-export function NewMarket({ closeDialog }: Props) {
+export function NewMarket() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
 
@@ -107,7 +102,7 @@ export function NewMarket({ closeDialog }: Props) {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    closeDialog();
+    // closeDialog();
     try {
       setIsLoading(true);
       e.preventDefault();

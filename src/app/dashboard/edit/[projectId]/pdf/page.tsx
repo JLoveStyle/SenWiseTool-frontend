@@ -128,8 +128,8 @@ export default function page({ }: Props) {
           <Image
             src="/images/logo_forest.jpg"
             alt="rainforest aliance logo"
-            width={250}
-            height={100}
+            width={150}
+            height={50}
           />
           {/* Partner logo */}
           <Image

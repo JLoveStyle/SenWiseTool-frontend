@@ -373,7 +373,7 @@ export const optionsTracabilité: {
   },
   {
     title: "Fiche de transmission et de déclaration",
-    href: "/docs/primitives/alert-dialog",
+    href: Route.transmissionAndDeclarationSheet,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },

@@ -11,6 +11,8 @@ export default function InspectionData({ projectType }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [inspectionDatas, setIspectionDatas] = useState<InspectionDataType>()
 
+  const [openModal, setOpenModal] = useState<boolean>(false)
+
   // fetch all projects with answers by type. this will come from project_audit table
   async function fetchAllInpectionData(type: ProjectsType) {
     setIsLoading((prev) => !prev);
@@ -206,6 +208,7 @@ export default function InspectionData({ projectType }: Props) {
     }[]
   ) => {
     console.log(datas);
+    setOpenModal(prev => !prev)
 
     for (const data of datas) {
       if (data.num.slice(0, 1) === "1") {
@@ -360,9 +363,9 @@ export default function InspectionData({ projectType }: Props) {
             </tbody>
           </table>
         </div>
-        {/* <div className="bg-white md:w-[40%] p-6 ">
+        <div className="bg-white md:w-[40%] p-6 ">
           <DisplayInspectionAnalysis inspectionData={inspectionDatas}/>
-        </div> */}
+        </div>
       </div>
     </div>
   );

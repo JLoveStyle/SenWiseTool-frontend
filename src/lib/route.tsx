@@ -36,13 +36,14 @@ export type AvailableRoute =
   | "enviroment"
   | "agriculture"
   | "agents"
-  | "factoryAccompaniementSheet"
   | "marketRequest"
   | "assigne"
 
   // tracability
   | "markets"
-  | "receipt";
+  | "receipt"
+  | "factoryAccompaniementSheet"
+  | "transmissionAndDeclarationSheet";
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -90,4 +91,6 @@ export const Route: Record<AvailableRoute, string> = {
   saleSlip: "/dashboard/tracability/sale-slip",
   factoryAccompaniementSheet:
     "/dashboard/tracability/factory-accompaniement-sheet",
+  transmissionAndDeclarationSheet:
+    "/dashboard/tracability/transmission-and-declaration-sheet",
 };
