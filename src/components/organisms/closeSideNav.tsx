@@ -10,12 +10,12 @@ import { Button } from "../ui/button";
 import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
-import { ProjectsType, ProjectType } from "@/types/api-types";
+import { ProjectsType, ProjectType, TrainingType } from "@/types/api-types";
 import CreateNewMapping from "./mapping/createNewMapping";
 
 type Props = {
   typeOfProject: ProjectsType;
-  projectsPerType: ProjectType[];
+  projectsPerType: ProjectType[] | TrainingType[]
   newForm?: React.ReactNode;
 };
 
@@ -57,6 +57,8 @@ export default function CloseSiveNav({
   const archiveProjects = projectsPerType?.filter(
     (item) => item.status === "ARCHIVED"
   );
+
+  console.log('project per type from closesideNav', projectsPerType)
 
   return (
     <div

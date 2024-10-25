@@ -44,7 +44,7 @@ export default function Training() {
 
     await fetchApiData(Route.training, currentCampaign?.id)
       .then((response) => {
-        console.log(response);
+        console.log('trainings', response);
         if (response.status === 200) {
           setTrainingDatas(response.data);
           setIsLoading((prev) => !prev);
@@ -88,6 +88,7 @@ export default function Training() {
       start_date: training.start_date,
       end_date: training.end_date,
       location: training.location,
+      code: training.code
       // modules: training.modules.map((module: string, index: number) => ({
       //   id: index,
       //   value: module,

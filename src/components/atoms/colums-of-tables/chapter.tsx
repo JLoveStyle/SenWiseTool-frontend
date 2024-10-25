@@ -59,7 +59,7 @@ export const groupedColumns: ColumnDef<ChapterMetaData>[] = [
   },
   {
     accessorKey: "principal_requirement",
-    header: "Exigences principal",
+    header: "Principal Requirements",
   },
   columnHelper.group({
     header: "Certification de group",

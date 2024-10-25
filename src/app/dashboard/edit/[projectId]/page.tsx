@@ -1,5 +1,8 @@
 "use client";
-import { groupedColumns } from "@/components/atoms/colums-of-tables/chapter";
+import {
+  ChapterMetaData,
+  groupedColumns,
+} from "@/components/atoms/colums-of-tables/chapter";
 import { Logo } from "@/components/atoms/logo";
 import { ChaptersRequirements } from "@/components/molecules/chapters-table-data/chapterOne";
 import dynamic from "next/dynamic";
@@ -102,14 +105,14 @@ export default function page({ params: { projectId } }: Props) {
     // get data from localStorage
     const id = LOCAL_STORAGE.get("projectId");
     const metaData: string[] = LOCAL_STORAGE.get("formMetadata");
-  
+
     // Check if user has tick metadata
     if (!metaData?.length) {
-      toast.warning('Please choose form metadata')
-      setOpenSheet(true)
-      return
+      toast.warning("Please choose form metadata");
+      setOpenSheet(true);
+      return;
     }
-    
+
     setIsSaving((prev) => !prev);
 
     let chapitre: any = [];
@@ -206,6 +209,38 @@ export default function page({ params: { projectId } }: Props) {
       autoClose: 1000,
       transition: Bounce,
     });
+  };
+
+  // value to display in table
+  const valueToDisplay = (values: ChapterMetaData[]) => {
+    // console.log("Here are contents => ", values[0].principal_requirement);
+    const returnedValue = values.map(
+      (item: {
+        num: string;
+        principal_requirement: string;
+        certif_de_group: {
+          petite_exploitation_agricole: string;
+          grande_exploitation_agricole: string;
+          direction_du_group: string;
+        };
+      }) => ({
+        num: item.num,
+        principal_requirement: (
+          <div
+          dangerouslySetInnerHTML={{ __html: item.principal_requirement }}
+          ></div>
+        ),
+        certif_de_group: {
+          petite_exploitation_agricole:
+            item.certif_de_group.petite_exploitation_agricole,
+          grande_exploitation_agricole:
+            item.certif_de_group.grande_exploitation_agricole,
+          direction_du_group: item.certif_de_group.grande_exploitation_agricole,
+        },
+      })
+    );
+    console.log("return", returnedValue);
+    return returnedValue;
   };
 
   return (

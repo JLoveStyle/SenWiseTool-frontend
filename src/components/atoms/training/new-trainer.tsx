@@ -54,9 +54,9 @@ export function NewTraining() {
 
   const handleCreateTraining = async (formData: TrainingProps) => {
     console.log("forMData => ", formData);
-    const trainingModules: string[] = []
-    for(const module of formData.modules) {
-      trainingModules.push(module.value)
+    const trainingModules: string[] = [];
+    for (const module of formData.modules) {
+      trainingModules.push(module.value);
     }
 
     // Create training in DB
@@ -67,7 +67,7 @@ export function NewTraining() {
       end_date: new Date(formData.end_date as string).toISOString(),
       company_id: company?.id,
       status: "DEPLOYED",
-      modules: trainingModules
+      modules: trainingModules,
     })
       .then((response) => {
         console.log(response);
@@ -81,13 +81,18 @@ export function NewTraining() {
 
           return;
         } else if (response.message === "Internal Server Error") {
+          setIsLoading(false);
           toast.error("Internal Server Error");
-          return
-        } else toast.error("Something went wrong");
+          return;
+        } else {
+          toast.error("Something went wrong");
+          setIsLoading(false);
+        }
       })
       .catch((error) => {
         console.log(error);
         toast.error("Something went wrong. Please try again");
+        setIsLoading(false);
       });
 
     const dataToDB = {

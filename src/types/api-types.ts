@@ -56,6 +56,16 @@ export interface AnalysisProps {
 
 }
 
+export interface InspectionDataType {
+  total_A : number,
+  chapter1: {C: number, NC: number, NA: number},
+  chapter2: {C: number, NC: number, NA: number},
+  chapter3: {C: number, NC: number, NA: number},
+  chapter4: {C: number, NC: number, NA: number}
+  chapter5: {C: number, NC: number, NA: number}
+  chapter6: {C: number, NC: number, NA: number}
+}
+
 export type PricePlanType = {
   active: boolean;
   billing_cycle: string;
@@ -220,6 +230,8 @@ export type TrainingType = {
   slug: string;
   id: string;
   location: string;
+  status: string;
+  code: string;
   modules: string[];
   report_url: string;
   start_date: string;
@@ -260,7 +272,7 @@ export type OmitStrict<T, K extends keyof T> = Omit<T, K>;
 
 export type TrainingTableDisplayType = Pick<
   TrainingType,
-  "id" | "title" | "start_date" | "end_date" | "location"
+  "id" | "title" | "start_date" | "end_date" | "location" | "code"
 >;
 
 export interface RequirementType {

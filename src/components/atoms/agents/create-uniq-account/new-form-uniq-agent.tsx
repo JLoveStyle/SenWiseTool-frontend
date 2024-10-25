@@ -93,10 +93,15 @@ export function NewFormUniqAgent() {
     for (const code of formData.projectCodes) {
       formatProjectcode.push(code.value)
     }
-    console.log(formatProjectcode)
+    console.log('=>\n', {
+      company_id: company?.id,
+      projectCodes: formatProjectcode,
+      agentCode: formData.agentCode,
+      fullName: formData.fullName,
+    })
 
     await mutateApiData(Route.assigne, {
-      // company_id: company?.id,
+      company_id: company?.id,
       projectCodes: formatProjectcode,
       agentCode: formData.agentCode,
       fullName: formData.fullName,
