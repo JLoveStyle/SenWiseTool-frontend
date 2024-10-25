@@ -37,7 +37,13 @@ export default function Home({}: Props) {
       .then((response) => {
         console.log("all internal_inspection projects", response);
         if (response.status === 200) {
-          setInternalInspectionProjects(response.data);
+          const filteredProjects = [];
+          for (const data of response.data) {
+            if (data.code.length < 5) {
+              filteredProjects.push(data);
+            }
+          }
+          setInternalInspectionProjects(filteredProjects);
         }
         setIsLoading((prev) => !prev);
       })

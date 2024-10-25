@@ -36,7 +36,13 @@ export default function Home({}: Props) {
     )
       .then((response) => {
         setIsLoading((prev) => !prev);
-        setAutoEvaluationProjects(response.data);
+        const filteredProjects = []
+        for (const data of response.data) {
+          if (data.code.length < 5) {
+            filteredProjects.push(data)
+          }
+        }
+        setAutoEvaluationProjects(filteredProjects);
       })
       .catch((error) => {
         console.log(error);

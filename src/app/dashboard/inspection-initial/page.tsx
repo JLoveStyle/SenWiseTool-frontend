@@ -37,7 +37,13 @@ export default function Home({}: Props) {
       .then((response) => {
         console.log("all initial_inspection projects", response);
         setIsLoading((prev) => !prev);
-        setInitialInspectioProjects(response.data);
+        const filteredProjects = []
+        for (const data of response.data) {
+          if (data.code.length < 5) {
+            filteredProjects.push(data)
+          }
+        }
+        setInitialInspectioProjects(filteredProjects);
       })
       .catch((error) => {
         console.log(error);

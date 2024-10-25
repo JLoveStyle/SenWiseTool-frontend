@@ -34,7 +34,13 @@ export default function Home({}: Props) {
       .then((response) => {
         console.log("all mapping projects", response);
         setIsLoading((prev) => !prev);
-        setAllMappingProjects(response.data);
+        const filteredProjects = [];
+        for (const data of response.data) {
+          if (data.code.length < 5) {
+            filteredProjects.push(data);
+          }
+        }
+        setAllMappingProjects(filteredProjects);
       })
       .catch((error) => {
         console.log(error);

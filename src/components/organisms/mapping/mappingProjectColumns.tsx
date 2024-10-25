@@ -114,14 +114,14 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
-                navigator.clipboard.writeText(project.id as string);
+                navigator.clipboard.writeText(project.code as string);
                 toast.success("Copied", {
                   autoClose: 1000,
                   transition: Bounce,
                 });
               }}
             >
-              Copy project ID
+              Copy project code
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Link href={Route.mapping + `/${project.id}`}>
