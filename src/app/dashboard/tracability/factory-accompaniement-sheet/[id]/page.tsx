@@ -2,21 +2,28 @@
 
 import { Route } from "@/lib/route";
 
-import { Archive, FilePenLine, Rocket, Trash2, UserPlus } from "lucide-react";
-
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 
-import { DataTable } from "@/components/molecules/projectsTable";
-import CustomHoverCard from "@/components/organisms/hoverCard";
-import { NewMarket } from "@/components/organisms/tracability/market/new-market";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { DashboardStatPanelData } from "@/types/app-link";
 import { ReceiptProps, ReceiptTableProps } from "@/types/tracability/receipt";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { db_get_receipts } from "@/utiles/services/tracability/receipt";
-import { receiptStatData } from "@/utiles/tracability.const/statistics";
 import { useEffect, useState } from "react";
+
+import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { MoveLeft } from "lucide-react";
+import Image from "next/image";
+import { PiPrinterFill } from "react-icons/pi";
 
 type TProps = {
   params: {
@@ -24,7 +31,9 @@ type TProps = {
   };
 };
 
-export default function FactoryAccompaniementSheet({ params: { id } }: TProps) {
+export default function FactoryAccompaniementSheetPrintable({
+  params: { id },
+}: TProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [receiptDatas, setReceiptDatas] = useState<ReceiptProps[]>([]);
 
@@ -39,165 +48,154 @@ export default function FactoryAccompaniementSheet({ params: { id } }: TProps) {
       quantity_in_bags: "quantité",
       buyer: "Acheteur",
     },
-    Route.receipt,
-    false
+    Route.receipt
   );
 
-  console.log(LOCAL_STORAGE.get("agents"));
   useEffect(() => {
     const fetchData = async () => {
-      db_get_receipts()
-        .then((dbResult) => {
-          console.log("data training: ", dbResult);
+      try {
+        const receipts = (await db_get_receipts()) as ReceiptProps[];
 
-          const result = dbResult as ReceiptProps[];
-          console.log(
-            "id",
-            id,
-            "market",
-            result?.map((item) => item.market_id)
+        if (receipts) {
+          setReceiptDatas(
+            receipts.filter(
+              (receipt) => receipt.market_id == id
+            ) as ReceiptProps[]
           );
-
-          setReceiptDatas(result.filter((receipt) => receipt.market_id == id));
-          setIsLoading(false);
-        })
-        .catch((err) => console.error(err));
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchData();
-  }, [id]);
-
-  const valueToDisplay = (args: ReceiptProps[]) => {
-    return args?.map((receipt) => ({
-      id: receipt.id,
-      market_id: receipt.market_id,
-      village: receipt.village,
-      farmer_id: receipt.farmer_id,
-      date: receipt.date,
-      net_weight_in_kg: receipt.net_weight_in_kg,
-      quantity_in_bags: receipt.quantity_in_bags,
-      buyer: receipt.buyer,
-    }));
-  };
+  }, []);
 
   useEffect(() => {
     // refetch();
   }, [receiptDatas, id]);
 
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
-
-  const statPanelDatas: DashboardStatPanelData[] = [
-    {
-      structure: {
-        label: "Ventes",
-        baseUrl: "",
-        icon: Rocket,
-      },
-      data: () => {
-        return receiptStatData.totalSale;
-      },
-    },
-    {
-      structure: {
-        label: "Marchés",
-        baseUrl: "",
-        icon: FilePenLine,
-      },
-      data: () => {
-        return receiptStatData.distinctMarketCount;
-      },
-    },
-    {
-      structure: {
-        label: "Quantités",
-        baseUrl: "",
-        icon: Archive,
-      },
-      data: () => {
-        return receiptStatData.totalQuantity;
-      },
-    },
-    {
-      structure: {
-        label: "Poids.Net",
-        baseUrl: "",
-        icon: Archive,
-      },
-      data: () => {
-        return receiptStatData.totalNetWeight;
-      },
-    },
-  ];
-
   return (
-    <LayoutDashboardTemplate
-      newForms={[
-        {
-          title: "Fiche AU",
-          form: <NewMarket />,
-        },
-      ]}
-      title="Traçabilité - Les Reçus"
-      statPanelDatas={statPanelDatas}
-    >
-      <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Projects</h1>
-        <div className="flex gap-4 text-gray-500">
-          <CustomHoverCard content="archive project">
-            <Archive className="hover:cursor-pointer" />
-          </CustomHoverCard>
-          <CustomHoverCard content="Share project">
-            <UserPlus className="hover:cursor-pointer" />
-          </CustomHoverCard>
-          <CustomHoverCard content="Delete Project">
-            <Trash2 className="hover:cursor-pointer" />
-          </CustomHoverCard>
+    <LayoutDashboardTemplate title="Traçabilité - Les Details de la fiche d'accompagnement à l'usine">
+      <ButtonUI
+        className="mx-10 p-0 bg-transparent hover:bg-transparent text-gray-950 hover:text-gray-500"
+        icon={{ icon: MoveLeft }}
+        size="very-small"
+        baseURL={Route.factoryAccompaniementSheet}
+      />
+      <div className="flex items-center w-full gap-5 px-2">
+        <div className="bg-slate-50 w-5/6 mt-3">
+          <h1 className="text-xl font-bold text-center w-full py-3">
+            Fiche d'accompagnement à l'usine du marché {id}
+          </h1>
+          <div className="w-full p-2">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nom du planteur</TableHead>
+                  <TableHead>Code du planteur</TableHead>
+                  <TableHead>Marché</TableHead>
+                  <TableHead>Emplacement</TableHead>
+                  <TableHead>Nombre de sacs</TableHead>
+                  <TableHead>Poids total</TableHead>
+                  <TableHead>Humidité</TableHead>
+                  <TableHead>Refraction</TableHead>
+                  <TableHead>Poids</TableHead>
+                  <TableHead>Prix du jour</TableHead>
+                  <TableHead className="text-right">Total à payer</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {isLoading && (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="h-24">
+                      <div className="flex justify-center text-center w-full">
+                        <Spinner color="#999" size="large" />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+                {!isLoading &&
+                  Array.isArray(receiptDatas) &&
+                  receiptDatas.length === 0 && (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        <div className="flex items-center justify-center mt-28">
+                          <Image
+                            src="/svg/empty.svg"
+                            height={250}
+                            width={350}
+                            alt="Empty illustration"
+                            className="animate-empty-image"
+                          />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+
+                {!isLoading &&
+                  Array.isArray(receiptDatas) &&
+                  receiptDatas.map((receipt, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{receipt.farmer_id}</TableCell>
+                      <TableCell>{receipt.id}</TableCell>
+                      <TableCell>{receipt.market_id}</TableCell>
+                      <TableCell>{receipt.village}</TableCell>
+                      <TableCell>{receipt.quantity_in_bags}</TableCell>
+                      <TableCell>{receipt.net_weight_for_sale}</TableCell>
+                      <TableCell>{receipt.humidity_level_of_product}</TableCell>
+                      <TableCell>{receipt.id}</TableCell>
+                      <TableCell>{receipt.net_weight_in_kg}</TableCell>
+                      <TableCell>{receipt.id}</TableCell>
+                      <TableCell className="text-right">{receipt.id}</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
-      <div className="px-6">
-        <DataTable<ReceiptTableProps, any>
-          incomingColumns={columns}
-          incomingData={
-            receiptDatas?.length
-              ? valueToDisplay(receiptDatas)
-              : receiptDatas?.length
-              ? valueToDisplay(receiptDatas as ReceiptProps[])
-              : []
-          }
-          onSelecteItem={() => {}}
-          isLoading={isLoading}
-        />
+        <div className="bg-slate-100 w-1/6 h-full p-3">
+          <div className="w-full">
+            <div className="p-3">Metadata</div>
+            <hr />
+            <div className="flex flex-col gap-10 justify-between h-full">
+              <div className="p-3 text-xs flex flex-col gap-3 h-full">
+                <div className="flex justify-between items-center">
+                  <span>Status</span>
+                  <span className="text-green-500 font-medium">OPEN</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Nombre de sac</span>
+                  <span>0</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Poids net vendu</span>
+                  <span>0 Kg</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Poids net en Kg</span>
+                  <span>0 Kg</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Humidité en %</span>
+                  <span>0 %</span>
+                </div>
+              </div>
+              <div className="flex justify-center items-center gap-10 bg-transparent">
+                <Button
+                  size="sm"
+                  className="flex gap-1 items-center bg-black hover:bg-gray-900"
+                >
+                  <PiPrinterFill /> Imprimer
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </LayoutDashboardTemplate>
   );

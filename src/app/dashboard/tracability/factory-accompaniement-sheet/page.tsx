@@ -2,7 +2,7 @@
 
 import { Route } from "@/lib/route";
 
-import { Archive, Trash2 } from "lucide-react";
+import { Printer, Trash2 } from "lucide-react";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 
@@ -15,18 +15,20 @@ import { useToggle } from "@/hooks/use-toggle";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { AssigneeType, MarketDBProps } from "@/types/api-types";
-import { MarketDisplayProps } from "@/types/tracability/market";
+import { FactoryAccompaniementSheetDisplayProps } from "@/types/tracability/market";
 import { statPanelDatas } from "@/utiles/services/constants";
 import { fetchApiData } from "@/utiles/services/queries";
 import { marketData } from "@/utiles/tracability.const/market";
 import { useEffect, useState } from "react";
 
-export default function Market() {
+export default function FactoryAccompaniementSheet() {
   const [isLoading, setIsLoading] = useState(true);
-  const [marketDatas, setmarketDatas] = useState<MarketDisplayProps[]>([]);
-  const [marketSelected, setmarketSelected] = useState<MarketDisplayProps[]>(
-    []
-  );
+  const [marketDatas, setmarketDatas] = useState<
+    FactoryAccompaniementSheetDisplayProps[]
+  >([]);
+  const [marketSelected, setmarketSelected] = useState<
+    FactoryAccompaniementSheetDisplayProps[]
+  >([]);
   const [errors, setErrors] = useState({});
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
@@ -44,18 +46,18 @@ export default function Market() {
   // load current campain object from store
   const currentCampain = useCampaignStore((state) => state.currentCampaign);
 
-  const columns = columnTable<MarketDisplayProps>(
+  const columns = columnTable<FactoryAccompaniementSheetDisplayProps>(
     {
       id: "id",
-      code: "code",
+      code: "Marché",
       campagne: "campagne",
-      location: "location",
-      price_of_day: "price_of_day",
-      start_date: "start_date",
-      end_date: "end_date",
-      status: "status",
+      tracability_level: "tracability level",
+      car_number: "car_number",
+      quantity_in_bags_declared: "Nombre de sac déclaré",
+      net_weight_declared: "Poids net déclaré",
+      humidity: "humidité",
     },
-    Route.markets
+    Route.factoryAccompaniementSheet
     // false
   );
 
@@ -64,11 +66,11 @@ export default function Market() {
       id: data.id,
       code: data.code,
       campagne: data.campaign_id,
-      location: data.location,
-      price_of_day: data.price_of_day,
-      start_date: data.start_date,
-      end_date: data.end_date,
-      status: data.status,
+      tracability_level: data.tracability_level,
+      car_number: data.car_number,
+      quantity_in_bags_declared: data.quantity_in_bags_declared,
+      net_weight_declared: data.net_weight_declared,
+      humidity: data.humidity,
     };
   };
 
@@ -91,16 +93,18 @@ export default function Market() {
     const fetchData = async () => {
       try {
         // const result = await db_get_markets();
-        const result = await marketData;
-        const dataFormated: MarketDisplayProps[] = [];
+        const result = (await marketData) as MarketDBProps | MarketDBProps[];
+        const dataFormated: FactoryAccompaniementSheetDisplayProps[] = [];
 
         if (result) {
           if (Array.isArray(result)) {
             result.forEach((res) => {
-              dataFormated.push(formatedDataFromDBToDisplay(res));
+              res.quantity_in_bags_declared !== null &&
+                dataFormated.push(formatedDataFromDBToDisplay(res));
             });
           } else {
-            dataFormated.push(formatedDataFromDBToDisplay(result));
+            result?.quantity_in_bags_declared !== null &&
+              dataFormated.push(formatedDataFromDBToDisplay(result));
           }
 
           setmarketDatas(dataFormated);
@@ -125,15 +129,16 @@ export default function Market() {
     fetchData();
   }, []);
 
-  const valueToDisplay = (args: MarketDisplayProps[]) => {
+  const valueToDisplay = (args: FactoryAccompaniementSheetDisplayProps[]) => {
     return args?.map((markets) => ({
       id: markets.code ?? "",
       code: markets.code,
-      location: markets.location,
-      price_of_day: markets.price_of_day,
-      start_date: markets.start_date,
-      end_date: markets.end_date,
       campagne: markets.campagne,
+      tracability_level: markets.tracability_level,
+      car_number: markets.car_number,
+      quantity_in_bags_declared: markets.quantity_in_bags_declared,
+      net_weight_declared: markets.net_weight_declared,
+      humidity: markets.humidity,
     }));
   };
 
@@ -143,39 +148,6 @@ export default function Market() {
     // console.log("compagny", company);
   }, [marketDatas]);
 
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
-
   const formParams = {
     trigger_btn_label_form: "New Market",
     construct_form_btn_label: "New market form",
@@ -184,41 +156,27 @@ export default function Market() {
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
-  // const deletemarketAccounts = () => {
-  //   if (marketSelected.length !== 0) {
-  //     const allmarketsAccounts = LOCAL_STORAGE.get("markets");
-  //     const idSelecteds = marketSelected.map((objet) => objet.id);
-
-  //     allmarketsAccounts.map((item: MarketDisplayProps) => {
-  //       if (!idSelecteds.includes(item.id)) {
-  //         restAccount.push(item);
-  //       }
-  //     });
-  //     LOCAL_STORAGE.save("markets", restAccount);
-
-  //     toast.success("Accounts are deleted successfull");
-  //   }
-  // };
-
   return (
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "Nouveau marché",
+          title: "Nouvelle fiche",
           form: <NewMarket />,
         },
       ]}
-      title="Gestion des marchés"
+      title="Fiches d'accompagnement à l'usine"
       formParams={formParams}
       statPanelDatas={statPanelDatas}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Les Marchés</h1>
+        <h1 className="text-xl font-semibold">
+          Fiche d'accompagnement à l'usine
+        </h1>
         <div className="flex gap-4 text-gray-500">
           {marketSelected.length !== 0 && (
             <>
               <CustomHoverCard content="archive project">
-                <Archive className="hover:cursor-pointer" />
+                <Printer className="hover:cursor-pointer" />
               </CustomHoverCard>
               <CustomHoverCard content="Delete Accounts">
                 <Trash2
@@ -231,7 +189,7 @@ export default function Market() {
         </div>
       </div>
       <div className="px-6">
-        <DataTable<MarketDisplayProps, any>
+        <DataTable<FactoryAccompaniementSheetDisplayProps, any>
           incomingColumns={columns}
           incomingData={marketDatas?.length ? valueToDisplay(marketDatas) : []}
           onSelecteItem={(selects) => {

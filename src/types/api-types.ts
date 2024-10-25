@@ -79,15 +79,15 @@ type ApiErroType = {
 };
 
 export type AssigneeType = {
-  id?: string,
-  agentCode: string,
-  projectCode: string[],
-  fullName?: string,
-  company_id: string,
-  created_at: string,
-  updated_at: string,
-  deleted_at: string
-}
+  id?: string;
+  agentCode: string;
+  projectCode: string[];
+  fullName?: string;
+  company_id: string;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+};
 
 export type ProjectType = {
   id?: string;
@@ -222,29 +222,6 @@ export type ChapterMetaDataType = {
   };
 };
 
-// export type MarketCreateInput = {
-//   id: string;
-//   price_of_day: number;
-//   start_date: string;
-//   end_date: string;
-//   market_number: number;
-//   description: string;
-//   location: string;
-//   // type_of_market?: $Enums.MarketType
-//   bordereau_vente_url: string;
-//   bon_entree_magazin_url: string;
-//   // status?: $Enums.CampaignStatus
-//   code?: string | null;
-//   product_quantity: number;
-//   created_at?: Date | string;
-//   updated_at?: Date | string;
-//   campaign_id: string;
-//   // company: CompanyCreateNestedOneWithoutMarketsInput
-//   // market_audit?: Market_auditCreateNestedManyWithoutMarketInput
-//   // transaction?: TransactionCreateNestedManyWithoutMarketInput
-//   // receipts?: ReceiptCreateNestedManyWithoutMarketInput
-// };
-
 export type MarketDBProps = {
   id: string;
   location: string;
@@ -264,4 +241,25 @@ export type MarketDBProps = {
   market_audit: []; // market_audit object[]: to be defined
   transaction: []; // transaction object[]: to be defined
   receipts?: []; // receipt object[]: to be defined
+  store_entry_voucher: string | null;
+
+  // factory accompaiement sheet
+  tracability_level: string | null;
+  car_number: string | null;
+  quantity_in_bags_declared: number | null;
+  net_weight_declared: number | null;
+  humidity: number | null;
+
+  // factory accompaiement sheet
+  sender: string | null;
+  Receiver: string | null;
+  register_number: string | null;
+  driver_name: string | null;
+  quantity_in_bags_tone: number | null;
+  quantity_product: number | null;
+
+  // sale slip
+  sale_slip_title: string | null;
+  sale_slip_description: string | null;
+  sale_slip_url: string | null;
 };
