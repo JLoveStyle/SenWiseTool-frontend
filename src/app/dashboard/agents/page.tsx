@@ -77,8 +77,8 @@ export default function Receipt() {
     console.log('fetching data')
     await fetchApiData(
       Route.assigne,
-      'perCompany'
-      // company?.id
+      'perCompany',
+      `?company_id=${company?.id}`
     )
       .then((response) => {
         if (response.status === 200) {

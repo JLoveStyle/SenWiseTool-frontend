@@ -62,6 +62,7 @@ export default function page({ }: Props) {
         transition: Bounce,
         autoClose: 3000
       })
+      return
     }
     setIsLoading((prev) => !prev);
     await mutateUpApiData(

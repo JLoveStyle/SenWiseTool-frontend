@@ -6,6 +6,7 @@ import { Route } from "@/lib/route";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { PiPrinterFill } from "react-icons/pi";
 import { Spinner } from "./spinner/spinner";
+import { Rocket } from "lucide-react";
 
 interface Props {
   children: React.ReactNode;
@@ -38,7 +39,6 @@ const PrintContent: React.FC<Props> = (props) => {
     }
   };
 
-
   return (
     <div>
       <div ref={formRef}>{props.children}</div>
@@ -56,9 +56,21 @@ const PrintContent: React.FC<Props> = (props) => {
             Edit
           </Button>
 
-          <Button className="hover:rounded-full" onClick={props.deployProject}>
-            {props.isDeploying ? <Spinner/> : "Deploy"}
+          {props.isDeploying ? (
+            <Button
+            className="hover:rounded-full hover:bg-green-400 bg-green-500"
+            onClick={props.deployProject}
+          >
+            <Spinner />
           </Button>
+          ) : (
+            <Button
+            className="hover:rounded-full hover:bg-green-400 bg-green-500"
+            onClick={props.deployProject}
+          >
+            <Rocket /> Deploy
+          </Button>
+          )}
         </div>
         <Button
           className="flex gap-1 items-center bg-black hover:bg-black hover:rounded-full"

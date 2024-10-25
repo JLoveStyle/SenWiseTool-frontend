@@ -360,9 +360,9 @@ export default function InspectionData({ projectType }: Props) {
             </tbody>
           </table>
         </div>
-        <div className="bg-white md:w-[40%] p-6 ">
+        {/* <div className="bg-white md:w-[40%] p-6 ">
           <DisplayInspectionAnalysis inspectionData={inspectionDatas}/>
-        </div>
+        </div> */}
       </div>
     </div>
   );

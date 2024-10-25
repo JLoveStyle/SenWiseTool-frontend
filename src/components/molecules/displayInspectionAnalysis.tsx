@@ -26,6 +26,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
 
   return (
     <>
+      <h1 className="font-bold text-center">Pourcentage par chapitre</h1>
       <div className="flex gap-4 justify-evenly ">
         <div className="">
           <h1 className="font-semibold py-3 ">Chapitre 1</h1>
@@ -196,7 +197,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
         </div>
       </div>
       <div className="flex flex-col justify-center items-center py-3">
-        <h1 className="font-semibold py-3 ">Total general</h1>
+        <h1 className="font-bold py-3 ">Pourcentage general</h1>
         <ul className="">
           <li className="list-disc font-bold">C: 14%</li>
           <li className="list-disc font-bold">NC: 75%</li>
