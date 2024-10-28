@@ -171,7 +171,7 @@ export default function ProjectDetailsForm({
           LOCAL_STORAGE.save("project", res.data);
           return;
         } else if (res.message === 'Internal Server Error') {
-          toast.error('Internal Server Error', {
+          toast.error("You don't have a company yet! Register your company", {
             transition: Bounce,
             autoClose: 3000
           })
