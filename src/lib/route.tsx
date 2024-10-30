@@ -33,7 +33,7 @@ export type AvailableRoute =
   | "mapping"
   | "saleSlip"
   | "social"
-  | "enviroment"
+  | "environment"
   | "agriculture"
   | "agents"
   | "marketRequest"
@@ -70,7 +70,7 @@ export const Route: Record<AvailableRoute, string> = {
   createCompany: "create-compay",
   mapping: "/dashboard/mapping",
   social: "/dashboard/social",
-  enviroment: "/dashboard/enviroment",
+  environment: "/dashboard/environment",
   agriculture: "/dashboard/agriculture",
   agents: "/dashboard/agents",
   listOfFarmers: "/dashboard/farmers",

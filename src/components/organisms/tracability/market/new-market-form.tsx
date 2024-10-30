@@ -4,7 +4,6 @@ import { InputUI } from "@/components/atoms/disign-system/form/input-ui";
 import { TextareaUI } from "@/components/atoms/disign-system/form/textarea-ui";
 import { MarketDBProps } from "@/types/api-types";
 import { MarketFormProps } from "@/types/tracability/market";
-import { validateHeaderValue } from "node:http";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -54,7 +53,7 @@ export const NewMarketForm = ({
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Où se tiendra le marché ?"
+          label="Lieu"
           id="location"
           placeholder="entrer la Localité"
           isLoading={isLoading}

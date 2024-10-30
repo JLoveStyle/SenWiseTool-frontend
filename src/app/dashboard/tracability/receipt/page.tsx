@@ -70,7 +70,7 @@ export default function Receipt() {
   };
 
   const valueToDisplay = (args: ReceiptProps[]) => {
-    return args?.map((receipt) => ({
+    const toto = args?.map((receipt) => ({
       id: receipt.id,
       market_id: receipt.market_id,
       village: receipt.village,
@@ -85,6 +85,9 @@ export default function Receipt() {
         <span className="text-slate-500">Indisponible</span>
       ),
     }));
+    console.log("toto", toto);
+
+    return toto;
   };
 
   useEffect(() => {
@@ -211,6 +214,7 @@ export default function Receipt() {
                 &times;
               </button>
               <img
+                loading="lazy"
                 src={previewImage}
                 alt="Preview"
                 className="w-full h-full object-contain"

@@ -8,8 +8,8 @@ import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
 
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-// import { Newsocial } from "@/components/organisms/tracability/social/new-social";
-import { NewActivitySocial } from "@/components/organisms/social-activities/new-activity";
+// import { Newenvironment } from "@/components/organisms/tracability/environment/new-environment";
+import { NewActivityEnvironment } from "@/components/organisms/environment-activities/new-activity";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useToggle } from "@/hooks/use-toggle";
@@ -22,12 +22,14 @@ import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
 
-export default function social() {
+export default function environment() {
   const [isLoading, setIsLoading] = useState(true);
-  const [socialDatas, setSocialDatas] = useState<ActivityDisplayProps[]>([]);
-  const [socualSelected, setSocialSelected] = useState<ActivityDisplayProps[]>(
-    []
-  );
+  const [environmentDatas, setEnvironmentDatas] = useState<
+    ActivityDisplayProps[]
+  >([]);
+  const [environmentSelected, setEnvironmentSelected] = useState<
+    ActivityDisplayProps[]
+  >([]);
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
@@ -52,7 +54,7 @@ export default function social() {
       pictures_url: "Images",
       documents_url: "Documents",
     },
-    Route.social
+    Route.environment
     // false
   );
   const formatedDataFromDBToDisplay = (data: ActivityProps) => {
@@ -74,13 +76,13 @@ export default function social() {
     };
   };
 
-  // async function getAllsocial() {
+  // async function getAllenvironment() {
   //   console.log("here is company", currentCampain?.id);
-  //   await fetchApiData(Route.socialRequest, company?.id)
+  //   await fetchApiData(Route.environmentRequest, company?.id)
   //     .then((response) => {
-  //       console.log("from useEffect social", response);
+  //       console.log("from useEffect environment", response);
   //       if (response.status !== 200) {
-  //         toast.error("Could not load socials. Please try again");
+  //         toast.error("Could not load environment. Please try again");
   //       }
   //     })
   //     .catch((error) => {
@@ -89,10 +91,10 @@ export default function social() {
   // }
 
   useEffect(() => {
-    // getAllsocial();
+    // getAllenvironment();
     const fetchData = async () => {
       try {
-        const result = await socialData();
+        const result = await environmentData();
         const dataFormated: ActivityDisplayProps[] = [];
         console.log(result);
 
@@ -104,20 +106,20 @@ export default function social() {
           } else {
             dataFormated.push(formatedDataFromDBToDisplay(result));
           }
-          setSocialDatas(dataFormated);
+          setEnvironmentDatas(dataFormated);
           setIsLoading(false);
         }
       } catch (err) {
-        console.error("Error fetching social datas: ", err);
+        console.error("Error fetching environment datas: ", err);
       } finally {
         setIsLoading(false);
       }
     };
 
     // const fetchData = async () => {
-    // const result = await db_get_socials()
+    // const result = await db_get_environment()
     // .then((result) => {
-    // console.log("data social list: ", result);
+    // console.log("data environment list: ", result);
 
     // setIsLoading(false);
     // })
@@ -142,7 +144,7 @@ export default function social() {
     // refetch();
     // const company = useCompanyStore((state) => state.company);
     // console.log("compagny", company);
-  }, [socialDatas]);
+  }, [environmentDatas]);
 
   // const statPanelDatas: DashboardStatPanelData[] = [
   //   {
@@ -178,25 +180,25 @@ export default function social() {
   // ];
 
   const formParams = {
-    trigger_btn_label_form: "New social",
-    construct_form_btn_label: "New social form",
+    trigger_btn_label_form: "New environment",
+    construct_form_btn_label: "New environment form",
     existing_form_btn_label: "Use Existing Form",
-    new_form_title: "Créer une activité sociale",
+    new_form_title: "Créer une activité d'environment",
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
-  const deleteSocialAccounts = () => {
-    if (socualSelected.length !== 0) {
-      const allSocials = LOCAL_STORAGE.get("socials");
-      const idSelecteds = socualSelected.map((objet) => objet.id);
-      const restSocials: ActivityProps[] = [];
+  const deleteEnvironmentAccounts = () => {
+    if (environmentSelected.length !== 0) {
+      const allEnvironment = LOCAL_STORAGE.get("environments");
+      const idSelecteds = environmentSelected.map((objet) => objet.id);
+      const restEnvironment: ActivityProps[] = [];
 
-      allSocials.map((item: ActivityProps) => {
+      allEnvironment.map((item: ActivityProps) => {
         if (!idSelecteds.includes(item.id ?? "")) {
-          restSocials.push(item);
+          restEnvironment.push(item);
         }
       });
-      LOCAL_STORAGE.save("socials", restSocials);
+      LOCAL_STORAGE.save("environments", restEnvironment);
 
       toast.success("Accounts are deleted successfull");
     }
@@ -207,17 +209,17 @@ export default function social() {
       newForms={[
         {
           title: "Nouvelle Activité",
-          form: <NewActivitySocial />,
+          form: <NewActivityEnvironment />,
         },
       ]}
-      title="social"
+      title="environment"
       formParams={formParams}
       statPanelDatas={statPanelDatas}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Social</h1>
+        <h1 className="text-xl font-semibold">environment</h1>
         <div className="flex gap-4 text-gray-500">
-          {socualSelected.length !== 0 && (
+          {environmentSelected.length !== 0 && (
             <>
               <CustomHoverCard content="archive project">
                 <Archive className="hover:cursor-pointer" />
@@ -225,7 +227,7 @@ export default function social() {
               <CustomHoverCard content="Delete Accounts">
                 <Trash2
                   className="hover:cursor-pointer"
-                  onClick={deleteSocialAccounts}
+                  onClick={deleteEnvironmentAccounts}
                 />
               </CustomHoverCard>
             </>
@@ -235,11 +237,13 @@ export default function social() {
       <div className="px-6">
         <DataTable<ActivityDisplayProps, any>
           incomingColumns={columns}
-          incomingData={socialDatas?.length ? valueToDisplay(socialDatas) : []}
+          incomingData={
+            environmentDatas?.length ? valueToDisplay(environmentDatas) : []
+          }
           onSelecteItem={(selects) => {
             console.log("seleccccccct", selects);
 
-            setSocialSelected(selects);
+            setEnvironmentSelected(selects);
           }}
           isLoading={isLoading}
         />
@@ -249,6 +253,6 @@ export default function social() {
 }
 
 // data request
-const socialData = async () => {
-  return LOCAL_STORAGE.get("socials") ?? [];
+const environmentData = async () => {
+  return LOCAL_STORAGE.get("environments") ?? [];
 };
