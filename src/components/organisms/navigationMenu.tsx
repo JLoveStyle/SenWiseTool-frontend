@@ -14,12 +14,12 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Route } from "@/lib/route";
 import {
   optionsGestions,
   optionsRevenu,
   optionsTracabilité,
 } from "@/utiles/services/constants";
-import { Route } from "@/lib/route";
 
 export function FeaturesMenu() {
   return (
@@ -92,7 +92,7 @@ export function FeaturesMenu() {
           </Link>
         </NavigationMenuItem>
         <NavigationMenuItem className="">
-          <Link href={Route.enviroment} legacyBehavior passHref>
+          <Link href={Route.environment} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               ENVIRONNEMENT
             </NavigationMenuLink>

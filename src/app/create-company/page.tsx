@@ -91,8 +91,6 @@ export default function Home({}: Props) {
       return;
     }
 
-    // Head offic
-
     // Head office email and company email must not be the same
     if (formData.headOfficeEmail === formData.companyEmail) {
       toast.warning("Head office email must be different from company email", {

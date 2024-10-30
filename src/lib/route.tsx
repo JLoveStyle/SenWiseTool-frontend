@@ -3,11 +3,10 @@ export type AvailableRoute =
   | "aboutUs"
   | "features"
   | "services"
-  | "pricing"
   | "checkout"
   | "signIn"
   | "signUp"
-  | "companies"
+  
   | "createCompany"
   | "dashboard"
   | "training"
@@ -25,19 +24,27 @@ export type AvailableRoute =
   | "editProject"
   | "details"
   | "training_session"
-  | "user"
   | "login"
-  | "projects"
+  
   | "campaign"
   | "trainingProject"
   | "mapping"
   | "saleSlip"
   | "social"
-  | "enviroment"
+  | "environment"
   | "agriculture"
+
+  // API endpoints
   | "agents"
   | "marketRequest"
   | "assigne"
+  | "projects"
+  | "companies"
+  | "user"
+  | "pricing"
+  | "socialRequest"
+  | "agricultureRequest"
+  | "environmentRequest"
 
   // tracability
   | "markets"
@@ -70,7 +77,7 @@ export const Route: Record<AvailableRoute, string> = {
   createCompany: "create-compay",
   mapping: "/dashboard/mapping",
   social: "/dashboard/social",
-  enviroment: "/dashboard/environment",
+  environment: "/dashboard/environment",
   agriculture: "/dashboard/agriculture",
   agents: "/dashboard/agents",
   listOfFarmers: "/dashboard/farmers",
@@ -84,6 +91,9 @@ export const Route: Record<AvailableRoute, string> = {
   pricing: "price_plans",
   marketRequest: "markets",
   assigne: "project_assignee",
+  socialRequest: "socials",
+  environmentRequest: "environments",
+  agricultureRequest: "agricultures",
 
   // tracability
   markets: "/dashboard/tracability/markets",

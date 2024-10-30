@@ -118,9 +118,6 @@ export default function ProjectDetailsForm({
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    if (companyLogo) {
-      // load the company logo in the companys' table
-    }
 
     // CONVERT DATE INTO NUMBER
     const startDate = new Date(`${projectData.start_date?.slice(0, 10)}`);

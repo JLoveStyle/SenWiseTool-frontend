@@ -108,9 +108,8 @@ export default function FormLayout({ forms, formParams }: Props) {
               <div>
                 <div className="my-4 flex justify-center text-xs">
                   <em>
-                    Veuillez remplir les champs. ceux qui contiennent
-                    <span className="text-red-500 px-1">*</span> sont
-                    obligatoires
+                    Fields with
+                    <span className="text-red-500 px-1">*</span> are obligatory
                   </em>
                 </div>
                 {forms[0].form}
@@ -144,9 +143,9 @@ export default function FormLayout({ forms, formParams }: Props) {
                   >
                     <div className="my-4 flex justify-center text-xs">
                       <em>
-                        Veuillez remplir les champs. ceux qui contiennent
-                        <span className="text-red-500 px-1">*</span> sont
-                        obligatoires
+                        Fields with
+                        <span className="text-red-500 px-1">*</span> are
+                        obligatory
                       </em>
                     </div>
 

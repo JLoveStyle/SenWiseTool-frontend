@@ -57,13 +57,13 @@ export interface AnalysisProps {
 }
 
 export interface InspectionDataType {
-  total_A : number,
-  chapter1: {C: number, NC: number, NA: number},
-  chapter2: {C: number, NC: number, NA: number},
-  chapter3: {C: number, NC: number, NA: number},
-  chapter4: {C: number, NC: number, NA: number}
-  chapter5: {C: number, NC: number, NA: number}
-  chapter6: {C: number, NC: number, NA: number}
+  total_A: number,
+  chapter1: { C: number, NC: number, NA: number },
+  chapter2: { C: number, NC: number, NA: number },
+  chapter3: { C: number, NC: number, NA: number },
+  chapter4: { C: number, NC: number, NA: number }
+  chapter5: { C: number, NC: number, NA: number }
+  chapter6: { C: number, NC: number, NA: number }
 }
 
 export type PricePlanType = {
@@ -161,6 +161,7 @@ export type ProjectType = {
   company_id: string;
   title: string;
   code: string;
+  another_logo: string;
   description: string;
   sector_activity: string;
   country: string;
