@@ -24,10 +24,9 @@ import { Spinner } from "@/components/atoms/spinner/spinner";
 import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
 import slugify from "slugify";
 
-
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const countries: any[] = Country.getAllCountries();
@@ -60,7 +59,7 @@ export default function Home({ }: Props) {
   });
 
   const { isSignedIn, user } = useUser();
-  console.log('userId from clerk =>', user?.id)
+  console.log("userId from clerk =>", user?.primaryEmailAddress?.emailAddress);
 
   // REGISTER COMPANY
   async function handleSubmit(e: any) {
@@ -76,6 +75,32 @@ export default function Home({ }: Props) {
       setHasAgree((prev) => !prev);
       return;
     }
+
+    // Company email and personal email must not be the same
+    if (user?.primaryEmailAddress?.emailAddress === formData.companyEmail) {
+      toast.warning("Personal email must be different from company email", {
+        autoClose: 4000,
+      });
+      return;
+    } else if (
+      formData.headOfficeEmail === user?.primaryEmailAddress?.emailAddress
+    ) {
+      toast.warning("Personal email must be different from Head office email", {
+        autoClose: 4000,
+      });
+      return;
+    }
+
+    // Head offic
+
+    // Head office email and company email must not be the same
+    if (formData.headOfficeEmail === formData.companyEmail) {
+      toast.warning("Head office email must be different from company email", {
+        autoClose: 4000,
+      });
+      return;
+    }
+
     setIsLoading((prev) => !prev);
 
     // create bucket company S3 bucket
@@ -96,7 +121,6 @@ export default function Home({ }: Props) {
       }
     }
     */
-    
 
     if (user?.id) {
       const res = await createOrganization(formData, user.id);
@@ -117,6 +141,9 @@ export default function Home({ }: Props) {
       })
         .then((response) => {
           console.log("create company res =>", response);
+          if (response.status === 409) {
+            return toast.error("Company name already exist");
+          }
           if (!response.status.toString().startsWith("2")) {
             return toast.error(`Sorry something went wrong`, {
               transition: Bounce,
@@ -129,7 +156,6 @@ export default function Home({ }: Props) {
             });
             router.push(Route.dashboard);
           }
-
         })
         .catch((error) => {
           console.log("An error occured", error);
@@ -137,9 +163,10 @@ export default function Home({ }: Props) {
             transition: Bounce,
             autoClose: 1000,
           });
-        }).finally(() => {
-          setIsLoading((prev) => !prev);
         })
+        .finally(() => {
+          setIsLoading((prev) => !prev);
+        });
     }
   }
 
@@ -292,9 +319,7 @@ export default function Home({ }: Props) {
             onChange={(event) => handleInputChange(event)}
             className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
           >
-            <option selected>
-              -- Select --
-            </option>
+            <option selected>-- Select --</option>
             {businessActivity?.map((item: any, index) => (
               <option key={index} value={item}>
                 {item}

@@ -53,13 +53,13 @@ export function NewTraining() {
   };
 
   const handleCreateTraining = async (formData: TrainingProps) => {
-    console.log("forMData => ", formData);
     const trainingModules: string[] = [];
     for (const module of formData.modules) {
       trainingModules.push(module.value);
     }
 
     // Create training in DB
+    setIsLoading(prev => !prev)
     await mutateApiData(Route.training, {
       location: formData.location,
       title: formData.title,
@@ -119,20 +119,23 @@ export function NewTraining() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       e.preventDefault();
 
       const formErrors = TrainingFormVerification(formData);
 
       if (!isEmptyObject(formErrors)) {
         setErrors(formErrors);
-        toast.error("Something is wrong");
-        setIsLoading(false);
+        // toast.error("Something is wrong");
+        toast.warning("Please fill all required fields");
+        // setIsLoading(false);
         return;
       }
-
       handleCreateTraining(formData);
-    } catch (error) {}
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

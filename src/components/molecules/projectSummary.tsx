@@ -114,9 +114,9 @@ export default function ProjectSummary({
         <p className="">Project details</p>
         <div className="bg-white md:w-full p-5 shadow">
           {/* project title */}
-          <div className="flex gap-2 py-2 border-b pb-4">
+          <div className="flex gap-2 py-2 border-b pb-4 items-baseline">
             <span className="text-sm text-gray-500 ">Title:</span>
-            <span className=" font-semibold text-sm px-2 rounded-lg">
+            <span className=" font-semibold text-lg px-2 rounded-lg">
               {projectObject?.title}
             </span>
           </div>
@@ -168,7 +168,17 @@ export default function ProjectSummary({
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last update</span>
                 <span className=" text-sm rounded-lg font-semibold">
-                  {dayjs(projectObject?.updated_at).toString().slice(0, -13)}
+                  {dayjs(projectObject?.updated_at).toString().slice(0, -4)}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between md:w-full py-4 border-b ">
+            <div className="flex md:w-full justify-between">
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Created at</span>
+                <span className=" text-sm text-center rounded-lg font-semibold">
+                  {dayjs(projectObject?.end_date).toString().slice(0, -4)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
@@ -176,9 +186,7 @@ export default function ProjectSummary({
                 <span className=" text-sm rounded-lg text-center font-semibold">
                   {projectObject?.deployed_at.includes("1969")
                     ? "--"
-                    : dayjs(projectObject?.deployed_at)
-                        .toString()
-                        .slice(0, -13)}
+                    : dayjs(projectObject?.deployed_at).toString().slice(0, -4)}
                 </span>
               </div>
             </div>

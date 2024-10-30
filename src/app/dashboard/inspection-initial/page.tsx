@@ -24,6 +24,8 @@ export default function Home({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
+  console.log(currentCampaign?.id)
+  console.log('company_id', company?.id)
 
   // Fetch all projects with type "INITIAL_INSPECTION" and pass it as props to Layout
   async function fetchAllInitialInspectionProject() {
@@ -31,8 +33,8 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "?type=INITIAL_INSPECTION",
-      currentCampaign?.id
+      `?campaign_id=${currentCampaign?.id}&type=INITIAL_INSPECTION`,
+      company?.id
     )
       .then((response) => {
         console.log("all initial_inspection projects", response);

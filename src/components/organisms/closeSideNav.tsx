@@ -58,7 +58,6 @@ export default function CloseSiveNav({
     (item) => item.status === "ARCHIVED"
   );
 
-  console.log('project per type from closesideNav', projectsPerType)
 
   return (
     <div

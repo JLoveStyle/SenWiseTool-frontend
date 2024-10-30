@@ -92,18 +92,18 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
     header: "Last update",
     cell: ({ row }) => (
       <span className="">
-        {dayjs(row.getValue("updated_at")).toString().slice(0, -13)}{" "}
+        {dayjs(row.getValue("updated_at")).toString().slice(0, -4)}{" "}
       </span>
     ),
   },
   {
-    accessorKey: "deployed_at",
-    header: "Deployment date",
+    accessorKey: "draft_at",
+    header: "Creation date",
     cell: ({ row }) => (
       <span className="">
-        {(row.getValue("deployed_at") as string).includes("1969")
+        {(row.getValue("draft_at") as string).includes("1969")
           ? "--"
-          : dayjs(row.getValue("deployed_at")).toString().slice(0, -13)}{" "}
+          : dayjs(row.getValue("draft_at")).toString().slice(0, -4)}{" "}
       </span>
     ),
   },

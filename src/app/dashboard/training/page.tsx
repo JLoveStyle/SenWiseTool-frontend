@@ -26,6 +26,9 @@ import { db_get_trainings } from "@/utiles/services/training";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { toast } from "react-toastify";
+import revalidateTraining from "@/lib/action";
+import { Button } from "@/components/ui/button";
+import { fetchTrainings } from "@/utiles/server-actions/get-request";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
@@ -34,27 +37,36 @@ export default function Training() {
 
   // Load company from store
   const company = useCompanyStore((state) => state.company);
+  
   // laod current campaigne
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   // Fetch all trainings
   async function fetchTraining() {
-    if (!currentCampaign && !company) return;
+    console.log("into function");
+    // if (!currentCampaign && !company) return;
     setIsLoading((prev) => !prev);
 
-    await fetchApiData(Route.training, currentCampaign?.id)
-      .then((response) => {
-        console.log('trainings', response);
-        if (response.status === 200) {
-          setTrainingDatas(response.data);
-          setIsLoading((prev) => !prev);
-          return;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        return;
-      });
+    // const trainingData = await fetchTrainings(Route.training, currentCampaign?.id)
+    
+    // if (trainingData) {
+      // console.log(trainingData)
+    // }
+
+    // await fetchApiData(Route.training)
+    //   .then((response) => {
+    //     console.log("trainings", response);
+    //     // if (response.status >= 200) {
+    //       setTrainingDatas(response.data);
+    //       setIsLoading(false);
+    //       return;
+    //     // }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     return;
+    //   });
+      
   }
 
   const { data: trainings, refetch } = useApiOps<
@@ -88,7 +100,7 @@ export default function Training() {
       start_date: training.start_date,
       end_date: training.end_date,
       location: training.location,
-      code: training.code
+      code: training.code,
       // modules: training.modules.map((module: string, index: number) => ({
       //   id: index,
       //   value: module,

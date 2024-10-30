@@ -71,7 +71,7 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
     accessorKey: "created_at",
     header: "Creation date",
     cell: ({ row }) => (
-      <span>{dayjs(row.getValue("created_at")).toString().slice(0, -13)} </span>
+      <span>{dayjs(row.getValue("created_at")).toString().slice(0, -4)} </span>
     ),
   },
   {
@@ -81,7 +81,7 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
       <span className="text-center">
         {(row.getValue("updated_at") as string).includes("1969")
           ? "--"
-          : dayjs(row.getValue("updated_at")).toString().slice(0, -13)}
+          : dayjs(row.getValue("updated_at")).toString().slice(0, -4)}
       </span>
     ),
   },
@@ -92,7 +92,7 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
       <span className="text-center">
         {(row.getValue("deployed_at") as string).includes("1969")
           ? "--"
-          : dayjs(row.getValue("deployed_at")).toString().slice(0, -13)}
+          : dayjs(row.getValue("deployed_at")).toString().slice(0, -4)}
       </span>
     ),
   },
