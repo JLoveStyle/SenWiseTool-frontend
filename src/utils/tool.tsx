@@ -8,3 +8,12 @@ export const arrayNumber = (n: number) => {
 
   return tab;
 };
+
+export const uniqueString = (string?: string): string => {
+  const cleanString = string?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+
+  // Générer la chaîne unique
+  return `${Date.now()}${Math.random()
+    .toString(36)
+    .substring(2, 15)}${cleanString}`;
+};

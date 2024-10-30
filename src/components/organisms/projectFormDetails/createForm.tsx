@@ -1,36 +1,35 @@
-import React, { useEffect, useState } from "react";
-import InputField from "../../molecules/inputField";
-import { Project } from "@/types/gestion";
-import CustomSelectTag from "../../molecules/select";
-import { City, Country, State } from "country-state-city";
-import { Button } from "../../ui/button";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { Route } from "@/lib/route";
-import { usePathname, useRouter } from "next/navigation";
-import { businessActivity } from "@/utiles/services/constants";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-import CardLayout from "../../templates/cardLayout";
-import { Textarea } from "../../ui/textarea";
-import { mutateApiData } from "@/utiles/services/mutations";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
-import { Bounce, toast } from "react-toastify";
-import { useCompanyStore } from "@/lib/stores/companie-store";
+import { Route } from "@/lib/route";
+import { UpdateFilesToS3 } from "@/lib/s3";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
+import { Project } from "@/types/gestion";
+import { businessActivity } from "@/utiles/services/constants";
+import { mutateApiData } from "@/utiles/services/mutations";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { City, Country, State } from "country-state-city";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { Bounce, toast } from "react-toastify";
+import InputField from "../../molecules/inputField";
+import CustomSelectTag from "../../molecules/select";
+import CardLayout from "../../templates/cardLayout";
+import { Button } from "../../ui/button";
+import { Textarea } from "../../ui/textarea";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject: ProjectsType;
   project?: Project;
-  closeModal: (value: boolean) => void
+  closeModal: (value: boolean) => void;
 };
 
 export default function ProjectDetailsForm({
   onClick,
   typeOfProject,
   project,
-  closeModal
+  closeModal,
 }: Props) {
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
@@ -38,7 +37,7 @@ export default function ProjectDetailsForm({
   const router = useRouter();
   const company = useCompanyStore((state) => state.company);
   const compains = useCampaignStore((state) => state.campaigns);
-  const currentCampain = useCampaignStore((state) => state.currentCampaign)
+  const currentCampain = useCampaignStore((state) => state.currentCampaign);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -49,10 +48,10 @@ export default function ProjectDetailsForm({
     ""
   );
   const [errorDate, setErrorDate] = useState<string>("");
-  const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
+  const [otherLogo, setOtherLogo] = useState<File[]>([]);
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
-    sector_activity: "", 
+    sector_activity: "",
     country: "",
     description: "",
     city: "",
@@ -105,22 +104,38 @@ export default function ProjectDetailsForm({
     }
   }; */
 
-  const handleOtherLogo = (e: any) => {
-    const reader = new FileReader();
-    if (e) {
-      reader.onload = (onLoadEvent) => {
-        if (onLoadEvent.target) {
-          setOtherLogo(onLoadEvent.target.result);
-        }
-      };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setOtherLogo(Array.from(event.target.files)); // Convertir FileList en tableau
+    }
+  };
+
+  const uploadOtherLogo = async () => {
+    // @todo Add s3 bucketName on database
+    const bucketName = LOCAL_STORAGE.get("bucketName");
+
+    //upload company logo
+    if (otherLogo) {
+      const { data, error } = await UpdateFilesToS3({
+        bucketName,
+        files: otherLogo,
+      });
+
+      if (error) {
+        console.log(error);
+        toast.error("Erreur lors de l'upload du logo");
+        throw new Error("Error lors de l'upload du logo");
+      }
+      console.log("URLLLLLLs", data);
+
+      setCompanyLogo(data.URLs[0]);
+      return data.URLs[0] as string;
     }
   };
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    if (companyLogo) {
-      // load the company logo in the companys' table
-    }
+    const [URLOtherLogo] = await Promise.all([uploadOtherLogo()]);
 
     // CONVERT DATE INTO NUMBER
     const startDate = new Date(`${projectData.start_date?.slice(0, 10)}`);
@@ -132,7 +147,7 @@ export default function ProjectDetailsForm({
     }
 
     setIsLoading((prev) => !prev);
-    console.log(new Date(projectData.start_date as string).toISOString())
+    console.log(new Date(projectData.start_date as string).toISOString());
 
     console.log(compains[0]);
     console.log("company", company);
@@ -163,20 +178,20 @@ export default function ProjectDetailsForm({
           });
           if (pathname.includes("mapping")) {
             // CLOSE MODAL
-            closeModal(false)
+            closeModal(false);
             router.push(Route.mapping);
             return;
           }
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
           return;
-        } else if (res.message === 'Internal Server Error') {
+        } else if (res.message === "Internal Server Error") {
           toast.error("You don't have a company yet! Register your company", {
             transition: Bounce,
-            autoClose: 3000
-          })
+            autoClose: 3000,
+          });
           setIsLoading((prev) => !prev);
-          return
+          return;
         }
         setIsLoading((prev) => !prev);
         toast.error("Something went wrong", {
@@ -216,7 +231,13 @@ export default function ProjectDetailsForm({
               <label htmlFor="company_logo">
                 <strong>Add another logo</strong>
               </label>
-              <input type="file" onChange={(e) => handleOtherLogo(e)} />
+              <input type="file" onChange={(e) => handleFileChange(e)} />
+              <input
+                type="file"
+                accept=".png, .jpeg, .jpg"
+                placeholder="Enter logo"
+                onChange={(e) => handleFileChange(e)}
+              />
             </div>
           </>
         )}
@@ -248,7 +269,11 @@ export default function ProjectDetailsForm({
             />
           </div>
         </div>
-        {errorDate && <span className="text-red-500 mt-4"><em>{errorDate}</em></span>}
+        {errorDate && (
+          <span className="text-red-500 mt-4">
+            <em>{errorDate}</em>
+          </span>
+        )}
         <label className="font-semibold" htmlFor="activity">
           Business sector
           <span className="text-red-500">*</span>
