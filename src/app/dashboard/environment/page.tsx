@@ -180,8 +180,8 @@ export default function environment() {
   // ];
 
   const formParams = {
-    trigger_btn_label_form: "New environment",
-    construct_form_btn_label: "New environment form",
+    trigger_btn_label_form: "Nouvelle activité",
+    construct_form_btn_label: "Nouveau formulaire",
     existing_form_btn_label: "Use Existing Form",
     new_form_title: "Créer une activité d'environment",
     construct_form_btn_icon: FaHandHoldingDollar,
