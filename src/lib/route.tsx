@@ -70,7 +70,7 @@ export const Route: Record<AvailableRoute, string> = {
   createCompany: "create-compay",
   mapping: "/dashboard/mapping",
   social: "/dashboard/social",
-  enviroment: "/dashboard/enviroment",
+  enviroment: "/dashboard/environment",
   agriculture: "/dashboard/agriculture",
   agents: "/dashboard/agents",
   listOfFarmers: "/dashboard/farmers",
