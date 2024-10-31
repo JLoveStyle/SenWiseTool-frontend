@@ -28,6 +28,7 @@ import StatPanel from "../atoms/dashboard/stat-panel";
 import FloatingButton from "../atoms/disign-system/floating-button";
 import { FeaturesMenu } from "../organisms/navigationMenu";
 import { Session } from "../templates/session";
+import { AUTHENTICATED, HAS_COMPANY } from "@/lib/session-statut";
 // import CloseSideNav from "./closeSideNav";
 type Props = {
   children: React.ReactNode;
@@ -132,7 +133,7 @@ export default function LayoutDashboardTemplate({
     useToggle({ initial: newForms || statPanelDatas ? true : false });
 
   return (
-    <Session>
+    <Session sessionStatus={HAS_COMPANY}>
       <div className="flex w-screen h-screen absolute overflow-hidden scrool-bar-hidden">
         <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2 text-white">
           <Sidebar options={dashboardSidebarOptions} />

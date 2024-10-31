@@ -1,6 +1,6 @@
 export type objecType = { [key: string]: string };
 
-export type SessionStatusType = "guest" | "authenticated";
+export type SessionStatusType = "guest" | "authenticated" | "has_company" | "not_has_company";
 
 export interface cardDataType {
   title: string;

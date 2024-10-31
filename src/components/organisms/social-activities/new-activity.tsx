@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewActivityForm } from "./new-activity-form";
+import { mutateApiData } from "@/utiles/services/mutations";
 
 export function NewActivitySocial() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -50,17 +51,34 @@ export function NewActivitySocial() {
     };
 
     // Sauvegarde de l'activité
-    const existingActivities = LOCAL_STORAGE.get("social") ?? [];
-    LOCAL_STORAGE.save("social", [
-      ...existingActivities,
-      { id: existingActivities.length + 1, ...dataToDB },
-    ]);
+    // const existingActivities = LOCAL_STORAGE.get("social") ?? [];
+    // LOCAL_STORAGE.save("social", [
+    //   ...existingActivities,
+    //   { id: existingActivities.length + 1, ...dataToDB },
+    // ]);
 
-    toast.success("Activité d'social créée avec succès");
-    setIsLoading(false);
-    router.refresh();
-    router.push(Route.social);
-    return;
+    await mutateApiData(Route.socialRequest, dataToDB)
+      .then((response) => {
+        if (response.status === 201) {
+          console.log("response", response);
+          toast.success("Social activities created successfully");
+          setIsLoading(false);
+          router.refresh();
+          router.push(Route.social);
+          return;
+        } else if (response.message === "Internal Server Error") {
+          toast.error("Internal Server Error");
+          setIsLoading(false);
+          return;
+        } else {
+          toast.error("Something went wrong. Please try again");
+          setIsLoading(false);
+          return;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleUploadPV = async (formData: ActivityFormProps) => {

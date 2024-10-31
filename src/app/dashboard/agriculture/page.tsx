@@ -13,14 +13,14 @@ import { NewActivityAgriculture } from "@/components/organisms/agriculture-activ
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useToggle } from "@/hooks/use-toggle";
-import { useCampaignStore } from "@/lib/stores/campaign-store";
-import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ActivityDisplayProps, ActivityProps } from "@/types/activity";
 import { statPanelDatas } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
+import { fetchApiData } from "@/utiles/services/queries";
+import { DashboardStatPanelData } from "@/types/app-link";
 
 export default function Agriculture() {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,12 +39,6 @@ export default function Agriculture() {
     toggleOpenModel();
   };
 
-  // Load company object from store
-  const company = useCompanyStore((state) => state.company);
-
-  // load current campain object from store
-  const currentCampain = useCampaignStore((state) => state.currentCampaign);
-
   const columns = columnTable<ActivityDisplayProps>(
     {
       id: "id",
@@ -59,7 +53,6 @@ export default function Agriculture() {
   const formatedDataFromDBToDisplay = (data: ActivityProps) => {
     return {
       id: data.id ?? "",
-      // company_id: data.company_id,
       activity_title: data.activity_title,
       pictures_url: data.pictures_url ? (
         <FaCheck color="green" />
@@ -75,35 +68,23 @@ export default function Agriculture() {
     };
   };
 
-  // async function getAllagriculture() {
-  //   console.log("here is company", currentCampain?.id);
-  //   await fetchApiData(Route.agricultureRequest, company?.id)
-  //     .then((response) => {
-  //       console.log("from useEffect agriculture", response);
-  //       if (response.status !== 200) {
-  //         toast.error("Could not load agricultures. Please try again");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
   useEffect(() => {
-    // getAllagriculture();
     const fetchData = async () => {
       try {
-        const result = await agricultureData();
+        setIsLoading(true);
+        const result = await fetchApiData(Route.agricultureRequest, "");
         const dataFormated: ActivityDisplayProps[] = [];
-        console.log(result);
 
-        if (result) {
-          if (Array.isArray(result)) {
-            result.forEach((res) => {
+        if (result.status === 200) {
+          setIsLoading(false);
+          if (Array.isArray(result.data)) {
+            console.log("if condition");
+            result.data.forEach((res: ActivityProps) => {
               dataFormated.push(formatedDataFromDBToDisplay(res));
             });
           } else {
-            dataFormated.push(formatedDataFromDBToDisplay(result));
+            console.log("if else condition");
+            dataFormated.push(formatedDataFromDBToDisplay(result.data));
           }
           setAgricultureDatas(dataFormated);
           setIsLoading(false);
@@ -114,16 +95,6 @@ export default function Agriculture() {
         setIsLoading(false);
       }
     };
-
-    // const fetchData = async () => {
-    // const result = await db_get_agricultures()
-    // .then((result) => {
-    // console.log("data agriculture list: ", result);
-
-    // setIsLoading(false);
-    // })
-    // .catch((err) => console.error(err));
-    // };
 
     fetchData();
   }, []);
@@ -138,45 +109,6 @@ export default function Agriculture() {
       pv_url: data.pv_url,
     }));
   };
-
-  useEffect(() => {
-    // refetch();
-    // const company = useCompanyStore((state) => state.company);
-    // console.log("compagny", company);
-  }, [agricultureDatas]);
-
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
 
   const formParams = {
     trigger_btn_label_form: "New agriculture",
@@ -203,17 +135,30 @@ export default function Agriculture() {
     }
   };
 
+  const stateActivity: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Number",
+        baseUrl: "",
+        icon: Archive,
+      },
+      data: () => {
+        return agricultureDatas.length;
+      },
+    },
+  ]
+
   return (
     <LayoutDashboardTemplate
       newForms={[
         {
           title: "New activity",
-          form: <NewActivityAgriculture />,
+          form: <NewActivityAgriculture endpoint={Route.agricultureRequest} />,
         },
       ]}
       title="AGRICULTURE"
       formParams={formParams}
-      statPanelDatas={statPanelDatas}
+      statPanelDatas={stateActivity}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Agriculture</h1>
@@ -240,8 +185,6 @@ export default function Agriculture() {
             agricultureDatas?.length ? valueToDisplay(agricultureDatas) : []
           }
           onSelecteItem={(selects) => {
-            console.log("seleccccccct", selects);
-
             setAgricultureSelected(selects);
           }}
           isLoading={isLoading}
@@ -250,8 +193,3 @@ export default function Agriculture() {
     </LayoutDashboardTemplate>
   );
 }
-
-// data request
-const agricultureData = async () => {
-  return LOCAL_STORAGE.get("agricultures") ?? [];
-};
