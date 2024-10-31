@@ -40,30 +40,29 @@ export type ProjectsType = ObjectValue<typeof PROJECTTYPE>;
 export type ProjectStatus = ObjectValue<typeof PROJECT_STATUS>;
 
 export interface Answer {
-  num: string,
-  NC: boolean,
-  NA: boolean,
-  C: boolean,
-  comment: boolean
+  num: string;
+  NC: boolean;
+  NA: boolean;
+  C: boolean;
+  comment: boolean;
 }
 export interface AnalysisProps {
-  chap1: Answer[],
-  chap2: Answer[],
-  chap3: Answer[],
-  chap4: Answer[],
-  chap5: Answer[],
-  chap6: Answer[],
-
+  chap1: Answer[];
+  chap2: Answer[];
+  chap3: Answer[];
+  chap4: Answer[];
+  chap5: Answer[];
+  chap6: Answer[];
 }
 
 export interface InspectionDataType {
-  total_A: number,
-  chapter1: { C: number, NC: number, NA: number },
-  chapter2: { C: number, NC: number, NA: number },
-  chapter3: { C: number, NC: number, NA: number },
-  chapter4: { C: number, NC: number, NA: number }
-  chapter5: { C: number, NC: number, NA: number }
-  chapter6: { C: number, NC: number, NA: number }
+  total_A: number;
+  chapter1: { C: number; NC: number; NA: number };
+  chapter2: { C: number; NC: number; NA: number };
+  chapter3: { C: number; NC: number; NA: number };
+  chapter4: { C: number; NC: number; NA: number };
+  chapter5: { C: number; NC: number; NA: number };
+  chapter6: { C: number; NC: number; NA: number };
 }
 
 export type PricePlanType = {
@@ -116,44 +115,42 @@ export type AssigneeType = {
   deleted_at: string;
 };
 
-
 export interface FarmCoordinatesType {
-  id?: string
+  id?: string;
 }
 export interface FarmType {
-  id?: string
-  location: JSON
-  village: string
-  plantation_creation_date: string
-  farm_image_url: string
+  id?: string;
+  location: JSON;
+  village: string;
+  plantation_creation_date: string;
+  farm_image_url: string;
   surface_area: number;
-  plantation_photos: string[]
-  mapping_coordinates: FarmCoordinatesType[]
-  created_at: string
-  updated_at: string
-
+  plantation_photos: string[];
+  mapping_coordinates: FarmCoordinatesType[];
+  created_at: string;
+  updated_at: string;
 }
 
 export type FarmerType = {
   id?: string;
-  company_id: string
-  farmer_name: string
-  farmer_contact: string
-  farmer_ID_card_number: string
-  inspection_date: string
-  village: string
-  certification_year: string
-  inspector_name: string
-  inspector_contact: string
-  weed_application: string
-  weed_application_quantity?: number
-  pesticide_used: string
-  pesticide_quantity: string
-  farmer_photos?: string[]
-  farm: FarmType[]
-  created_at: string
-  updated_at: string
-}
+  company_id: string;
+  farmer_name: string;
+  farmer_contact: string;
+  farmer_ID_card_number: string;
+  inspection_date: string;
+  village: string;
+  certification_year: string;
+  inspector_name: string;
+  inspector_contact: string;
+  weed_application: string;
+  weed_application_quantity?: number;
+  pesticide_used: string;
+  pesticide_quantity: string;
+  farmer_photos?: string[];
+  farm: FarmType[];
+  created_at: string;
+  updated_at: string;
+};
 
 export type ProjectType = {
   id?: string;
@@ -312,6 +309,7 @@ export type MarketDBProps = {
   transaction: []; // transaction object[]: to be defined
   receipts?: []; // receipt object[]: to be defined
   store_entry_voucher: string | null;
+  sale_slip: string | null;
 
   // factory accompaiement sheet
   tracability_level: string | null;
