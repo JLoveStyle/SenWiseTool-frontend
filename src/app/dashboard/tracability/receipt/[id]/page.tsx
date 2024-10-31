@@ -55,14 +55,9 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
   }, [currentReceipt]);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isBDVOpen, setIsBDVOpen] = useState(false);
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
-  };
-
-  const toggleBDVPopup = () => {
-    setIsBDVOpen(!isOpen);
   };
 
   return (
@@ -234,36 +229,10 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
               >
                 <PiPrinterFill /> Imprimer
               </Button>
-              {currentReceipt?.sale_slip && (
-                <Button
-                  size="sm"
-                  onClick={toggleBDVPopup}
-                  className="bg-blue-500 hover:bg-blue-400 text-white rounded-md shadow-lg"
-                >
-                  BDV
-                </Button>
-              )}
             </div>
           </div>
         </div>
       </div>
-      {isBDVOpen && currentReceipt?.sale_slip && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-          <div className="relative bg-white rounded-lg p-4 w-4/5 h-4/5">
-            <button
-              onClick={toggleBDVPopup}
-              className="absolute top-4 right-4 text-xl text-gray-600"
-            >
-              &times;
-            </button>
-            <img
-              src={currentReceipt?.sale_slip}
-              alt="Preview bordoreau de vente"
-              className="w-full h-full object-contain"
-            />
-          </div>
-        </div>
-      )}
     </LayoutDashboardTemplate>
   );
 }

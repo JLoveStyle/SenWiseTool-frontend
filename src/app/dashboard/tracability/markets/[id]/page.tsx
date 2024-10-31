@@ -24,7 +24,10 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
   const router = useRouter();
   const [currentMarket, setCurrentMarket] = useState<MarketDBProps>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isOpen, setIsOpen] = useState(false);
+  const [preview, setPreview] = useState<{
+    status: boolean;
+    url: string | null;
+  }>({ status: false, url: null });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,8 +40,10 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
     fetchData();
   }, [id]);
 
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
+  const togglePopup = (url?: string | null) => {
+    url
+      ? setPreview({ status: true, url: url })
+      : setPreview({ status: false, url: null });
   };
 
   return (
@@ -109,24 +114,6 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
                   value={`${currentMarket.description}`}
                 />
               </div>
-
-              {isOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-                  <div className="relative bg-white rounded-lg p-4 w-4/5 h-4/5">
-                    <button
-                      onClick={togglePopup}
-                      className="absolute top-4 right-4 text-xl text-gray-600"
-                    >
-                      &times;
-                    </button>
-                    <img
-                      src="/svg/market-preview.svg"
-                      alt="Preview"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           ) : (
             <div className="flex items-center justify-center mt-28">
@@ -158,11 +145,20 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
               >
                 <IoReceipt /> Reçus
               </ButtonUI>
+              {currentMarket?.sale_slip && (
+                <ButtonUI
+                  size="small"
+                  className="flex gap-1 items-center bg-blue-500 hover:bg-blue-400"
+                  action={() => togglePopup(currentMarket.sale_slip)}
+                >
+                  Bordoreau Vente
+                </ButtonUI>
+              )}
               {currentMarket?.store_entry_voucher && (
                 <ButtonUI
                   size="small"
                   className="flex gap-1 items-center bg-blue-500 hover:bg-blue-400"
-                  action={togglePopup}
+                  action={() => togglePopup(currentMarket.store_entry_voucher)}
                 >
                   Bon Entrée Magasin
                 </ButtonUI>
@@ -171,11 +167,11 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
           </div>
         </div>
       </div>
-      {isOpen && currentMarket?.store_entry_voucher && (
+      {preview.status && currentMarket?.store_entry_voucher && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
           <div className="relative bg-white rounded-lg p-4 w-4/5 h-4/5">
             <button
-              onClick={togglePopup}
+              onClick={() => togglePopup()}
               className="absolute top-4 right-4 text-xl text-gray-600"
             >
               &times;

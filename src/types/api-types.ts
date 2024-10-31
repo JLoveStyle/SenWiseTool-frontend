@@ -308,7 +308,6 @@ export type MarketDBProps = {
   market_audit: []; // market_audit object[]: to be defined
   transaction: []; // transaction object[]: to be defined
   receipts?: []; // receipt object[]: to be defined
-  store_entry_voucher: string | null;
   sale_slip: string | null;
 
   // factory accompaiement sheet
@@ -326,8 +325,6 @@ export type MarketDBProps = {
   quantity_in_bags_tone: number | null;
   quantity_product: number | null;
 
-  // sale slip
-  sale_slip_title: string | null;
-  sale_slip_description: string | null;
   sale_slip_url: string | null;
+  store_entry_voucher: string | null;
 };

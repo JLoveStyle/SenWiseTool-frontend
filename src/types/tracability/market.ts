@@ -7,6 +7,8 @@ export interface MarketDisplayProps {
   end_date: Date | string;
   status?: "OPEN" | "CLOSED";
   campagne?: string;
+  sale_slip: React.ReactNode | null;
+  store_entry_voucher: React.ReactNode | null;
 }
 
 export interface FactoryAccompaniementSheetDisplayProps {
