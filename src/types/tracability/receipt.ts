@@ -18,7 +18,6 @@ export interface ReceiptProps {
   };
   buyer_signature: string;
   farmer_signature: string;
-  sale_slip: string | null;
 }
 
 export interface ReceiptTableProps {
@@ -32,5 +31,4 @@ export interface ReceiptTableProps {
   quantity_in_bags: number;
 
   buyer: string;
-  sale_slip: React.ReactNode | null;
 }
