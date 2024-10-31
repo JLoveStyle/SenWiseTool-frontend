@@ -3,6 +3,7 @@ export interface MarketDisplayProps {
   code?: string | null;
   location: string;
   price_of_day: number;
+  supplier: string;
   start_date: Date | string;
   end_date: Date | string;
   status?: "OPEN" | "CLOSED";
@@ -48,6 +49,7 @@ export interface MarketFormProps {
   location: string;
   price_of_day: number;
   start_date: Date | string;
+  supplier: string;
   end_date: Date | string;
   description?: string;
 }

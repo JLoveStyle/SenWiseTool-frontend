@@ -25,6 +25,7 @@ export function NewMarket() {
     id: "",
     location: "",
     price_of_day: 0,
+    supplier: "",
     start_date: "",
     end_date: "",
   });
@@ -65,19 +66,19 @@ export function NewMarket() {
         if (response.status === 201) {
           toast.success("Market created successfull");
           setIsLoading(false);
-          closeDialog();
+          // closeDialog();
           router.refresh();
           router.push(Route.markets);
-          return
-        } else if (response.message === 'Internal Server Error') {
-          toast.error('Internal Server Error')
+          return;
+        } else if (response.message === "Internal Server Error") {
+          toast.error("Internal Server Error");
         }
         setIsLoading(false);
         return;
       })
       .catch((error) => {
         console.log(error);
-        toast.error('Something went wrong')
+        toast.error("Something went wrong");
         setIsLoading(false);
         return;
       });
@@ -112,6 +113,7 @@ export function NewMarket() {
         location: "required",
         start_date: "required",
         end_date: "required",
+        supplier: "required",
       });
 
       if (!isValid) {

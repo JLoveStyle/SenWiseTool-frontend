@@ -100,6 +100,10 @@ export default function ReceiptDetails({ params: { id } }: TProps) {
                   value={`${currentMarket.price_of_day} XAF`}
                 />
                 <DetailCard
+                  label="Fournisseur"
+                  value={currentMarket.supplier}
+                />
+                <DetailCard
                   label="Date de début"
                   value={new Date(
                     currentMarket.start_date

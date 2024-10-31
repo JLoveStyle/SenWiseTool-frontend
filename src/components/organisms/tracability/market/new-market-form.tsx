@@ -23,6 +23,7 @@ export const NewMarketForm = ({
     id: initData ? initData.id : "",
     location: initData ? initData.location : "",
     price_of_day: initData ? initData.price_of_day : 0,
+    supplier: initData ? initData.supplier : "",
     start_date: initData ? initData.start_date : "",
     end_date: initData ? initData.end_date : "",
   });
@@ -71,6 +72,18 @@ export const NewMarketForm = ({
           errors={errors}
           required
           value={formData.price_of_day}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="grid items-center gap-4">
+        <InputUI
+          label="Nom du Fournisseur"
+          id="supplier"
+          placeholder="Entrer le nom du Fournisseur"
+          isLoading={isLoading}
+          errors={errors}
+          required
+          value={formData.supplier}
           onChange={handleChange}
         />
       </div>

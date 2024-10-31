@@ -293,6 +293,7 @@ export type MarketDBProps = {
   id: string;
   location: string;
   price_of_day: number;
+  supplier: string;
   start_date: Date | string;
   end_date: Date | string;
   description?: string;
