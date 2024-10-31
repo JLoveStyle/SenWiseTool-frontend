@@ -24,6 +24,8 @@ import { mutateApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { uniqueString } from "@/utils/tool";
 import { Bounce, toast } from "react-toastify";
+import { Session } from "@/components/templates/session";
+import { NOT_HAS_COMPANY } from "@/lib/session-statut";
 
 type Props = {};
 
@@ -243,165 +245,169 @@ export default function Home({}: Props) {
   };
 
   return (
-    <div className="h-full">
-      <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
-        <div className="flex justify-center ">
-          <Link href={Route.home}>
-            <Image
-              src="/images/logo.png"
-              height={150}
-              width={150}
-              alt="SenWiseTool logo"
-              loading="lazy"
-            />
-            {/* <Logo size="very-large"/> */}
-          </Link>
-        </div>
-        <h3 className="font-semibold text-2xl text-center pb-7">
-          Welcome to Senwisetool
-          <br />
-          Register your company
-        </h3>
-        <form className="" onSubmit={handleSubmit}>
-          <InputField
-            label="Company name"
-            inputName="companyName"
-            type="text"
-            value={formData.companyName}
-            onChange={(e) => handleInputChange(e)}
-          />
-          <InputField
-            label="Company email"
-            inputName="companyEmail"
-            type="email"
-            value={user?.primaryEmailAddress?.emailAddress}
-            onChange={(e) => handleInputChange(e)}
-          />
-          <InputField
-            label="Head office email"
-            inputName="headOfficeEmail"
-            type="email"
-            value={formData.headOfficeEmail}
-            onChange={(e) => handleInputChange(e)}
-          />
-          <InputField
-            label="Address"
-            inputName="address"
-            type="text"
-            value={formData.address}
-            onChange={(e) => handleInputChange(e)}
-          />
-          <InputField
-            label="Company phone"
-            inputName="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={(e) => handleInputChange(e)}
-          />
-
-          <CustomSelectTag
-            selectName="country"
-            onChange={(e) => handleInputChange(e)}
-            label="Country"
-            arrayOfItems={countries}
-            value={formData.country}
-          />
-          <CustomSelectTag
-            selectName="state"
-            onChange={(e) => handleInputChange(e)}
-            label="Region"
-            arrayOfItems={state}
-            value={formData.state}
-          />
-          <CustomSelectTag
-            selectName="city"
-            onChange={(e) => handleInputChange(e)}
-            label="City"
-            arrayOfItems={city}
-            value={formData.city}
-          />
-          <label className="font-semibold" htmlFor="activity">
-            Business activity
-            <span className="text-red-500">*</span>
-          </label>
-          <select
-            id="activity"
-            value={formData.businessActivity}
-            name="businessActivity"
-            required
-            onChange={(event) => handleInputChange(event)}
-            className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
-          >
-            <option selected>-- Select --</option>
-            {businessActivity?.map((item: any, index) => (
-              <option key={index} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-          {hasOtherBusiness && (
-            <input
-              type="text"
-              required
-              value={formData.otherBusiness}
-              name="otherBusiness"
-              placeholder="Enter the business"
-              onChange={(e) => handleInputChange(e)}
-              className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
-            />
-          )}
-          <div className="pb-6 flex flex-col">
-            <label htmlFor="logo" className="font-semibold">
-              Enter company logo
-            </label>
-            <input
-              type="file"
-              accept=".png, .jpeg, .jpg"
-              placeholder="Enter logo"
-              onChange={(e) => handleFileChange(e)}
-            />
+    <Session sessionStatus={NOT_HAS_COMPANY}>
+      <div className="h-full">
+        <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
+          <div className="flex justify-center ">
+            <Link href={Route.home}>
+              <Image
+                src="/images/logo.png"
+                height={150}
+                width={150}
+                alt="SenWiseTool logo"
+                loading="lazy"
+              />
+              {/* <Logo size="very-large"/> */}
+            </Link>
           </div>
-          <label className="font-semibold" htmlFor="description">
-            Description<span className="text-red-500">*</span>
-          </label>
-          <Textarea
-            className="w-full p-2 mb-3"
-            value={formData.description}
-            name="description"
-            onChange={(e) => handleInputChange(e)}
-          />
-          <CheckBox onChange={() => handleOnCheck()} />
-          {hasAgree && (
-            <span className="text-red-500">
-              Please agree to the terms and conditions
-            </span>
-          )}
+          <h3 className="font-semibold text-2xl text-center pb-7">
+            Welcome to Senwisetool
+            <br />
+            Register your company
+          </h3>
+          <form className="" onSubmit={handleSubmit}>
+            <InputField
+              label="Company name"
+              inputName="companyName"
+              type="text"
+              value={formData.companyName}
+              onChange={(e) => handleInputChange(e)}
+            />
+            <InputField
+              label="Company email"
+              inputName="companyEmail"
+              type="email"
+              value={user?.primaryEmailAddress?.emailAddress}
+              onChange={(e) => handleInputChange(e)}
+            />
+            <InputField
+              label="Head office email"
+              inputName="headOfficeEmail"
+              type="email"
+              value={formData.headOfficeEmail}
+              onChange={(e) => handleInputChange(e)}
+            />
+            <InputField
+              label="Address"
+              inputName="address"
+              type="text"
+              value={formData.address}
+              onChange={(e) => handleInputChange(e)}
+            />
+            <InputField
+              label="Company phone"
+              inputName="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => handleInputChange(e)}
+            />
 
-          <div className="flex flex-col gap-3 pt-3 ">
-            <Button
-              className={isLoading ? "hover:cursor-not-allowed opacity-70" : ""}
-              type="submit"
+            <CustomSelectTag
+              selectName="country"
+              onChange={(e) => handleInputChange(e)}
+              label="Country"
+              arrayOfItems={countries}
+              value={formData.country}
+            />
+            <CustomSelectTag
+              selectName="state"
+              onChange={(e) => handleInputChange(e)}
+              label="Region"
+              arrayOfItems={state}
+              value={formData.state}
+            />
+            <CustomSelectTag
+              selectName="city"
+              onChange={(e) => handleInputChange(e)}
+              label="City"
+              arrayOfItems={city}
+              value={formData.city}
+            />
+            <label className="font-semibold" htmlFor="activity">
+              Business activity
+              <span className="text-red-500">*</span>
+            </label>
+            <select
+              id="activity"
+              value={formData.businessActivity}
+              name="businessActivity"
+              required
+              onChange={(event) => handleInputChange(event)}
+              className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
             >
-              {isLoading ? <Spinner /> : "Register"}
-            </Button>
-            {/* 
+              <option selected>-- Select --</option>
+              {businessActivity?.map((item: any, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+            {hasOtherBusiness && (
+              <input
+                type="text"
+                required
+                value={formData.otherBusiness}
+                name="otherBusiness"
+                placeholder="Enter the business"
+                onChange={(e) => handleInputChange(e)}
+                className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+              />
+            )}
+            <div className="pb-6 flex flex-col">
+              <label htmlFor="logo" className="font-semibold">
+                Enter company logo
+              </label>
+              <input
+                type="file"
+                accept=".png, .jpeg, .jpg"
+                placeholder="Enter logo"
+                onChange={(e) => handleFileChange(e)}
+              />
+            </div>
+            <label className="font-semibold" htmlFor="description">
+              Description<span className="text-red-500">*</span>
+            </label>
+            <Textarea
+              className="w-full p-2 mb-3"
+              value={formData.description}
+              name="description"
+              onChange={(e) => handleInputChange(e)}
+            />
+            <CheckBox onChange={() => handleOnCheck()} />
+            {hasAgree && (
+              <span className="text-red-500">
+                Please agree to the terms and conditions
+              </span>
+            )}
+
+            <div className="flex flex-col gap-3 pt-3 ">
+              <Button
+                className={
+                  isLoading ? "hover:cursor-not-allowed opacity-70" : ""
+                }
+                type="submit"
+              >
+                {isLoading ? <Spinner /> : "Register"}
+              </Button>
+              {/* 
             <Button
               className="text-red-500 bg-white border border-red-500 hover:bg-[#ef44441e]"
               onClick={handleCancel}
             >
               Skip
             </Button> */}
-          </div>
-        </form>
+            </div>
+          </form>
+        </div>
+        <Dialog
+          onOpenChange={() => setIsModalOpen((prev) => !prev)}
+          open={isModalOpen}
+        >
+          <DialogContent>
+            <CancelModal onClose={handleCloseModal} />
+          </DialogContent>
+        </Dialog>
       </div>
-      <Dialog
-        onOpenChange={() => setIsModalOpen((prev) => !prev)}
-        open={isModalOpen}
-      >
-        <DialogContent>
-          <CancelModal onClose={handleCloseModal} />
-        </DialogContent>
-      </Dialog>
-    </div>
+    </Session>
   );
 }

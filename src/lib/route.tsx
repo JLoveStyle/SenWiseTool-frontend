@@ -74,7 +74,7 @@ export const Route: Record<AvailableRoute, string> = {
   managementPlan: "dashboard/management-plan",
   details: "/dashboard/details",
   training_session: "training_sessions",
-  createCompany: "create-compay",
+  createCompany: "/create-company",
   mapping: "/dashboard/mapping",
   social: "/dashboard/social",
   environment: "/dashboard/environment",

@@ -2,13 +2,13 @@
 
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import { AUTHENTICATED, GUEST } from "@/lib/session-statut";
-import { ApiDataResponse, UserType } from "@/types/api-types";
+import { AUTHENTICATED, GUEST, HAS_COMPANY, NOT_HAS_COMPANY } from "@/lib/session-statut";
+import { ApiDataResponse, CompanyType, UserType } from "@/types/api-types";
 import { SessionStatusType } from "@/types/type-tools";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useRouter } from "next/navigation";
 import { ScreenSpinner } from "../atoms/spinner/screen-spinner";
-import React from "react";
+import React, { useState } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -28,6 +28,15 @@ export const Session = ({ children, sessionStatus }: Props) => {
     route: Route.user,
   });
 
+  // FETCH COMPANY
+  const {
+    isLoading: loadingCompany,
+    data: company,
+  } = useApiOps<CompanyType, ApiDataResponse<CompanyType>>({
+    fn: () => fetchApiData(Route.companies, "current"),
+    route: Route.companies,
+  });
+
   if (sessionStatus === GUEST && !authUserIsLoading) {
     if (authUser) {
       return <>{children}</>;
@@ -41,6 +50,30 @@ export const Session = ({ children, sessionStatus }: Props) => {
       return <>{children}</>;
     } else {
       router.push(Route.signIn);
+    }
+  }
+
+  if (sessionStatus === HAS_COMPANY && !loadingCompany) {
+    if (company) {
+      return <>{children}</>;
+    } else {
+      router.push(Route.createCompany);
+    }
+  }
+
+  if (sessionStatus === HAS_COMPANY && !loadingCompany) {
+    if (company) {
+      return <>{children}</>;
+    } else {
+      router.push(Route.createCompany);
+    }
+  }
+
+  if (sessionStatus === NOT_HAS_COMPANY && !loadingCompany) {
+    if (!company) {
+      return <>{children}</>;
+    } else {
+      router.push(Route.dashboard);
     }
   }
 
