@@ -21,6 +21,10 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
+import { fetchApiData } from "@/utiles/services/queries";
+import { ApiDataResponse } from "@/types/api-types";
+import { NewActivityAgriculture } from "@/components/organisms/agriculture-activities/new-activity";
+import { DashboardStatPanelData } from "@/types/app-link";
 
 export default function social() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,13 +40,6 @@ export default function social() {
   const closeDialog = () => {
     toggleOpenModel();
   };
-
-  // Load company object from store
-  const company = useCompanyStore((state) => state.company);
-
-  // load current campain object from store
-  const currentCampain = useCampaignStore((state) => state.currentCampaign);
-  console.log(currentCampain);
 
   const columns = columnTable<ActivityDisplayProps>(
     {
@@ -74,35 +71,19 @@ export default function social() {
     };
   };
 
-  // async function getAllsocial() {
-  //   console.log("here is company", currentCampain?.id);
-  //   await fetchApiData(Route.socialRequest, company?.id)
-  //     .then((response) => {
-  //       console.log("from useEffect social", response);
-  //       if (response.status !== 200) {
-  //         toast.error("Could not load socials. Please try again");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
   useEffect(() => {
-    // getAllsocial();
     const fetchData = async () => {
       try {
-        const result = await socialData();
+        setIsLoading(prev => !prev)
+        const result: ApiDataResponse<ActivityProps[]> = await fetchApiData(Route.socialRequest, "");
         const dataFormated: ActivityDisplayProps[] = [];
-        console.log(result);
 
-        if (result) {
-          if (Array.isArray(result)) {
-            result.forEach((res) => {
+        if (result.status === 200) {
+          setIsLoading(false)
+          if (Array.isArray(result.data)) {
+            result.data.forEach((res: ActivityProps) => {
               dataFormated.push(formatedDataFromDBToDisplay(res));
             });
-          } else {
-            dataFormated.push(formatedDataFromDBToDisplay(result));
           }
           setSocialDatas(dataFormated);
           setIsLoading(false);
@@ -113,17 +94,6 @@ export default function social() {
         setIsLoading(false);
       }
     };
-
-    // const fetchData = async () => {
-    // const result = await db_get_socials()
-    // .then((result) => {
-    // console.log("data social list: ", result);
-
-    // setIsLoading(false);
-    // })
-    // .catch((err) => console.error(err));
-    // };
-
     fetchData();
   }, []);
 
@@ -137,45 +107,6 @@ export default function social() {
       pv_url: data.pv_url,
     }));
   };
-
-  useEffect(() => {
-    // refetch();
-    // const company = useCompanyStore((state) => state.company);
-    // console.log("compagny", company);
-  }, [socialDatas]);
-
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
 
   const formParams = {
     trigger_btn_label_form: "New social",
@@ -196,23 +127,35 @@ export default function social() {
           restSocials.push(item);
         }
       });
-      LOCAL_STORAGE.save("socials", restSocials);
 
       toast.success("Accounts are deleted successfull");
     }
   };
+
+  const stateActivity: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Number",
+        baseUrl: "",
+        icon: Archive,
+      },
+      data: () => {
+        return socialDatas.length;
+      },
+    },
+  ]
 
   return (
     <LayoutDashboardTemplate
       newForms={[
         {
           title: "Nouvelle Activité",
-          form: <NewActivitySocial />,
+          form: <NewActivityAgriculture endpoint={Route.socialRequest} />,
         },
       ]}
-      title="social"
+      title="SOCIAL"
       formParams={formParams}
-      statPanelDatas={statPanelDatas}
+      statPanelDatas={stateActivity}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Social</h1>
@@ -237,8 +180,6 @@ export default function social() {
           incomingColumns={columns}
           incomingData={socialDatas?.length ? valueToDisplay(socialDatas) : []}
           onSelecteItem={(selects) => {
-            console.log("seleccccccct", selects);
-
             setSocialSelected(selects);
           }}
           isLoading={isLoading}
@@ -247,8 +188,3 @@ export default function social() {
     </LayoutDashboardTemplate>
   );
 }
-
-// data request
-const socialData = async () => {
-  return LOCAL_STORAGE.get("socials") ?? [];
-};

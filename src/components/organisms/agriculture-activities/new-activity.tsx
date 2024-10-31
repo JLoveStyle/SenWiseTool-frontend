@@ -17,11 +17,15 @@ import { toast } from "react-toastify";
 import { NewActivityForm } from "./new-activity-form";
 import { mutateApiData } from "@/utiles/services/mutations";
 
-export function NewActivityAgriculture() {
+interface Props {
+  endpoint: string;
+}
+
+export function NewActivityAgriculture({ endpoint }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
   const [URLs, setURLs] = useState<Partial<ActivityProps>>({});
-  const [closeModal, setCloseModal] = useState<boolean>(false)
+  const [closeModal, setCloseModal] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -61,20 +65,26 @@ export function NewActivityAgriculture() {
     // ]);
 
     // CREATE AGRICULTURAL ACTIVITY
-    await mutateApiData(Route.agricultureRequest, dataToDB)
+    await mutateApiData(endpoint, dataToDB)
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
-          toast.success("Agricultural activity created successfully");
+          toast.success("Activity created successfully");
           setIsLoading(false);
-          
+
           // closeModal
-          setCloseModal(false)
+          setCloseModal(false);
           router.refresh();
-          router.push(Route.agriculture);
+          // router.push(Route.agriculture);
+          return;
+        } else if (response.message === "Internal Server Error") {
+          toast.error("Internal Server Error");
+          setIsLoading(false);
           return;
         } else {
-
+          toast.error("Something went wrong. Please try again");
+          setIsLoading(false);
+          return;
         }
       })
       .catch((error) => {
@@ -147,26 +157,6 @@ export function NewActivityAgriculture() {
         documents_url,
       };
 
-      console.log("Tous les fichiers ont été téléchargés avec succès");
-
-      // Files updated
-      console.table([
-        {
-          Action: "Uploaded PV",
-          Status: URLs.pv_url ? "Successfull..." : "unavailable...",
-          URLs: URLs.pv_url || "-",
-        },
-        {
-          Action: "Uploaded Pictures",
-          Status: URLs.pictures_url ? "Successfull..." : "unavailable...",
-          URLs: URLs.pictures_url || "-",
-        },
-        {
-          Action: "Uploaded Documents",
-          Status: "Successfull...",
-          URLs: URLs.documents_url || "-",
-        },
-      ]);
     } catch (error) {
       console.error("Erreur pendant l'upload des fichiers:", error);
       toast.error("Erreur lors de l'upload des fichiers");

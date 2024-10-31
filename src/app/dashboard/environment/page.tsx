@@ -21,6 +21,10 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
+import { NewActivityAgriculture } from "@/components/organisms/agriculture-activities/new-activity";
+import { DashboardStatPanelData } from "@/types/app-link";
+import { fetchApiData } from "@/utiles/services/queries";
+import { ApiDataResponse } from "@/types/api-types";
 
 export default function environment() {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,13 +42,6 @@ export default function environment() {
   const closeDialog = () => {
     toggleOpenModel();
   };
-
-  // Load company object from store
-  const company = useCompanyStore((state) => state.company);
-
-  // load current campain object from store
-  const currentCampain = useCampaignStore((state) => state.currentCampaign);
-  console.log(currentCampain);
 
   const columns = columnTable<ActivityDisplayProps>(
     {
@@ -76,35 +73,23 @@ export default function environment() {
     };
   };
 
-  // async function getAllenvironment() {
-  //   console.log("here is company", currentCampain?.id);
-  //   await fetchApiData(Route.environmentRequest, company?.id)
-  //     .then((response) => {
-  //       console.log("from useEffect environment", response);
-  //       if (response.status !== 200) {
-  //         toast.error("Could not load environment. Please try again");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
   useEffect(() => {
-    // getAllenvironment();
     const fetchData = async () => {
       try {
-        const result = await environmentData();
+        setIsLoading((prev) => !prev);
+        const result: ApiDataResponse<ActivityProps[]> = await fetchApiData(
+          Route.environmentRequest,
+          ""
+        );
         const dataFormated: ActivityDisplayProps[] = [];
         console.log(result);
 
-        if (result) {
-          if (Array.isArray(result)) {
-            result.forEach((res) => {
+        if (result.status === 200) {
+          setIsLoading(false)
+          if (Array.isArray(result.data)) {
+            result.data.forEach((res) => {
               dataFormated.push(formatedDataFromDBToDisplay(res));
             });
-          } else {
-            dataFormated.push(formatedDataFromDBToDisplay(result));
           }
           setEnvironmentDatas(dataFormated);
           setIsLoading(false);
@@ -115,16 +100,6 @@ export default function environment() {
         setIsLoading(false);
       }
     };
-
-    // const fetchData = async () => {
-    // const result = await db_get_environment()
-    // .then((result) => {
-    // console.log("data environment list: ", result);
-
-    // setIsLoading(false);
-    // })
-    // .catch((err) => console.error(err));
-    // };
 
     fetchData();
   }, []);
@@ -139,45 +114,6 @@ export default function environment() {
       pv_url: data.pv_url,
     }));
   };
-
-  useEffect(() => {
-    // refetch();
-    // const company = useCompanyStore((state) => state.company);
-    // console.log("compagny", company);
-  }, [environmentDatas]);
-
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
 
   const formParams = {
     trigger_btn_label_form: "New activity",
@@ -204,17 +140,30 @@ export default function environment() {
     }
   };
 
+  const stateActivity: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Number",
+        baseUrl: "",
+        icon: Archive,
+      },
+      data: () => {
+        return environmentDatas.length;
+      },
+    },
+  ];
+
   return (
     <LayoutDashboardTemplate
       newForms={[
         {
           title: "New activity",
-          form: <NewActivityEnvironment />,
+          form: <NewActivityAgriculture endpoint={Route.environmentRequest} />,
         },
       ]}
       title="ENVIRONMENT"
       formParams={formParams}
-      statPanelDatas={statPanelDatas}
+      statPanelDatas={stateActivity}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Environment</h1>
@@ -241,8 +190,6 @@ export default function environment() {
             environmentDatas?.length ? valueToDisplay(environmentDatas) : []
           }
           onSelecteItem={(selects) => {
-            console.log("seleccccccct", selects);
-
             setEnvironmentSelected(selects);
           }}
           isLoading={isLoading}
