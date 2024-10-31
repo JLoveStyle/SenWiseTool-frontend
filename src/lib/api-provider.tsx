@@ -10,6 +10,7 @@ import { useCampaignStore } from "./stores/campaign-store";
 import { useCompanyStore } from "./stores/companie-store";
 import { usePriceStore } from "./stores/price-store";
 import { IUser, useUserstore } from "./stores/user-stores";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
 
 export interface IAppProps<Q> {
   query?: string;
@@ -61,6 +62,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
     }
     if (route?.includes("companies")) {
       setCompany(data as unknown as CompanyType);
+      LOCAL_STORAGE.save('company', data)
       // console.log('company from store', data)
     }
     if (route?.includes("price_plans")) {

@@ -1,28 +1,29 @@
 "use client";
+import CancelModal from "@/components/molecules/cancelModal";
+import CheckBox from "@/components/molecules/checkButton";
 import InputField from "@/components/molecules/inputField";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { Country, State, City } from "country-state-city";
 import CustomSelectTag from "@/components/molecules/select";
 import { Button } from "@/components/ui/button";
-import CheckBox from "@/components/molecules/checkButton";
 import { FormData } from "@/types/formData";
 import { useAuth, useUser } from "@clerk/nextjs";
+import { City, Country, State } from "country-state-city";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import CancelModal from "@/components/molecules/cancelModal";
+import React, { useEffect, useState } from "react";
 // import { createCompany } from "@/utiles/services/queries";
-import { Route } from "@/lib/route";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { businessActivity } from "@/utiles/services/constants";
-import { mutateApiData } from "@/utiles/services/mutations";
-import { createOrganization } from "@/utiles/services/createOrg";
-import { Textarea } from "@/components/ui/textarea";
-import { Bounce, toast } from "react-toastify";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Route } from "@/lib/route";
 import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
 import slugify from "slugify";
+import { businessActivity } from "@/utiles/services/constants";
+import { createOrganization } from "@/utiles/services/createOrg";
+import { mutateApiData } from "@/utiles/services/mutations";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { uniqueString } from "@/utils/tool";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {};
 
@@ -30,7 +31,6 @@ export default function Home({}: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const countries: any[] = Country.getAllCountries();
-  const [files, setFiles] = useState<File[]>([]);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -38,7 +38,7 @@ export default function Home({}: Props) {
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [hasOtherBusiness, setHasOtherBusiness] = useState<boolean>(false);
-  const [companyLogo, setCompanyLogo] = useState();
+  const [companyLogo, setCompanyLogo] = useState<File[]>([]);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -59,7 +59,43 @@ export default function Home({}: Props) {
   });
 
   const { isSignedIn, user } = useUser();
-  console.log("userId from clerk =>", user?.primaryEmailAddress?.emailAddress);
+  console.log("userId from clerk =>", user?.id);
+
+  const createCompanyStorage = async () => {
+    // create bucket company S3 bucket
+
+    const bucketName = uniqueString();
+
+    // @todo Add s3 bucketName on database
+    LOCAL_STORAGE.save("bucketName", bucketName);
+
+    const { data, error } = await CreateBucketToS3({
+      bucketName,
+    });
+
+    if (error) {
+      console.log(error);
+      toast.error("Erreur lors de la creation du bucket");
+      setIsLoading(false);
+      throw new Error("Erreur lors de la creation du bucket");
+    }
+
+    console.log("creation bucket response", data);
+
+    //upload company logo
+    if (companyLogo && companyLogo.length !== 0) {
+      const { data, error } = await UpdateFilesToS3({ files: companyLogo });
+
+      if (error) {
+        console.log(error);
+        toast.error("Erreur lors de l'upload du logo");
+        setIsLoading(false);
+        throw new Error("Error lors de l'upload du logo");
+      }
+      console.log("URLLLLLL", data);
+      return data.URLs[0] as string;
+    }
+  };
 
   // REGISTER COMPANY
   async function handleSubmit(e: any) {
@@ -77,14 +113,7 @@ export default function Home({}: Props) {
     }
 
     // Company email and personal email must not be the same
-    if (user?.primaryEmailAddress?.emailAddress === formData.companyEmail) {
-      toast.warning("Personal email must be different from company email", {
-        autoClose: 4000,
-      });
-      return;
-    } else if (
-      formData.headOfficeEmail === user?.primaryEmailAddress?.emailAddress
-    ) {
+    if (formData.headOfficeEmail === user?.primaryEmailAddress?.emailAddress) {
       toast.warning("Personal email must be different from Head office email", {
         autoClose: 4000,
       });
@@ -101,28 +130,14 @@ export default function Home({}: Props) {
 
     setIsLoading((prev) => !prev);
 
-    // create bucket company S3 bucket
-    /*const { data, error } = await CreateBucketToS3({ bucketName: "companies" });
-    if (error) {
-      setIsLoading(false);
-      toast.error(`Error during bucket creation `);
-      return;
-    }
-
-    // upload logo image
-    if (data) {
-      const { data, error } = await UpdateFilesToS3({ files });
-      setCompanyLogo(data.URLs)
-      if (error) {
-        setIsLoading(prev => !prev)
-        toast.error('unable to upload logo')
-      }
-    }
-    */
+    const [URLCompanyLogo] = await Promise.all([createCompanyStorage()]);
 
     if (user?.id) {
-      const res = await createOrganization(formData, user.id);
+      // const res = await createOrganization(formData, user.id);
       // console.log(res);
+      console.log("formData", formData);
+      // setIsLoading(false);
+      // return;
 
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
@@ -132,7 +147,7 @@ export default function Home({}: Props) {
         region: formData.state,
         city: formData.city,
         sector_of_activity: activity,
-        // logo: companyLogo,
+        logo: URLCompanyLogo,
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
@@ -140,7 +155,7 @@ export default function Home({}: Props) {
         .then((response) => {
           console.log("create company res =>", response);
           if (response.status === 409) {
-            return toast.error("Company name already exist");
+            return toast.error("Company already exist");
           }
           if (!response.status.toString().startsWith("2")) {
             return toast.error(`Sorry something went wrong`, {
@@ -223,7 +238,7 @@ export default function Home({}: Props) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setFiles(Array.from(event.target.files)); // Convertir FileList en tableau
+      setCompanyLogo(Array.from(event.target.files)); // Convertir FileList en tableau
     }
   };
 
@@ -259,7 +274,7 @@ export default function Home({}: Props) {
             label="Company email"
             inputName="companyEmail"
             type="email"
-            value={formData.companyEmail}
+            value={user?.primaryEmailAddress?.emailAddress}
             onChange={(e) => handleInputChange(e)}
           />
           <InputField

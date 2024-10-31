@@ -8,6 +8,7 @@ import { mutateUpApiData } from "@/utiles/services/mutations";
 import { Bounce, toast } from "react-toastify";
 import FinalFormData from "../molecules/chapters-table-data/finalFormData";
 import slugify from "slugify";
+import { useCompanyStore } from "@/lib/stores/companie-store";
 
 type Props = {
   projectObject: ProjectType | undefined;
@@ -17,9 +18,10 @@ export default function ProjectForm({ projectObject }: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const company = useCompanyStore((state) => state.company);
 
-  const jsonString = JSON.stringify(projectObject?.project_structure)
-  const finalJson = JSON.parse(jsonString)
+  const jsonString = JSON.stringify(projectObject?.project_structure);
+  const finalJson = JSON.parse(jsonString);
 
   const firstHalfMetaData = finalJson?.metaData.slice(
     0,
@@ -29,7 +31,6 @@ export default function ProjectForm({ projectObject }: Props) {
     Math.round(finalJson?.metaData.length / 2),
     finalJson?.metaData.length
   );
-
 
   // HANDLE INPUT CHANGE
   const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,28 +79,29 @@ export default function ProjectForm({ projectObject }: Props) {
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
-        <div className="flex justify-between py-2 mx-auto">
+        <div className="flex items-baseline justify-between py-2 mx-auto">
           {/* COMPANY LOGO */}
+          {company && (
+            <img
+              src={company?.logo}
+              alt="company logo"
+              className="h-[100px] w-[100px]"
+            />
+          )}
           <img
-            src="https://syndustricam.org/wp-content/uploads/2023/07/013-image-0125-1.png"
-            alt="rainforest aliance logo"
-            width={250}
-            height={200}
-          />
-
-          <Image
             src="/images/logo_forest.jpg"
             alt="rainforest aliance logo"
-            width={100}
-            height={100}
+            className="h-[60px] w-[100px]"
           />
           {/* Partner logo */}
-          <Image
-            src="/images/logo-senima.png"
-            alt="rainforest aliance logo"
-            width={100}
-            height={100}
-          />
+
+          {projectObject?.another_logo && (
+            <img
+              src={projectObject?.another_logo}
+              alt="Pathner logo"
+              className="h-[70px] w-[100px]"
+            />
+          )}
         </div>
         <h1 className="font-bold text-2xl text-center py-8 ">
           Project title: {projectObject?.title}

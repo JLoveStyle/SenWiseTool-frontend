@@ -1,5 +1,7 @@
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import React from "react";
+import { FaCheck } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
 
 type Props = {
   selectedProjects: DeployableFormMetadata[];
@@ -26,15 +28,41 @@ export default function FinalFormData({ selectedProjects }: Props) {
           {selectedProjects?.map((item, idx) => (
             <tr key={idx}>
               <td className="px-2 border">{item.number}</td>
-              <td className="px-2 border">{item.principal_requirement}</td>
               <td className="px-2 border">
-                {item.certif_de_group.petite_exploitation_agricole}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: item.principal_requirement,
+                  }}
+                ></div>
               </td>
               <td className="px-2 border">
-                {item.certif_de_group.grande_exploitation_agricole}
+                {item.certif_de_group.petite_exploitation_agricole === "YES" ? (
+                  <FaCheck color="green" />
+                ) : item.certif_de_group.petite_exploitation_agricole ===
+                  "NO" ? (
+                  <ImCross color="red" />
+                ) : (
+                  ""
+                )}
               </td>
               <td className="px-2 border">
-                {item.certif_de_group.direction_du_group}
+                {item.certif_de_group.grande_exploitation_agricole === "YES" ? (
+                  <FaCheck color="green" />
+                ) : item.certif_de_group.grande_exploitation_agricole ===
+                  "NO" ? (
+                  <ImCross color="red" />
+                ) : (
+                  ""
+                )}
+              </td>
+              <td className="px-2 border">
+                {item.certif_de_group.direction_du_group === "YES" ? (
+                  <FaCheck color="green" />
+                ) : item.certif_de_group.direction_du_group === "NO" ? (
+                  <ImCross color="red" />
+                ) : (
+                  ""
+                )}
               </td>
               <td className="px-2 border">
                 <input type="radio" id="C" name="C" />

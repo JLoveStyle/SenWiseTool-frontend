@@ -29,7 +29,7 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Pencil, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
@@ -209,38 +209,6 @@ export default function page({ params: { projectId } }: Props) {
       autoClose: 1000,
       transition: Bounce,
     });
-  };
-
-  // value to display in table
-  const valueToDisplay = (values: ChapterMetaData[]) => {
-    // console.log("Here are contents => ", values[0].principal_requirement);
-    const returnedValue = values.map(
-      (item: {
-        num: string;
-        principal_requirement: string;
-        certif_de_group: {
-          petite_exploitation_agricole: string;
-          grande_exploitation_agricole: string;
-          direction_du_group: string;
-        };
-      }) => ({
-        num: item.num,
-        principal_requirement: (
-          <div
-          dangerouslySetInnerHTML={{ __html: item.principal_requirement }}
-          ></div>
-        ),
-        certif_de_group: {
-          petite_exploitation_agricole:
-            item.certif_de_group.petite_exploitation_agricole,
-          grande_exploitation_agricole:
-            item.certif_de_group.grande_exploitation_agricole,
-          direction_du_group: item.certif_de_group.grande_exploitation_agricole,
-        },
-      })
-    );
-    console.log("return", returnedValue);
-    return returnedValue;
   };
 
   return (
