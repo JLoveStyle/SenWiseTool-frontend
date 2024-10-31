@@ -10,12 +10,12 @@ import { Button } from "../ui/button";
 import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
-import { ProjectsType, ProjectType } from "@/types/api-types";
+import { ProjectsType, ProjectType, TrainingType } from "@/types/api-types";
 import CreateNewMapping from "./mapping/createNewMapping";
 
 type Props = {
   typeOfProject: ProjectsType;
-  projectsPerType: ProjectType[];
+  projectsPerType: ProjectType[] | TrainingType[]
   newForm?: React.ReactNode;
 };
 
@@ -58,6 +58,7 @@ export default function CloseSiveNav({
     (item) => item.status === "ARCHIVED"
   );
 
+
   return (
     <div
       className={
@@ -91,6 +92,7 @@ export default function CloseSiveNav({
           <DialogContent className="sm:max-w-[800px]">
             {showProjectDetailsForm && (
               <ProjectDetailsForm
+                closeModal={closeModal}
                 onClick={handleShowProjectDetails}
                 typeOfProject={typeOfProject}
               />

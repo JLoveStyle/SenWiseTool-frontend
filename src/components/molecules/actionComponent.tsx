@@ -233,7 +233,7 @@ export default function ActionComponent({
               className={
                 deleteProject
                   ? "text-white active:translate-y-1 hover:bg-red-400 bg-red-500 "
-                  : "active:translate-y-1"
+                  : "active:translate-y-1 bg-tertiary hover:bg-tertiary"
               }
             >
               {heading}

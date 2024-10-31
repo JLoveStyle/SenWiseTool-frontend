@@ -12,6 +12,7 @@ import {
   CompanyType,
   ProjectsType,
   ProjectType,
+  TrainingType,
 } from "@/types/api-types";
 import { DashboardSidebarOption } from "@/types/app-link";
 import { ProjectClientType } from "@/types/client-types";
@@ -36,7 +37,7 @@ import { usePathname } from "next/navigation";
 type Props = {
   children: React.ReactNode;
   typeOfProject: ProjectsType;
-  projectsPerType: ProjectType[];
+  projectsPerType: ProjectType[] | TrainingType[]
   newForm?: React.ReactNode;
 };
 

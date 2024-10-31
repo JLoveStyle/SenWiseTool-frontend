@@ -1,3 +1,5 @@
+import { ElementType } from "react";
+
 export interface FormData {
   companyName: string;
   companyEmail: string;
@@ -89,4 +91,13 @@ export interface DBTrainingProps {
   location?: string;
   company_id?: string;
   modules?: string[];
+}
+
+export interface dasboardFormParams {
+  trigger_btn_label_form?: string;
+  construct_form_btn_label?: string;
+  existing_form_btn_label?: string;
+  new_form_title?: string;
+  construct_form_btn_icon?: ElementType;
+  existing_form_btn_icon?: ElementType;
 }

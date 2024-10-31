@@ -23,7 +23,7 @@ export default function Home({}: Props) {
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   // Fetch all projects with type ["AUTO_EVALUATION"] and pass it as props to Layout
   async function fetchAllAutoEvaluationProject() {
@@ -36,7 +36,13 @@ export default function Home({}: Props) {
     )
       .then((response) => {
         setIsLoading((prev) => !prev);
-        setAutoEvaluationProjects(response.data);
+        const filteredProjects = []
+        for (const data of response.data) {
+          if (data.code.length < 5) {
+            filteredProjects.push(data)
+          }
+        }
+        setAutoEvaluationProjects(filteredProjects);
       })
       .catch((error) => {
         console.log(error);

@@ -23,7 +23,9 @@ export default function Home({}: Props) {
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
+  console.log(currentCampaign?.id)
+  console.log('company_id', company?.id)
 
   // Fetch all projects with type "INITIAL_INSPECTION" and pass it as props to Layout
   async function fetchAllInitialInspectionProject() {
@@ -31,13 +33,19 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "?type=INITIAL_INSPECTION",
-      currentCampaign?.id
+      `?campaign_id=${currentCampaign?.id}&type=INITIAL_INSPECTION`,
+      company?.id
     )
       .then((response) => {
         console.log("all initial_inspection projects", response);
         setIsLoading((prev) => !prev);
-        setInitialInspectioProjects(response.data);
+        const filteredProjects = []
+        for (const data of response.data) {
+          if (data.code.length < 5) {
+            filteredProjects.push(data)
+          }
+        }
+        setInitialInspectioProjects(filteredProjects);
       })
       .catch((error) => {
         console.log(error);

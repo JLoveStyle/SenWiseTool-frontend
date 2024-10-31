@@ -47,47 +47,71 @@ export default function Sidebar({ options }: Props) {
       <div className="flex flex-col items-center justify-center gap-7 pt-10">
         {options &&
           options.map((opt, index) => (
-            <DropdownMenu key={index}>
-              <DropdownMenuTrigger
-                className="flex gap-[0.3rem] hover:cursor-pointer"
-                asChild
-              >
-                <div className="flex flex-col items-center justify-center">
-                  {opt.option.icon && <opt.option.icon size={30} />}
-                  <span className="font-normal leading-3 text-[12px]">
-                    {opt.option.label}
-                  </span>
-                </div>
-              </DropdownMenuTrigger>
-              {opt.details && (
-                <DropdownMenuContent className="">
-                  <DropdownMenuLabel>{opt.option.label}</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    {!opt.details?.length ? (
-                      <div className="flex justify-center mx-auto">
-                        <Spinner size="small" />
-                      </div>
-                    ) : (
-                      <>
-                        {opt.details.map((detail, indx) => (
-                          <DropdownMenuItem
-                            key={indx}
-                            onClick={() => console.log(detail.id)}
-                          >
-                            {detail.icon && (
-                              <detail.icon className="mr-2 h-4 w-4" />
-                            )}
-                            <span>{detail.label}</span>
-                            {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-                          </DropdownMenuItem>
-                        ))}
-                      </>
-                    )}
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
+            <>
+              {opt.details ? (
+                <DropdownMenu key={index}>
+                  <DropdownMenuTrigger
+                    className="flex gap-[0.3rem] hover:cursor-pointer"
+                    asChild
+                  >
+                    <div className="flex flex-col items-center justify-center">
+                      {opt.option.icon && <opt.option.icon size={30} />}
+                      <span className="font-normal leading-3 text-[12px]">
+                        {opt.option.label}
+                      </span>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="">
+                    <DropdownMenuLabel>{opt.option.label}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      {!opt.details?.length ? (
+                        <div className="flex justify-center mx-auto">
+                          <Spinner size="small" />
+                        </div>
+                      ) : (
+                        <>
+                          {opt.details.map((detail, indx) => (
+                            <DropdownMenuItem
+                              key={indx}
+                              onClick={() => console.log(detail.id)}
+                            >
+                              {detail.icon && (
+                                <detail.icon className="mr-2 h-4 w-4" />
+                              )}
+                              <span
+                                className={
+                                  (detail.label as string)?.slice(0, 4) ===
+                                  new Date().getFullYear().toString()
+                                    ? "text-primary"
+                                    : ""
+                                }
+                              >
+                                {detail.label}
+                              </span>
+                              {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+                            </DropdownMenuItem>
+                          ))}
+                        </>
+                      )}
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link
+                  href={opt.option.baseUrl}
+                  key={index}
+                  className="flex gap-[0.3rem] hover:cursor-pointer"
+                >
+                  <div className="flex flex-col items-center justify-center">
+                    {opt.option.icon && <opt.option.icon size={30} />}
+                    <span className="font-normal leading-3 text-[12px]">
+                      {opt.option.label}
+                    </span>
+                  </div>
+                </Link>
               )}
-            </DropdownMenu>
+            </>
           ))}
       </div>
 

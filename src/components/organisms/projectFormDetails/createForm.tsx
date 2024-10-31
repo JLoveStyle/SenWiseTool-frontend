@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from "react";
-import InputField from "../../molecules/inputField";
-import { Project } from "@/types/gestion";
-import CustomSelectTag from "../../molecules/select";
-import { City, Country, State } from "country-state-city";
-import { Button } from "../../ui/button";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { Route } from "@/lib/route";
-import { usePathname, useRouter } from "next/navigation";
-import { businessActivity } from "@/utiles/services/constants";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-import CardLayout from "../../templates/cardLayout";
-import { Textarea } from "../../ui/textarea";
-import { mutateApiData } from "@/utiles/services/mutations";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
-import { Bounce, toast } from "react-toastify";
-import { useCompanyStore } from "@/lib/stores/companie-store";
+import { Route } from "@/lib/route";
+import { UpdateFilesToS3 } from "@/lib/s3";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
+import { Project } from "@/types/gestion";
+import { businessActivity } from "@/utiles/services/constants";
+import { mutateApiData } from "@/utiles/services/mutations";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { City, Country, State } from "country-state-city";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { Bounce, toast } from "react-toastify";
+import InputField from "../../molecules/inputField";
+import CustomSelectTag from "../../molecules/select";
+import CardLayout from "../../templates/cardLayout";
+import { Button } from "../../ui/button";
+import { Textarea } from "../../ui/textarea";
 
 type Props = {
   onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject: ProjectsType;
   project?: Project;
+  closeModal: (value: boolean) => void;
 };
 
 export default function ProjectDetailsForm({
   onClick,
   typeOfProject,
   project,
+  closeModal,
 }: Props) {
   const countries: any[] = Country.getAllCountries();
   const showProjectOptions: boolean = true;
@@ -36,6 +37,7 @@ export default function ProjectDetailsForm({
   const router = useRouter();
   const company = useCompanyStore((state) => state.company);
   const compains = useCampaignStore((state) => state.campaigns);
+  const currentCampain = useCampaignStore((state) => state.currentCampaign);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
@@ -46,7 +48,7 @@ export default function ProjectDetailsForm({
     ""
   );
   const [errorDate, setErrorDate] = useState<string>("");
-  const [otherLogo, setOtherLogo] = useState<string | ArrayBuffer | null>("");
+  const [otherLogo, setOtherLogo] = useState<File[]>([]);
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
     sector_activity: "",
@@ -102,22 +104,41 @@ export default function ProjectDetailsForm({
     }
   }; */
 
-  const handleOtherLogo = (e: any) => {
-    const reader = new FileReader();
-    if (e) {
-      reader.onload = (onLoadEvent) => {
-        if (onLoadEvent.target) {
-          setOtherLogo(onLoadEvent.target.result);
-        }
-      };
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setOtherLogo(Array.from(event.target.files)); // Convertir FileList en tableau
     }
+  };
+
+  const uploadOtherLogo = async () => {
+    // @todo Add s3 bucketName on database
+    const bucketName = LOCAL_STORAGE.get("bucketName");
+
+    //upload company logo
+    if (!otherLogo.length) {
+      return ""
+    } else {
+      console.log("otherLogo =>", otherLogo);
+      const { data, error } = await UpdateFilesToS3({
+        bucketName,
+        files: otherLogo,
+      });
+
+      if (error) {
+        console.log(error);
+        toast.error("Error while uploading logo");
+        setIsLoading(false);
+        throw new Error("Error lors de l'upload du logo");
+      }
+
+      return data.URLs[0] as string;
+    } 
   };
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    if (companyLogo) {
-      // load the company logo in the companys' table
-    }
+    setIsLoading((prev) => !prev);
+    const [URLOtherLogo] = await Promise.all([uploadOtherLogo()]);
 
     // CONVERT DATE INTO NUMBER
     const startDate = new Date(`${projectData.start_date?.slice(0, 10)}`);
@@ -125,12 +146,12 @@ export default function ProjectDetailsForm({
 
     if (startDate?.getTime() > endDate.getTime()) {
       setErrorDate("Start date must not be greater than end date");
+      setIsLoading((prev) => !prev);
       return;
     }
 
-    setIsLoading((prev) => !prev);
-    console.log(compains[0]);
-    console.log("company", company);
+    console.log(new Date(projectData.start_date as string).toISOString());
+
     setErrorDate("");
     // CREATE NEW RECORD IN THE PROJECTS TABLE
     await mutateApiData(Route.projects, {
@@ -143,26 +164,34 @@ export default function ProjectDetailsForm({
       city: projectData.city,
       region: projectData.region,
       status: projectData.status,
-      another_logo: companyLogo,
+      another_logo: URLOtherLogo,
       start_date: new Date(projectData.start_date as string).toISOString(),
       end_date: new Date(projectData.end_date as string).toISOString(),
-      campaign_id: compains[0]?.id,
+      campaign_id: currentCampain?.id,
     })
       .then((res: ApiDataResponse<ProjectType>) => {
         console.log("project cereated", res);
         if (res.status === 201) {
           setIsLoading((prev) => !prev);
-          toast.success("Success", {
+          toast.success("Success, redirecting...", {
             transition: Bounce,
             autoClose: 3000,
           });
           if (pathname.includes("mapping")) {
             // CLOSE MODAL
+            closeModal(false);
             router.push(Route.mapping);
             return;
           }
           router.push(Route.editProject + `/${res.data.id}`);
           LOCAL_STORAGE.save("project", res.data);
+          return;
+        } else if (res.message === "Internal Server Error") {
+          toast.error("You don't have a company yet! Register your company", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+          setIsLoading((prev) => !prev);
           return;
         }
         setIsLoading((prev) => !prev);
@@ -203,7 +232,11 @@ export default function ProjectDetailsForm({
               <label htmlFor="company_logo">
                 <strong>Add another logo</strong>
               </label>
-              <input type="file" onChange={(e) => handleOtherLogo(e)} />
+              <input
+                accept=".png, .jpeg, .jpg"
+                type="file"
+                onChange={(e) => handleFileChange(e)}
+              />
             </div>
           </>
         )}
@@ -235,7 +268,11 @@ export default function ProjectDetailsForm({
             />
           </div>
         </div>
-        {errorDate && <span className="text-red-500 mt-4"><em>{errorDate}</em></span>}
+        {errorDate && (
+          <span className="text-red-500 mt-4">
+            <em>{errorDate}</em>
+          </span>
+        )}
         <label className="font-semibold" htmlFor="activity">
           Business sector
           <span className="text-red-500">*</span>
@@ -313,8 +350,8 @@ export default function ProjectDetailsForm({
             type="submit"
             className={
               isLoading
-                ? "hover:cursor-wait opacity-70"
-                : "active:transition-y-1"
+                ? "hover:cursor-wait opacity-70 bg-tertiary hover:bg-tertiary"
+                : "active:transition-y-1 bg-tertiary hover:bg-tertiary"
             }
           >
             {isLoading ? <Spinner /> : "CREATE PROJECT"}

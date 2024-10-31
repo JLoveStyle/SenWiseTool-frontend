@@ -30,7 +30,7 @@ export default function ProjectSummary({
 }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  console.log('projectObject', projectObject)
+  console.log("projectObject", projectObject);
 
   const lienRapide: { [key: string]: any } = [
     {
@@ -113,9 +113,9 @@ export default function ProjectSummary({
         <p className="">Project details</p>
         <div className="bg-white md:w-full p-5 shadow">
           {/* project title */}
-          <div className="flex gap-4 justify-center m-auto py-4 border-b">
+          <div className="flex gap-4 justify-center items-baseline m-auto py-4 border-b">
             <span className="text-sm text-gray-500 ">Title: </span>
-            <span className=" font-semibold text-sm px-2 rounded-lg">
+            <span className=" font-semibold text-lg px-2 rounded-lg">
               {projectObject?.title}
             </span>
           </div>
@@ -136,7 +136,7 @@ export default function ProjectSummary({
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Creation date</span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {dayjs(projectObject?.created_at).toString().slice(0, -13)}
+                  {dayjs(projectObject?.created_at).toString().slice(0, -4)}
                 </span>
               </div>
             </div>
@@ -144,23 +144,27 @@ export default function ProjectSummary({
           <div className="flex justify-between md:w-full py-4 border-b ">
             <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-center text-gray-500 ">Last update</span>
+                <span className="text-sm text-center text-gray-500 ">
+                  Last update
+                </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {dayjs(projectObject?.updated_at).toString().slice(0, -13)}
-                  {/* {(projectObject?.updated_at as string).includes("1969")
+                  {/* {dayjs(projectObject?.updated_at).toString().slice(0, -4)} */}
+                  {(projectObject?.updated_at as string).includes("1969")
                     ? "--"
-                    : dayjs(projectObject?.updated_at).toString().slice(0, -13)} */}
+                    : dayjs(projectObject?.updated_at).toString().slice(0, -4)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-center text-gray-500 ">Last deployment</span>
+                <span className="text-sm text-center text-gray-500 ">
+                  Last deployment
+                </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {dayjs(projectObject?.updated_at).toString().slice(0, -13)}
-                  {/* {(projectObject?.deployed_at as string).includes("1969")
+                  {/* {dayjs(projectObject?.updated_at).toString().slice(0, -4)} */}
+                  {(projectObject?.deployed_at as string).includes("1969")
                     ? "--"
                     : dayjs(projectObject?.deployed_at)
                         .toString()
-                        .slice(0, -13)} */}
+                        .slice(0, -4)}
                 </span>
               </div>
             </div>
@@ -168,13 +172,17 @@ export default function ProjectSummary({
           <div className="flex justify-between md:w-full pt-4">
             <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-center text-gray-500 ">Country</span>
+                <span className="text-sm text-center text-gray-500 ">
+                  Country
+                </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {projectObject?.country}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-center text-gray-500 ">village</span>
+                <span className="text-sm text-center text-gray-500 ">
+                  village
+                </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {projectObject?.city}
                 </span>

@@ -1,5 +1,5 @@
 "use client";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import { ApiDataResponse, UserType } from "@/types/api-types";
@@ -26,6 +26,7 @@ export default function Home({}: Props) {
   async function fetchData() {
     const token = await getToken();
     if (token) {
+      console.log(token)
       LOCAL_STORAGE.save("token", token);
     }
   }
@@ -36,7 +37,7 @@ export default function Home({}: Props) {
   }, []);
 
   return (
-    <LayoutDashboard typeOfProject={"INITIAL_INSPECTION"} projectsPerType={[]}>
+    <LayoutDashboardTemplate title="Welcome to SENWISETOOL Dashboard">
       <div>
         <div className="flex items-center justify-center mt-28">
           <Image
@@ -48,6 +49,6 @@ export default function Home({}: Props) {
           />
         </div>
       </div>
-    </LayoutDashboard>
+    </LayoutDashboardTemplate>
   );
 }

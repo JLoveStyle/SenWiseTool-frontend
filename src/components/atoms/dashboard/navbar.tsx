@@ -22,7 +22,7 @@ export default function Navbar({ title }: Props) {
         {/* LOGO & PROJECT NAME IF DEFINED */}
         <div className="flex justify-between gap-10">
           <Logo variant="text" />
-          <div
+          {/* <div
             className={
               pathname === Route.details + `/455`
                 ? "flex gap-4 my-auto absolute left-[330px] top-6"
@@ -31,7 +31,7 @@ export default function Navbar({ title }: Props) {
           >
             <ClipboardType />
             <p className="text-xl font-semibold ">{"selectedProject?.title"}</p>
-          </div>
+          </div> */}
         </div>
       </div>
 

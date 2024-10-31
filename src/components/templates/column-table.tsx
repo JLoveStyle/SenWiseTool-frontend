@@ -19,7 +19,8 @@ import { Bounce, toast } from "react-toastify";
 // The first parameter of columnName must be id
 export const columnTable = <T extends Record<string, any>>(
   columnName: Record<keyof T, string>,
-  routePage: string
+  routePage: string,
+  displayDetailColumn: boolean = true
 ) => {
   const ColumnsTable: ColumnDef<T>[] = [
     {
@@ -75,8 +76,11 @@ export const columnTable = <T extends Record<string, any>>(
           <div className="capitalize">{row.getValue(key)}</div>
         ),
       })),
+  ];
 
-    {
+  // Ajout de la colonne 'actions' seulement si displayDetailColumn est true
+  if (displayDetailColumn) {
+    ColumnsTable.push({
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
@@ -120,8 +124,8 @@ export const columnTable = <T extends Record<string, any>>(
           </DropdownMenu>
         );
       },
-    },
-  ];
+    });
+  }
 
   return ColumnsTable;
 };

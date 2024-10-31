@@ -57,21 +57,22 @@ export const db_update_training = async (data: DBTrainingProps, id: string) => {
     });
 };
 
-export const db_get_trainings = async (companyId?: string) => {
+export const db_get_trainings = async (training_id?: string) => {
   const db = new ApiCall();
 
   return await fetchApiData<ApiDataResponse<TrainingType[] | TrainingType>>(
     Route.training,
-    companyId
+    training_id
   )
     .then((response) => {
       if (typeof response != "undefined") {
+        console.log('Key training', response)
         return response.data;
       }
     })
     .catch((error) => {
       console.error("Erreur lors de l'envoi des données :", error);
-      if (!companyId) return [] as TrainingType[];
+      if (!training_id) return [] as TrainingType[];
       return null;
     });
 };

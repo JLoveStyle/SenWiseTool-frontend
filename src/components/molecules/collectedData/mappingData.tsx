@@ -5,6 +5,7 @@ import xlsx, { IJsonSheet } from "json-as-xlsx";
 import tokml from "tokml";
 import slugify from "slugify";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {};
 
@@ -12,30 +13,29 @@ export default function MappingData({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [kmlFile, setKmlFile] = useState("");
 
-  const coordinates: {[key: string]: string}[] =[]
+  const coordinates: { [key: string]: string }[] = [];
   for (const cord of mappingData) {
-    coordinates.push(cord.coordinate)
+    coordinates.push(cord.coordinate);
   }
 
+  // Download excell sheet
   const downloadExcell = () => {
-    console.log("excell sheet");
-
     const cordinateColumns: IJsonSheet[] = [
       {
         sheet: "Farm_cordinates",
         columns: [
           {
-            label: "Logitude",
-            value: "log"
+            label: "Longitude",
+            value: "log",
           },
           {
             label: "Latitude",
-            value: "lat"
-          }
+            value: "lat",
+          },
         ],
-        content: coordinates.flat()
-      }
-    ]
+        content: coordinates.flat(),
+      },
+    ];
     const columns: IJsonSheet[] = [
       {
         sheet: "Données_Mapping",
@@ -96,18 +96,38 @@ export default function MappingData({}: Props) {
       writeOptions: {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
     };
 
-    console.log("excell cheatsheet");
     xlsx(columns, settings);
-    xlsx(cordinateColumns, settings)
+    xlsx(cordinateColumns, settings);
   };
 
+  // EXPORT AS GEOJSON
+  const exportAsGeojson = (
+    name: string,
+    village: string,
+    surfaceArea: string,
+    code: string
+  ) => {};
+
+  // construct coordinates for polygon of type [][][] from {long: , lat:}[] form field
+  const constructCordinates = (coordinates: { log: number; lat: number }[]) => {
+    const finalCordinates: any[] = [];
+    let selObject: any[] = [];
+    for (const coordinate of coordinates) {
+      selObject.push(Object.values(coordinate));
+    }
+    finalCordinates.push(selObject);
+    return finalCordinates;
+  };
+
+  // CONVERT TO KML FILE
   const convertTokml = (
     name: string,
     village: string,
     surfaceArea: string,
     code: string,
-    geoPoints: any
+    coordinates: { log: number; lat: number }[]
   ) => {
+    const finalCordinates = constructCordinates(coordinates);
     const polygon = {
       type: "Feature",
       properties: {
@@ -119,34 +139,25 @@ export default function MappingData({}: Props) {
       },
       geometry: {
         type: "Polygon",
-        coordinates: geoPoints,
+        coordinates: finalCordinates,
       },
     };
 
-    let kml = tokml(polygon, {
+    const kml = tokml(polygon, {
       name: name,
-
       description: `Ce polygone montre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `,
     });
     setKmlFile(kml);
   };
 
+  // DOWNLOAD ALL FILES AS A SINGLE KML FILE
   const downloadTokml = () => {
-    const obj: any[] = [];
-    let selObject: any[] = [];
-    for (const data of mappingData) {
-      obj.push(data.coordinate);
-    }
-    console.log(obj[0]);
-    console.log(Object.values(obj[0][0]));
-    for (const coord of obj) {
-      selObject.push(Object.values(coord));
-      console.log(Object.values(Object.values(coord)));
-    }
-    console.log("selObject =>", selObject);
+    console.log(
+      `data:application/vnd.google-earth,${encodeURIComponent(kmlFile)}`
+    );
   };
 
-  // FETCH ALL PROJECTS OF TYPE MAPPING
+  // FETCH ALL PROJECTS DATA OF TYPE MAPPING
 
   return (
     <div className=" p-6 md:w-full h-screen">
@@ -183,6 +194,13 @@ export default function MappingData({}: Props) {
                     target="_blank"
                     href={item.photo_plantation}
                   >
+                    <img
+                      className="h-[100px] w-[500px]"
+                      src={item.photo_plantation}
+                      alt={item.photo_plantation}
+                      // height={100}
+                      // width={100}
+                    />
                     <div className="w-[200px] hover:underline truncate text-blue-500">
                       {item.photo_plantation}
                     </div>
@@ -190,6 +208,13 @@ export default function MappingData({}: Props) {
                 </td>
                 <td className="px-2 border">
                   <Link target="_blank" href={item.photo_planteur}>
+                    <img
+                      className="h-[100px] w-[500px]"
+                      src={item.photo_planteur}
+                      alt={item.photo_planteur}
+                      // height={100}
+                      // width={100}
+                    />
                     <div className="w-[200px] hover:underline truncate text-blue-500">
                       {item.photo_planteur}
                     </div>
@@ -197,38 +222,48 @@ export default function MappingData({}: Props) {
                 </td>
                 <td className="px-2 border flex flex-col gap-2 max-h-[250px] overflow-y-scroll">
                   {item.coordinate?.map((coord: any, i: number) => (
-                    <>
-                      <span className="" key={i + 1.1}>
-                        long:{coord.log}
-                      </span>
-                      <span className="border-b">lat:{coord.lat}</span>
+                    <div className="flex border-b gap-2" key={i + 1.1}>
+                      <span className="">long:{coord.log}</span>
+                      <span className="">lat:{coord.lat}</span>
                       {/* <span key={i + 110}>long:{coord.log}</span>
                       <span className="border-b" key={i + 1.5}>
                         lat:{coord.lat}
                       </span> */}
-                    </>
+                    </div>
                   ))}
-                  <button
-                    onClick={() =>
-                      convertTokml(
-                        item.nom_producteur,
-                        item.village,
-                        item.superficie_estimé,
-                        item.code_du_planteur,
-                        item.geoPoints
-                      )
-                    }
-                    className="bg-tertiary text-white mb-2 py-1 rounded-lg"
-                  >
-                    <a
-                      href={`data:application/vnd.google-earth,${encodeURIComponent(
-                        kmlFile
-                      )}`}
-                      download={slugify(item.nom_producteur) + ".kml"}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() =>
+                        convertTokml(
+                          item.nom_producteur,
+                          item.village,
+                          item.superficie_estimé,
+                          item.code_du_planteur,
+                          item.coordinate
+                        )
+                      }
+                      className="bg-tertiary text-white mb-2 p-2 hover:rounded-full"
                     >
-                      Export
-                    </a>
-                  </button>
+                      <a
+                        href={`data:application/vnd.google-earth,${encodeURIComponent(
+                          kmlFile
+                        )}`}
+                        download={slugify(item.nom_producteur) + ".kml"}
+                      >
+                        Export as kml
+                      </a>
+                    </button>
+                    <button className="bg-tertiary text-white mb-2 py-1 hover:rounded-full">
+                      <a
+                        href={`data:application/vnd.google-earth,${encodeURIComponent(
+                          kmlFile
+                        )}`}
+                        download={slugify(item.nom_producteur) + ".geojson"}
+                      >
+                        Export as geoJson
+                      </a>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -243,7 +278,7 @@ export default function MappingData({}: Props) {
           </Button>
           <Button
             variant={"outline"}
-            className="mt-4 border hover:bg-green-500 bg-green-500 text-white  hover:rounded-full"
+            className="mt-4 border hover:bg-green-500 bg-green-500 text-white  hover:rounded-full hover:text-white"
             onClick={downloadTokml}
           >
             Export all as kml

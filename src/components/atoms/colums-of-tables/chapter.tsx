@@ -1,12 +1,18 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { ColumnDef, createColumnHelper, isRowSelected } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  createColumnHelper,
+  isRowSelected,
+} from "@tanstack/react-table";
+import { FaCheck } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
 
 export interface Requirements {
-  title: string // eg. Gestion
-  numero: string // eg. 1.1
-  content: ChapterMetaData[]
+  title: string; // eg. Gestion
+  numero: string; // eg. 1.1
+  content: ChapterMetaData[];
 }
 
 export type ChapterMetaData = {
@@ -56,10 +62,19 @@ export const groupedColumns: ColumnDef<ChapterMetaData>[] = [
   {
     accessorKey: "num",
     header: "No",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("num")}</div>,
   },
   {
     accessorKey: "principal_requirement",
-    header: "Exigences principal",
+    header: "Principal Requirements",
+    cell: ({ row }) => (
+      <div
+        className="capitalize"
+        dangerouslySetInnerHTML={{
+          __html: row.getValue("principal_requirement"),
+        }}
+      ></div>
+    ),
   },
   columnHelper.group({
     header: "Certification de group",

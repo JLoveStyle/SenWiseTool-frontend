@@ -15,6 +15,7 @@ import { TrainingTableDisplayType } from "@/types/api-types";
 import { TrainingProps } from "@/types/formData";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { ColumnDef } from "@tanstack/react-table";
+import dayjs from "dayjs";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Bounce, toast } from "react-toastify";
@@ -69,10 +70,16 @@ export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
   {
     accessorKey: "start_date",
     header: "Start Date",
+    cell: ({ row }) => (
+      <span>{dayjs(row.getValue("start_date")).toString().slice(0, -13)} </span>
+    ),
   },
   {
     accessorKey: "end_date",
     header: "End Date",
+    cell: ({ row }) => (
+      <span>{dayjs(row.getValue("end_date")).toString().slice(0, -13)} </span>
+    ),
   },
   {
     id: "actions",
@@ -92,14 +99,14 @@ export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
-                navigator.clipboard.writeText(project.id);
+                navigator.clipboard.writeText(project.code);
                 toast.success("Copied", {
                   autoClose: 1000,
                   transition: Bounce,
                 });
               }}
             >
-              Copy project ID
+              Copy training code
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Link href={Route.trainingProject + `/${project.id}`}>
@@ -108,11 +115,11 @@ export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
                   LOCAL_STORAGE.save("currentTrainingProject", project)
                 }
               >
-                View project details
+                View training details
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem className="text-red-500">
-              Delete project
+              Delete training
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

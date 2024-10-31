@@ -3,14 +3,19 @@ export type AvailableRoute =
   | "aboutUs"
   | "features"
   | "services"
-  | "pricing"
   | "checkout"
   | "signIn"
   | "signUp"
-  | "companies"
+  
   | "createCompany"
   | "dashboard"
   | "training"
+  | "listOfFarmers"
+  | "managementPlan"
+  | "map"
+  | "reclamationMecanism"
+  | "riskEvaluation"
+  | "organigram"
   | "trainingProject"
   | "login"
   | "inspectionInterne"
@@ -19,19 +24,33 @@ export type AvailableRoute =
   | "editProject"
   | "details"
   | "training_session"
-  | "user"
   | "login"
-  | "projects"
+  
   | "campaign"
   | "trainingProject"
   | "mapping"
   | "saleSlip"
   | "social"
-  | "enviroment"
+  | "environment"
   | "agriculture"
 
+  // API endpoints
+  | "agents"
+  | "marketRequest"
+  | "assigne"
+  | "projects"
+  | "companies"
+  | "user"
+  | "pricing"
+  | "socialRequest"
+  | "agricultureRequest"
+  | "environmentRequest"
+
   // tracability
-  | "receipt";
+  | "markets"
+  | "receipt"
+  | "factoryAccompaniementSheet"
+  | "transmissionAndDeclarationSheet";
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
@@ -48,21 +67,40 @@ export const Route: Record<AvailableRoute, string> = {
   autoEvaluation: "/dashboard/auto-evaluation",
   editProject: "/dashboard/edit",
   checkout: "/checkout",
+  map: "/dashboard/map",
+  reclamationMecanism: "/dashboard/reclamation-mecanism",
+  riskEvaluation: "/dashboard/risk-evaluation",
+  organigram: "/dashboard/organigram",
+  managementPlan: "dashboard/management-plan",
   details: "/dashboard/details",
-  pricing: "price_plans",
-  training: "trainings",
   training_session: "training_sessions",
-  user: "users",
-  companies: "companies",
-  projects: "projects",
   createCompany: "create-compay",
-  campaign: 'campaigns',
   mapping: "/dashboard/mapping",
   social: "/dashboard/social",
-  enviroment: "/dashboard/enviroment",
+  environment: "/dashboard/environment",
   agriculture: "/dashboard/agriculture",
+  agents: "/dashboard/agents",
+  listOfFarmers: "/dashboard/farmers",
+
+  // Api routes
+  companies: "companies",
+  projects: "projects",
+  campaign: "campaigns",
+  user: "users",
+  training: "trainings",
+  pricing: "price_plans",
+  marketRequest: "markets",
+  assigne: "project_assignee",
+  socialRequest: "socials",
+  environmentRequest: "environments",
+  agricultureRequest: "agricultures",
 
   // tracability
+  markets: "/dashboard/tracability/markets",
   receipt: "/dashboard/tracability/receipt",
   saleSlip: "/dashboard/tracability/sale-slip",
+  factoryAccompaniementSheet:
+    "/dashboard/tracability/factory-accompaniement-sheet",
+  transmissionAndDeclarationSheet:
+    "/dashboard/tracability/transmission-and-declaration-sheet",
 };

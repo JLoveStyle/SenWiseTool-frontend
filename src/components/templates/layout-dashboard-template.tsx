@@ -8,14 +8,16 @@ import {
   DashboardSidebarOption,
   DashboardStatPanelData,
 } from "@/types/app-link";
+import { NewFormProps } from "@/types/dashboard/form";
+import { dasboardFormParams } from "@/types/formData";
 import { fetchApiData } from "@/utiles/services/queries";
 import React, { useEffect } from "react";
 import { BsPersonVcard } from "react-icons/bs";
+import { FaHandHoldingUsd, FaUsers } from "react-icons/fa";
 import { HiViewGridAdd } from "react-icons/hi";
 import { IoMdShareAlt } from "react-icons/io";
 import {
   RxGithubLogo,
-  RxHeart,
   RxLinkedinLogo,
   RxStack,
   RxTwitterLogo,
@@ -29,7 +31,8 @@ import { Session } from "../templates/session";
 // import CloseSideNav from "./closeSideNav";
 type Props = {
   children: React.ReactNode;
-  newForm?: React.ReactNode;
+  newForms?: NewFormProps[];
+  formParams?: dasboardFormParams;
   title?: string;
   statPanelDatas?: DashboardStatPanelData[];
 };
@@ -37,7 +40,8 @@ type Props = {
 export default function LayoutDashboardTemplate({
   children,
   title,
-  newForm,
+  newForms,
+  formParams,
   statPanelDatas,
 }: Props) {
   // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
@@ -48,7 +52,10 @@ export default function LayoutDashboardTemplate({
       baseUrl: "",
     })
   );
-  // console.log(campaigns)
+  // sort campains
+  const sortedCampains = campaigns.sort((a, b) =>
+    a.label.localeCompare(b.label)
+  );
 
   // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
@@ -58,18 +65,25 @@ export default function LayoutDashboardTemplate({
         baseUrl: "",
         icon: RxStack,
       },
-      details: campaigns,
+      details: sortedCampains,
     },
     {
       option: {
-        label: "Followers",
-        baseUrl: "",
-        icon: RxHeart,
+        label: "Agents",
+        baseUrl: Route.agents,
+        icon: FaUsers,
       },
     },
     {
       option: {
-        label: "Share to",
+        label: "Markets",
+        baseUrl: Route.markets,
+        icon: FaHandHoldingUsd,
+      },
+    },
+    {
+      option: {
+        label: "Share",
         baseUrl: "",
         icon: IoMdShareAlt,
       },
@@ -115,7 +129,7 @@ export default function LayoutDashboardTemplate({
   }, []);
 
   const { value: displayCloseSideNav, toggle: toggleDisplayCloseSideNav } =
-    useToggle({ initial: newForm || statPanelDatas ? true : false });
+    useToggle({ initial: newForms || statPanelDatas ? true : false });
 
   return (
     <Session>
@@ -127,7 +141,11 @@ export default function LayoutDashboardTemplate({
           <Navbar title={title} />
           <div className="flex">
             {displayCloseSideNav && (
-              <StatPanel newForm={newForm} statPanelDatas={statPanelDatas} />
+              <StatPanel
+                newForms={newForms}
+                statPanelDatas={statPanelDatas}
+                formParams={formParams}
+              />
             )}
             <div className="w-full ">
               <div className="px-6 pt-1 pb-3 flex justify-center items-center">
@@ -137,7 +155,7 @@ export default function LayoutDashboardTemplate({
             </div>
           </div>
         </div>
-        {(newForm || statPanelDatas) && (
+        {(newForms || statPanelDatas) && (
           <FloatingButton
             className="rounded-full bg-white text-black"
             positionLeft={70}

@@ -1,6 +1,6 @@
 "use client";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
-import { mappingColumnListProjects } from "@/components/organisms/mapping/mappingProjectColimns";
+import { mappingColumnListProjects } from "@/components/organisms/mapping/mappingProjectColumns";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
@@ -24,7 +24,7 @@ export default function Home({}: Props) {
     useState<Partial<ProjectType[]>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   // get all mapping projects
   async function fetchAllMappingProjects() {
@@ -34,7 +34,13 @@ export default function Home({}: Props) {
       .then((response) => {
         console.log("all mapping projects", response);
         setIsLoading((prev) => !prev);
-        setAllMappingProjects(response.data);
+        const filteredProjects = [];
+        for (const data of response.data) {
+          if (data.code.length < 5) {
+            filteredProjects.push(data);
+          }
+        }
+        setAllMappingProjects(filteredProjects);
       })
       .catch((error) => {
         console.log(error);

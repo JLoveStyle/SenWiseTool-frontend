@@ -23,7 +23,7 @@ export default function Home({}: Props) {
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   // Fetech all projects xwith ["INTERNAL_INSPECTION"] and pass it as props to layout
   async function fetchAllInternalInspectionProject() {
@@ -37,7 +37,13 @@ export default function Home({}: Props) {
       .then((response) => {
         console.log("all internal_inspection projects", response);
         if (response.status === 200) {
-          setInternalInspectionProjects(response.data);
+          const filteredProjects = [];
+          for (const data of response.data) {
+            if (data.code.length < 5) {
+              filteredProjects.push(data);
+            }
+          }
+          setInternalInspectionProjects(filteredProjects);
         }
         setIsLoading((prev) => !prev);
       })

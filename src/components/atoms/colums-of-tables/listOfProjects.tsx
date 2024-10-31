@@ -27,7 +27,7 @@ const handleDeleteProject = async (id: string) => {
     id
   ).then((res) => {
     if (res && res?.status <= 205) {
-      toast.success('Deleted', {
+      toast.success('Project deleted', {
         transition: Bounce,
         autoClose: 3000
       })
@@ -92,18 +92,18 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
     header: "Last update",
     cell: ({ row }) => (
       <span className="">
-        {dayjs(row.getValue("updated_at")).toString().slice(0, -13)}{" "}
+        {dayjs(row.getValue("updated_at")).toString().slice(0, -4)}{" "}
       </span>
     ),
   },
   {
-    accessorKey: "deployed_at",
-    header: "Deployment date",
+    accessorKey: "draft_at",
+    header: "Creation date",
     cell: ({ row }) => (
       <span className="">
-        {(row.getValue("deployed_at") as string).includes("1969")
+        {(row.getValue("draft_at") as string).includes("1969")
           ? "--"
-          : dayjs(row.getValue("deployed_at")).toString().slice(0, -13)}{" "}
+          : dayjs(row.getValue("draft_at")).toString().slice(0, -4)}{" "}
       </span>
     ),
   },
@@ -143,14 +143,14 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
-                navigator.clipboard.writeText(project.id as string);
+                navigator.clipboard.writeText(project.code as string);
                 toast.success("Copied", {
                   autoClose: 1000,
                   transition: Bounce,
                 });
               }}
             >
-              Copy project ID
+              Copy project code
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Link href={Route.details + `/${project.id}`}>
