@@ -65,6 +65,41 @@ export interface InspectionDataType {
   chapter6: { C: number; NC: number; NA: number };
 }
 
+export interface InspectionFieldDatatype {
+  metaData: {
+    certification_year?: string,
+    farmer_ID_card_number?: string,
+    farmer_contact?: string,
+    farmer_name?: string,
+    farmer_photos?: string[],
+    inspection_date?: string,
+    inspector_contact?: string,
+    inspector_name?: string,
+    pesticide_quantity?: string,
+    pesticide_used?: string,
+    village?: string,
+    weed_application?: string,
+    weed_application_quantity?: string
+  },
+  requirements: {
+    comment: string,
+    status: string,
+    req_number: string
+  }[]
+}
+export interface ProjectData {
+  company_id: string,
+  project_id: string,
+  project_data: InspectionFieldDatatype
+}
+export interface InspectionDataPops {
+  collected_at: string,
+  id: string,
+  updated_at: string,
+  project_id: string,
+  project_data: ProjectData
+}
+
 export type PricePlanType = {
   active: boolean;
   billing_cycle: string;

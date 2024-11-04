@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import html2pdf from "html2pdf.js";
 import { Route } from "@/lib/route";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -20,8 +20,11 @@ interface Props {
 const PrintContent: React.FC<Props> = (props) => {
   const formRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const [isPrinting, setIsPrinting] = useState<boolean>(false);
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
+    setIsPrinting(prev => !prev);
+
     const element = formRef.current;
     let options = {
       margin: 0,
@@ -35,9 +38,12 @@ const PrintContent: React.FC<Props> = (props) => {
       },
     };
     if (element) {
-      html2pdf().set(options).from(element).save();
+      await html2pdf().set(options).from(element).save();
+      setIsPrinting(prev => !prev);
     }
   };
+
+  console.log("isdisidjvisdvsdv\n", isPrinting)
 
   return (
     <div>
@@ -58,18 +64,18 @@ const PrintContent: React.FC<Props> = (props) => {
 
           {props.isDeploying ? (
             <Button
-            className="hover:rounded-full hover:bg-green-400 bg-green-500"
-            onClick={props.deployProject}
-          >
-            <Spinner />
-          </Button>
+              className="hover:rounded-full hover:bg-green-400 bg-green-500"
+              onClick={props.deployProject}
+            >
+              <Spinner />
+            </Button>
           ) : (
             <Button
-            className="hover:rounded-full hover:bg-green-400 bg-green-500"
-            onClick={props.deployProject}
-          >
-            <Rocket /> Deploy
-          </Button>
+              className="hover:rounded-full hover:bg-green-400 bg-green-500"
+              onClick={props.deployProject}
+            >
+              <Rocket /> Deploy
+            </Button>
           )}
         </div>
         <Button
@@ -77,7 +83,7 @@ const PrintContent: React.FC<Props> = (props) => {
           onClick={handlePrint}
         >
           <PiPrinterFill />
-          Print to PDF
+          {isPrinting ? <Spinner /> : "Print to PDF"}
         </Button>
       </div>
     </div>

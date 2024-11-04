@@ -1,16 +1,12 @@
 "use client";
-import Print from "@/components/atoms/print";
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
 import { Route } from "@/lib/route";
-import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { mutateUpApiData } from "@/utiles/services/mutations";
-import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import slugify from "slugify";
 
@@ -38,25 +34,6 @@ export default function page({}: Props) {
     const data = { ...personalInfo, [e.target.name]: e.target.value };
     setPersonalInfo(data);
   };
-
-  // To display view project when coming from details page
-  /*
-  async function getProjectById() {
-    await fetchApiData(Route.projects, projectData?.id)
-      .then((response) => {
-        console.log("Here is the response", response);
-        setProject(response);
-      })
-      .catch((error) => {
-        console.log("error occured", error);
-      });
-  }
-
-  useEffect(() => {
-    // Fetch project by id
-    getProjectById();
-  }, []);
-  */
 
   async function deployProject() {
     if (projectData.status === "DEPLOYED") {
