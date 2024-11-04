@@ -4,11 +4,17 @@ import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import FilePreview from "@/components/atoms/file-preview";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import CustomHoverCard from "@/components/organisms/hoverCard";
+import CardLayout from "@/components/templates/cardLayout";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Route } from "@/lib/route";
 import { ActivityProps } from "@/types/activity";
+import { ApiDataResponse } from "@/types/api-types";
+import { mutateDelApiData } from "@/utiles/services/mutations";
+import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { DialogContent } from "@radix-ui/react-dialog";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -24,24 +30,22 @@ type TProps = {
 export default function SocialDetails({ params: { id } }: TProps) {
   const router = useRouter();
   const [currentActivity, setCurrentActivity] = useState<ActivityProps>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const activities = await LOCAL_STORAGE.get("socials");
-
-      const activity: ActivityProps = activities.find(
-        (item: ActivityProps) => item.id == id
-      );
-
-      if (activity) {
-        setCurrentActivity(activity);
+      setIsLoading((prev) => !prev);
+      const activities = await fetchApiData(Route.socialRequest + `/${id}`, "");
+      if (activities.status === 200) {
+        console.log("social activity => ", activities);
         setIsLoading(false);
+        setCurrentActivity(activities.data);
       }
     };
     fetchData();
-  }, [id]);
+  }, []);
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -59,6 +63,19 @@ export default function SocialDetails({ params: { id } }: TProps) {
     }
   };
 
+  async function handleDelete() {
+    await mutateDelApiData<ApiDataResponse<ActivityProps>>(
+      Route.socialRequest,
+      currentActivity?.id
+    )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
     <LayoutDashboardTemplate title="Social - Détails de l'activité N°{id}">
       <div className="flex justify-between pb-4 pt-2 px-6 w-3/4">
@@ -70,25 +87,40 @@ export default function SocialDetails({ params: { id } }: TProps) {
         />
         <div className="flex items-center gap-4 text-gray-500">
           <CustomHoverCard content="archive project">
-            <Archive className="hover:cursor-pointer" />
+            <Archive className="hover:cursor-not-allowed" />
           </CustomHoverCard>
           <CustomHoverCard content="Share project">
-            <UserPlus className="hover:cursor-pointer" />
+            <UserPlus className="hover:cursor-not-allowed" />
           </CustomHoverCard>
           <CustomHoverCard content="Delete Project">
-            {isLoading ? (
-              <Spinner size="very-small" color="#999" />
-            ) : (
-              <Delete />
-            )}
+            <Delete
+              onClick={() => setOpenModal((prev) => !prev)}
+              className={
+                isLoading ? "hover:cursor-not-allowed" : "hover:cursor-pointer"
+              }
+            />
           </CustomHoverCard>
         </div>
       </div>
+      {/* <Dialog
+        open={openModal}
+        onOpenChange={() => setOpenModal((prev) => !prev)}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog> */}
 
       <div className="flex items-center w-full gap-5 px-2">
-        <div className="bg-slate-50 w-5/6 mt-3">
+        <div className="bg-slate-50 w-full mt-3">
           {isLoading ? (
-            <div className="flex justify-center text-center w-full">
+            <div className="flex justify-center text-center w-full my-auto">
               <Spinner color="#999" size="large" />
             </div>
           ) : currentActivity ? (
@@ -183,45 +215,6 @@ export default function SocialDetails({ params: { id } }: TProps) {
               />
             </div>
           )}
-        </div>
-
-        <div className="bg-slate-100 w-1/6 h-full p-3">
-          <div className="w-full">
-            <div className="p-3">Metadata</div>
-            <hr />
-            <div className="flex flex-col gap-10 justify-between h-full">
-              <div className="p-3 text-xs flex flex-col gap-3 h-full">
-                <div className="flex justify-between items-center">
-                  <span>Status</span>
-                  <span className="text-green-500 font-medium">OPEN</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Nombre de sac</span>
-                  <span>0</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Poids net vendu</span>
-                  <span>0 Kg</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Poids net en Kg</span>
-                  <span>0 Kg</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Humidité en %</span>
-                  <span>0 %</span>
-                </div>
-              </div>
-              <div className="flex justify-center items-center gap-10 bg-transparent">
-                <Button
-                  size="sm"
-                  className="flex gap-1 items-center bg-black hover:bg-gray-900"
-                >
-                  <PiPrinterFill /> Imprimer
-                </Button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </LayoutDashboardTemplate>

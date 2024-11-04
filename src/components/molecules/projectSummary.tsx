@@ -21,12 +21,14 @@ type Props = {
   projectObject: ProjectType | undefined;
   showData: (val: boolean) => void;
   showForm: (val: boolean) => void;
+  isDataLoading?: boolean
 };
 
 export default function ProjectSummary({
   projectObject,
   showData,
   showForm,
+  isDataLoading
 }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -116,9 +118,13 @@ export default function ProjectSummary({
           {/* project title */}
           <div className="flex gap-2 py-2 border-b pb-4 items-baseline">
             <span className="text-sm text-gray-500 ">Title:</span>
-            <span className=" font-semibold text-lg px-2 rounded-lg">
-              {projectObject?.title}
-            </span>
+            {isDataLoading ? (
+              <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+            ) : (
+              <span className=" font-semibold text-lg px-2 rounded-lg">
+                {projectObject?.title}
+              </span>
+            )}
           </div>
           <div className="border-b pb-4">
             <span className="text-sm font-semibold text-gray-500">
@@ -178,7 +184,7 @@ export default function ProjectSummary({
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Created at</span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {dayjs(projectObject?.end_date).toString().slice(0, -4)}
+                  {dayjs(projectObject?.created_at).toString().slice(0, -4)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">

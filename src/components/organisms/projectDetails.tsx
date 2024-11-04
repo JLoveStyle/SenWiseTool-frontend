@@ -13,9 +13,13 @@ import ProjectForm from "./projectForm";
 
 type Props = {
   projectDetails: ProjectType;
+  isDataLoading?: boolean;
 };
 
-export default function ProjectDetails({ projectDetails }: Props) {
+export default function ProjectDetails({
+  projectDetails,
+  isDataLoading,
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [summaryActive, setSummaryActive] = useState<boolean>(true);
@@ -142,6 +146,7 @@ export default function ProjectDetails({ projectDetails }: Props) {
           />
         ) : summaryActive ? (
           <ProjectSummary
+            isDataLoading={isDataLoading}
             showForm={showFormFromChild}
             showData={showDataFuntionFromChild}
             projectObject={projectDetails ? projectDetails : undefined}
@@ -152,7 +157,10 @@ export default function ProjectDetails({ projectDetails }: Props) {
         {dataActive && pathname.includes("/mapping/") ? (
           <MappingData />
         ) : dataActive ? (
-          <InspectionData projectType={projectDetails?.type} />
+          <InspectionData
+            projectName={projectDetails?.title}
+            project_id={projectDetails?.id as string}
+          />
         ) : (
           ""
         )}
@@ -160,7 +168,9 @@ export default function ProjectDetails({ projectDetails }: Props) {
           <MappingForm />
         ) : // <p>sdivosidvsd</p>
         formActive ? (
-          <ProjectForm projectObject={projectDetails ? projectDetails : undefined} />
+          <ProjectForm
+            projectObject={projectDetails ? projectDetails : undefined}
+          />
         ) : (
           ""
         )}

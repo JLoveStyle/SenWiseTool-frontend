@@ -5,43 +5,44 @@ import FilePreview from "@/components/atoms/file-preview";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
 import { ActivityProps } from "@/types/activity";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { fetchApiData } from "@/utiles/services/queries";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PiPrinterFill } from "react-icons/pi";
 import { toast } from "react-toastify";
 
 export default function AgricultureDetails() {
   const router = useRouter();
   const { id } = useParams();
   const [currentActivity, setCurrentActivity] = useState<ActivityProps>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const activities = await LOCAL_STORAGE.get("agricultures");
-
-      const activity: ActivityProps = activities.find(
-        (item: ActivityProps) => item.id == id
+      setIsLoading((prev) => !prev);
+      const activities = await fetchApiData(
+        Route.agricultureRequest + `/${id}`,
+        ""
       );
 
-      if (!activity) {
+      if (!activities) {
         router.push("/");
         toast.error("Page not found");
         return;
-      }
+        }
 
-      setCurrentActivity(activity);
-      setIsLoading(false);
+      if (activities.status === 200) {
+        console.log("agricultural activity => ", activities);
+        setIsLoading(prev => !prev);
+        setCurrentActivity(activities.data);
+      }
     };
     fetchData();
-  }, [id]);
+  }, []);
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -70,23 +71,19 @@ export default function AgricultureDetails() {
         />
         <div className="flex items-center gap-4 text-gray-500">
           <CustomHoverCard content="archive project">
-            <Archive className="hover:cursor-pointer" />
+            <Archive className="hover:cursor-not-allowed" />
           </CustomHoverCard>
           <CustomHoverCard content="Share project">
-            <UserPlus className="hover:cursor-pointer" />
+            <UserPlus className="hover:cursor-not-allowed" />
           </CustomHoverCard>
           <CustomHoverCard content="Delete Project">
-            {isLoading ? (
-              <Spinner size="very-small" color="#999" />
-            ) : (
-              <Delete />
-            )}
+            <Delete className={isLoading ? 'hover:cursor-not-allowed' : ""} />
           </CustomHoverCard>
         </div>
       </div>
 
       <div className="flex items-center w-full gap-5 px-2">
-        <div className="bg-slate-50 w-5/6 mt-3">
+        <div className="bg-slate-50 w-full mt-3">
           {isLoading ? (
             <div className="flex justify-center text-center w-full">
               <Spinner color="#999" size="large" />
@@ -183,45 +180,6 @@ export default function AgricultureDetails() {
               />
             </div>
           )}
-        </div>
-
-        <div className="bg-slate-100 w-1/6 h-full p-3">
-          <div className="w-full">
-            <div className="p-3">Metadata</div>
-            <hr />
-            <div className="flex flex-col gap-10 justify-between h-full">
-              <div className="p-3 text-xs flex flex-col gap-3 h-full">
-                <div className="flex justify-between items-center">
-                  <span>Status</span>
-                  <span className="text-green-500 font-medium">OPEN</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Nombre de sac</span>
-                  <span>0</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Poids net vendu</span>
-                  <span>0 Kg</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Poids net en Kg</span>
-                  <span>0 Kg</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Humidité en %</span>
-                  <span>0 %</span>
-                </div>
-              </div>
-              <div className="flex justify-center items-center gap-10 bg-transparent">
-                <Button
-                  size="sm"
-                  className="flex gap-1 items-center bg-black hover:bg-gray-900"
-                >
-                  <PiPrinterFill /> Imprimer
-                </Button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </LayoutDashboardTemplate>

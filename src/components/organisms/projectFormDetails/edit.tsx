@@ -5,9 +5,6 @@ import CustomSelectTag from "../../molecules/select";
 import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { businessActivity } from "@/utiles/services/constants";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { Bounce, toast } from "react-toastify";
@@ -15,6 +12,7 @@ import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { ProjectType } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { businessActivity } from "@/utiles/services/constants";
 
 type Props = {
   onClick: (val1: boolean) => void;
@@ -44,8 +42,6 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
   });
 
   const id = LOCAL_STORAGE.get("projectId");
-
-  const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
     e: React.ChangeEvent<
