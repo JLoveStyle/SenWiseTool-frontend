@@ -21,12 +21,14 @@ type Props = {
   projectObject: ProjectType | undefined;
   showData: (val: boolean) => void;
   showForm: (val: boolean) => void;
+  isDataLoading?: boolean;
 };
 
 export default function ProjectSummary({
   projectObject,
   showData,
   showForm,
+  isDataLoading,
 }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -115,15 +117,23 @@ export default function ProjectSummary({
           {/* project title */}
           <div className="flex gap-4 justify-center items-baseline m-auto py-4 border-b">
             <span className="text-sm text-gray-500 ">Title: </span>
-            <span className=" font-semibold text-lg px-2 rounded-lg">
-              {projectObject?.title}
-            </span>
+            {isDataLoading ? (
+              <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+            ) : (
+              <span className=" font-semibold text-lg px-2 rounded-lg">
+                {projectObject?.title}
+              </span>
+            )}
           </div>
           <div className="border-b py-4">
             <span className="text-sm font-semibold text-gray-500">
               Description
             </span>
-            <p className="font-semibold">{projectObject?.description} </p>
+            {isDataLoading ? (
+              <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+            ) : (
+              <p className="font-semibold">{projectObject?.description} </p>
+            )}
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
             <div className="flex md:w-[500px] justify-between">
@@ -162,9 +172,7 @@ export default function ProjectSummary({
                   {/* {dayjs(projectObject?.updated_at).toString().slice(0, -4)} */}
                   {(projectObject?.deployed_at as string).includes("1969")
                     ? "--"
-                    : dayjs(projectObject?.deployed_at)
-                        .toString()
-                        .slice(0, -4)}
+                    : dayjs(projectObject?.deployed_at).toString().slice(0, -4)}
                 </span>
               </div>
             </div>

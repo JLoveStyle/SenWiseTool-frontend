@@ -24,7 +24,7 @@ import { Spinner } from "@/components/atoms/spinner/spinner";
 
 type Props = {};
 
-export default function page({ }: Props) {
+export default function page({}: Props) {
   const router = useRouter();
   const [paypalActive, setPaypalActive] = useState(false);
   const [cartActive, setCartActive] = useState(false);
@@ -33,7 +33,6 @@ export default function page({ }: Props) {
 
   const [showError, setShowError] = useState(false);
   // set paypal options
-
 
   const handlePaypal = () => {
     setPaypalActive((prev) => !prev);
@@ -51,6 +50,7 @@ export default function page({ }: Props) {
   }
 
   const params = useParams();
+
   const { typeOfOffer } = params;
 
   useEffect(() => {
@@ -64,12 +64,18 @@ export default function page({ }: Props) {
     }
   }, [router]);
 
-  const { data: pricePlan } = useApiOps<PricePlanType, ApiDataResponse<PricePlanType>>({
-    query: params.typeOfOffer.toString().toLowerCase(),
-    fn: () => fetchApiData(Route.pricing, params.typeOfOffer.toString().toLowerCase()),
+  const { data: pricePlan } = useApiOps<
+    PricePlanType,
+    ApiDataResponse<PricePlanType>
+  >({
+    query: typeOfOffer ? typeOfOffer.toString().toLowerCase() : "",
+    fn: () =>
+      fetchApiData(
+        Route.pricing,
+        typeOfOffer ? typeOfOffer.toString().toLowerCase() : ""
+      ),
     route: Route.pricing,
   });
-
 
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
@@ -169,7 +175,13 @@ export default function page({ }: Props) {
                 </div>
                 <hr />
                 {/* I have add the text color here because it is not visible at the moment: text and bg was white */}
-                <p className={paypalActive ? "flex p-6 bg-white text-muted-foreground" : "hidden"}>
+                <p
+                  className={
+                    paypalActive
+                      ? "flex p-6 bg-white text-muted-foreground"
+                      : "hidden"
+                  }
+                >
                   In order to complete your transaction, we will transfer you
                   over to PayPals secure servers.
                 </p>
@@ -210,7 +222,7 @@ export default function page({ }: Props) {
                         <Image
                           height={20}
                           width={40}
-                          src="	https://www.udemy.com/staticx/udemy/images/v9/card-discover.svg"
+                          src="https://www.udemy.com/staticx/udemy/images/v9/card-discover.svg"
                           alt="card-amex"
                         />
                       </div>
@@ -226,7 +238,7 @@ export default function page({ }: Props) {
                         <Image
                           height={20}
                           width={40}
-                          src="	https://www.udemy.com/staticx/udemy/images/v9/card-visa.svg"
+                          src="https://www.udemy.com/staticx/udemy/images/v9/card-visa.svg"
                           alt="card-visa"
                         />
                       </div>
@@ -288,20 +300,18 @@ export default function page({ }: Props) {
                 {annualPricing
                   ? `${formatPrice(currentOffer?.annualPricing)} / Year`
                   : `${formatPrice(
-                    currentOffer?.biannualPricing
-                  )}  /   ¹⁄₂Year`}
+                      currentOffer?.biannualPricing
+                    )}  /   ¹⁄₂Year`}
               </span>
             </div>
-            {
-              pricePlan ? (
-                <PaypalPaypements />
-              ) : (
-                <Button className="cursor-wait flex gap-3 py-6 bg-primary hover:cursor-not-allowed opacity-70 font-semibold text-white w-full">
-                  <Spinner/>
-                  <span>loading paypal checkout...</span>
-                </Button>
-              )
-            }
+            {pricePlan ? (
+              <PaypalPaypements />
+            ) : (
+              <Button className="cursor-wait flex gap-3 py-6 bg-primary hover:cursor-not-allowed opacity-70 font-semibold text-white w-full">
+                <Spinner />
+                <span>loading paypal checkout...</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>

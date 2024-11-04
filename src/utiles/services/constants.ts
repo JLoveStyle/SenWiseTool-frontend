@@ -3,6 +3,7 @@ import { DashboardStatPanelData } from "@/types/app-link";
 import { allRequirements } from "@/utils/requirements";
 import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { receiptStatData } from "../tracability.const/statistics";
+import { IJsonSheet } from "json-as-xlsx";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 // export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
@@ -34,6 +35,8 @@ export const MappingTableColumns: string[] = [
   "Farmer picture",
   "Coordinates",
 ];
+
+
 
 // EXAMPLE OF MAPPING DATA FROM FIELD
 export const mappingData: { [key: string]: any }[] = [
@@ -216,6 +219,60 @@ export const mappingData: { [key: string]: any }[] = [
         lat: 34.05,
       },
     ],
+  },
+];
+
+// COLUMNS FOR EXCELL SHEET
+export const columns: IJsonSheet[] = [
+  {
+    sheet: "Données_Mapping",
+    columns: [
+      {
+        label: "Nom du producteur",
+        value: "nom_producteur",
+      },
+      {
+        label: "statut du producteur",
+        value: "statut_producteur",
+      },
+      {
+        label: "N° CNI",
+        value: "no_cni",
+      },
+      {
+        label: "Date de creation de la plantation",
+        value: "date_de_creation_plant",
+      },
+      {
+        label: "Village",
+        value: "village",
+      },
+      {
+        label: "Nom du mappeur",
+        value: "nom_du_mappeur",
+      },
+      {
+        label: "Date",
+        value: "date",
+      },
+      {
+        label: "Superficie estimé",
+        value: "superficie_estimé",
+      },
+      {
+        label: "Photo de la plantation",
+        value: "photo_plantation",
+      },
+      {
+        label: "Photo planteur",
+        value: "photo_planteur",
+      },
+      {
+        label: "Coordonées",
+        value: "coordinate",
+      },
+    ],
+    content: mappingData,
   },
 ];
 

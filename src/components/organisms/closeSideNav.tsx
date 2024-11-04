@@ -11,7 +11,6 @@ import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
 import { ProjectsType, ProjectType, TrainingType } from "@/types/api-types";
-import CreateNewMapping from "./mapping/createNewMapping";
 
 type Props = {
   typeOfProject: ProjectsType;
@@ -100,13 +99,6 @@ export default function CloseSiveNav({
             {showProjectOptions && (
               <CreateProjectOptions onClick={handleOpenProjectOptions} />
             )}
-            {/* {showProjectOptions && pathname.includes("/mapping") ? (
-              <CreateNewMapping onClick={closeModal}/>
-            ) : showProjectOptions ? (
-              <CreateProjectOptions onClick={handleOpenProjectOptions} />
-            ) : (
-              ""
-            )} */}
           </DialogContent>
         </Dialog>
         <div className="flex justify-between gap-2 hover:cursor-pointer">

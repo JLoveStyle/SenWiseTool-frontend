@@ -16,13 +16,13 @@ type Props = {
 };
 
 export default function Home({ params: { id } }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
   const [projectObject, setProjectObject] = useState<ProjectType>();
 
   // FETCH PROJECT BY ID
   async function fetchProjectById() {
-    setIsLoading((prev) => !prev);
+    // setIsLoading((prev) => !prev);
 
     await fetchApiData(Route.projects, id)
       .then((response) => {
@@ -53,8 +53,7 @@ export default function Home({ params: { id } }: Props) {
 
   return (
     <LayoutDashboard typeOfProject={"MAPPING"} projectsPerType={[]}>
-      <ProjectDetails projectDetails={projectObject as ProjectType} />
-
+      <ProjectDetails isDataLoading={isLoading} projectDetails={projectObject as ProjectType} />
     </LayoutDashboard>
   );
 }
