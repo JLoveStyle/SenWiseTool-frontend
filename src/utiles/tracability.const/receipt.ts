@@ -21,8 +21,6 @@ export const receiptData: ReceiptProps[] = [
     },
     buyer_signature: "https://example.com/signature_buyer_a.png",
     farmer_signature: "https://example.com/signature_farmer1.png",
-    sale_slip:
-      "https://www.fichespedagogiques.com/cdn/pdf/du-cacaoyer-aux-chocolats-de-noel_XL-2.jpg",
   },
   {
     id: "rec2",
@@ -46,8 +44,6 @@ export const receiptData: ReceiptProps[] = [
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Autograph_of_Benjamin_Franklin.svg/1280px-Autograph_of_Benjamin_Franklin.svg.png",
     farmer_signature:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Gandhi_signature.svg/1280px-Gandhi_signature.svg.png",
-    sale_slip:
-      "https://media-files.abidjan.net/document/document_ffb7zxiqipt.jpg",
   },
   {
     id: "rec3",
@@ -69,8 +65,6 @@ export const receiptData: ReceiptProps[] = [
     },
     buyer_signature: "https://example.com/signature_buyer_c.png",
     farmer_signature: "https://example.com/signature_farmer3.png",
-    sale_slip:
-      "https://www.fichespedagogiques.com/cdn/pdf/du-cacaoyer-aux-chocolats-de-noel_XL-1.jpg",
   },
   {
     id: "rec4",
@@ -92,7 +86,6 @@ export const receiptData: ReceiptProps[] = [
     },
     buyer_signature: "https://example.com/signature_buyer_d.png",
     farmer_signature: "https://example.com/signature_farmer4.png",
-    sale_slip: null,
   },
   {
     id: "rec5",
@@ -114,7 +107,5 @@ export const receiptData: ReceiptProps[] = [
     },
     buyer_signature: "https://example.com/signature_buyer_e.png",
     farmer_signature: "https://example.com/signature_farmer5.png",
-    sale_slip:
-      "https://www.fichespedagogiques.com/cdn/pdf/du-cacaoyer-aux-chocolats-de-noel_XL-0.jpg",
   },
 ];
