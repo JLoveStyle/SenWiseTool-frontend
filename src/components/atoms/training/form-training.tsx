@@ -75,18 +75,18 @@ export const FormTraining = ({
   return (
     <div className="flex flex-col gap-5">
       <InputUI
-        label="Titre"
+        label="Title"
         id="title"
-        placeholder="Titre de la formation"
+        placeholder="Enter training title"
         isLoading={isLoading}
         errors={errors}
         value={formData.title}
         onChange={handleChange}
       />
       <InputUI
-        label="Lieu"
+        label="Location"
         id="location"
-        placeholder="Lieu de la formation"
+        placeholder="Where training will hold"
         isLoading={isLoading}
         errors={errors}
         value={formData.location}
@@ -94,7 +94,7 @@ export const FormTraining = ({
       />
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Début de la formation"
+          label="Start date"
           id="start_date"
           type="datetime-local"
           isLoading={isLoading}
@@ -104,7 +104,7 @@ export const FormTraining = ({
         />
 
         <InputUI
-          label="Fin de la formation"
+          label="End training"
           id="end_date"
           type="datetime-local"
           isLoading={isLoading}
@@ -114,7 +114,7 @@ export const FormTraining = ({
         />
       </div>
       <div className="grid w-full items-center gap-1.5">
-        <Label htmlFor="modules">Modules à dispenser</Label>
+        <Label htmlFor="modules">Training modules</Label>
         <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 overflow-y-scroll scrool-bar-hidden">
           {formData.modules &&
             formData.modules.map((mod) => (
@@ -138,7 +138,7 @@ export const FormTraining = ({
         <InputUI
           label="Modules"
           id="modules"
-          placeholder="Entrer un nouveau module"
+          placeholder="Enter module and hit enter"
           isLoading={isLoading}
           value={module?.value}
           errors={errors}

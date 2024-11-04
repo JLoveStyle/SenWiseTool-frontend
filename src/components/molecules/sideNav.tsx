@@ -21,6 +21,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Logo } from "../atoms/logo";
 import { Spinner } from "../atoms/spinner/spinner";
+import React from "react";
 
 interface Props {
   options: DashboardSidebarOption[];
@@ -31,7 +32,7 @@ export default function SideNav({ options }: Props) {
   const setCurrentCampaign = useCampaignStore(
     (state) => state.setCurrentCampaign
   );
-  const campaigns = useCampaignStore((state) => state.campaigns);
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   async function handleCampagneObject(currentCampaign: CampaignType) {
     console.log("current campaign: ", currentCampaign);
@@ -72,6 +73,7 @@ export default function SideNav({ options }: Props) {
                       </div>
                     ) : (
                       <>
+                        {/* DISPLAY CAMPAINS */}
                         {opt.details.map((detail, indx) => (
                           <DropdownMenuItem
                             key={indx}
@@ -80,7 +82,16 @@ export default function SideNav({ options }: Props) {
                             {detail.icon && (
                               <detail.icon className="mr-2 h-4 w-4" />
                             )}
-                            <span>{detail.label}</span>
+                            <span
+                              className={
+                                (detail.label as string)?.slice(0, 4) ===
+                                new Date().getFullYear().toString()
+                                  ? "text-primary"
+                                  : ""
+                              }
+                            >
+                              {detail.label}
+                            </span>
                             {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
                           </DropdownMenuItem>
                         ))}

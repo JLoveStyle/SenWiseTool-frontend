@@ -50,7 +50,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           {firstHalfMetaData.map((item, index) => (
             <div key={index} className="flex gap-3">
               <input
-                checked={metaDataFromLocalStorage?.includes(item.name)}
+                // checked={metaDataFromLocalStorage?.includes(item.name)}
                 type="checkbox"
                 name={item.name}
                 value={item.value}
@@ -65,7 +65,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           {secondHalfMetaData.map((item, index) => (
             <div key={index} className="flex gap-3">
               <input
-                checked={metaDataFromLocalStorage?.includes(item.name)}
+                // checked={metaDataFromLocalStorage?.includes(item.name)}
                 type="checkbox"
                 name={item.name}
                 value={item.value}

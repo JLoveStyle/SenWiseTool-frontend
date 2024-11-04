@@ -2,12 +2,11 @@
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
 import { Route } from "@/lib/route";
+import { ProjectType } from "@/types/api-types";
 import { mutateUpApiData } from "@/utiles/services/mutations";
-import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import slugify from "slugify";
 
@@ -17,9 +16,10 @@ export default function page({}: Props) {
   const router = useRouter();
   const [personalInfo, setPersonalInfo] = useState({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [project, setProject] = useState<{ [key: string]: any }>({});
-  const projectData = LOCAL_STORAGE.get("project");
+  const projectData: ProjectType = LOCAL_STORAGE.get("project");
   const finalJson = LOCAL_STORAGE.get("finalJson");
+  const company = LOCAL_STORAGE.get("company");
+  console.log("company=> ", company);
 
   const firstHalfMetaData = finalJson.metaData.slice(
     0,
@@ -35,23 +35,14 @@ export default function page({}: Props) {
     setPersonalInfo(data);
   };
 
-  async function getProjectById() {
-    await fetchApiData(Route.projects, projectData?.id)
-      .then((response) => {
-        console.log("Here is the response", response);
-        setProject(response);
-      })
-      .catch((error) => {
-        console.log("error occured", error);
-      });
-  }
-
-  useEffect(() => {
-    // Fetch project by id
-    getProjectById();
-  }, []);
-
   async function deployProject() {
+    if (projectData.status === "DEPLOYED") {
+      toast.warning("Project deployed already", {
+        transition: Bounce,
+        autoClose: 3000,
+      });
+      return;
+    }
     setIsLoading((prev) => !prev);
     await mutateUpApiData(
       Route.projects,
@@ -60,6 +51,7 @@ export default function page({}: Props) {
     )
       .then((response) => {
         console.log(response);
+        setIsLoading((prev) => !prev);
         if (response.status <= 204) {
           toast.success("Project deployed", {
             transition: Bounce,
@@ -75,44 +67,56 @@ export default function page({}: Props) {
       })
       .catch((error) => {
         console.log("An error occured", error);
+        setIsLoading((prev) => !prev);
         toast.error("Fail to deploy. Try again", {
           transition: Bounce,
-          autoClose: 1000,
+          autoClose: 3000,
         });
       });
   }
 
+  const handleBackBtn = () => {
+    if (projectData?.type == "AUTO_EVALUATION") {
+      router.push(Route.autoEvaluation);
+    } else if (projectData?.type == "INITIAL_INSPECTION") {
+      router.push(Route.inspectionInitial);
+    } else if (projectData?.type == "INTERNAL_INSPECTION") {
+      router.push(Route.inspectionInterne);
+    }
+  };
+
   return (
     <PrintContent
-      filename="fiche d'inspection"
-      deployProject={() => deployProject()}
+      isDeploying={isLoading}
+      handleExitPage={handleBackBtn}
       onClick={() => router.push(Route.editProject + `/${projectData?.id}`)}
-      handleExitPage={() => router.push(Route.dashboard)}
+      deployProject={() => deployProject()}
+      filename="formulaire-d'inspection"
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
-        <div className="flex justify-between py-2 mx-auto">
+        <div className="flex items-baseline justify-between py-2 mx-auto">
           {/* COMPANY LOGO */}
           <img
-            src="https://syndustricam.org/wp-content/uploads/2023/07/013-image-0125-1.png"
-            alt="rainforest aliance logo"
-            width={250}
-            height={200}
+            src={company.logo}
+            alt="company logo"
+            className="h-[100px] w-[100px]"
           />
 
-          <Image
+          <img
             src="/images/logo_forest.jpg"
             alt="rainforest aliance logo"
-            width={100}
-            height={100}
+            className="h-[60px] w-[100px]"
           />
           {/* Partner logo */}
-          <Image
-            src="/images/logo-senima.png"
-            alt="rainforest aliance logo"
-            width={100}
-            height={100}
-          />
+
+          {projectData?.another_logo && (
+            <img
+              src={projectData?.another_logo}
+              alt="Pathner logo"
+              className="h-[70px] w-[100px]"
+            />
+          )}
         </div>
         <h1 className="font-bold text-2xl text-center py-8 ">
           Project title: {projectData.title}
@@ -162,11 +166,6 @@ export default function page({}: Props) {
         {/* LIST OF REQUIREMENTS TABULATED */}
         <div className=" mx-auto pt-5">
           <FinalFormData selectedProjects={finalJson.requirements} />
-          {/* <PrintableFormTable
-            // incomingColumns={deployableFormColumn}
-            incomingColumns={printableFormColumns}
-            incomingData={deployedPro}
-          /> */}
         </div>
       </div>
     </PrintContent>

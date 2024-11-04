@@ -10,16 +10,12 @@ import { Button } from "../ui/button";
 import { DialogContent } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
-import { ProjectType } from "@/types/api-types";
+import { ProjectsType, ProjectType, TrainingType } from "@/types/api-types";
+import CreateNewMapping from "./mapping/createNewMapping";
 
 type Props = {
-  typeOfProject?:
-  | "INTERNAL_INSPECTION"
-  | "INITIAL_INSPECTION"
-  | "AUTO_EVALUATION"
-  | "TRAINING";
-
-  projectsPerType: ProjectType[];
+  typeOfProject: ProjectsType;
+  projectsPerType: ProjectType[] | TrainingType[]
   newForm?: React.ReactNode;
 };
 
@@ -43,6 +39,10 @@ export default function CloseSiveNav({
     setShowProjectOptions(value2);
   };
 
+  const closeModal = (val: boolean) => {
+    setOpenModal(val);
+  };
+
   const handleShowProjectDetails = (value1: boolean, value2: boolean) => {
     setShowProjectDetailsForm(value1);
     setShowProjectOptions(value2);
@@ -57,11 +57,12 @@ export default function CloseSiveNav({
   const archiveProjects = projectsPerType?.filter(
     (item) => item.status === "ARCHIVED"
   );
-  
+
+
   return (
     <div
       className={
-        pathname.includes("/details") // Hide this component on the detail page
+        pathname.includes("/details") || pathname.includes("/mapping/") // Hide this component on the detail page
           ? "hidden"
           : "bg-[#f7f6f6] w-fit h-screen px-5 pt-2 shadow-lg"
       }
@@ -91,6 +92,7 @@ export default function CloseSiveNav({
           <DialogContent className="sm:max-w-[800px]">
             {showProjectDetailsForm && (
               <ProjectDetailsForm
+                closeModal={closeModal}
                 onClick={handleShowProjectDetails}
                 typeOfProject={typeOfProject}
               />
@@ -98,6 +100,13 @@ export default function CloseSiveNav({
             {showProjectOptions && (
               <CreateProjectOptions onClick={handleOpenProjectOptions} />
             )}
+            {/* {showProjectOptions && pathname.includes("/mapping") ? (
+              <CreateNewMapping onClick={closeModal}/>
+            ) : showProjectOptions ? (
+              <CreateProjectOptions onClick={handleOpenProjectOptions} />
+            ) : (
+              ""
+            )} */}
           </DialogContent>
         </Dialog>
         <div className="flex justify-between gap-2 hover:cursor-pointer">
@@ -119,6 +128,7 @@ export default function CloseSiveNav({
         <div className="max-h-[200px] overflow-y-auto">
           {deployedProjects?.map((item) => (
             <p
+              key={item.id}
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
                 router.push(Route.details + `/${item.id}`);

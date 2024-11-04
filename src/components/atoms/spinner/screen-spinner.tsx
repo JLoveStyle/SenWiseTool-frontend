@@ -1,13 +1,9 @@
+import { Spinner } from "./spinner";
+
 export const ScreenSpinner = () => {
   return (
-    <div className="loader">
-      <div className="loader-square"></div>
-      <div className="loader-square"></div>
-      <div className="loader-square"></div>
-      <div className="loader-square"></div>
-      <div className="loader-square"></div>
-      <div className="loader-square"></div>
-      <div className="loader-square"></div>
+    <div className="flex items-center justify-center h-screen">
+      <Spinner size="very-large" color="#333" />
     </div>
   );
 };

@@ -1,6 +1,7 @@
+"use server";
 import { Route } from "@/lib/route";
-import { TrainingType } from "@/types/api-types";
-import { DBTrainingProps, LocalTrainingProps } from "@/types/formData";
+import { ApiDataResponse, TrainingType } from "@/types/api-types";
+import { DBTrainingProps } from "@/types/formData";
 import {
   mutateApiData,
   mutateDelApiData,
@@ -8,37 +9,23 @@ import {
 } from "@/utiles/services/mutations";
 import ApiCall from "./httpClients";
 import { fetchApiData } from "./queries";
-import { LOCAL_STORAGE } from "./storage";
+// import { LOCAL_STORAGE } from "./storage";
 
 export const db_create_training = async (data: DBTrainingProps) => {
-  const db = new ApiCall();
-
-  // Local storage
-
-  let trainings = LOCAL_STORAGE.get("trainings")
-    ? LOCAL_STORAGE.get("trainings")
-    : [];
-
-  const id = trainings.length !== 0 ? trainings.at(-1).id + 1 : 1;
-
-  const localDbData = { id: id, ...data, status: "DRAFT" };
-
-  trainings.push(localDbData);
-  LOCAL_STORAGE.save("trainings", trainings);
-
-  const response = {
-    message: {
-      message: "Created successfull",
-      statusCode: 201,
-    },
-  };
-  return { response: response, status: "success" };
-  // end local storage
-
-  return mutateApiData<TrainingType>(Route.training, data)
+  return mutateApiData(Route.training, data)
     .then((response) => {
-      if (response.status) return { response: response, status: "success" };
-      else return { response: response, status: "error" };
+      if (response.status === 201)
+        return {
+          message: "Training created successfully ",
+          response: response.data,
+          status: "success",
+        };
+      else
+        return {
+          message: "Creating training failed",
+          code: (response?.status as number) || 500,
+          status: "error",
+        };
     })
     .catch((error) => {
       return { response: error, status: "error" };
@@ -46,112 +33,68 @@ export const db_create_training = async (data: DBTrainingProps) => {
 };
 
 export const db_update_training = async (data: DBTrainingProps, id: string) => {
-  const db = new ApiCall();
-
-  const url_formated = `${Route.training}/${id}`;
-
-  // Local storage
-
-  let trainings = LOCAL_STORAGE.get("trainings")
-    ? LOCAL_STORAGE.get("trainings")
-    : [];
-
-  let localDbData: LocalTrainingProps[] = [];
-
-  trainings.forEach((training: LocalTrainingProps) => {
-    if (training.id === id) {
-      localDbData.push({ ...training, ...data });
-    } else {
-      localDbData.push(training);
-    }
-  });
-
-  LOCAL_STORAGE.save("trainings", localDbData);
-
-  const response = {
-    message: {
-      message: "Updated successfull",
-      statusCode: 201,
-    },
-  };
-  return { response: response, status: "success" };
-  // end local storage
-
-  mutateUpApiData<TrainingType>(Route.training, data, id)
+  return mutateUpApiData<ApiDataResponse<TrainingType>>(
+    Route.training,
+    data,
+    id
+  )
     .then((response) => {
-      // const result = response.json();
-      // return { data: result.message };
-      console.log("Réponse du serveur :", response);
+      if (typeof response != "undefined" && response?.status === 204)
+        return {
+          message: "Training updated successfully ",
+          response: response.data,
+          status: "success",
+        };
+      else
+        return {
+          message: "Creating training failed",
+          code: (response?.status as number) || 500,
+          status: "error",
+        };
     })
     .catch((error) => {
-      // return {
-      //   error: {
-      //     message: (error as Error).message || "Erreur inconnue",
-      //     code: (error as any).code || 500,
-      //   },
-      // };
-      console.error("Erreur lors de l'envoi des données :", error);
+      return { response: error, status: "error" };
     });
 };
 
-export const db_get_trainings = async (companyId: string) => {
+export const db_get_trainings = async (training_id?: string) => {
   const db = new ApiCall();
 
-  fetchApiData<TrainingType>(Route.training, companyId)
+  return await fetchApiData<ApiDataResponse<TrainingType[] | TrainingType>>(
+    Route.training,
+    training_id
+  )
     .then((response) => {
-      console.log("Réponse du serveur :", response);
+      if (typeof response != "undefined") {
+        console.log('Key training', response)
+        return response.data;
+      }
     })
     .catch((error) => {
       console.error("Erreur lors de l'envoi des données :", error);
+      if (!training_id) return [] as TrainingType[];
+      return null;
     });
-  return [];
 };
 
 export const db_delete_training = async (id: string) => {
-  const db = new ApiCall();
-
-  // Local storage
-
-  let trainings = LOCAL_STORAGE.get("trainings")
-    ? LOCAL_STORAGE.get("trainings")
-    : [];
-
-  let localDbData: LocalTrainingProps[] = [];
-
-  trainings.forEach((training: LocalTrainingProps) => {
-    if (training.id !== id) {
-      localDbData.push(training);
-    }
-  });
-
-  console.log("NewData ", localDbData);
-
-  LOCAL_STORAGE.save("trainings", localDbData);
-
-  const response = {
-    message: {
-      message: "Updated successfull",
-      statusCode: 201,
-    },
-  };
-  return { response: response, status: "success" };
-  // end local storage
-
-  // const url_formated = `${Route.db_base_url}/${id}`;
-
-  mutateDelApiData<TrainingType>(Route.training, id)
+  return mutateDelApiData<ApiDataResponse<TrainingType>>(Route.training, id)
     .then((response) => {
-      // const result = response.json();
-      // return { data: result.message };
-      console.log("Réponse du serveur :", response);
+      if (typeof response != "undefined" && response?.status === 204)
+        return { data: response.message };
+      return {
+        error: {
+          message: "Deleting training failed",
+          code: (response?.status as number) || 500,
+        },
+      };
     })
     .catch((error) => {
-      // return {
-      //   error: {
-      //     message: (error as Error).message || "Erreur inconnue",
-      //     code: (error as any).code || 500,
-      //   },
-      // };
-      console.error("Erreur lors de l'envoi des données :", error);
+      return {
+        error: {
+          message: (error as Error).message || "Erreur inconnue",
+          code: (error as any).code || 500,
+        },
+      };
     });
 };

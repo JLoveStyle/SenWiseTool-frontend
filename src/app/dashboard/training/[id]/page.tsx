@@ -9,8 +9,11 @@ import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
+import { TrainingType } from "@/types/api-types";
 import { LocalTrainingProps, TrainingProps } from "@/types/formData";
+import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { db_get_trainings } from "@/utiles/services/training";
 // import dayjs from "dayjs";
 import {
   Archive,
@@ -26,31 +29,69 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { PiFilesFill, PiPrinterFill } from "react-icons/pi";
+import { toast } from "react-toastify";
 interface Props {
   displayForm: boolean;
 }
 
-export default function TrainingDetails() {
-  const { id } = useParams();
+type TProps = {
+  params: {
+    id: string;
+  }
+}
+
+export default function TrainingDetails({ params: { id } }: TProps) {
+  // const { id } = useParams();
 
   // const { value: displayForm, toggle: toggleForm } = useToggle();
   const [currentTrainingData, setCurrentTrainingData] =
     useState<TrainingProps>();
   const [dbCurrentTrainingData, setDbCurrentTrainingData] =
     useState<LocalTrainingProps>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [displayComponent, setDisplayComponent] = useState<
     "trainingDetails" | "attendanceSheet"
   >("trainingDetails");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await LOCAL_STORAGE.get("trainings");
+  async function fetchTraining () {
+    setIsLoading(prev => ! prev)
+    await fetchApiData(Route.training, id)
+      .then((response) => {
+        if (response.status > 205) {
+          toast.error("Could not fetch tranings. Please refresh")
+          return
+        }
+        console.log('this are training =>', response)
+        setCurrentTrainingData({
+          id: response.data.id,
+          title: response.data.title,
+          start_date: response.data.start_date,
+          end_date: response.data.end_date,
+          location: response.data.location,
+          modules: response.data.modules.map((module: string, index: number) => ({
+            id: index,
+            value: module,
+          })),
+        });
+        setIsLoading(false);
 
-      const training = result.find(
-        (training: LocalTrainingProps) => training.id == id
-      );
-      setDbCurrentTrainingData(training);
+      })
+      .catch((error) => {
+        toast.error('Something sent wrong please try again')
+        console.log(error)
+      })
+  }
+
+  useEffect(() => {
+    fetchTraining()
+    const fetchData = async () => {
+      // const result = await LOCAL_STORAGE.get("trainings");
+
+      // const training = result.find(
+      //   (training: LocalTrainingProps) => training.id == id
+      // );
+      const training = await db_get_trainings(id!) as TrainingType;
+      // setDbCurrentTrainingData(training);
 
       if (training) {
         setCurrentTrainingData({
@@ -68,7 +109,7 @@ export default function TrainingDetails() {
       }
     };
 
-    fetchData();
+    // fetchData();
   }, []);
 
   useEffect(() => { }, [currentTrainingData]);

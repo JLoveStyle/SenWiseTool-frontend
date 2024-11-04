@@ -5,9 +5,6 @@ import CustomSelectTag from "../../molecules/select";
 import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { businessActivity } from "@/utiles/services/constants";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import CardLayout from "../../templates/cardLayout";
 import { Textarea } from "../../ui/textarea";
 import { Bounce, toast } from "react-toastify";
@@ -15,6 +12,7 @@ import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { ProjectType } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { businessActivity } from "@/utiles/services/constants";
 
 type Props = {
   onClick: (val1: boolean) => void;
@@ -37,15 +35,13 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     country: project?.country,
     description: project?.description,
     city: project?.city,
-    state: project?.state,
+    region: project?.region,
     start_date: project?.start_date,
     end_date: project?.end_date,
     status: "DRAFT",
   });
 
   const id = LOCAL_STORAGE.get("projectId");
-
-  const animatedComponents = makeAnimated(); // For react-select
 
   const handleChangeEvent = (
     e: React.ChangeEvent<
@@ -68,7 +64,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
     }
     if (state) {
       for (const item of state) {
-        if (item.name === data.state) {
+        if (item.name === data.region) {
           setCity(
             City.getCitiesOfState(selectedCountryObject.isoCode, item.isoCode)
           );
@@ -90,7 +86,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
         country: projectData?.country,
         city: projectData.city,
         sector_activity: projectData.sector_activity,
-        state: projectData.state,
+        region: projectData.region,
         start_date: projectData.start_date,
         end_data: projectData.end_date,
       },
@@ -210,18 +206,9 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
             onChange={(e) => handleChangeEvent(e)}
             label="Region"
             arrayOfItems={state}
-            value={projectData.state as string}
+            value={projectData?.region as string}
             className="md:w-[33.33%]"
           />
-          {/* <div className="flex flex-col ">
-            <label htmlFor="region">Region</label>
-            <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              isMulti
-              options={state}
-            />
-          </div> */}
           <CustomSelectTag
             selectName="city"
             onChange={(e) => handleChangeEvent(e)}
@@ -253,7 +240,7 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
           </Button>
           <Button
             type="submit"
-            className={isLoading ? "hover:cursor-wait opacity-70" : ""}
+            className={isLoading ? "hover:cursor-wait opacity-70 hover:bg-tertiary bg-tertiary" : "bg-tertiary hover:bg-tertiary"}
           >
             {isLoading ? <Spinner /> : "EDIT PROJECT"}
           </Button>

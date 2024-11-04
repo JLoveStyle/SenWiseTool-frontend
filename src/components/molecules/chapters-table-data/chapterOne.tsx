@@ -90,9 +90,9 @@ export function ChaptersRequirements<TData, TValue>({
         ) : (
           <Input
             placeholder="Filter projects by No..."
-            value={(table.getColumn("number")?.getFilterValue() as string) ?? ""}
+            value={(table.getColumn("num")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("number")?.setFilterValue(event.target.value)
+              table.getColumn("num")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />

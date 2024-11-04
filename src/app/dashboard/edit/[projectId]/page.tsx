@@ -1,5 +1,8 @@
 "use client";
-import { groupedColumns } from "@/components/atoms/colums-of-tables/chapter";
+import {
+  ChapterMetaData,
+  groupedColumns,
+} from "@/components/atoms/colums-of-tables/chapter";
 import { Logo } from "@/components/atoms/logo";
 import { ChaptersRequirements } from "@/components/molecules/chapters-table-data/chapterOne";
 import dynamic from "next/dynamic";
@@ -21,19 +24,16 @@ import {
 } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
 import { chapters, requirements } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { Library, Pencil, Settings, X } from "lucide-react";
+import { Pencil, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Bounce, toast } from "react-toastify";
-import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
-// import EditProjectFormDatails from "@/components/organisms/projectFormDetails/edit";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
-import { ProjectStatus, ProjectType } from "@/types/api-types";
+import { ProjectType } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 
 const AddFormFromLibrary = dynamic(
@@ -57,13 +57,16 @@ type Props = {
 
 export default function page({ params: { projectId } }: Props) {
   const router = useRouter();
-  const projectDetails: Project = LOCAL_STORAGE.get("project"); // Only for project title editoring
+  const projectDetails: ProjectType = LOCAL_STORAGE.get("project"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [displayChapOne, setDisplayChapOne] = useState<boolean>(true);
   const [displayChapTwo, setDisplayChapTwo] = useState<boolean>(false);
   const [displayChapThree, setDisplayChapThree] = useState<boolean>(false);
+  const [displayChapFour, setDisplayChapFour] = useState<boolean>(false);
+  const [displayChapFive, setDisplayChapFive] = useState<boolean>(false);
+  const [displayChapSix, setDisplayChapSix] = useState<boolean>(false);
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: projectDetails.title,
     id: projectDetails.id,
@@ -73,18 +76,16 @@ export default function page({ params: { projectId } }: Props) {
     sector_activity: projectDetails.sector_activity,
     country: projectDetails.country,
     city: projectDetails.city,
-    state: projectDetails.state,
+    region: projectDetails.region,
   });
 
-  const [chap1, chap2, chap3] = requirements;
-  const chapitre1 = chap1.chapter1;
-  const chapitre2 = chap2.chapitre2;
-  const chapitre3 = chap3.chapitre3;
-
-  // Fetch all requirements
-  useEffect(() => {
-    // function to fetch all requirements and per chapters
-  }, []);
+  const [chap1, chap2, chap3, chap4, chap5, chap6] = requirements;
+  const chapitre1 = chap1.content;
+  const chapitre2 = chap2.content;
+  const chapitre3 = chap3.content;
+  const chapitre4 = chap4.content;
+  const chapitre5 = chap5.content;
+  const chapitre6 = chap6.content;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = {
@@ -101,16 +102,28 @@ export default function page({ params: { projectId } }: Props) {
   }
 
   async function handleProjectDraft() {
-    setIsSaving((prev) => !prev);
     // get data from localStorage
     const id = LOCAL_STORAGE.get("projectId");
     const metaData: string[] = LOCAL_STORAGE.get("formMetadata");
+
+    // Check if user has tick metadata
+    if (!metaData?.length) {
+      toast.warning("Please choose form metadata");
+      setOpenSheet(true);
+      return;
+    }
+
+    setIsSaving((prev) => !prev);
+
     let chapitre: any = [];
     let constructedRequirements: DeployableFormMetadata[] = [];
-    for (let i = 0; i <= 5; i++) {
+    for (let i = 0; i <= 10; i++) {
       chapitre.push(LOCAL_STORAGE.get(`chap_one_req${i}`));
       chapitre.push(LOCAL_STORAGE.get(`chap_two_req${i}`));
       chapitre.push(LOCAL_STORAGE.get(`chap_three_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_four_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_five_req${i}`));
+      chapitre.push(LOCAL_STORAGE.get(`chap_six_req${i}`));
     }
     // remove undefined items in the array
     const res = chapitre.filter((item: any) => item !== undefined).flat();
@@ -124,8 +137,8 @@ export default function page({ params: { projectId } }: Props) {
           C: false,
         },
         principal_requirement: res[i].principal_requirement,
-        certication_de_group: res[i].certication_de_group,
-        number: res[i].number,
+        certif_de_group: res[i].certif_de_group,
+        number: res[i].num,
         comment: "",
       });
     }
@@ -140,10 +153,13 @@ export default function page({ params: { projectId } }: Props) {
 
     // router.push(Route.editProject + `/${projectId}/pdf`);
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       LOCAL_STORAGE.remove(`chap_one_req${i}`);
       LOCAL_STORAGE.remove(`chap_two_req${i}`);
       LOCAL_STORAGE.remove(`chap_three_req${i}`);
+      LOCAL_STORAGE.remove(`chap_four_req${i}`);
+      LOCAL_STORAGE.remove(`chap_five_req${i}`);
+      LOCAL_STORAGE.remove(`chap_six_req${i}`);
     }
 
     // Make a patch request with the project id
@@ -160,14 +176,14 @@ export default function page({ params: { projectId } }: Props) {
         if (response.status <= 205) {
           toast.success("Project saved", {
             transition: Bounce,
-            autoClose: 1000,
+            autoClose: 3000,
           });
           router.push(Route.editProject + `/${projectId}/pdf`);
           setIsSaving((prev) => !prev);
         } else {
           toast.error("Something went wrong. Please try again", {
             transition: Bounce,
-            autoClose: 1000,
+            autoClose: 3000,
           });
           setIsSaving((prev) => !prev);
         }
@@ -175,7 +191,7 @@ export default function page({ params: { projectId } }: Props) {
       .catch((error) => {
         toast.error("Something went wrong. Please try again", {
           transition: Bounce,
-          autoClose: 1000,
+          autoClose: 3000,
         });
         setIsSaving((prev) => !prev);
         console.log("An error occured", error);
@@ -319,14 +335,44 @@ export default function page({ params: { projectId } }: Props) {
                       setDisplayChapOne(true);
                       setDisplayChapTwo(false);
                       setDisplayChapThree(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
                     } else if (chap === "Chapter 2") {
                       setDisplayChapOne(false);
                       setDisplayChapTwo(true);
                       setDisplayChapThree(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
                     } else if (chap === "Chapter 3") {
                       setDisplayChapThree(true);
                       setDisplayChapOne(false);
                       setDisplayChapTwo(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
+                    } else if (chap === "Chapter 4") {
+                      setDisplayChapThree(false);
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(false);
+                      setDisplayChapFour(true);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(false);
+                    } else if (chap === "Chapter 5") {
+                      setDisplayChapThree(false);
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(true);
+                      setDisplayChapSix(false);
+                    } else if (chap === "Chapter 6") {
+                      setDisplayChapThree(false);
+                      setDisplayChapOne(false);
+                      setDisplayChapTwo(false);
+                      setDisplayChapFour(false);
+                      setDisplayChapFive(false);
+                      setDisplayChapSix(true);
                     }
                   }}
                 >
@@ -379,6 +425,54 @@ export default function page({ params: { projectId } }: Props) {
                     incomingColumns={groupedColumns}
                     incomingData={chap.content}
                     key2localStorage={`chap_three_req${idx}`}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+          {displayChapFour && (
+            <>
+              {chapitre4?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage={`chap_four_req${idx}`}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+          {displayChapFive && (
+            <>
+              {chapitre5?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage={`chap_five_req${idx}`}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+          {displayChapSix && (
+            <>
+              {chapitre6?.map((chap, idx) => (
+                <div key={idx}>
+                  <h1 className="font-semibold pt-6">
+                    {chap.numero} - {chap.title}
+                  </h1>
+                  <ChaptersRequirements
+                    incomingColumns={groupedColumns}
+                    incomingData={chap.content}
+                    key2localStorage={`chap_six_req${idx}`}
                   />
                 </div>
               ))}

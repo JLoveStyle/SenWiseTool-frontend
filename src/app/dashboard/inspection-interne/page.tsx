@@ -1,12 +1,20 @@
 "use client";
+import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
-import ProjectDisplay from "@/components/organisms/projectsDisplay";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
+
+const ProjectDisplay = dynamic(
+  () => import("@/components/organisms/projectsDisplay"),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {};
 
@@ -15,7 +23,7 @@ export default function Home({}: Props) {
     useState<ProjectType[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   // Fetech all projects xwith ["INTERNAL_INSPECTION"] and pass it as props to layout
   async function fetchAllInternalInspectionProject() {
@@ -23,13 +31,19 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "?type=INSPECTION_INTERN",
+      "?type=INTERNAL_INSPECTION",
       currentCampaign?.id
     )
       .then((response) => {
-        console.log("all initial_inspection projects", response);
-        if (response.statusCode.toString().startsWith("2")) {
-          setInternalInspectionProjects(response.data);
+        console.log("all internal_inspection projects", response);
+        if (response.status === 200) {
+          const filteredProjects = [];
+          for (const data of response.data) {
+            if (data.code.length < 5) {
+              filteredProjects.push(data);
+            }
+          }
+          setInternalInspectionProjects(filteredProjects);
         }
         setIsLoading((prev) => !prev);
       })
@@ -43,7 +57,6 @@ export default function Home({}: Props) {
     fetchAllInternalInspectionProject();
     console.log("inspection interne");
   }, [currentCampaign?.id, company?.id]);
-
 
   return (
     <LayoutDashboard
@@ -62,6 +75,7 @@ export default function Home({}: Props) {
         }
         // projects={[]}
         isLoading={isLoading}
+        columnListProjects={columnListProjects}
       />
     </LayoutDashboard>
   );

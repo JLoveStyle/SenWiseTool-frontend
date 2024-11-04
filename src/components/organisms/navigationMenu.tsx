@@ -14,17 +14,18 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Route } from "@/lib/route";
 import {
   optionsGestions,
   optionsRevenu,
   optionsTracabilité,
 } from "@/utiles/services/constants";
 
-export function NavigationMenuDemo() {
+export function FeaturesMenu() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="">
           <NavigationMenuTrigger className="">GESTION</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[1000px] md:grid-cols-3 lg:w-[600px] ">
@@ -40,7 +41,7 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="">
           <NavigationMenuTrigger className=" uppercase">
             Traçabilité
           </NavigationMenuTrigger>
@@ -58,7 +59,7 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        <NavigationMenuItem className="">
           <NavigationMenuTrigger className=" uppercase">
             Revenus et Responsabilités partagés
           </NavigationMenuTrigger>
@@ -76,22 +77,22 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
+        <NavigationMenuItem className="">
+          <Link href={Route.agriculture} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               AGRICULTURE
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
+        <NavigationMenuItem className="">
+          <Link href={Route.social} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               SOCIAL
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
+        <NavigationMenuItem className="">
+          <Link href={Route.environment} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               ENVIRONNEMENT
             </NavigationMenuLink>

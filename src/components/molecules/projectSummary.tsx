@@ -2,37 +2,91 @@
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
 import { Project } from "@/types/gestion";
+import { mutateUpApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import {
   ChevronRight,
   ClipboardType,
   Eye,
   FilePenLine,
-  UserRoundPlus,
+  Rocket,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Bounce, toast } from "react-toastify";
+import { Spinner } from "../atoms/spinner/spinner";
+import dayjs from "dayjs";
 
 type Props = {
   projectObject: ProjectType | undefined;
   showData: (val: boolean) => void;
+  showForm: (val: boolean) => void;
+  isDataLoading?: boolean
 };
 
-export default function ProjectSummary({ projectObject, showData }: Props) {
+export default function ProjectSummary({
+  projectObject,
+  showData,
+  showForm,
+  isDataLoading
+}: Props) {
   const router = useRouter();
-  const project = LOCAL_STORAGE.get("project");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const id = LOCAL_STORAGE.get("projectId");
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
-      text: "Data collection",
+      text: "Data collected",
       secondIcon: <ChevronRight />,
       function: () => showData(true),
     },
     {
-      firstIcon: <UserRoundPlus />,
-      text: "Share project",
-      secondIcon: <ChevronRight />,
-      function: () => {
-        console.log("hello2");
+      firstIcon: <Rocket />,
+      text: "Deploy project",
+      secondIcon: (
+        <div className="flex gap-6">
+          {isLoading ? <Spinner size="small" /> : ""}
+          <ChevronRight />
+        </div>
+      ),
+      function: async () => {
+        // First check if the status of the project is different from DEPLOYED
+        if (projectObject?.status !== "DEPLOYED") {
+          setIsLoading((prev) => !prev);
+          await mutateUpApiData(
+            Route.projects,
+            { status: "DEPLOYED" },
+            projectObject?.id
+          )
+            .then((response) => {
+              console.log("project deployed", response);
+              setIsLoading((prev) => !prev);
+              if (response.status <= 205) {
+                toast.success("Project deployed", {
+                  transition: Bounce,
+                  autoClose: 3000,
+                });
+              } else {
+                toast.error("Something went wrong. Try again", {
+                  autoClose: 3000,
+                  transition: Bounce,
+                });
+              }
+            })
+            .catch((error) => {
+              console.log("could not update project", error);
+              setIsLoading(false);
+              toast.error("Something went wrong. Try again", {
+                autoClose: 3000,
+                transition: Bounce,
+              });
+            });
+        } else {
+          toast.warning("Project deployed already", {
+            transition: Bounce,
+            autoClose: 3000,
+          });
+        }
       },
     },
     {
@@ -40,105 +94,132 @@ export default function ProjectSummary({ projectObject, showData }: Props) {
       text: "Edit form",
       secondIcon: <ChevronRight />,
       function: () => {
-        router.push(Route.editProject + `/${project?.id}`);
+        // router.push(Route.editProject + `/${project?.id}`);
+        router.push(Route.editProject + `/${id}`);
       },
     },
     {
       firstIcon: <Eye />,
       text: "View form",
       secondIcon: <ChevronRight />,
-      function: () => router.push(Route.editProject + `/${project?.id}/pdf`),
+      function: () => {
+        showForm(true);
+      },
     },
   ];
 
+  const jsonString = JSON.stringify(projectObject?.project_structure);
+
   return (
-    <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
+    <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-screen">
       <div className="md:w-[70%]">
         <p className="">Project details</p>
         <div className="bg-white md:w-full p-5 shadow">
+          {/* project title */}
+          <div className="flex gap-2 py-2 border-b pb-4 items-baseline">
+            <span className="text-sm text-gray-500 ">Title:</span>
+            {isDataLoading ? (
+              <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+            ) : (
+              <span className=" font-semibold text-lg px-2 rounded-lg">
+                {projectObject?.title}
+              </span>
+            )}
+          </div>
           <div className="border-b pb-4">
             <span className="text-sm font-semibold text-gray-500">
               Description
             </span>
-            <p className="">{projectObject?.description} </p>
+            <p className="font-semibold">{projectObject?.description} </p>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
-            <div className="flex md:w-[500px] justify-between">
+            <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
-                <span className="bg-green-200 text-sm px-2 rounded-lg">
+                <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
                   {projectObject?.status}
                 </span>
               </div>
-              {/* project title */}
+
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Title</span>
-                <span className="bg-green-200 text-sm px-2 rounded-lg">
-                  {projectObject?.title}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">N° Questions</span>
+                <span className="text-sm text-gray-500 ">N° of Questions</span>
                 {projectObject?.project_structure && (
-                  <span className="bg-green-200 text-sm px-2 rounded-lg">
-                    3
+                  <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
+                    {JSON.parse(jsonString).requirements.length}
                   </span>
                 )}
               </div>
-
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Project Type</span>
+                <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
+                  {projectObject?.type}
+                </span>
+              </div>
             </div>
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
-            <div className="flex md:w-[500px] justify-between">
+            <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Start date</span>
-                <span className=" text-sm rounded-lg">
-                  {projectObject?.start_date}
+                <span className=" text-sm text-center rounded-lg font-semibold">
+                  {dayjs(projectObject?.start_date).toString().slice(0, -13)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">End date</span>
-                <span className=" text-sm rounded-lg">
-                  {projectObject?.end_date}
+                <span className=" text-sm text-center rounded-lg font-semibold">
+                  {dayjs(projectObject?.end_date).toString().slice(0, -13)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last update</span>
-                <span className=" text-sm rounded-lg">
-                  {projectObject?.updated_at}
+                <span className=" text-sm rounded-lg font-semibold">
+                  {dayjs(projectObject?.updated_at).toString().slice(0, -4)}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between md:w-full py-4 border-b ">
+            <div className="flex md:w-full justify-between">
+              <div className="flex flex-col gap-2 py-2">
+                <span className="text-sm text-gray-500 ">Created at</span>
+                <span className=" text-sm text-center rounded-lg font-semibold">
+                  {dayjs(projectObject?.created_at).toString().slice(0, -4)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Last deployment</span>
-                <span className=" text-sm rounded-lg">
-                  {projectObject?.deployed_at}
+                <span className=" text-sm rounded-lg text-center font-semibold">
+                  {projectObject?.deployed_at.includes("1969")
+                    ? "--"
+                    : dayjs(projectObject?.deployed_at).toString().slice(0, -4)}
                 </span>
               </div>
             </div>
           </div>
           <div className="flex justify-between md:w-full pt-4">
-            <div className="flex md:w-[500px] justify-between">
+            <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Country</span>
-                <span className=" text-sm rounded-lg">
+                <span className=" text-sm rounded-lg font-semibold">
                   {projectObject?.country}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Region</span>
-                <span className=" text-sm rounded-lg">
-                  {projectObject?.state}
+                <span className=" text-sm rounded-lg font-semibold">
+                  {projectObject?.region}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Ville</span>
-                <span className=" text-sm rounded-lg">
+                <span className=" text-sm rounded-lg font-semibold">
                   {projectObject?.city}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Business sector</span>
-                <span className=" text-sm rounded-lg">
+                <span className=" text-sm rounded-lg font-semibold">
                   {projectObject?.sector_activity}
                 </span>
               </div>

@@ -18,7 +18,6 @@ const apiCall = new ApiCall()
  * created resource.
  */
 export async function mutateApiData<T>(route: string, valueToStore: Partial<T>) {
-
     return apiCall['POST'](`${API_URL}/${route}`, valueToStore)
 }
 
@@ -37,10 +36,10 @@ export async function mutateApiData<T>(route: string, valueToStore: Partial<T>) 
  *
  * @returns {Promise<T>} The data that was just stored in the database.
  */
-export async function mutateUpApiData<T>(route: string, valueToStore: Partial<T>, params?: string) {
+export async function mutateUpApiData<T>(route: string, valueToStore: Partial<T | any>, params?: string) {
     return apiCall['PATCH'](`${API_URL}/${route}/${params}`, valueToStore)
 }
 
-export async function mutateDelApiData<T>(route: string, params?: string) {
+export async function mutateDelApiData<T>(route: string, params?: string): Promise<T | null> {
     return apiCall['DELETE'](`${API_URL}/${route}/${params}`)
 }

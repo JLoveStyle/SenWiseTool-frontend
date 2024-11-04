@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "../atoms/spinner/spinner";
 import {
@@ -33,13 +32,13 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
-import { ProjectType } from "@/types/api-types";
 
 interface DataTableProps<TData, TValue> {
   incomingColumns: ColumnDef<TData, TValue>[];
   incomingData: TData[];
   onSelecteItem: (value: TData[]) => void;
   isLoading?: boolean;
+  inputPlaceholder?: string
 }
 
 export function DataTable<TData, TValue>({
@@ -47,6 +46,7 @@ export function DataTable<TData, TValue>({
   incomingData,
   onSelecteItem,
   isLoading,
+  inputPlaceholder
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -55,8 +55,6 @@ export function DataTable<TData, TValue>({
 
   const data = useMemo(() => incomingData, [incomingData]);
   const columns = useMemo(() => incomingColumns, []);
-
-  console.log('loadx for datatable', isLoading)
 
   const table = useReactTable({
     data,
@@ -78,13 +76,10 @@ export function DataTable<TData, TValue>({
   });
 
   useEffect(() => {
-    const selectedPro = table
-      .getSelectedRowModel()
-      .flatRows.map((pro) => {
-        // console.log(pro.original);
-        return pro.original;
-      });
-    console.log("selPro =>", selectedPro);
+    const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
+      // console.log(pro.original);
+      return pro.original;
+    });
     onSelecteItem(selectedPro);
   }, [rowSelection]);
 
@@ -92,10 +87,10 @@ export function DataTable<TData, TValue>({
     <>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter projects..."
-          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+          placeholder={inputPlaceholder ?? "Filter projects..."}
+          // value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("id")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
