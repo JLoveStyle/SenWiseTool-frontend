@@ -33,7 +33,9 @@ export default function Home({ params: { id } }: Props) {
 
   return (
     <LayoutDashboardTemplate title="Project details">
-      <ProjectDetails projectDetails={projectData as ProjectType} />
+      <ProjectDetails
+        projectDetails={projectData as ProjectType}
+      />
     </LayoutDashboardTemplate>
   );
 }

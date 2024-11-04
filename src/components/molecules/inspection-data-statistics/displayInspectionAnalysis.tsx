@@ -7,29 +7,50 @@ type Props = {
 
 export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
   console.log("result from comp", inspectionData);
-  // Pourcentage C par chapitre
+  // Pourcentage C par Chapter
   const pourcentageC = (totalConforme: number, totalApplicable: number) => {
-    return (totalConforme / totalApplicable) * 100;
+    return ((totalConforme / totalApplicable) * 100).toFixed(2);
   };
 
   // Pourcentage NC par chap
   const pourcentageNC = (totalNc: number, totalA: number) => {
-    return (totalNc / totalA) * 100;
+    return ((totalNc / totalA) * 100).toFixed(2);
   };
 
   // Pourcentage NA par chap
   const pourcentageNA = (totalNA: number, totalA: number) => {
-    return (totalNA / totalA) * 100;
+    return ((totalNA / totalA) * 100).toFixed(2);
   };
 
   // %tage general
+  const pourcentageGeneral = () => {
+    let total: { C: number; NC: number; NA: number } = {
+      C: 0,
+      NC: 0,
+      NA: 0,
+    };
+    Object.values(inspectionData as {}).forEach((item: any) => {
+      if (typeof item === "object") {
+        total["C"] += item.C;
+        total["NA"] += item.NA;
+        total["NC"] += item.NC;
+      }
+    });
+
+    return total;
+  };
 
   return (
     <>
-      <h1 className="font-bold text-center">Pourcentage par chapitre</h1>
+      <h1 className="font-bold text-center pt-2">Percentages per chapters</h1>
       <div className="flex gap-4 justify-evenly ">
         <div className="">
-          <h1 className="font-semibold py-3 ">Chapitre 1</h1>
+          <h1
+            className="font-semibold py-3 "
+            onClick={() => pourcentageGeneral()}
+          >
+            Chapter 1
+          </h1>
           <ul>
             <li className="list-disc font-bold">
               C:{" "}
@@ -57,7 +78,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
             </li>
           </ul>
 
-          <h1 className="font-semibold py-3">Chapitre 2</h1>
+          <h1 className="font-semibold py-3">Chapter 2</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -84,7 +105,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               %
             </li>
           </ul>
-          <h1 className="font-semibold py-3">Chapitre 3</h1>
+          <h1 className="font-semibold py-3">Chapter 3</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -113,7 +134,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
           </ul>
         </div>
         <div>
-          <h1 className="font-semibold py-3 ">Chapitre 4</h1>
+          <h1 className="font-semibold py-3 ">Chapter 4</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -140,7 +161,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               %
             </li>
           </ul>
-          <h1 className="font-semibold py-3 ">Chapitre 5</h1>
+          <h1 className="font-semibold py-3 ">Chapter 5</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -167,7 +188,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               %
             </li>
           </ul>
-          <h1 className="font-semibold py-3 ">Chapitre 6</h1>
+          <h1 className="font-semibold py-3 ">Chapter 6</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -199,9 +220,30 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
       <div className="flex flex-col justify-center items-center py-3">
         <h1 className="font-bold py-3 ">Pourcentage general</h1>
         <ul className="">
-          <li className="list-disc font-bold">C: 14%</li>
-          <li className="list-disc font-bold">NC: 75%</li>
-          <li className="list-disc font-bold">NA: 25%</li>
+          <li className="list-disc font-bold">
+            C:{" "}
+            {(
+              (pourcentageGeneral().C / (inspectionData?.total_A ?? 1)) *
+              100
+            ).toFixed(2)}{" "}
+            %
+          </li>
+          <li className="list-disc font-bold">
+            NC:{" "}
+            {(
+              (pourcentageGeneral().NC / (inspectionData?.total_A ?? 1)) *
+              100
+            ).toFixed(2)}{" "}
+            %
+          </li>
+          <li className="list-disc font-bold">
+            NA:{" "}
+            {(
+              (pourcentageGeneral().NA / (inspectionData?.total_A ?? 1)) *
+              100
+            ).toFixed(2)}{" "}
+            %
+          </li>
         </ul>
       </div>
     </>

@@ -9,6 +9,7 @@ import { Bounce, toast } from "react-toastify";
 import FinalFormData from "../molecules/chapters-table-data/finalFormData";
 import slugify from "slugify";
 import { useCompanyStore } from "@/lib/stores/companie-store";
+import PrintContent from "../atoms/print-and-edit-content";
 
 type Props = {
   projectObject: ProjectType | undefined;
@@ -40,6 +41,10 @@ export default function ProjectForm({ projectObject }: Props) {
 
   // DEPLOY PROJECT
   async function deployProject() {
+    if (projectObject?.status === "DEPLOYED") {
+      toast.warning('Project deployed already')
+      return
+    }
     setIsLoading((prev) => !prev);
     await mutateUpApiData(
       Route.projects,
@@ -53,6 +58,7 @@ export default function ProjectForm({ projectObject }: Props) {
             transition: Bounce,
             autoClose: 3000,
           });
+          setIsLoading(false)
         }
         if (response.statusCode >= 205) {
           toast.error(`Sorry something went wrong`, {
@@ -70,12 +76,23 @@ export default function ProjectForm({ projectObject }: Props) {
       });
   }
 
+  const handleBackBtn = () => {
+    if (projectObject?.type == "AUTO_EVALUATION") {
+      router.push(Route.autoEvaluation);
+    } else if (projectObject?.type == "INITIAL_INSPECTION") {
+      router.push(Route.inspectionInitial);
+    } else if (projectObject?.type == "INTERNAL_INSPECTION") {
+      router.push(Route.inspectionInterne);
+    }
+  };
+
   return (
-    <Print
-      handleExitPage={() => router.push(Route.dashboard)}
-      onClick={() => router.push(Route.editProject + `/${projectObject?.id}`)}
-      deployProject={() => deployProject()}
-      fileName="inspection-form"
+    <PrintContent
+    isDeploying={isLoading}
+    handleExitPage={handleBackBtn}
+    onClick={() => router.push(Route.editProject + `/${projectObject?.id}`)}
+    deployProject={() => deployProject()}
+    filename="formulaire-d'inspection"
     >
       <div className="my-10 md:w-[80%] mx-auto borderp-6 ">
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
@@ -153,6 +170,6 @@ export default function ProjectForm({ projectObject }: Props) {
           <FinalFormData selectedProjects={finalJson?.requirements} />
         </div>
       </div>
-    </Print>
+    </PrintContent>
   );
 }

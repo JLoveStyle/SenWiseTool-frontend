@@ -1,372 +1,179 @@
-import { AnalysisProps, InspectionDataType, ProjectsType } from "@/types/api-types";
+import { InspectionDataPops, InspectionDataType } from "@/types/api-types";
 import React, { useEffect, useState } from "react";
-import DisplayInspectionAnalysis from "../displayInspectionAnalysis";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { fetchApiData } from "@/utiles/services/queries";
+import { Route } from "@/lib/route";
+import { toast } from "react-toastify";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import dayjs from "dayjs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import dynamic from "next/dynamic";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { handleAnalysis, testFonction } from "@/utiles/services/Data-analysis/single-inspection-analysis";
+
+const DisplayInspectionAnalysis = dynamic(
+  () => import("../inspection-data-statistics/displayInspectionAnalysis"),
+  {
+    ssr: false,
+  }
+);
+
+const DisplaySingleInspectionData = dynamic(
+  () => import("../inspection-data-statistics/displaySingleInspectionData"),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
-  projectType: ProjectsType;
+  project_id: string;
+  projectName: string;
 };
 
-export default function InspectionData({ projectType }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [inspectionDatas, setIspectionDatas] = useState<InspectionDataType>()
+export default function InspectionData({ project_id, projectName }: Props) {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [inspectionDatas, setInspectionDatas] = useState<InspectionDataType>();
+  const [singleInspectionData, setSingleInspectionData] =
+    useState<InspectionDataPops>();
+  const [data, setData] = useState<InspectionDataPops[]>([]);
 
-  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   // fetch all projects with answers by type. this will come from project_audit table
-  async function fetchAllInpectionData(type: ProjectsType) {
-    setIsLoading((prev) => !prev);
+  async function fetchAllInpectionData(id: string) {
+    // setIsLoading((prev) => !prev);
+    await fetchApiData(Route.inspectionData + `/${id}`, "current")
+      .then((response) => {
+        if (response.status === 201) {
+          console.log(response.data);
+          setData(response.data);
+          setIsLoading(false);
+          return;
+
+          // setInspectionDatas(response.data);
+        } else {
+          setIsLoading(false);
+          toast.error("Could not fetch inspection data of this project");
+          return;
+        }
+      })
+      .catch((error) => {
+        setIsLoading((prev) => !prev);
+        console.log(error);
+        toast.error("Something went wrong. Please refresh this page");
+      });
   }
 
   useEffect(() => {
-    // fetchAllInpectionData(projectType);
+    fetchAllInpectionData("cm2qknh24001310qtmrs5uwpp");
   }, []);
 
-  const jsonObj = [
-    {
-      nom_planteur: "Jean",
-      code_planteur: "40c2",
-      nom_inspecteur: "Luc",
-      village: "Awae",
-      date_inspection: "30/01/2023",
-      data: [
-        {
-          num: "1.1.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "6.3.1",
-          NC: true,
-          NA: false,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "5.4.1",
-          NC: false,
-          NA: false,
-          C: true,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "2.1.1",
-          NC: true,
-          NA: false,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "3.1.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "4.1.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "4.3.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "4.1.2",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-      ],
-    },
-    {
-      nom_planteur: "Blaise",
-      code_planteur: "40c2",
-      nom_inspecteur: "Louis",
-      village: "Mbouda",
-      date_inspection: "30/01/2023",
-      data: [
-        {
-          num: "1.1.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "1.2.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "6.3.1",
-          NC: true,
-          NA: false,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "6.3.5",
-          NC: true,
-          NA: false,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "5.4.1",
-          NC: false,
-          NA: false,
-          C: true,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "2.1.1",
-          NC: true,
-          NA: false,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "3.1.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "4.1.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-        {
-          num: "4.2.1",
-          NC: false,
-          NA: true,
-          C: false,
-          comment: "dsdvbdvbsd",
-        },
-      ],
-    },
-  ];
-
-  const analysis: AnalysisProps[] = [];
-
-  let result: InspectionDataType = {
-    total_A: jsonObj[0].data.length,
-    chapter1: {
-      C: 0,
-      NC: 0,
-      NA: 0,
-    },
-    chapter2: {
-      C: 0,
-      NC: 0,
-      NA: 0,
-    },
-    chapter3: {
-      C: 0,
-      NC: 0,
-      NA: 0,
-    },
-    chapter4: {
-      C: 0,
-      NC: 0,
-      NA: 0,
-    },
-    chapter5: {
-      C: 0,
-      NC: 0,
-      NA: 0,
-    },
-    chapter6: {
-      C: 0,
-      NC: 0,
-      NA: 0,
-    },
-  };
-
-  const handleAnalysis = (
-    datas: {
-      num: string;
-      NC: boolean;
-      NA: boolean;
-      C: boolean;
-      comment: string;
-    }[]
-  ) => {
-    console.log(datas);
-    setOpenModal(prev => !prev)
-
-    for (const data of datas) {
-      if (data.num.slice(0, 1) === "1") {
-        if (data.C) result['chapter1'].C ++
-        else if (data.NC) result['chapter1'].NC ++
-        else if (data.NA) result['chapter1'].NA ++ 
-      }
-      if (data.num.slice(0, 1) === "2") {
-        if (data.C) result['chapter2'].C ++
-        else if (data.NC) result['chapter2'].NC ++
-        else if (data.NA) result['chapter2'].NA ++ 
-      }
-      if (data.num.slice(0, 1) === "3") {
-        if (data.C) result['chapter3'].C ++
-        else if (data.NC) result['chapter3'].NC ++
-        else if (data.NA) result['chapter3'].NA ++ 
-      }
-      if (data.num.slice(0, 1) === "4") {
-        if (data.C) result['chapter4'].C ++
-        else if (data.NC) result['chapter4'].NC ++
-        else if (data.NA) result['chapter4'].NA ++ 
-      }
-      if (data.num.slice(0, 1) === "5") {
-        if (data.C) result['chapter5'].C ++
-        else if (data.NC) result['chapter5'].NC ++
-        else if (data.NA) result['chapter5'].NA ++ 
-      }
-      if (data.num.slice(0, 1) === "6") {
-        if (data.C) result['chapter6'].C ++
-        else if (data.NC) result['chapter6'].NC ++
-        else if (data.NA) result['chapter6'].NA ++ 
-      }
-    }
-    setIspectionDatas(result)
-    LOCAL_STORAGE.save('insection-data', result)
-    result = {
-      total_A: jsonObj[0].data.length,
-      chapter1: {
-        C: 0,
-        NC: 0,
-        NA: 0,
-      },
-      chapter2: {
-        C: 0,
-        NC: 0,
-        NA: 0,
-      },
-      chapter3: {
-        C: 0,
-        NC: 0,
-        NA: 0,
-      },
-      chapter4: {
-        C: 0,
-        NC: 0,
-        NA: 0,
-      },
-      chapter5: {
-        C: 0,
-        NC: 0,
-        NA: 0,
-      },
-      chapter6: {
-        C: 0,
-        NC: 0,
-        NA: 0,
-      },
-    };
-    console.log('res', result)
-  };
-  console.log("inspec", inspectionDatas);
-
   return (
-    <div className="bg-[#f3f4f6]  md:w-full">
-      <h2 className="text-center py-4 font-semibold">Project title: </h2>
-      <div className="flex">
-        <div className="md:w-[60%] px-6 ">
-          <table>
-            <thead>
-              <tr>
-                <th className="p-2  border">N°</th>
-                <th className="p-2  border">Nom du planteur</th>
-                <th className="p-2  border">Code du planteur</th>
-                <th className="p-2  border">Village</th>
-                <th className="p-2  border">Nom de l'inspecteur</th>
-                <th className="p-2  border">Date de l'inspection</th>
-                {/* <th className="p-2  border">Observation</th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {jsonObj.map((item, idx) => (
-                <tr
-                  key={idx}
-                  onClick={() => handleAnalysis(item.data)}
-                  className="hover:cursor-pointer py-3 "
-                >
-                  <td className="p-2  border ">{idx + 1}</td>
-                  <td className="p-2  border hover:underline ">
-                    {item.nom_planteur}{" "}
-                  </td>
-                  <td className="p-2  border ">{item.code_planteur} </td>
-                  <td className="p-2  border ">{item.village}</td>
-                  <td className="p-2  border ">{item.nom_inspecteur} </td>
-                  <td className="p-2  border ">{item.date_inspection} </td>
-                  {/* <td className="p-2  border ">{item.} </td> */}
-                </tr>
-              ))}
-              <tr className="hover:cursor-pointer py-3 ">
-                <td className="p-2  border ">1</td>
-                <td className="p-2  border ">
-                  <input
-                    className="p-1"
-                    type="text"
-                    value={"Mikam Jeanne marie"}
-                  />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"4100"} />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"Mikel"} />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"Parfait Ayos"} />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"30/10/2023"} />
-                </td>
-              </tr>
-              <tr className="hover:cursor-pointer py-3 ">
-                <td className="p-2  border ">2</td>
-                <td className="p-2  border ">
-                  <input
-                    className="p-1"
-                    type="text"
-                    value={"Jean Marie Mvondo"}
-                  />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"4b3x"} />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"Mikel"} />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"Parfait Ayos"} />
-                </td>
-                <td className="p-2  border ">
-                  <input className="p-1" type="text" value={"30/10/2023"} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <>
+      {isLoading ? (
+        <div className="flex justify-center my-auto">
+          <Spinner />
         </div>
-        <div className="bg-white md:w-[40%] p-6 ">
-          <DisplayInspectionAnalysis inspectionData={inspectionDatas}/>
+      ) : (
+        <div className="bg-[#f3f4f6] h-full md:w-full">
+          <h2 className="text-center py-6">
+            Project title: <span className=" font-semibold">{projectName}</span>
+          </h2>
+          <div className="flex gap-3">
+            <div className=" px-6">
+              <table>
+                <thead>
+                  <tr>
+                    <th className="p-2  border">N°</th>
+                    <th className="p-2  border">Farmer name</th>
+                    <th className="p-2  border">Farmer ID card number</th>
+                    <th className="p-2  border">Village</th>
+                    <th className="p-2  border">Collector name</th>
+                    <th className="p-2  border">Collector contact</th>
+                    <th className="p-2  border">Inspection date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((item, idx) => (
+                    <tr
+                      key={idx}
+                      onClick={() => {
+                        setOpenModal((prev) => !prev);
+                        handleAnalysis(
+                          item.project_data.project_data.requirements
+                        );
+                        setSingleInspectionData(item as InspectionDataPops);
+                      }}
+                      className="hover:cursor-pointer hover:!bg-[#b43636] py-3 "
+                    >
+                      <td className="p-2  border bg-white">{idx + 1}</td>
+                      <td className="p-2  border bg-white hover:underline ">
+                        {item.project_data.project_data.metaData.farmer_name}{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .farmer_ID_card_number
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {item.project_data.project_data.metaData.village}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {item.project_data.project_data.metaData.inspector_name}{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .inspector_contact
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {dayjs(item.collected_at).toString().slice(0, -4)}{" "}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="md:w-[450px] bg-white md:mr-6">
+              <h1
+                className="font-bold py-2 text-center border-b"
+                onClick={() => testFonction(data)}
+              >
+                Overall statistics
+              </h1>
+              <DisplayInspectionAnalysis inspectionData={testFonction(data)} />
+            </div>
+          </div>
+
+          <div className="md:w-[500px] px-4 bg-red-300">
+            <Dialog
+              open={openModal}
+              onOpenChange={() => setOpenModal((prev) => !prev)}
+            >
+              <DialogContent>
+                <DialogHeader>
+                  {/* THIS HIDES UNWANTED COMPONENTS ON THE BROWSER */}
+                  <VisuallyHidden.Root>
+                    <DialogTitle></DialogTitle>
+                    <DialogDescription></DialogDescription>
+                  </VisuallyHidden.Root>
+                  <DisplaySingleInspectionData
+                    incomingData={singleInspectionData}
+                  />
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
