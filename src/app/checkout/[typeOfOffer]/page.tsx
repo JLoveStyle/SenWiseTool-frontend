@@ -65,8 +65,8 @@ export default function page({ }: Props) {
   }, [router]);
 
   const { data: pricePlan } = useApiOps<PricePlanType, ApiDataResponse<PricePlanType>>({
-    query: params.typeOfOffer.toString().toLowerCase(),
-    fn: () => fetchApiData(Route.pricing, params.typeOfOffer.toString().toLowerCase()),
+    query: typeOfOffer ? typeOfOffer.toString().toLowerCase() : "",
+    fn: () => fetchApiData(Route.pricing, typeOfOffer ? typeOfOffer.toString().toLowerCase() : ""),
     route: Route.pricing,
   });
 

@@ -26,9 +26,7 @@ import { db_get_trainings } from "@/utiles/services/training";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { toast } from "react-toastify";
-import revalidateTraining from "@/lib/action";
 import { Button } from "@/components/ui/button";
-import { fetchTrainings } from "@/utiles/server-actions/get-request";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);

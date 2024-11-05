@@ -324,10 +324,19 @@ export type ChapterMetaDataType = {
   };
 };
 
+export type BordereauxVenteType = {
+  id: string
+  code: string
+  campagne_id: string
+  sale_slip_title: string
+  sale_slip_description: string
+  sale_slip_url: string
+}
+
 export type MarketDBProps = {
   id: string;
   location: string;
-  price_of_day: number;
+  price_of_theday: number;
   supplier: string;
   start_date: Date | string;
   end_date: Date | string;

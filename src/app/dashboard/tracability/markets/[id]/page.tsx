@@ -95,7 +95,7 @@ export default function ReceiptDetails(props: {params: TProps}) {
                 />
                 <DetailCard
                   label="Prix par jour"
-                  value={`${currentMarket.price_of_day} XAF`}
+                  value={`${currentMarket.price_of_theday} XAF`}
                 />
                 <DetailCard
                   label="Fournisseur"
