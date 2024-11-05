@@ -26,7 +26,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { PiFilesFill, PiPrinterFill } from "react-icons/pi";
 import { toast } from "react-toastify";
@@ -34,13 +34,11 @@ interface Props {
   displayForm: boolean;
 }
 
-type TProps = {
-  params: {
-    id: string;
-  }
-}
+type TProps = Promise<{id: string}>;
 
-export default function TrainingDetails({ params: { id } }: TProps) {
+export default function TrainingDetails(props: {params: TProps}) {
+  const params = use(props.params)
+  const id = params.id
   // const { id } = useParams();
 
   // const { value: displayForm, toggle: toggleForm } = useToggle();

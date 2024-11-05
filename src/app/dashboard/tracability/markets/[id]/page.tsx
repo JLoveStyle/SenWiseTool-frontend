@@ -11,16 +11,14 @@ import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { IoReceipt } from "react-icons/io5";
 
-type TProps = {
-  params: {
-    id: string;
-  };
-};
+type TProps = Promise<{id: string}>;
 
-export default function ReceiptDetails({ params: { id } }: TProps) {
+export default function ReceiptDetails(props: {params: TProps}) {
+  const params = use(props.params)
+  const id = params.id
   const router = useRouter();
   const [currentMarket, setCurrentMarket] = useState<MarketDBProps>();
   const [isLoading, setIsLoading] = useState<boolean>(true);

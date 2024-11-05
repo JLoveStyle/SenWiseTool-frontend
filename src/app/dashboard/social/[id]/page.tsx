@@ -18,19 +18,17 @@ import { DialogContent } from "@radix-ui/react-dialog";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { FaDownload, FaEye } from "react-icons/fa";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { PiPrinterFill } from "react-icons/pi";
 
-type TProps = {
-  params: {
-    id: string;
-  };
-};
+type TProps = Promise<{id: string}>
 
-export default function SocialDetails({ params: { id } }: TProps) {
+export default async function SocialDetails(props: {params: TProps}) {
   const router = useRouter();
+  const params = use(props.params)
+  const id = params.id
   const [currentActivity, setCurrentActivity] = useState<ActivityProps>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);

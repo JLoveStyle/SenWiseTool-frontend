@@ -6,16 +6,14 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+type Props = Promise<{id: string}>
 
-export default function Home({ params: { id } }: Props) {
+export default function Home(props: {params: Props}) {
+  const params = use(props.params)
+  const id = params.id
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const currentCampaign = useCampaignStore((state) => state.campaigns)[0];
   const [projectObject, setProjectObject] = useState<ProjectType>();

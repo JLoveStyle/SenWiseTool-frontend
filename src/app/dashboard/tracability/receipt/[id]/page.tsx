@@ -12,19 +12,17 @@ import { db_get_receipts } from "@/utiles/services/tracability/receipt";
 import { Archive, MoveLeft, Trash2, UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { PiPrinterFill } from "react-icons/pi";
 interface Props {
   displayForm: boolean;
 }
 
-type TProps = {
-  params: {
-    id: string;
-  };
-};
+type TProps =  Promise<{id: string}>;
 
-export default function ReceiptDetails({ params: { id } }: TProps) {
+export default function ReceiptDetails(props: {params: TProps}) {
+  const params = use(props.params)
+  const id = params.id
   const [currentReceipt, setCurrentReceipt] = useState<ReceiptProps>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [displayComponent, setDisplayComponent] = useState<

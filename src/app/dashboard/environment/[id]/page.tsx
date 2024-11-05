@@ -13,18 +13,13 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { FaDownload, FaEye } from "react-icons/fa";
-import { FaRegFilePdf } from "react-icons/fa6";
-import { PiPrinterFill } from "react-icons/pi";
+import { use, useEffect, useState } from "react"
 
-type TProps = {
-  params: {
-    id: string;
-  };
-};
+type TProps = Promise<{id: string}>;
 
-export default function EnvironmentDetails({ params: { id } }: TProps) {
+export default function EnvironmentDetails(props: {params: TProps}) {
+  const params = use(props.params)
+  const id = params.id
   const [currentActivity, setCurrentActivity] = useState<ActivityProps>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);

@@ -5,15 +5,14 @@ import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-tem
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+type Props = Promise<{id: string}>;
 
-export default function Home({ params: { id } }: Props) {
+export default function Home(props: {params: Props}) {
+
+  const params = use(props.params)
+  const id = params.id
   // Fetch all projects with type ["INTERNAL_INSPECTION"] and pass it as props to Layout
 
   const [projectData, setProjectData] = useState<ProjectType>();
