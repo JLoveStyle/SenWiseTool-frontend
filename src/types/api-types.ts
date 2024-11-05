@@ -370,6 +370,5 @@ export type MarketDBProps = {
   quantity_in_bags_tone: number | null;
   quantity_product: number | null;
 
-  sale_slip_url: string | null;
   store_entry_voucher: string | null;
 };

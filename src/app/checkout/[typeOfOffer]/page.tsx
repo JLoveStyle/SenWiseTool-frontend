@@ -14,18 +14,24 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { useApiOps } from "@/lib/api-provider";
 import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import { useApiOps } from "@/lib/api-provider";
 import { ApiDataResponse, PricePlanType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
-import { Spinner } from "@/components/atoms/spinner/spinner";
+// import { generateStaticParams } from "./generate-static-params";
 // paypal component
 // import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from "@paypal/react-paypal-js";
 
-type Props = {};
+type TProps = {
+  params: {
+    typeOfOffer: string;
+  };
+};
 
-export default function page({ }: Props) {
+export default function page() {
   const router = useRouter();
+  const { typeOfOffer } = useParams();
   const [paypalActive, setPaypalActive] = useState(false);
   const [cartActive, setCartActive] = useState(false);
   const [cancel, setCancel] = useState<boolean>(false);
@@ -33,7 +39,6 @@ export default function page({ }: Props) {
 
   const [showError, setShowError] = useState(false);
   // set paypal options
-
 
   const handlePaypal = () => {
     setPaypalActive((prev) => !prev);
@@ -49,9 +54,6 @@ export default function page({ }: Props) {
     setIsLoading((prev) => !prev);
     console.log("how are u");
   }
-
-  const params = useParams();
-  const { typeOfOffer } = params;
 
   useEffect(() => {
     if (
@@ -69,7 +71,6 @@ export default function page({ }: Props) {
     fn: () => fetchApiData(Route.pricing, typeOfOffer ? typeOfOffer.toString().toLowerCase() : ""),
     route: Route.pricing,
   });
-
 
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
@@ -169,7 +170,13 @@ export default function page({ }: Props) {
                 </div>
                 <hr />
                 {/* I have add the text color here because it is not visible at the moment: text and bg was white */}
-                <p className={paypalActive ? "flex p-6 bg-white text-muted-foreground" : "hidden"}>
+                <p
+                  className={
+                    paypalActive
+                      ? "flex p-6 bg-white text-muted-foreground"
+                      : "hidden"
+                  }
+                >
                   In order to complete your transaction, we will transfer you
                   over to PayPals secure servers.
                 </p>
@@ -288,20 +295,18 @@ export default function page({ }: Props) {
                 {annualPricing
                   ? `${formatPrice(currentOffer?.annualPricing)} / Year`
                   : `${formatPrice(
-                    currentOffer?.biannualPricing
-                  )}  /   ¹⁄₂Year`}
+                      currentOffer?.biannualPricing
+                    )}  /   ¹⁄₂Year`}
               </span>
             </div>
-            {
-              pricePlan ? (
-                <PaypalPaypements />
-              ) : (
-                <Button className="cursor-wait flex gap-3 py-6 bg-primary hover:cursor-not-allowed opacity-70 font-semibold text-white w-full">
-                  <Spinner/>
-                  <span>loading paypal checkout...</span>
-                </Button>
-              )
-            }
+            {pricePlan ? (
+              <PaypalPaypements />
+            ) : (
+              <Button className="cursor-wait flex gap-3 py-6 bg-primary hover:cursor-not-allowed opacity-70 font-semibold text-white w-full">
+                <Spinner />
+                <span>loading paypal checkout...</span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -331,3 +336,4 @@ export default function page({ }: Props) {
     </main>
   );
 }
+// export { generateStaticParams };

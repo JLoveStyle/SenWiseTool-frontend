@@ -5,16 +5,15 @@ import { Spinner } from "@/components/atoms/spinner/spinner";
 import { FilePreview } from "@/components/molecules/filePreview";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
 import { ActivityProps } from "@/types/activity";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { FaDownload, FaEye } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 type TProps = Promise<{id: string}>;
 
@@ -33,6 +32,13 @@ export default function AgricultureDetails(props: {params: TProps}) {
         Route.agricultureRequest + `/${id}`,
         ""
       );
+
+      if (!activities) {
+        router.push("/");
+        toast.error("Page not found");
+        return;
+        }
+
       if (activities.status === 200) {
         console.log("agricultural activity => ", activities);
         setIsLoading(prev => !prev);
@@ -101,7 +107,7 @@ export default function AgricultureDetails(props: {params: TProps}) {
                       <h1 className="font-semibold">Les PV</h1>
                       <div className="flex justify-center gap-10">
                         {currentActivity.pv_url.map((url) => (
-                          <FilePreview key={url} url={url} />
+                          <FilePreview url={url} />
                         ))}
                       </div>
                     </div>
@@ -141,7 +147,7 @@ export default function AgricultureDetails(props: {params: TProps}) {
                       <h1 className="font-semibold">Les autres DOCUMENTS</h1>
                       <div className="flex justify-center gap-10">
                         {currentActivity.documents_url.map((url) => (
-                          <FilePreview key={url} url={url} />
+                          <FilePreview url={url} />
                         ))}
                       </div>
                     </div>

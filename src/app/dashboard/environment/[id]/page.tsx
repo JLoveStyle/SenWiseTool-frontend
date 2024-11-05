@@ -1,6 +1,7 @@
 "use client";
 
 import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
+import FilePreview from "@/components/atoms/file-preview";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import { FilePreview } from "@/components/molecules/filePreview";
 import CustomHoverCard from "@/components/organisms/hoverCard";
@@ -13,7 +14,12 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+<<<<<<< HEAD
 import { use, useEffect, useState } from "react"
+=======
+import { useEffect, useState } from "react";
+import { PiPrinterFill } from "react-icons/pi";
+>>>>>>> 1d85753eb369f1d09bfe69097a6cb558b15dacae
 
 type TProps = Promise<{id: string}>;
 
@@ -180,4 +186,7 @@ export default function EnvironmentDetails(props: {params: TProps}) {
     </LayoutDashboardTemplate>
   );
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d85753eb369f1d09bfe69097a6cb558b15dacae
