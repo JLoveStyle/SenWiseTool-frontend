@@ -1,5 +1,4 @@
 "use client";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDetails from "@/components/organisms/projectDetails";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
@@ -16,6 +15,7 @@ export default function Home(props: {params: Props}) {
   // Fetch all projects with type ["INTERNAL_INSPECTION"] and pass it as props to Layout
 
   const [projectData, setProjectData] = useState<ProjectType>();
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   console.log("id =>", id);
 
   const fecthDetailProjectData = async () => {
@@ -23,6 +23,7 @@ export default function Home(props: {params: Props}) {
 
     if (typeof rest.data != "undefined") {
       setProjectData(rest.data);
+      setIsLoading(false)
     }
   };
 
@@ -33,6 +34,7 @@ export default function Home(props: {params: Props}) {
   return (
     <LayoutDashboardTemplate title="Project details">
       <ProjectDetails
+      isDataLoading={isLoading}
         projectDetails={projectData as ProjectType}
       />
     </LayoutDashboardTemplate>

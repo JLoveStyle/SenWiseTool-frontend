@@ -63,7 +63,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
     if (route?.includes("companies")) {
       setCompany(data as unknown as CompanyType);
       LOCAL_STORAGE.save('company', data)
-      // console.log('company from store', data)
+      console.log('company from store', data)
     }
     if (route?.includes("price_plans")) {
       setPricePlan(data as unknown as PricePlanType);

@@ -11,7 +11,7 @@ import clsx from "clsx";
 import { LockKeyhole } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
@@ -23,15 +23,14 @@ import { fetchApiData } from "@/utiles/services/queries";
 // paypal component
 // import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from "@paypal/react-paypal-js";
 
-type TProps = {
-  params: {
-    typeOfOffer: string;
-  };
-};
+type TProps = Promise<{typeOfOffer: string}>;
 
-export default function page() {
+export default function page(props: {params: TProps}) {
   const router = useRouter();
-  const { typeOfOffer } = useParams();
+  // const { typeOfOffer } = useParams();
+  const params = use(props.params)
+  const typeOfOffer = params.typeOfOffer
+
   const [paypalActive, setPaypalActive] = useState(false);
   const [cartActive, setCartActive] = useState(false);
   const [cancel, setCancel] = useState<boolean>(false);
@@ -55,6 +54,10 @@ export default function page() {
     console.log("how are u");
   }
 
+  // const params = useParams();
+
+  // const { typeOfOffer } = params;
+
   useEffect(() => {
     if (
       typeof typeOfOffer !== "string" ||
@@ -66,9 +69,16 @@ export default function page() {
     }
   }, [router]);
 
-  const { data: pricePlan } = useApiOps<PricePlanType, ApiDataResponse<PricePlanType>>({
+  const { data: pricePlan } = useApiOps<
+    PricePlanType,
+    ApiDataResponse<PricePlanType>
+  >({
     query: typeOfOffer ? typeOfOffer.toString().toLowerCase() : "",
-    fn: () => fetchApiData(Route.pricing, typeOfOffer ? typeOfOffer.toString().toLowerCase() : ""),
+    fn: () =>
+      fetchApiData(
+        Route.pricing,
+        typeOfOffer ? typeOfOffer.toString().toLowerCase() : ""
+      ),
     route: Route.pricing,
   });
 
@@ -217,7 +227,7 @@ export default function page() {
                         <Image
                           height={20}
                           width={40}
-                          src="	https://www.udemy.com/staticx/udemy/images/v9/card-discover.svg"
+                          src="https://www.udemy.com/staticx/udemy/images/v9/card-discover.svg"
                           alt="card-amex"
                         />
                       </div>
@@ -233,7 +243,7 @@ export default function page() {
                         <Image
                           height={20}
                           width={40}
-                          src="	https://www.udemy.com/staticx/udemy/images/v9/card-visa.svg"
+                          src="https://www.udemy.com/staticx/udemy/images/v9/card-visa.svg"
                           alt="card-visa"
                         />
                       </div>

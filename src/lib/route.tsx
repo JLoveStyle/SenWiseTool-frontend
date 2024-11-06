@@ -46,6 +46,7 @@ export type AvailableRoute =
   | "agricultureRequest"
   | "environmentRequest"
   | "inspectionData"
+  | "famerRequest"
 
   // tracability
   | "markets"
@@ -96,6 +97,7 @@ export const Route: Record<AvailableRoute, string> = {
   environmentRequest: "environments",
   agricultureRequest: "agricultures",
   inspectionData: "inspection_data",
+  famerRequest: "farmers",
 
   // tracability
   markets: "/dashboard/tracability/markets",

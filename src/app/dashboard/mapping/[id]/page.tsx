@@ -20,7 +20,7 @@ export default function Home(props: {params: Props}) {
 
   // FETCH PROJECT BY ID
   async function fetchProjectById() {
-    setIsLoading((prev) => !prev);
+    // setIsLoading((prev) => !prev);
 
     await fetchApiData(Route.projects, id)
       .then((response) => {
@@ -51,8 +51,7 @@ export default function Home(props: {params: Props}) {
 
   return (
     <LayoutDashboard typeOfProject={"MAPPING"} projectsPerType={[]}>
-      <ProjectDetails projectDetails={projectObject as ProjectType} />
-
+      <ProjectDetails isDataLoading={isLoading} projectDetails={projectObject as ProjectType} />
     </LayoutDashboard>
   );
 }
