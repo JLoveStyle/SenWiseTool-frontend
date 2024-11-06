@@ -3,7 +3,7 @@ import { FormData } from "@/types/formData";
 import { clerkClient } from "@clerk/nextjs/server";
 
 export async function createOrganization(payload: FormData, currentUserId: string) {
-  const response = await clerkClient.organizations.createOrganization({
+  const response = (await clerkClient()).organizations.createOrganization({
     name: payload.companyName,
     createdBy: currentUserId,
     // slug: slugify(payload.companyName),

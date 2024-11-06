@@ -4,7 +4,7 @@ export const marketData: MarketDBProps[] = [
   {
     id: "1",
     location: "Abidjan",
-    price_of_day: 500,
+    price_of_theday: 500,
     start_date: "2024-10-01",
     end_date: "2024-10-31",
     description: "Cocoa market with premium quality products",
@@ -43,7 +43,7 @@ export const marketData: MarketDBProps[] = [
   {
     id: "2",
     location: "San Pedro",
-    price_of_day: 450,
+    price_of_theday: 450,
     start_date: "2024-10-01",
     end_date: "2024-10-30",
     description: "Coffee market with a focus on sustainability",
@@ -79,7 +79,7 @@ export const marketData: MarketDBProps[] = [
   {
     id: "3",
     location: "Man",
-    price_of_day: 300,
+    price_of_theday: 300,
     start_date: "2024-10-05",
     end_date: "2024-10-20",
     type_of_market: "BANANA",

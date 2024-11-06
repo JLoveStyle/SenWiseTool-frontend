@@ -5,7 +5,6 @@ import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-tem
 import { Route } from "@/lib/route";
 import { FarmType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
-import { getAllFarmers } from "@/utiles/services/server-actions/crudFarmers";
 import React, { useEffect, useState } from "react";
 
 type Props = {};
