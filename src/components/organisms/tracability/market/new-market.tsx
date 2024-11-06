@@ -24,7 +24,7 @@ export function NewMarket() {
   const [formData, setFormData] = useState<Partial<MarketDBProps>>({
     id: "",
     location: "",
-    price_of_day: 0,
+    price_of_theday: 0,
     supplier: "",
     start_date: "",
     end_date: "",
@@ -54,7 +54,7 @@ export function NewMarket() {
     console.log("market payload", formData);
     await mutateApiData(Route.marketRequest, {
       location: formData.location,
-      price_of_theday: formData.price_of_day,
+      price_of_theday: formData.price_of_theday,
       campaign_id: formData.campaign_id,
       company_id: formData.company_id,
       description: formData.description,

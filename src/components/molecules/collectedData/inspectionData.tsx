@@ -67,7 +67,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
         setIsLoading((prev) => !prev);
         console.log(error);
         toast.error("Something went wrong. Please refresh this page");
-      });
+      }); 
   }
 
   useEffect(() => {

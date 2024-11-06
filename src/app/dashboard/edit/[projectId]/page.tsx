@@ -29,7 +29,7 @@ import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Pencil, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/deployableForm";
 import { mutateUpApiData } from "@/utiles/services/mutations";
@@ -49,13 +49,11 @@ const EditProjectFormDatails = dynamic(
   }
 );
 
-type Props = {
-  params: {
-    projectId: string;
-  };
-};
+type Props = Promise<{projectId: string}>;
 
-export default function page({ params: { projectId } }: Props) {
+export default function page(props: {params: Props}) {
+  const params = use(props.params)
+  const projectId = params.projectId
   const router = useRouter();
   const projectDetails: ProjectType = LOCAL_STORAGE.get("project"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);

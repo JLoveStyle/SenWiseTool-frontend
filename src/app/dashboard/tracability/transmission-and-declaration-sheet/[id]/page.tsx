@@ -11,19 +11,15 @@ import { marketData } from "@/utiles/tracability.const/market";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { PiPrinterFill } from "react-icons/pi";
 
-type TProps = {
-  params: {
-    id: string;
-  };
-};
+type TProps = Promise<{id: string}>;
 
-export default function TransmissionAndDeclarationSheetDetail({
-  params: { id },
-}: TProps) {
+export default function TransmissionAndDeclarationSheetDetail(props: {params: TProps}) {
   const router = useRouter();
+  const params = use(props.params)
+  const id = params.id
   const [currentMarket, setCurrentMarket] = useState<MarketDBProps>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState(false);

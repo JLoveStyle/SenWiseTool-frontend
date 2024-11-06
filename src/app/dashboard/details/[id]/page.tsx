@@ -1,22 +1,21 @@
 "use client";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDetails from "@/components/organisms/projectDetails";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+type Props = Promise<{id: string}>;
 
-export default function Home({ params: { id } }: Props) {
+export default function Home(props: {params: Props}) {
+
+  const params = use(props.params)
+  const id = params.id
   // Fetch all projects with type ["INTERNAL_INSPECTION"] and pass it as props to Layout
 
   const [projectData, setProjectData] = useState<ProjectType>();
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   console.log("id =>", id);
 
   const fecthDetailProjectData = async () => {
@@ -24,6 +23,7 @@ export default function Home({ params: { id } }: Props) {
 
     if (typeof rest.data != "undefined") {
       setProjectData(rest.data);
+      setIsLoading(false)
     }
   };
 
@@ -34,6 +34,7 @@ export default function Home({ params: { id } }: Props) {
   return (
     <LayoutDashboardTemplate title="Project details">
       <ProjectDetails
+      isDataLoading={isLoading}
         projectDetails={projectData as ProjectType}
       />
     </LayoutDashboardTemplate>

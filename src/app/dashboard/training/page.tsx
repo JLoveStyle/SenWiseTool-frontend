@@ -5,7 +5,6 @@ import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import {
   ApiDataResponse,
-  CompanyType,
   TrainingTableDisplayType,
   TrainingType,
 } from "@/types/api-types";
@@ -17,18 +16,13 @@ import { Archive, Trash2, UserPlus } from "lucide-react";
 
 import { NewTraining } from "@/components/atoms/training/new-trainer";
 import { trainingColumnTable } from "@/components/atoms/training/training-column-table";
-import { trainingList } from "@/components/atoms/training/training-list";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-import { TrainingProps } from "@/types/formData";
-import { useEffect, useState } from "react";
-import { db_get_trainings } from "@/utiles/services/training";
-import { useCompanyStore } from "@/lib/stores/companie-store";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
-import { toast } from "react-toastify";
-import revalidateTraining from "@/lib/action";
-import { Button } from "@/components/ui/button";
-import { fetchTrainings } from "@/utiles/server-actions/get-request";
+import { useCompanyStore } from "@/lib/stores/companie-store";
+import { TrainingProps } from "@/types/formData";
+import { db_get_trainings } from "@/utiles/services/training";
+import { useEffect, useState } from "react";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
@@ -37,7 +31,7 @@ export default function Training() {
 
   // Load company from store
   const company = useCompanyStore((state) => state.company);
-  
+
   // laod current campaigne
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
@@ -48,9 +42,9 @@ export default function Training() {
     setIsLoading((prev) => !prev);
 
     // const trainingData = await fetchTrainings(Route.training, currentCampaign?.id)
-    
+
     // if (trainingData) {
-      // console.log(trainingData)
+    // console.log(trainingData)
     // }
 
     // await fetchApiData(Route.training)
@@ -66,7 +60,6 @@ export default function Training() {
     //     console.log(error);
     //     return;
     //   });
-      
   }
 
   const { data: trainings, refetch } = useApiOps<

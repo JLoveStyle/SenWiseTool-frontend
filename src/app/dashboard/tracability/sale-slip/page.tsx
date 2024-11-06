@@ -14,7 +14,7 @@ import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-tem
 import { useToggle } from "@/hooks/use-toggle";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { AssigneeType, MarketDBProps } from "@/types/api-types";
+import { AssigneeType, BordereauxVenteType, MarketDBProps } from "@/types/api-types";
 import { SaleSlipDisplayProps } from "@/types/tracability/market";
 import { statPanelDatas } from "@/utiles/services/constants";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -57,11 +57,11 @@ export default function FactoryAccompaniementSheet() {
     // false
   );
 
-  const formatedDataFromDBToDisplay = (data: MarketDBProps) => {
+  const formatedDataFromDBToDisplay = (data: BordereauxVenteType) => {
     return {
       id: data.id,
       code: data.code,
-      campagne: data.campaign_id,
+      campagne: data.campagne_id,
       sale_slip_title: data.sale_slip_title,
       sale_slip_description: data.sale_slip_description,
       sale_slip_url: data.sale_slip_url,
@@ -87,7 +87,7 @@ export default function FactoryAccompaniementSheet() {
     const fetchData = async () => {
       try {
         // const result = await db_get_markets();
-        const result = (await marketData) as MarketDBProps | MarketDBProps[];
+        const result = marketData as unknown as BordereauxVenteType | BordereauxVenteType[];
         const dataFormated: SaleSlipDisplayProps[] = [];
 
         if (result) {

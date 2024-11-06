@@ -89,7 +89,7 @@ export default function Market() {
       code: data.code,
       campagne: data.campaign_id,
       location: data.location,
-      price_of_day: data.price_of_day,
+      price_of_day: data.price_of_theday,
       supplier: data.supplier,
       start_date: data.start_date,
       end_date: data.end_date,

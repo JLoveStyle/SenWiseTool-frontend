@@ -43,8 +43,6 @@ const PrintContent: React.FC<Props> = (props) => {
     }
   };
 
-  console.log("isdisidjvisdvsdv\n", isPrinting)
-
   return (
     <div>
       <div ref={formRef}>{props.children}</div>
