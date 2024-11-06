@@ -19,7 +19,7 @@ import { PiPrinterFill } from "react-icons/pi";
 
 type TProps = {
   params: {
-    id: string;
+    id: string
   };
 };
 

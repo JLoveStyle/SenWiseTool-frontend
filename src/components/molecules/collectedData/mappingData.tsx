@@ -1,17 +1,29 @@
 import { Button } from "@/components/ui/button";
-import { mappingData, MappingTableColumns } from "@/utiles/services/constants";
-import React, { useState } from "react";
+import {
+  columns,
+  mappingData,
+  MappingTableColumns,
+} from "@/utiles/services/constants";
+import React, { useState, useEffect } from "react";
 import xlsx, { IJsonSheet } from "json-as-xlsx";
 import tokml from "tokml";
 import slugify from "slugify";
 import Link from "next/link";
 import Image from "next/image";
+import { fetchApiData } from "@/utiles/services/queries";
+import { Route } from "@/lib/route";
+import { toast } from "react-toastify";
+import { MappingDataType } from "@/types/api-types";
+import { Spinner } from "@/components/atoms/spinner/spinner";
 
-type Props = {};
+type Props = {
+  project_id: string;
+};
 
-export default function MappingData({}: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+export default function MappingData({ project_id }: Props) {
   const [kmlFile, setKmlFile] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [mappingDatas, setMappingDatas] = useState<MappingDataType[]>([]);
 
   const coordinates: { [key: string]: string }[] = [];
   for (const cord of mappingData) {
@@ -36,58 +48,6 @@ export default function MappingData({}: Props) {
         content: coordinates.flat(),
       },
     ];
-    const columns: IJsonSheet[] = [
-      {
-        sheet: "Données_Mapping",
-        columns: [
-          {
-            label: "Nom du producteur",
-            value: "nom_producteur",
-          },
-          {
-            label: "statut du producteur",
-            value: "statut_producteur",
-          },
-          {
-            label: "N° CNI",
-            value: "no_cni",
-          },
-          {
-            label: "Date de creation de la plantation",
-            value: "date_de_creation_plant",
-          },
-          {
-            label: "Village",
-            value: "village",
-          },
-          {
-            label: "Nom du mappeur",
-            value: "nom_du_mappeur",
-          },
-          {
-            label: "Date",
-            value: "date",
-          },
-          {
-            label: "Superficie estimé",
-            value: "superficie_estimé",
-          },
-          {
-            label: "Photo de la plantation",
-            value: "photo_plantation",
-          },
-          {
-            label: "Photo planteur",
-            value: "photo_planteur",
-          },
-          {
-            label: "Coordonées",
-            value: "coordinate",
-          },
-        ],
-        content: mappingData,
-      },
-    ];
 
     const settings = {
       fileName: "Mapping_data", // Name of the resulting spreadsheet
@@ -109,7 +69,9 @@ export default function MappingData({}: Props) {
   ) => {};
 
   // construct coordinates for polygon of type [][][] from {long: , lat:}[] form field
-  const constructCordinates = (coordinates: { log: number; lat: number }[]) => {
+  const constructCordinates = (
+    coordinates: { longitude: number; latitude: number }[]
+  ) => {
     const finalCordinates: any[] = [];
     let selObject: any[] = [];
     for (const coordinate of coordinates) {
@@ -125,7 +87,7 @@ export default function MappingData({}: Props) {
     village: string,
     surfaceArea: string,
     code: string,
-    coordinates: { log: number; lat: number }[]
+    coordinates: { latitude: number; longitude: number }[]
   ) => {
     const finalCordinates = constructCordinates(coordinates);
     const polygon = {
@@ -157,7 +119,39 @@ export default function MappingData({}: Props) {
     );
   };
 
-  // FETCH ALL PROJECTS DATA OF TYPE MAPPING
+  async function fetchAllMappingData(id: string) {
+    await fetchApiData(Route.inspectionData + `/${id}`, "current")
+      .then((response) => {
+        if (response.status === 201) {
+          console.log("mapping data", response.data);
+          setMappingDatas(response.data);
+          setIsLoading(false);
+          return;
+
+          // setInspectionDatas(response.data);
+        } else if (response.status === 404) {
+          setIsLoading((prev) => !prev);
+          toast.warning("No mapping data yet");
+          return;
+        } else {
+          setIsLoading(false);
+          toast.error("Could not fetch inspection data of this project");
+          return;
+        }
+      })
+      .catch((error) => {
+        setIsLoading((prev) => !prev);
+        console.log(error);
+        toast.error("Something went wrong. Please refresh this page");
+      });
+  }
+
+  console.log("MApping data\n\n =>", mappingDatas[0]?.project_data.project_data.farmer_name);
+
+  // FETCH DATA OF SINGLE MAPPING PROJECT
+  useEffect(() => {
+    fetchAllMappingData("cm2qoqb3r00074lymnp0qpmtu");
+  }, []);
 
   return (
     <div className=" p-6 md:w-full h-screen">
@@ -165,110 +159,186 @@ export default function MappingData({}: Props) {
         Data collected from field
       </h1>
       <div className="">
-        <table>
-          <thead className="">
-            <tr>
-              {MappingTableColumns.map((item, idx) => (
-                <th className="px-2 border" key={idx}>
-                  {item}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white">
-            {mappingData.map((item, idx) => (
-              <tr key={idx}>
-                <td className="px-2 border w-fit">{idx + 1}</td>
-                <td className="px-2 border">{item.nom_producteur}</td>
-                <td className="px-2 border">{item.statut_producteur}</td>
-                <td className="px-2 border">{item.contact_du_producteur}</td>
-                <td className="px-2 border">{item.no_cni}</td>
-                <td className="px-2 border">{item.date_de_creation_plant}</td>
-                <td className="px-2 border">{item.village}</td>
-                <td className="px-2 border">{item.nom_du_mappeur}</td>
-                <td className="px-2 border">{item.date}</td>
-                <td className="px-2 border">{item.superficie_estimé}</td>
-                <td className="px-2 border">
-                  <Link
-                    className=""
-                    target="_blank"
-                    href={item.photo_plantation}
-                  >
-                    <img
-                      className="h-[100px] w-[500px]"
-                      src={item.photo_plantation}
-                      alt={item.photo_plantation}
-                      // height={100}
-                      // width={100}
-                    />
-                    <div className="w-[200px] hover:underline truncate text-blue-500">
-                      {item.photo_plantation}
-                    </div>
-                  </Link>
-                </td>
-                <td className="px-2 border">
-                  <Link target="_blank" href={item.photo_planteur}>
-                    <img
-                      className="h-[100px] w-[500px]"
-                      src={item.photo_planteur}
-                      alt={item.photo_planteur}
-                      // height={100}
-                      // width={100}
-                    />
-                    <div className="w-[200px] hover:underline truncate text-blue-500">
-                      {item.photo_planteur}
-                    </div>
-                  </Link>
-                </td>
-                <td className="px-2 border flex flex-col gap-2 max-h-[250px] overflow-y-scroll">
-                  {item.coordinate?.map((coord: any, i: number) => (
-                    <div className="flex border-b gap-2" key={i + 1.1}>
-                      <span className="">long:{coord.log}</span>
-                      <span className="">lat:{coord.lat}</span>
-                      {/* <span key={i + 110}>long:{coord.log}</span>
+        {isLoading ? (
+          <div className="flex items-center justify-center">
+            <Spinner />
+          </div>
+        ) : (
+          <table>
+            <thead className="">
+              <tr>
+                {MappingTableColumns?.map((item, idx) => (
+                  <th className="px-2 border" key={idx}>
+                    {item}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {mappingDatas?.map((item, idx) => (
+                <tr key={item.id}>
+                  <td className="px-2 border w-fit">{idx + 1}</td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.farmer_name}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.farmer_status}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.farmer_contact}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.farmer_ID_card_number}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.plantation_creation_date}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.village}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.collector_name}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.date}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.estimated_area}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.plantation_photos?.map(
+                      (photo, idx) => (
+                        <div
+                          className="max-h-[300px] overflow-y-auto"
+                          key={idx}
+                        >
+                          <Link
+                            className=""
+                            target="_blank"
+                            href={
+                              item.project_data.project_data.plantation_photos[
+                                idx
+                              ]
+                            }
+                          >
+                            <img
+                              className="h-[100px] w-[500px]"
+                              src={
+                                item.project_data.project_data
+                                  .plantation_photos[idx]
+                              }
+                              alt={item.project_data.project_data.farmer_name}
+                              // height={100}
+                              // width={100}
+                            />
+                            <div className="w-[200px] hover:underline truncate text-blue-500">
+                              {
+                                item.project_data.project_data
+                                  .plantation_photos[idx]
+                              }
+                            </div>
+                          </Link>
+                        </div>
+                      )
+                    )}
+                  </td>
+                  <td className="px-2 border">
+                    {item.project_data.project_data.farmer_photos?.map(
+                      (photo, idx) => (
+                        <div
+                          className="max-h-[300px] overflow-y-auto"
+                          key={idx}
+                        >
+                          <Link
+                            className=""
+                            target="_blank"
+                            href={
+                              item.project_data.project_data.farmer_photos[idx]
+                            }
+                          >
+                            <img
+                              className="h-[100px] w-[500px]"
+                              src={
+                                item.project_data.project_data.farmer_photos[
+                                  idx
+                                ]
+                              }
+                              alt={item.project_data.project_data.farmer_name}
+                              // height={100}
+                              // width={100}
+                            />
+                            <div className="w-[200px] hover:underline truncate text-blue-500">
+                              {
+                                item.project_data.project_data.farmer_photos[
+                                  idx
+                                ]
+                              }
+                            </div>
+                          </Link>
+                        </div>
+                      )
+                    )}
+                  </td>
+                  <td className="px-2 border flex flex-col gap-2 max-h-[250px] overflow-y-scroll">
+                    {item.project_data.project_data.coordinates?.map(
+                      (coord: any, i: number) => (
+                        <div className="flex border-b gap-2" key={i + 1.1}>
+                          <span className="">long:{coord.longitude}</span>
+                          <span className="">lat:{coord.latitude}</span>
+                          {/* <span key={i + 110}>long:{coord.log}</span>
                       <span className="border-b" key={i + 1.5}>
                         lat:{coord.lat}
                       </span> */}
+                        </div>
+                      )
+                    )}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          convertTokml(
+                            item.project_data.project_data.farmer_name,
+                            item.project_data.project_data.village,
+                            item.project_data.project_data.estimated_area,
+                            item.id, // this should be the farmer code
+                            item.project_data.project_data.coordinates
+                          )
+                        }
+                        className="bg-tertiary text-white mb-2 p-2 hover:rounded-full"
+                      >
+                        <a
+                          href={`data:application/vnd.google-earth,${encodeURIComponent(
+                            kmlFile
+                          )}`}
+                          download={
+                            slugify(
+                              item.project_data.project_data.farmer_name
+                            ) + ".kml"
+                          }
+                        >
+                          Export as kml
+                        </a>
+                      </button>
+                      <button className="bg-tertiary text-white mb-2 py-1 hover:rounded-full">
+                        <a
+                          href={`data:application/vnd.google-earth,${encodeURIComponent(
+                            kmlFile
+                          )}`}
+                          download={
+                            slugify(
+                              item.project_data.project_data.farmer_name
+                            ) + ".geojson"
+                          }
+                        >
+                          Export as geoJson
+                        </a>
+                      </button>
                     </div>
-                  ))}
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() =>
-                        convertTokml(
-                          item.nom_producteur,
-                          item.village,
-                          item.superficie_estimé,
-                          item.code_du_planteur,
-                          item.coordinate
-                        )
-                      }
-                      className="bg-tertiary text-white mb-2 p-2 hover:rounded-full"
-                    >
-                      <a
-                        href={`data:application/vnd.google-earth,${encodeURIComponent(
-                          kmlFile
-                        )}`}
-                        download={slugify(item.nom_producteur) + ".kml"}
-                      >
-                        Export as kml
-                      </a>
-                    </button>
-                    <button className="bg-tertiary text-white mb-2 py-1 hover:rounded-full">
-                      <a
-                        href={`data:application/vnd.google-earth,${encodeURIComponent(
-                          kmlFile
-                        )}`}
-                        download={slugify(item.nom_producteur) + ".geojson"}
-                      >
-                        Export as geoJson
-                      </a>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
         <div className="flex justify-center gap-4">
           <Button
             className="mt-4 text-white bg-blue-500 hover:bg-blue-500 hover:rounded-full"

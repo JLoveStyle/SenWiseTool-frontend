@@ -39,6 +39,35 @@ export type ProductStatus = ObjectValue<typeof PRODUCTSTATUS>;
 export type ProjectsType = ObjectValue<typeof PROJECTTYPE>;
 export type ProjectStatus = ObjectValue<typeof PROJECT_STATUS>;
 
+export interface MappingPojectaData {
+  collector_name: string,
+  village: string
+  location: string
+  plantation_photos: string[]
+  farmer_photos: string[]
+  date: string
+  farmer_status: string
+  farmer_name: string
+  farmer_contact: string
+  farmer_ID_card_number: string
+  plantation_creation_date: string
+  estimated_area: string
+  coordinates: {
+    longitude: number,
+    latitude: number
+  }[]
+
+}
+export interface MappingDataType {
+  id: string
+  collected_at: string
+  project_id: string
+  updated_at: string
+  project_data: {
+    project_id: string
+    project_data: MappingPojectaData
+  }
+}
 export interface Answer {
   num: string;
   NC: boolean;
