@@ -12,7 +12,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.682.0",
     "@aws-sdk/s3-request-presigner": "^3.682.0",
-    "@clerk/nextjs": "^6.1.0",
+    "@clerk/nextjs": "^6.2.0",
     "@maphubs/tokml": "^0.6.1",
     "@paypal/react-paypal-js": "^8.7.0",
     "@radix-ui/react-checkbox": "^1.1.2",

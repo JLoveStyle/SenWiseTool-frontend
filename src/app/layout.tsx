@@ -37,7 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClerkProvider>
+          <ClerkProvider dynamic>
             {children}
             <ToastContainer position="top-center" transition={Flip} />
           </ClerkProvider>
