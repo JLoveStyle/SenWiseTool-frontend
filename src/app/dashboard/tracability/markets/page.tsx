@@ -182,39 +182,6 @@ export default function Market() {
     // console.log("compagny", company);
   }, [marketDatas]);
 
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
-
   const formParams = {
     trigger_btn_label_form: "New Market",
     construct_form_btn_label: "New market form",
@@ -222,22 +189,6 @@ export default function Market() {
     new_form_title: "Définir un marché",
     construct_form_btn_icon: FaHandHoldingDollar,
   };
-
-  // const deletemarketAccounts = () => {
-  //   if (marketSelected.length !== 0) {
-  //     const allmarketsAccounts = LOCAL_STORAGE.get("markets");
-  //     const idSelecteds = marketSelected.map((objet) => objet.id);
-
-  //     allmarketsAccounts.map((item: MarketDisplayProps) => {
-  //       if (!idSelecteds.includes(item.id)) {
-  //         restAccount.push(item);
-  //       }
-  //     });
-  //     LOCAL_STORAGE.save("markets", restAccount);
-
-  //     toast.success("Accounts are deleted successfull");
-  //   }
-  // };
 
   return (
     <LayoutDashboardTemplate

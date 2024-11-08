@@ -15,6 +15,7 @@ interface Props {
   filename: string;
   handleExitPage?: () => void;
   isDeploying: boolean;
+  showBackBtn?: boolean
 }
 
 const PrintContent: React.FC<Props> = (props) => {
@@ -51,7 +52,7 @@ const PrintContent: React.FC<Props> = (props) => {
           className={pathname.includes("/mapping") ? "hidden" : "flex gap-4"}
         >
           <Button
-            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1 hover:rounded-full"
+            className={props.showBackBtn ? "hidden" : "bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1 hover:rounded-full"}
             onClick={props.handleExitPage}
           >
             BACK

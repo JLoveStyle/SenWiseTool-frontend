@@ -5,6 +5,8 @@ import { CodeProjectProps, MultipleFormAgentProps } from "@/types/agent-props";
 import { useEffect, useState } from "react";
 import { RxCross2, RxDotFilled } from "react-icons/rx";
 import { InputUI } from "../../disign-system/form/input-ui";
+import { ProjectType } from "@/types/api-types";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface Props {
   updatedFormData: (data: MultipleFormAgentProps) => void;
@@ -12,6 +14,7 @@ interface Props {
   errors: { [key: string]: any };
   isLoading: boolean;
   displayListOfProjects?: boolean
+  projects?: Partial<ProjectType[]>
 }
 
 export const FormMultipleAgent = ({
@@ -19,7 +22,8 @@ export const FormMultipleAgent = ({
   initData,
   errors,
   isLoading,
-  displayListOfProjects
+  displayListOfProjects,
+  projects
 }: Props) => {
   const [formData, setFormData] = useState<MultipleFormAgentProps>({
     id: initData ? initData.id : "",
@@ -135,6 +139,20 @@ export const FormMultipleAgent = ({
           onChange={handleProjectCodeChange}
           onKeyDown={handleUpdateProjectCodes}
         />
+      </div>
+      <div className="">
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Projects codes ?</AccordionTrigger>
+            {projects?.map((codes, index) => (
+              <AccordionContent className="flex justify-between" key={index}>
+                <p>{codes?.title.slice(0, 20)}</p>
+                <p>{codes?.type}</p>
+                <p className="font-semibold">{codes?.code}</p>
+              </AccordionContent>
+            ))}
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );

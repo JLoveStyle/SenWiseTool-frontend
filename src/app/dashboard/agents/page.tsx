@@ -2,12 +2,7 @@
 
 import { Route } from "@/lib/route";
 
-import {
-  Archive,
-  LucideBlinds,
-  LucideX,
-  Trash2,
-} from "lucide-react";
+import { Archive, LucideBlinds, LucideX, Trash2 } from "lucide-react";
 import { RiUserStarLine } from "react-icons/ri";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 
@@ -39,15 +34,16 @@ import { statPanelDatas } from "@/utiles/services/constants";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { columnsListOfAgents } from "@/components/atoms/colums-of-tables/list-of-agets";
-
+import { useApiOps } from "@/lib/api-provider";
+import { ApiDataResponse, ProjectType } from "@/types/api-types";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
 
 export default function Receipt() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [agentDatas, setAgentDatas] = useState<AgentPropsFromDB[]>([]);
   const [agentSelected, setAgentSelected] = useState<AgentPropsFromDB[]>([]);
   const [errors, setErrors] = useState({});
-
-  let fetchedData: AgentProps[] = []
+  const [projects, setProjects] = useState<ProjectType[]>([]);
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
@@ -69,63 +65,53 @@ export default function Receipt() {
     false
   );
 
+  // Load current campaign
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
   // Load company object from store
-  const company = useCompanyStore((state) => state.company)
-  console.log('fetching data with company_id', company?.id)
+  const company = useCompanyStore((state) => state.company);
 
-  async function getAllSubAccounts() {
-    // TODO: add company_id in the query of this function 
-    console.log('fetching data with company_id', company?.id)
-    await fetchApiData(
-      Route.assigne,
-      `perCompany?company_id=${company?.id}`
+  // get all company's project per campain
+  async function getAllProjectCodesPerCompnanyAndCampain() {
+    console.log("fetching all project codes");
+    await fetchApiData<ApiDataResponse<ProjectType[]>>(
+      Route.projects,
+      `company_projectCode?campaign_id=${currentCampaign?.id}`
     )
       .then((response) => {
-        if (response.status === 200) {
-          fetchedData = response.data
-          setAgentDatas(response.data)
-          console.log('from useEffect', response);
-          return
+        if (response.status === 201) {
+          setProjects(response.data);
+          console.log("AllprojectsCode\n", response.data);
+          return;
         }
-        toast.error('Could not load sub accouts. Please try again')
       })
       .catch((error) => {
         console.log(error);
-        toast.error('Internal Server Error')
+      });
+  }
+
+  async function getAllSubAccounts() {
+    // TODO: add company_id in the query of this function
+    console.log("fetching data with company_id", company?.id);
+
+    await fetchApiData(Route.assigne, `perCompany?company_id=${company?.id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          setAgentDatas(response.data);
+          setIsLoading(false);
+          console.log("from useEffect", response);
+          return;
+        }
+        toast.error("Could not load sub accouts. Please try again");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Internal Server Error");
       });
   }
 
   useEffect(() => {
-    console.log('Hello world from useEffect')
-    getAllSubAccounts()
-  }, [])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const result = await db_get_agents();
-        const result = LOCAL_STORAGE.get("agents");
-        // console.log("data agent list: ", result);
-        setAgentDatas(result as AgentPropsFromDB[]);
-      } catch (err) {
-        console.error("Error fetching agents: ", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    // const fetchData = async () => {
-    // const result = await db_get_agents()
-    // .then((result) => {
-    // console.log("data agent list: ", result);
-
-    // setAgentDatas(result as AgentProps[]);
-    // setIsLoading(false);
-    // })
-    // .catch((err) => console.error(err));
-    // };
-
-    // fetchData();
+    getAllSubAccounts();
+    getAllProjectCodesPerCompnanyAndCampain();
   }, []);
 
   const valueToDisplay = (args: AgentPropsFromDB[]) => {
@@ -139,43 +125,6 @@ export default function Receipt() {
           : agents.projectCodes,
     }));
   };
-
-  useEffect(() => {
-    // refetch();
-  }, [agentDatas]);
-
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
 
   const formParams = {
     trigger_btn_label_form: "New Agent",
@@ -281,10 +230,15 @@ export default function Receipt() {
   return (
     <LayoutDashboardTemplate
       newForms={[
-        { title: "New sub account", form: <NewFormUniqAgent /> },
-        { title: "Generate sub account", form: <NewFormMiltipleAgent /> },
+        {
+          title: "New sub account",
+          form: (
+            <NewFormUniqAgent projects={projects as Partial<ProjectType[]> ?? []} />
+          ),
+        },
+        { title: "Generate sub account", form: <NewFormMiltipleAgent projects={projects as Partial<ProjectType[]> ?? []} /> },
       ]}
-      title="Agent Manager"
+      title="Agent Management"
       formParams={formParams}
       statPanelDatas={statPanelDatas}
     >
@@ -316,8 +270,6 @@ export default function Receipt() {
           // incomingData={agentDatas}
           incomingData={
             agentDatas?.length
-              ? valueToDisplay(agentDatas)
-              : agentDatas?.length
               ? valueToDisplay(agentDatas as AgentPropsFromDB[])
               : []
           }

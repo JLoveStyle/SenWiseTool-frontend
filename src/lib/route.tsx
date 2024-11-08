@@ -73,7 +73,7 @@ export const Route: Record<AvailableRoute, string> = {
   reclamationMecanism: "/dashboard/reclamation-mecanism",
   riskEvaluation: "/dashboard/risk-evaluation",
   organigram: "/dashboard/organigram",
-  managementPlan: "dashboard/management-plan",
+  managementPlan: "/dashboard/management-plan",
   details: "/dashboard/details",
   training_session: "training_sessions",
   createCompany: "/create-company",

@@ -7,6 +7,7 @@ import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ApiDataResponse, FarmerType, FarmType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -28,6 +29,12 @@ export default function Home({}: Props) {
         if (result.status === 200) {
           setFarmer(result.data)
           setIsLoading(false)
+          return
+        }
+        if (result.status === 404) {
+          toast.error("You don't have farmers yet")
+          setIsLoading(false)
+          return
         }
       } catch (error) {
         console.log(error);
