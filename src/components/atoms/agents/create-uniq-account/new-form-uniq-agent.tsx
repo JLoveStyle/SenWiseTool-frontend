@@ -14,8 +14,13 @@ import { Bounce, toast } from "react-toastify";
 import { dbCreateAgent } from "../create-multiple-account/new-form-multiple-agent";
 import { FormUniqAgent } from "./form-uniq-agent";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { ProjectType } from "@/types/api-types";
 
-export function NewFormUniqAgent() {
+interface Props {
+  projects?: Partial<ProjectType[]>;
+}
+
+export function NewFormUniqAgent({ projects }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
@@ -84,21 +89,23 @@ export function NewFormUniqAgent() {
 
     // check if there is atleast a project code
     if (!formData.projectCodes?.length) {
-      toast.warning("Please enter atleast one project code. Hit enter to validate code");
+      toast.warning(
+        "Please enter atleast one project code. Hit enter to validate code"
+      );
       setIsLoading(false);
       return;
     }
     // Because projectCodes should be of type string[]
-    const formatProjectcode = []
+    const formatProjectcode = [];
     for (const code of formData.projectCodes) {
-      formatProjectcode.push(code.value)
+      formatProjectcode.push(code.value);
     }
-    console.log('=>\n', {
+    console.log("=>\n", {
       company_id: company?.id,
       projectCodes: formatProjectcode,
       agentCode: formData.agentCode,
       fullName: formData.fullName,
-    })
+    });
 
     await mutateApiData(Route.assigne, {
       company_id: company?.id,

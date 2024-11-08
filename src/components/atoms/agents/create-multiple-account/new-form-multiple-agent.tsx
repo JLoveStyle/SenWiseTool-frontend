@@ -15,10 +15,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FormMultipleAgent } from "./form-multiple-agent";
-import { AssigneeType } from "@/types/api-types";
+import { AssigneeType, ProjectType } from "@/types/api-types";
 import { mutateApiData } from "@/utiles/services/mutations";
 
-export function NewFormMiltipleAgent() {
+interface Props {
+  projects?: Partial<ProjectType[]>;
+}
+
+export function NewFormMiltipleAgent({ projects }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
 
@@ -66,18 +70,18 @@ export function NewFormMiltipleAgent() {
           return;
         } else if (response.status === 409) {
           setIsLoading(false);
-          toast.warning(`Agent with code ${response.agentCode} already exist`)
-          return
+          toast.warning(`Agent with code ${response.agentCode} already exist`);
+          return;
         } else {
           setIsLoading(false);
-          toast.error('Something went wrong')
-          return
+          toast.error("Something went wrong");
+          return;
         }
       })
       .catch((error) => {
-        console.log(error)
-        toast.error('Something went wrong. Please try again')
-      })
+        console.log(error);
+        toast.error("Something went wrong. Please try again");
+      });
 
     // const serverResponse = await Promise.all(
     //   arrayNumber(formData.accountNumber).map(async () => {
@@ -144,6 +148,7 @@ export function NewFormMiltipleAgent() {
         updatedFormData={handleUpdatedFormData}
         errors={errors}
         isLoading={isLoading}
+        projects={projects as Partial<ProjectType[]>}
       />
       <ButtonUI
         type="submit"

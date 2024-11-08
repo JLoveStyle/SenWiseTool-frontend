@@ -101,7 +101,7 @@ export const columnsListOfFarmers: ColumnDef<FarmerType>[] = [
               Copy farmer's contact
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Link href={Route.details + `/${farmer.id}`}>
+            <Link href={Route.listOfFarmers + `/${farmer.id}`}>
               <DropdownMenuItem
                 onClick={() => LOCAL_STORAGE.save("farmer_id", farmer.id)}
               >

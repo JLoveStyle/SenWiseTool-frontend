@@ -135,9 +135,21 @@ export default function Home({}: Props) {
     const [URLCompanyLogo] = await Promise.all([createCompanyStorage()]);
 
     if (user?.id) {
-      // const res = await createOrganization(formData, user.id);
+      const res = await createOrganization(formData, user.id);
       // console.log(res);
-      console.log("formData", formData);
+      console.log("formData", {
+        email: formData.companyEmail,
+        name: formData.companyName,
+        head_office_email: formData.headOfficeEmail,
+        country: formData.country,
+        region: formData.state,
+        city: formData.city,
+        sector_of_activity: activity,
+        logo: URLCompanyLogo,
+        phone_number: formData.phone,
+        address: formData.address,
+        description: formData.description,
+      });
       // setIsLoading(false);
       // return;
 
@@ -159,24 +171,30 @@ export default function Home({}: Props) {
           if (response.status === 409) {
             return toast.error("Company already exist");
           }
-          if (!response.status.toString().startsWith("2")) {
+          if (response.statusCode === 401) {
+            return toast.error("Sorry not authorize")
+          }
+          if (!response.status.toString().startWith('2')) {
             return toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
             });
-          } else {
+          }
+          if (response.status === 201) {
             toast.success(`Success! routing to dashboard`, {
               transition: Bounce,
               autoClose: 3000,
-            });
-            router.push(Route.dashboard);
+            })
+            router.push(Route.dashboard)
+            return
           }
+          
         })
         .catch((error) => {
           console.log("An error occured", error);
-          toast.error("Fail to create company", {
+          toast.error("An error occured. Please try again later", {
             transition: Bounce,
-            autoClose: 1000,
+            autoClose: 3000,
           });
         })
         .finally(() => {

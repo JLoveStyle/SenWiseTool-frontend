@@ -2,12 +2,11 @@
 
 import { InputUI } from "@/components/atoms/disign-system/form/input-ui";
 import { TextareaUI } from "@/components/atoms/disign-system/form/textarea-ui";
-import { MarketDBProps } from "@/types/api-types";
 import { MarketFormProps } from "@/types/tracability/market";
 import { useEffect, useState } from "react";
 
 interface Props {
-  updatedFormData: (data: Partial<MarketDBProps>) => void;
+  updatedFormData: (data: MarketFormProps) => void;
   initData?: MarketFormProps;
   errors: { [key: string]: any };
   isLoading: boolean;
@@ -19,7 +18,7 @@ export const NewMarketForm = ({
   errors,
   isLoading,
 }: Props) => {
-  const [formData, setFormData] = useState<Partial<MarketDBProps>>({
+  const [formData, setFormData] = useState<MarketFormProps>({
     id: initData ? initData.id : "",
     location: initData ? initData.location : "",
     price_of_day: initData ? initData.price_of_day : 0,
