@@ -78,7 +78,7 @@ export default function Receipt() {
       `company_projectCode?campaign_id=${currentCampaign?.id}`
     )
       .then((response) => {
-        if (response.status === 201) {
+        if (response.status === 20) {
           setProjects(response.data);
           console.log("AllprojectsCode\n", response.data);
           return;
@@ -112,7 +112,7 @@ export default function Receipt() {
   useEffect(() => {
     getAllSubAccounts();
     getAllProjectCodesPerCompnanyAndCampain();
-  }, []);
+  }, [currentCampaign?.id, company?.id]);
 
   const valueToDisplay = (args: AgentPropsFromDB[]) => {
     return args?.map((agents) => ({
