@@ -16,7 +16,6 @@ export default function Home(props: {params: Props}) {
 
   const [projectData, setProjectData] = useState<ProjectType>();
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  console.log("id =>", id);
 
   const fecthDetailProjectData = async () => {
     const rest = await fetchApiData(Route.projects, id);

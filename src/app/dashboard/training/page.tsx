@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
   const [trainingDatas, setTrainingDatas] = useState<TrainingType[]>([]);
 
   // Load company from store
@@ -39,7 +39,6 @@ export default function Training() {
   async function fetchTraining() {
     console.log("into function");
     // if (!currentCampaign && !company) return;
-    setIsLoading((prev) => !prev);
 
     // const trainingData = await fetchTrainings(Route.training, currentCampaign?.id)
 
@@ -62,7 +61,7 @@ export default function Training() {
     //   });
   }
 
-  const { data: trainings, refetch } = useApiOps<
+  const { data: trainings, refetch, isLoading: isLoading } = useApiOps<
     TrainingType[],
     ApiDataResponse<TrainingType[]>
   >({
@@ -77,7 +76,7 @@ export default function Training() {
           console.log("data training: ", result);
 
           setTrainingDatas(result as TrainingType[]);
-          setIsLoading(false);
+          // setIsLoading(false);
         })
         .catch((err) => console.error(err));
     };

@@ -9,11 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TrainingProps } from "@/types/formData";
+import dayjs from "dayjs";
 
 interface Props {
   row?: number;
   editableCell?: boolean;
-  data: any;
+  data: TrainingProps;
 }
 
 export const AttendanceSheetForm = ({
@@ -41,8 +43,7 @@ export const AttendanceSheetForm = ({
         <div className="items-center m-20">
           <div className="flex flex-col items-center gap-3">
             <u className="font-bold">
-              FICHE DE PRESENCE DE FORMATION PROFESSIONNELLE EN CARTOGRAPHIE ET
-              DATA COLLECTION
+              FICHE DE PRESENCE
             </u>
             <div>
               <u className="font-bold mr-2">Theme :</u>
@@ -50,7 +51,7 @@ export const AttendanceSheetForm = ({
             </div>
             <div>
               <span className="font-bold mr-2">Date :</span>
-              <span>{new Date().toISOString()}</span>
+              <span>{dayjs(new Date().toISOString()).toString().slice(0, -7)}</span>
             </div>
             <div className="my-5">
               <u className="font-bold text-lg">Fiche de présence</u>

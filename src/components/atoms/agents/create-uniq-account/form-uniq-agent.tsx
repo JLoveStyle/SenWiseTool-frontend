@@ -5,12 +5,20 @@ import { AgentProps, CodeProjectProps } from "@/types/agent-props";
 import { useEffect, useState } from "react";
 import { RxCross2, RxDotFilled } from "react-icons/rx";
 import { InputUI } from "../../disign-system/form/input-ui";
+import { ProjectType } from "@/types/api-types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface Props {
   updatedFormData: (data: AgentProps) => void;
   initData?: AgentProps;
   errors: { [key: string]: any };
   isLoading: boolean;
+  projects?: Partial<ProjectType[]>;
 }
 
 export const FormUniqAgent = ({
@@ -18,6 +26,7 @@ export const FormUniqAgent = ({
   initData,
   errors,
   isLoading,
+  projects,
 }: Props) => {
   const [formData, setFormData] = useState<AgentProps>({
     id: initData ? initData.id : "",
@@ -155,6 +164,19 @@ export const FormUniqAgent = ({
           onChange={handleProjectCodeChange}
           onKeyDown={handleUpdateProjectCodes}
         />
+      </div>
+      <div className="">
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Projects codes ?</AccordionTrigger>
+            {projects?.map((codes, index) => (
+              <AccordionContent className="flex justify-between" key={index}>
+                <p>{codes?.title}</p>
+                <p className="font-semibold">{codes?.code}</p>
+              </AccordionContent>
+            ))}
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );

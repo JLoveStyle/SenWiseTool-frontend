@@ -4,28 +4,21 @@ import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import { FilePreview } from "@/components/molecules/filePreview";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-import CardLayout from "@/components/templates/cardLayout";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog,DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Route } from "@/lib/route";
 import { ActivityProps } from "@/types/activity";
 import { ApiDataResponse } from "@/types/api-types";
 import { mutateDelApiData } from "@/utiles/services/mutations";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { DialogContent } from "@radix-ui/react-dialog";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
-import { FaDownload, FaEye } from "react-icons/fa";
-import { FaRegFilePdf } from "react-icons/fa6";
-import { PiPrinterFill } from "react-icons/pi";
 
 type TProps = Promise<{id: string}>
 
-export default async function SocialDetails(props: {params: TProps}) {
+export default function SocialDetails(props: {params: TProps}) {
   const router = useRouter();
   const params = use(props.params)
   const id = params.id

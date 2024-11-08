@@ -169,7 +169,7 @@ export default function ProjectDetails({
         ) : // <p>sdivosidvsd</p>
         formActive ? (
           <ProjectForm
-            projectObject={projectDetails ? projectDetails : undefined}
+            projectObject={projectDetails as ProjectType}
           />
         ) : (
           ""
