@@ -112,12 +112,14 @@ export default function Market() {
     await fetchApiData(Route.marketRequest, company?.id)
       .then((response) => {
         console.log("from useEffect market", response);
-        if (response.status !== 200) {
-          toast.error("Could not load markets. Please try again");
+        if (response.status === 200) {
+          setIsLoading(false)
+          setmarketDatas(response.data)
         }
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false)
       });
   }
 
@@ -194,7 +196,7 @@ export default function Market() {
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "Nouveau marché",
+          title: "New market",
           form: <NewMarket />,
         },
       ]}
