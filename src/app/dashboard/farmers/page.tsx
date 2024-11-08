@@ -3,6 +3,7 @@ import { columnsListOfFarmers } from "@/components/atoms/colums-of-tables/list-o
 import { DataTable } from "@/components/molecules/projectsTable";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
+import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ApiDataResponse, FarmerType, FarmType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import React, { useEffect, useState } from "react";
@@ -11,16 +12,23 @@ type Props = {};
 
 export default function Home({}: Props) {
   const [farmer, setFarmer] = useState<FarmerType>();
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
+  const company = useCompanyStore((state) => state.company)
 
   useEffect(() => {
     const fetchFarmers = async () => {
       try {
         const result = await fetchApiData<ApiDataResponse<FarmerType>>(
           Route.famerRequest,
-          "?company_id=cm2qjm4mg000dshwofqj1uplx"
+          `?company_id=${company?.id}`
+          // "?company_id=cm2qjm4mg000dshwofqj1uplx"
         );
         console.log("farmers =>", result);
-        setFarmer(result.data)
+        if (result.status === 200) {
+          setFarmer(result.data)
+          setIsLoading(false)
+        }
       } catch (error) {
         console.log(error);
       }
@@ -38,7 +46,7 @@ export default function Home({}: Props) {
           onSelecteItem={(selectedFarmer) => {
             setFarmer(selectedFarmer as unknown as FarmerType);
           }}
-          isLoading={false}
+          isLoading={isLoading}
           inputPlaceholder="Filter by famer name..."
         />
       </div>
