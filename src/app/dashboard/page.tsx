@@ -3,7 +3,6 @@ import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-tem
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import { ApiDataResponse, UserType } from "@/types/api-types";
-import { createOrganization } from "@/utiles/services/createOrg";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth, useUser } from "@clerk/nextjs";
@@ -32,37 +31,14 @@ export default function Home({}: Props) {
     }
   }
 
-  
-
   useEffect(() => {
     fetchData();
     refetch();
   }, []);
 
-  const createOrg = async() => {
-    console.log("fxn create")
-    const res = await createOrganization({
-      companyName: "Tlg",
-      companyEmail: 'smarvis@gmail.com',
-      businessActivity: "cocoa",
-      state: "yade",
-      city: 'yde',
-      country: "cameroon",
-      otherBusiness: "",
-      hasAgree: true,
-      address: "",
-      description: "sndvosdnv",
-      phone: "48150518601,",
-      headOfficeEmail: "",
-      logo: ""
-    }, "user_2oAWCS5IZh1MGf2wPisprUIfzYV");
-    console.log("response", res)
-  }
-
   return (
     <LayoutDashboardTemplate title="Welcome to SENWISETOOL Dashboard">
       <div>
-        <button onClick={createOrg}>Create Org</button>
         <div className="flex items-center justify-center mt-28">
           <Image
             src="/svg/empty.svg"
