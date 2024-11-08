@@ -1,9 +1,9 @@
 import { Route } from "@/lib/route";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { allRequirements } from "@/utils/requirements";
+import { IJsonSheet } from "json-as-xlsx";
 import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { receiptStatData } from "../tracability.const/statistics";
-import { IJsonSheet } from "json-as-xlsx";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
@@ -35,8 +35,6 @@ export const MappingTableColumns: string[] = [
   "Farmer picture",
   "Coordinates",
 ];
-
-
 
 // EXAMPLE OF MAPPING DATA FROM FIELD
 export const mappingData: { [key: string]: any }[] = [
@@ -494,19 +492,19 @@ export const optionsRevenu: {
 }[] = [
   {
     title: "Justificatifs de payement de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
+    href: Route.incomeAndSharedResponsabilityProofOfPaiement,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
     title: "Plan de gestion de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
+    href: Route.incomeAndSharedResponsabilityManagementPlan,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
     title: "Différentiel de durabilité",
-    href: "/docs/primitives/alert-dialog",
+    href: Route.incomeAndSharedResponsabilityDifferential,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
