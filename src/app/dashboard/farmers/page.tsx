@@ -33,7 +33,6 @@ export default function Home({}: Props) {
         console.log(error);
       }
     };
-    console.log("into useEffect");
     fetchFarmers();
   }, []);
 
