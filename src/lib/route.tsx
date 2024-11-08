@@ -6,7 +6,6 @@ export type AvailableRoute =
   | "checkout"
   | "signIn"
   | "signUp"
-  
   | "createCompany"
   | "dashboard"
   | "training"
@@ -25,7 +24,6 @@ export type AvailableRoute =
   | "details"
   | "training_session"
   | "login"
-  
   | "campaign"
   | "trainingProject"
   | "mapping"
@@ -33,6 +31,9 @@ export type AvailableRoute =
   | "social"
   | "environment"
   | "agriculture"
+  | "incomeAndSharedResponsabilityProofOfPaiement"
+  | "incomeAndSharedResponsabilityManagementPlan"
+  | "incomeAndSharedResponsabilityDifferential"
 
   // API endpoints
   | "agents"
@@ -107,4 +108,10 @@ export const Route: Record<AvailableRoute, string> = {
     "/dashboard/tracability/factory-accompaniement-sheet",
   transmissionAndDeclarationSheet:
     "/dashboard/tracability/transmission-and-declaration-sheet",
+  incomeAndSharedResponsabilityProofOfPaiement:
+    "/dashboard/income-and-shared-responsability/proof-of-paiement",
+  incomeAndSharedResponsabilityManagementPlan:
+    "/dashboard/income-and-shared-responsability/management-plan",
+  incomeAndSharedResponsabilityDifferential:
+    "/dashboard/income-and-shared-responsability/differential",
 };
