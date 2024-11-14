@@ -1,6 +1,5 @@
 import { InspectionDataPops, InspectionDataType } from "@/types/api-types";
 import React, { useEffect, useState } from "react";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { fetchApiData } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
 import { toast } from "react-toastify";
@@ -15,7 +14,10 @@ import {
 } from "@/components/ui/dialog";
 import dynamic from "next/dynamic";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import { handleAnalysis, testFonction } from "@/utiles/services/Data-analysis/single-inspection-analysis";
+import {
+  handleAnalysis,
+  testFonction,
+} from "@/utiles/services/Data-analysis/single-inspection-analysis";
 
 const DisplayInspectionAnalysis = dynamic(
   () => import("../inspection-data-statistics/displayInspectionAnalysis"),
@@ -38,7 +40,6 @@ type Props = {
 
 export default function InspectionData({ project_id, projectName }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [inspectionDatas, setInspectionDatas] = useState<InspectionDataType>();
   const [singleInspectionData, setSingleInspectionData] =
     useState<InspectionDataPops>();
   const [data, setData] = useState<InspectionDataPops[]>([]);
@@ -59,7 +60,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
           // setInspectionDatas(response.data);
         } else {
           setIsLoading(false);
-          toast.error("Could not fetch inspection data of this project");
+          // toast.error("Could not fetch inspection data of this project");
           return;
         }
       })
@@ -67,12 +68,12 @@ export default function InspectionData({ project_id, projectName }: Props) {
         setIsLoading((prev) => !prev);
         console.log(error);
         toast.error("Something went wrong. Please refresh this page");
-      }); 
+      });
   }
 
   useEffect(() => {
-    fetchAllInpectionData("cm2qknh24001310qtmrs5uwpp");
-  }, []);
+    fetchAllInpectionData(project_id);
+  }, [project_id]);
 
   return (
     <>
@@ -80,7 +81,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
         <div className="flex justify-center my-auto">
           <Spinner />
         </div>
-      ) : (
+      ) : data.length ? (
         <div className="bg-[#f3f4f6] h-full md:w-full">
           <h2 className="text-center py-6">
             Project title: <span className=" font-semibold">{projectName}</span>
@@ -159,20 +160,22 @@ export default function InspectionData({ project_id, projectName }: Props) {
               onOpenChange={() => setOpenModal((prev) => !prev)}
             >
               <DialogContent>
-                <DialogHeader>
-                  {/* THIS HIDES UNWANTED COMPONENTS ON THE BROWSER */}
-                  <VisuallyHidden.Root>
+                {/* THIS HIDES UNWANTED COMPONENTS ON THE BROWSER */}
+                <VisuallyHidden.Root>
+                  <DialogHeader>
                     <DialogTitle></DialogTitle>
                     <DialogDescription></DialogDescription>
-                  </VisuallyHidden.Root>
-                  <DisplaySingleInspectionData
-                    incomingData={singleInspectionData}
-                  />
-                </DialogHeader>
+                  </DialogHeader>
+                </VisuallyHidden.Root>
+                <DisplaySingleInspectionData
+                  incomingData={singleInspectionData}
+                />
               </DialogContent>
             </Dialog>
           </div>
         </div>
+      ) : (
+        <div className="flex justify-center mx-auto">No Data collected yet</div>
       )}
     </>
   );

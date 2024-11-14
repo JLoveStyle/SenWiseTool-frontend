@@ -4,13 +4,13 @@ import { Archive, Trash2, UserPlus } from "lucide-react";
 import { useState } from "react";
 import CustomHoverCard from "./hoverCard";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
-import { Project } from "@/types/gestion";
-import { Dialog, DialogContent } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import ActionComponent from "../molecules/actionComponent";
-import { CompanyType, ProjectsType, ProjectType } from "@/types/api-types";
-import { useCompanyStore } from "@/lib/stores/companie-store";
+import { ProjectType } from "@/types/api-types";
 import { DataTable } from "../molecules/projectsTable";
 import { ColumnDef } from "@tanstack/react-table";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+
 
 type Props = {
   projects: ProjectType[];
@@ -50,15 +50,16 @@ export default function ProjectDisplay({
               onClick={() => {
                 if (selectedProjects?.length) {
                   setOpenModal((prev) => !prev);
-                  setShareProject(true);
+                  setShareProject(true); // will be un commented latter on
                   setArchiveProiect(false);
                   setDeleteProjet(false);
                 }
               }}
               className={
-                selectedProjects?.length
-                  ? "hover:cursor-pointer text-black"
-                  : ""
+                selectedProjects?.length ? "hover:cursor-not-allowed " : ""
+                // selectedProjects?.length
+                //   ? "hover:cursor-pointer text-black"
+                //   : ""
               }
             />
           </CustomHoverCard>
@@ -101,6 +102,12 @@ export default function ProjectDisplay({
             open={openModal}
           >
             <DialogContent>
+            <VisuallyHidden.Root>
+              <DialogHeader>
+                <DialogTitle></DialogTitle>
+                <DialogDescription></DialogDescription>
+              </DialogHeader>
+            </VisuallyHidden.Root>
               <ActionComponent
                 shareProject={shareProject}
                 archiveProject={archiveProject}

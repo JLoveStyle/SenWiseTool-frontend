@@ -121,7 +121,7 @@ export default function ProjectSummary({
               <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
             ) : (
               <span className=" font-semibold text-lg px-2 rounded-lg">
-                {projectObject?.title}
+                {projectObject?.title ?? ""}
               </span>
             )}
           </div>
@@ -132,7 +132,7 @@ export default function ProjectSummary({
             {isDataLoading ? (
               <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
             ) : (
-              <p className="font-semibold">{projectObject?.description} </p>
+              <p className="font-semibold">{projectObject?.description ?? ""} </p>
             )}
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
@@ -140,13 +140,13 @@ export default function ProjectSummary({
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
                 <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
-                  {projectObject?.status}
+                  {projectObject?.status ?? ""}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Creation date</span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {dayjs(projectObject?.created_at).toString().slice(0, -4)}
+                  {projectObject && dayjs(projectObject?.created_at).toString().slice(0, -4)}
                 </span>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function ProjectSummary({
                 </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {/* {dayjs(projectObject?.updated_at).toString().slice(0, -4)} */}
-                  {(projectObject?.updated_at as string).includes("1969")
+                  {projectObject && (projectObject?.updated_at as string).includes("1969")
                     ? "--"
                     : dayjs(projectObject?.updated_at).toString().slice(0, -4)}
                 </span>
@@ -170,7 +170,7 @@ export default function ProjectSummary({
                 </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {/* {dayjs(projectObject?.updated_at).toString().slice(0, -4)} */}
-                  {(projectObject?.deployed_at as string).includes("1969")
+                  {projectObject && (projectObject?.deployed_at as string).includes("1969")
                     ? "--"
                     : dayjs(projectObject?.deployed_at).toString().slice(0, -4)}
                 </span>
@@ -184,7 +184,7 @@ export default function ProjectSummary({
                   Country
                 </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {projectObject?.country}
+                  {projectObject?.country ?? ""}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
@@ -192,7 +192,7 @@ export default function ProjectSummary({
                   village
                 </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {projectObject?.city}
+                  {projectObject?.city ?? ""}
                 </span>
               </div>
             </div>

@@ -58,6 +58,9 @@ export function NewMarket() {
       campaign_id: formData.campaign_id,
       company_id: formData.company_id,
       description: formData.description,
+      supplier: formData?.supplier,
+      bon_entree_magazin_url: "",
+      bordereau_vente_url: "",
       start_date: new Date(formData.start_date as string).toISOString(),
       end_date: new Date(formData.end_date as string).toISOString(),
     })
@@ -149,7 +152,7 @@ export function NewMarket() {
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >
-        Créer
+        Create
       </ButtonUI>
     </form>
   );

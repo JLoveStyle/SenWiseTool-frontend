@@ -85,7 +85,7 @@ export function NewTraining() {
           toast.error("Internal Server Error");
           return;
         } else {
-          toast.error("Something went wrong");
+          toast.error("Something went wrong. Please try again");
           setIsLoading(false);
         }
       })

@@ -82,6 +82,13 @@ export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
     ),
   },
   {
+    accessorKey: "created_at",
+    header: "Created at",
+    cell: ({ row }) => (
+      <span>{dayjs(row.getValue("created_at")).toString().slice(0, -4)} </span>
+    ),
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
