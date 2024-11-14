@@ -40,7 +40,7 @@ export function UpdateMarket() {
 
   const handleCreateMarket = async (formData: MarketFormProps) => {
     const dataToDB = {
-      price_of_day: formData.price_of_theday,
+      price_of_theday: formData.price_of_theday,
       location: formData.location,
       supplier: formData.supplier,
       start_date: formData.start_date,

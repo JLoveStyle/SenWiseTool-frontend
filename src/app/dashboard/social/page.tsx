@@ -2,7 +2,7 @@
 
 import { Route } from "@/lib/route";
 
-import { Archive, Trash2 } from "lucide-react";
+import { Archive, ListOrdered, Trash2 } from "lucide-react";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
 
@@ -137,7 +137,7 @@ export default function social() {
       structure: {
         label: "Number",
         baseUrl: "",
-        icon: Archive,
+        icon: ListOrdered,
       },
       data: () => {
         return socialDatas.length;
