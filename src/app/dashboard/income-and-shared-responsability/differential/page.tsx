@@ -2,13 +2,11 @@
 
 import { Route } from "@/lib/route";
 
-import { Archive, Trash2 } from "lucide-react";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
+import { Archive, ListOrdered, Trash2 } from "lucide-react";
 import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
 
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-// import { Newagriculture } from "@/components/organisms/tracability/agriculture/new-agriculture";
 import { NewDifferential } from "@/components/organisms/income-and-shared-responsability/differential/new-differential";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
@@ -73,7 +71,11 @@ export default function Agriculture() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const result = await fetchApiData(Route.agricultureRequest, "");
+        const result = await fetchApiData(
+          Route.revenuEtResponsabilite,
+          "?type=SUSTENABILITY_DIFFERENTIAL",
+          ""
+        );
         const dataFormated: differentialDisplayProps[] = [];
 
         if (result.status === 200) {
@@ -110,28 +112,29 @@ export default function Agriculture() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "New agriculture",
-    construct_form_btn_label: "New agriculture form",
+    trigger_btn_label_form: "New",
+    construct_form_btn_label: "New form",
     existing_form_btn_label: "Use Existing Form",
-    new_form_title: "Create new agricultural activity",
+    new_form_title: "Create new differential sustanability differential",
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
   const deleteDifferential = () => {
-    if (differentialSelected.length !== 0) {
-      const allDifferential = LOCAL_STORAGE.get("differentials");
-      const idSelecteds = differentialSelected.map((objet) => objet.id);
-      const restDifferential: incomeAndSharedResponsabilityDBProps[] = [];
+    console.log("Delete sustanability differential")
+    // if (differentialSelected.length !== 0) {
+    //   const allDifferential = LOCAL_STORAGE.get("differentials");
+    //   const idSelecteds = differentialSelected.map((objet) => objet.id);
+    //   const restDifferential: incomeAndSharedResponsabilityDBProps[] = [];
 
-      allDifferential.map((item: incomeAndSharedResponsabilityDBProps) => {
-        if (!idSelecteds.includes(item.id ?? "")) {
-          restDifferential.push(item);
-        }
-      });
-      LOCAL_STORAGE.save("differentials", restDifferential);
+    //   allDifferential.map((item: incomeAndSharedResponsabilityDBProps) => {
+    //     if (!idSelecteds.includes(item.id ?? "")) {
+    //       restDifferential.push(item);
+    //     }
+    //   });
+    //   LOCAL_STORAGE.save("differentials", restDifferential);
 
-      toast.success("Accounts are deleted successfull");
-    }
+    //   toast.success("Accounts are deleted successfull");
+    // }
   };
 
   const stateActivity: DashboardStatPanelData[] = [
@@ -139,7 +142,7 @@ export default function Agriculture() {
       structure: {
         label: "Number",
         baseUrl: "",
-        icon: Archive,
+        icon: ListOrdered,
       },
       data: () => {
         return differentialDatas.length;
@@ -152,7 +155,7 @@ export default function Agriculture() {
       newForms={[
         {
           title: "New activity",
-          form: <NewDifferential endpoint={Route.agricultureRequest} />,
+          form: <NewDifferential endpoint={Route.revenuEtResponsabilite} />,
         },
       ]}
       title="DIFFERENTIEL DE DURABILITÉ"
@@ -160,7 +163,7 @@ export default function Agriculture() {
       statPanelDatas={stateActivity}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Différentiel de durabilité</h1>
+        <h1 className="text-xl font-semibold">Sustanability differential</h1>
         <div className="flex gap-4 text-gray-500">
           {differentialSelected.length !== 0 && (
             <>
