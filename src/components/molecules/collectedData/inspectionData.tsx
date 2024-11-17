@@ -72,7 +72,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
   }
 
   useEffect(() => {
-    fetchAllInpectionData(project_id);
+    fetchAllInpectionData("cm3c24mfj0003m9uh4k8clakw");
   }, [project_id]);
 
   return (

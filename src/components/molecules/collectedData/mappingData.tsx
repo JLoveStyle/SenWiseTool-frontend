@@ -122,7 +122,8 @@ export default function MappingData({ project_id }: Props) {
   async function fetchAllMappingData(id: string) {
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
-        if (response.status === 200) {
+        console.log(response)
+        if (response.status === 201) {
           console.log("mapping data", response.data);
           setMappingDatas(response.data);
           setIsLoading(false);
@@ -153,7 +154,7 @@ export default function MappingData({ project_id }: Props) {
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {
-    fetchAllMappingData(project_id);
+    fetchAllMappingData("cm3c2d2xw0002ejml2e8it3af");
   }, []);
 
   return (
