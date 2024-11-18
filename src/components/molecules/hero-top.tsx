@@ -1,8 +1,8 @@
+import { Route } from "@/lib/route";
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "../atoms/container";
 import { Button } from "../ui/button";
-import Link from "next/link";
-import { Route } from "@/lib/route";
 
 export const HeroTop = () => {
   return (
@@ -16,7 +16,7 @@ export const HeroTop = () => {
             <Image src="/images/logo.png" width={200} height={200} alt="logo" />
           </div>
           <h1 className="font-extrabold text-3xl text-white sm:text-black sm:text-5xl sm:max-w-xl text-center sm:text-start">
-            Powerful and intuitive data collection tools to make an impact
+            Powerful and intuitive data collection tools to make an impact ...
           </h1>
           <p className="text-xl sm:text-gray-600 text-white sm:font-normal text-center sm:text-start">
             High quality data collection for everyone
