@@ -1,14 +1,14 @@
 "use client";
 import { Route } from "@/lib/route";
 import { AppLink } from "@/types/app-link";
+import { useAuth } from "@clerk/nextjs";
+import { UserRound } from "lucide-react";
+import Link from "next/link";
 import { ActiveLink } from "../atoms/active-link";
 import { Container } from "../atoms/container";
 import { Logo } from "../atoms/logo";
 import { NavbarDropdown } from "../atoms/navbar-dropdown";
 import { Button } from "../ui/button";
-import { useAuth, useUser } from "@clerk/nextjs";
-import Link from "next/link";
-import { UserRound } from "lucide-react";
 
 export const Navbar = () => {
   const navLinks: AppLink[] = [
