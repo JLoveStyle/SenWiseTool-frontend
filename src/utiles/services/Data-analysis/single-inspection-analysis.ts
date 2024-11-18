@@ -121,12 +121,12 @@ export const handleAnalysis = (
 export const testFonction = (data: InspectionDataPops[]) => {
   let overAllResults: InspectionDataType[] = []
   let total: InspectionDataType = {
-    chapter1: {C: 0, NC: 0, NA: 0},
-    chapter2: {C: 0, NC: 0, NA: 0},
-    chapter3: {C: 0, NC: 0, NA: 0},
-    chapter4: {C: 0, NC: 0, NA: 0},
-    chapter5: {C: 0, NC: 0, NA: 0},
-    chapter6: {C: 0, NC: 0, NA: 0},
+    chapter1: { C: 0, NC: 0, NA: 0 },
+    chapter2: { C: 0, NC: 0, NA: 0 },
+    chapter3: { C: 0, NC: 0, NA: 0 },
+    chapter4: { C: 0, NC: 0, NA: 0 },
+    chapter5: { C: 0, NC: 0, NA: 0 },
+    chapter6: { C: 0, NC: 0, NA: 0 },
     total_A: 0
   }
 
@@ -135,9 +135,8 @@ export const testFonction = (data: InspectionDataPops[]) => {
       handleAnalysis(item.project_data.project_data.requirements)
     );
   }
-  console.log("overAllResults\n\n", overAllResults)
 
-  for ( const item of overAllResults) {
+  for (const item of overAllResults) {
     total['chapter1'].C += item.chapter1.C
     total['chapter1'].NC += item.chapter1.NC
     total['chapter1'].NA += item.chapter1.NA
@@ -157,6 +156,8 @@ export const testFonction = (data: InspectionDataPops[]) => {
     total['chapter6'].NC += item.chapter6.NC
     total['chapter6'].NA += item.chapter6.NA
   }
-  total['total_A'] = overAllResults[0].total_A
+  if (overAllResults.length) total['total_A'] = overAllResults[0].total_A
+  else total['total_A'] = 1
+
   return total
 };

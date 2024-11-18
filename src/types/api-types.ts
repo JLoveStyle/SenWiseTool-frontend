@@ -333,7 +333,7 @@ export type OmitStrict<T, K extends keyof T> = Omit<T, K>;
 
 export type TrainingTableDisplayType = Pick<
   TrainingType,
-  "id" | "title" | "start_date" | "end_date" | "location" | "code"
+  "id" | "title" | "start_date" | "end_date" | "location" | "code" | "created_at"
 >;
 
 export interface RequirementType {
@@ -379,7 +379,26 @@ export type MarketDBProps = {
   company_id?: string;
   company: string;
   market_audit: []; // market_audit object[]: to be defined
-  transaction: []; // transaction object[]: to be defined
+  transaction: {
+    id: string,
+    market_id: string,
+    date: string,
+    level_of_traceability: string,
+    driver_name: string,
+    quantity: string,
+    humidity: string,
+    net_weight_declared_in_Ton: string,
+    humidity_level_of_product: string,
+    total_quantity_in_bags: number,
+    receiver_name: string,
+    sender_signature: string[],
+    driver_signature: string[],
+    product_quantity: string,
+    vehicule_immatriculation_number: string,
+    min_con_verif_agent_name_and_sig: string,
+    created_at: string,
+    updated_at: string
+  }[]
   receipts?: []; // receipt object[]: to be defined
   sale_slip: string | null;
 

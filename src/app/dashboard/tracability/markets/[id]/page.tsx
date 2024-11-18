@@ -1,25 +1,31 @@
 "use client";
 
 import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
+import FilePreview from "@/components/atoms/file-preview";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import CustomHoverCard from "@/components/organisms/hoverCard";
+import ModalContent from "@/components/organisms/modalContent";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
 import { MarketDBProps } from "@/types/api-types";
+import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
+import { fetchApiData } from "@/utiles/services/queries";
 import { marketData } from "@/utiles/tracability.const/market";
-import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
+import { Archive, Delete, MoveLeft, Trash2, UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
 import { IoReceipt } from "react-icons/io5";
+import { toast } from "react-toastify";
 
-type TProps = Promise<{id: string}>;
+type TProps = Promise<{ id: string }>;
 
-export default function ReceiptDetails(props: {params: TProps}) {
-  const params = use(props.params)
-  const id = params.id
-  const router = useRouter();
+export default function ReceiptDetails(props: { params: TProps }) {
+  const params = use(props.params);
+  const id = params.id;
+  const [deleteMarket, setDeleteMarket] = useState<boolean>(false);
+  const [closeMarket, setCloseMarket] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [currentMarket, setCurrentMarket] = useState<MarketDBProps>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [preview, setPreview] = useState<{
@@ -27,16 +33,68 @@ export default function ReceiptDetails(props: {params: TProps}) {
     url: string | null;
   }>({ status: false, url: null });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const market = marketData.find((market) => market?.code === id);
-      if (market) {
-        setCurrentMarket(market);
+  // fetch single market
+  async function fetchSingleMarket(marketId: string) {
+    console.log("fetching single market");
+    await fetchApiData(Route.marketRequest + `/${marketId}`, "")
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setCurrentMarket(response.data);
+          setIsLoading(false);
+          return;
+        } else {
+          setIsLoading(false);
+          return;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
         setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [id]);
+      });
+  }
+
+  useEffect(() => {
+    fetchSingleMarket(id);
+  }, []);
+
+  // Delete market
+  async function handleDeleteMarket() {
+    setIsDeleting((prev) => !prev);
+    await mutateDelApiData(Route.marketRequest + `/${currentMarket?.id}`, "")
+      .then((response: any) => {
+        console.log("response of delete", response);
+        if (response.status === 204) {
+          toast.success("Market deleted");
+          setIsDeleting((prev) => !prev);
+          return;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("something went wrong. please try again");
+      });
+  }
+
+  // close Market
+  async function handleCloseMarket() {
+    setIsDeleting((prev) => !prev);
+    await mutateUpApiData(
+      Route.marketRequest,
+      { status: "CLOSED" },
+      currentMarket?.id
+    )
+      .then((response) => {
+        console.log(response);
+        toast.success("Market closed")
+        setIsDeleting((prev) => !prev);
+        setCloseMarket((prev) => !prev);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsDeleting((prev) => !prev);
+      });
+  }
 
   const togglePopup = (url?: string | null) => {
     url
@@ -45,32 +103,62 @@ export default function ReceiptDetails(props: {params: TProps}) {
   };
 
   return (
-    <LayoutDashboardTemplate title="Traçabilité - Les Détails du Marché">
+    <LayoutDashboardTemplate title="Market details">
       <div className="flex justify-between pb-4 pt-2 px-6 w-3/4">
         <h1 className="text-xl font-semibold">
           <Link
-            className="flex gap-1 items-center hover:font-medium"
+            className="flex gap-1 items-center hover:font-medium hover:underline"
             href={Route.markets}
           >
             <MoveLeft />
-            Marchés
+            Back
           </Link>
         </h1>
         <div className="flex items-center gap-4 text-gray-500">
           <CustomHoverCard content="archive project">
-            <Archive className="hover:cursor-pointer" />
+            <Archive
+              onClick={() => setCloseMarket((prev) => !prev)}
+              className={
+                isLoading
+                  ? "cursor-not-allowed"
+                  : "text-black hover:cursor-pointer"
+              }
+            />
           </CustomHoverCard>
-          <CustomHoverCard content="Share project">
+          {/* <CustomHoverCard content="Share project">
             <UserPlus className="hover:cursor-pointer" />
-          </CustomHoverCard>
+          </CustomHoverCard> */}
           <CustomHoverCard content="Delete Project">
-            {isLoading ? (
-              <Spinner size="very-small" color="#999" />
-            ) : (
-              <Delete />
-            )}
+            <Trash2
+              onClick={() => setDeleteMarket((prev) => !prev)}
+              className={
+                isLoading
+                  ? "cursor-not-allowed"
+                  : "text-black hover:cursor-pointer"
+              }
+            />
           </CustomHoverCard>
         </div>
+        <ModalContent
+          openModal={deleteMarket}
+          isProcessing={isDeleting}
+          action={"Delete"}
+          dialogTitle="Delete Market"
+          dialogDescription={"Are you sure you want to delete this market?"}
+          cancelationFunction={() => setDeleteMarket((prev) => !prev)}
+          actionFunction={handleDeleteMarket}
+          updateOpenModalState={() => setDeleteMarket((prev) => !prev)}
+        />
+        <ModalContent
+          openModal={closeMarket}
+          isProcessing={isDeleting}
+          action={"Close"}
+          dialogTitle="Market done ?"
+          dialogDescription={"Are you sure you want to Close this market?"}
+          cancelationFunction={() => setCloseMarket((prev) => !prev)}
+          actionFunction={handleCloseMarket}
+          updateOpenModalState={() => setCloseMarket((prev) => !prev)}
+        />
       </div>
 
       <div className="flex gap-5">
@@ -94,27 +182,84 @@ export default function ReceiptDetails(props: {params: TProps}) {
                   value={currentMarket.campaign_id}
                 />
                 <DetailCard
-                  label="Prix par jour"
+                  label="Price of the day"
                   value={`${currentMarket.price_of_theday} XAF`}
                 />
+                <DetailCard label="Supplier" value={currentMarket.supplier} />
                 <DetailCard
-                  label="Fournisseur"
-                  value={currentMarket.supplier}
-                />
-                <DetailCard
-                  label="Date de début"
+                  label="Start date"
                   value={new Date(
                     currentMarket.start_date
                   ).toLocaleDateString()}
                 />
                 <DetailCard
-                  label="Date de fin"
+                  label="End date"
                   value={new Date(currentMarket.end_date).toLocaleDateString()}
                 />
                 <DetailCard
                   label="Description"
                   value={`${currentMarket.description}`}
                 />
+              </div>
+              <div className="">
+                <h1 className="font-semibold text-xl text-center py-5">
+                  Transaction details
+                </h1>
+                {currentMarket?.transaction.map((item, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6"
+                  >
+                    <DetailCard
+                      label="Driver name"
+                      value={`${item.driver_name}`}
+                    />
+                    <DetailCard
+                      label="Car number"
+                      value={`${item.vehicule_immatriculation_number}`}
+                    />
+                    <DetailCard label="Quantity" value={`${item.quantity}`} />
+                    <DetailCard label="Humidity" value={`${item.humidity}`} />
+                    <DetailCard
+                      label="Net weigth in thones"
+                      value={`${item.net_weight_declared_in_Ton}`}
+                    />
+                    <DetailCard
+                      label="Humidity level of product"
+                      value={`${item.humidity_level_of_product}`}
+                    />
+                    <DetailCard
+                      label="Total quantity in bags"
+                      value={`${item.total_quantity_in_bags}`}
+                    />
+                    <DetailCard
+                      label="Receiver name"
+                      value={`${item.receiver_name}`}
+                    />
+                    <div className="bg-gray-50 p-4 rounded-md">
+                      <p className="text-sm text-gray-600">Diver signature</p>
+                      <div className="text-xl font-bold text-gray-800">
+                        <FilePreview
+                          // url={item.driver_signature[0]}
+                          url={
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr6zMHpg5uZxN6kLIFPDK8nknCoihHQ2At3A&s"
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="bg-gray-50 p-4 rounded-md">
+                      <p className="text-sm text-gray-600">Sender signature</p>
+                      <div className="text-xl font-bold text-gray-800">
+                        <FilePreview
+                          // url={item.sender_signature[0]}
+                          url={
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr6zMHpg5uZxN6kLIFPDK8nknCoihHQ2At3A&s"
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ) : (
@@ -145,7 +290,7 @@ export default function ReceiptDetails(props: {params: TProps}) {
                 className="flex gap-1 items-center bg-black hover:bg-gray-950"
                 baseURL={Route.factoryAccompaniementSheet}
               >
-                <IoReceipt /> Reçus
+                <IoReceipt /> Receipts
               </ButtonUI>
               {currentMarket?.sale_slip && (
                 <ButtonUI
@@ -153,7 +298,7 @@ export default function ReceiptDetails(props: {params: TProps}) {
                   className="flex gap-1 items-center bg-blue-500 hover:bg-blue-400"
                   action={() => togglePopup(currentMarket.sale_slip)}
                 >
-                  Bordoreau Vente
+                  Sale slip
                 </ButtonUI>
               )}
               {currentMarket?.store_entry_voucher && (
@@ -162,7 +307,7 @@ export default function ReceiptDetails(props: {params: TProps}) {
                   className="flex gap-1 items-center bg-blue-500 hover:bg-blue-400"
                   action={() => togglePopup(currentMarket.store_entry_voucher)}
                 >
-                  Bon Entrée Magasin
+                  Store entry voucher
                 </ButtonUI>
               )}
             </div>

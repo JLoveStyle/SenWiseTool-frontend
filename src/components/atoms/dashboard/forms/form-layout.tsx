@@ -137,6 +137,7 @@ export default function FormLayout({ forms, formParams }: Props) {
                 </TabsList>
                 {forms?.map((form, index) => (
                   <TabsContent
+                    key={index}
                     value={slugify(
                       form.title ?? `Formulaire ${index + 1}`
                     ).toLowerCase()}

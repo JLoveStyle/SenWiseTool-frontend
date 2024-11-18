@@ -122,6 +122,7 @@ export default function MappingData({ project_id }: Props) {
   async function fetchAllMappingData(id: string) {
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
+        console.log(response)
         if (response.status === 201) {
           console.log("mapping data", response.data);
           setMappingDatas(response.data);
@@ -130,7 +131,7 @@ export default function MappingData({ project_id }: Props) {
 
           // setInspectionDatas(response.data);
         } else if (response.status === 404) {
-          setIsLoading((prev) => !prev);
+          setIsLoading(false);
           toast.warning("No mapping data yet");
           return;
         } else {
@@ -146,19 +147,14 @@ export default function MappingData({ project_id }: Props) {
       });
   }
 
-  console.log(
-    "MApping data\n\n =>",
-    mappingDatas[0]?.project_data.project_data.farmer_name
-  );
-
-  mappingDatas?.map((item) => {
-    if (typeof item.project_data.project_data !== "undefined")
-      console.log("data\n", item.project_data.project_data.location);
-  });
+  // mappingDatas?.map((item) => {
+  //   if (typeof item.project_data.project_data !== "undefined")
+  //     console.log("data\n", item.project_data.project_data.location);
+  // });
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {
-    fetchAllMappingData("cm2qoqb3r00074lymnp0qpmtu");
+    fetchAllMappingData("cm3c2d2xw0002ejml2e8it3af");
   }, []);
 
   return (
@@ -170,7 +166,7 @@ export default function MappingData({ project_id }: Props) {
         <div className="flex items-center justify-center">
           <Spinner />
         </div>
-      ) : (
+      ) : mappingDatas.length ? (
         <>
           <div className="">
             <table>
@@ -400,6 +396,8 @@ export default function MappingData({ project_id }: Props) {
             </div>
           </div>
         </>
+      ) : (
+        <p className="flex justify-center mx-auto md:pt-30">No Data collected yet</p>
       )}
     </div>
   );

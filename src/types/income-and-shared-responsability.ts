@@ -1,7 +1,7 @@
 export interface incomeAndSharedResponsabilityDBProps {
   id?: string;
   company_id: string;
-  type: "PROOF" | "PLAN" | "DIFFERENTIAL";
+  type: "PAYMENT_JUSTIFICATION" | "SUSTENABILITY_DIFFERENTIAL" | "INVESTMENT_MANAGEMENT_PLAN";
 
   agreement_pv?: string[] | null;
   proof_of_paiement?: string[] | null;

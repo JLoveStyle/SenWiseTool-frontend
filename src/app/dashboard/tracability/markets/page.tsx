@@ -15,13 +15,24 @@ import { Button } from "@/components/ui/button";
 import { useToggle } from "@/hooks/use-toggle";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { MarketDBProps } from "@/types/api-types";
+import { ApiDataResponse, MarketDBProps } from "@/types/api-types";
 import { MarketDisplayProps } from "@/types/tracability/market";
 import { statPanelDatas } from "@/utiles/services/constants";
 import { fetchApiData } from "@/utiles/services/queries";
 import { marketData } from "@/utiles/tracability.const/market";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Spinner } from "@/components/atoms/spinner/spinner";
+import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
+import ModalContent from "@/components/organisms/modalContent";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,12 +40,12 @@ export default function Market() {
   const [marketSelected, setmarketSelected] = useState<MarketDisplayProps[]>(
     []
   );
-  const [errors, setErrors] = useState({});
-
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [deleteMarket, setDeleteMarket] = useState<boolean>(false);
+  const [closeMarket, setCloseMarket] = useState<boolean>(false);
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
   });
-  const projectCodeSeparator = " ";
 
   const closeDialog = () => {
     toggleOpenModel();
@@ -60,10 +71,11 @@ export default function Market() {
 
   // Load company object from store
   const company = useCompanyStore((state) => state.company);
+  // console.log('company', company)
 
   // load current campain object from store
-  const currentCampain = useCampaignStore((state) => state.currentCampaign);
-  console.log(currentCampain);
+  const currentCampain = LOCAL_STORAGE.get("currentCampain");
+  // console.log('currentCampain', currentCampain);
 
   const columns = columnTable<MarketDisplayProps>(
     {
@@ -71,13 +83,13 @@ export default function Market() {
       code: "code",
       campagne: "campagne",
       location: "location",
-      price_of_day: "price_of_day",
-      supplier: "Fournisseu",
-      start_date: "start_date",
-      end_date: "end_date",
-      status: "status",
-      sale_slip: "Bordoreau de vente",
-      store_entry_voucher: "Bon d'entré magasin",
+      price_of_theday: "Price of the day",
+      supplier: "Supplier",
+      start_date: "Start date",
+      end_date: "End date",
+      status: "Status",
+      sale_slip: "Sale slip",
+      store_entry_voucher: "Store entry voucher",
     },
     Route.markets
     // false
@@ -89,7 +101,7 @@ export default function Market() {
       code: data.code,
       campagne: data.campaign_id,
       location: data.location,
-      price_of_day: data.price_of_theday,
+      price_of_theday: data.price_of_theday,
       supplier: data.supplier,
       start_date: data.start_date,
       end_date: data.end_date,
@@ -108,16 +120,27 @@ export default function Market() {
   };
 
   async function getAllMarket() {
-    console.log("here is company", currentCampain?.id);
-    await fetchApiData(Route.marketRequest, company?.id)
+    // console.log("here is company", currentCampain?.id);
+    await fetchApiData(
+      Route.marketRequest + `/?campaign_id=${currentCampain?.id}`,
+      ""
+    )
       .then((response) => {
         console.log("from useEffect market", response);
-        if (response.status !== 200) {
-          toast.error("Could not load markets. Please try again");
+        if (response.status === 400 || response.status === 404) {
+          toast.warning("No market created yet");
+          setIsLoading(false);
+          return;
+        } else if (response.status === 200) {
+          setIsLoading(false);
+          setmarketDatas(response.data);
+        } else {
+          setIsLoading(false);
         }
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   }
 
@@ -147,32 +170,22 @@ export default function Market() {
       }
     };
 
-    // const fetchData = async () => {
-    // const result = await db_get_markets()
-    // .then((result) => {
-    // console.log("data market list: ", result);
-
-    // setIsLoading(false);
-    // })
-    // .catch((err) => console.error(err));
-    // };
-
     // fetchData();
   }, []);
 
   const valueToDisplay = (args: MarketDisplayProps[]) => {
     return args?.map((markets) => ({
-      id: markets.code ?? "",
-      code: markets.code,
-      location: markets.location,
-      price_of_day: markets.price_of_day,
-      supplier: markets.supplier,
-      start_date: markets.start_date,
-      end_date: markets.end_date,
-      campagne: markets.campagne,
-      status: markets.status,
-      sale_slip: markets.sale_slip,
-      store_entry_voucher: markets.store_entry_voucher,
+      id: markets?.id ?? "",
+      code: markets?.code,
+      location: markets?.location,
+      price_of_theday: markets?.price_of_theday,
+      supplier: markets?.supplier,
+      start_date: markets?.start_date,
+      end_date: markets?.end_date,
+      campagne: markets?.campagne,
+      status: markets?.status,
+      sale_slip: markets?.sale_slip,
+      store_entry_voucher: markets?.store_entry_voucher,
     }));
   };
 
@@ -190,11 +203,54 @@ export default function Market() {
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
+  // delete created market
+  async function handleDeletemarket() {
+    console.log("selected market", marketSelected);
+    setIsDeleting((prev) => !prev);
+    // const allId: string[] = [];
+    for (const item of marketSelected) {
+      // allId.push(item?.id);
+      await mutateDelApiData(Route.marketRequest + `/${item?.id}`, "")
+        .then((response: any) => {
+          console.log("response of delete", response);
+          if (response.status === 204) {
+            toast.success("Market deleted");
+            setIsDeleting((prev) => !prev);
+            return;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("something went wrong. please try again");
+        });
+    }
+    setDeleteMarket((prev) => !prev);
+  }
+
+  async function handleCloseMarket() {
+    setIsDeleting((prev) => !prev);
+    console.log("close market");
+    for (const item of marketSelected) {
+      await mutateUpApiData(Route.marketRequest, { status: "CLOSED" }, item?.id)
+        .then((response) => {
+          console.log(response);
+          toast.success("Market closed")
+          setIsDeleting((prev) => !prev);
+          setCloseMarket((prev) => !prev)
+
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsDeleting((prev) => !prev);
+        });
+    }
+  }
+
   return (
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "Nouveau marché",
+          title: "New market",
           form: <NewMarket />,
         },
       ]}
@@ -203,23 +259,50 @@ export default function Market() {
       statPanelDatas={statPanelDatas}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Les Marchés</h1>
+        <h1 className="text-xl font-semibold">Markets</h1>
         <div className="flex gap-4 text-gray-500">
           {marketSelected.length !== 0 && (
             <>
               <CustomHoverCard content="archive project">
-                <Archive className="hover:cursor-pointer" />
+                <Archive
+                  onClick={() => setCloseMarket((prev) => !prev)}
+                  className="hover:cursor-pointer text-black"
+                />
               </CustomHoverCard>
               <CustomHoverCard content="Delete Accounts">
                 <Trash2
-                  className="hover:cursor-pointer"
-                  // onClick={deletemarketAccounts}
+                  className="hover:cursor-pointer text-black"
+                  onClick={() => setDeleteMarket((prev) => !prev)}
                 />
               </CustomHoverCard>
             </>
           )}
         </div>
       </div>
+      <>
+        <ModalContent
+          openModal={deleteMarket}
+          isProcessing={isDeleting}
+          action={"Delete"}
+          dialogTitle="Delete Market"
+          dialogDescription={"Are you sure you want to delete this market?"}
+          cancelationFunction={() => setDeleteMarket((prev) => !prev)}
+          actionFunction={handleDeletemarket}
+          updateOpenModalState={() => setDeleteMarket((prev) => !prev)}
+        />
+
+        <ModalContent
+          openModal={closeMarket}
+          isProcessing={isDeleting}
+          action={"Close"}
+          dialogTitle={"Market done ?"}
+          dialogDescription={"Are you sure you want to Close this market?"}
+          cancelationFunction={() => setCloseMarket((prev) => !prev)}
+          actionFunction={handleCloseMarket}
+          updateOpenModalState={() => setCloseMarket((prev) => !prev)}
+        />
+      </>
+
       <div className="px-6">
         <DataTable<MarketDisplayProps, any>
           incomingColumns={columns}

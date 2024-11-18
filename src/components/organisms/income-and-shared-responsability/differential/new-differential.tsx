@@ -39,7 +39,6 @@ export function NewDifferential({ endpoint }: Props) {
 
   // load company state
   const company = useCompanyStore((state) => state.company);
-  const currentCampain = useCampaignStore((state) => state.currentCampaign);
 
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: differentialFormProps) => {
@@ -53,16 +52,14 @@ export function NewDifferential({ endpoint }: Props) {
     const dataToDB = {
       ...uploadedURLs,
       company_id: company?.id,
+      management_plan: [""],
+      proof_of_expenses: [""],
+      proof_of_paiement: [""],
+      agreement_pv: [""],
+      type: "SUSTENABILITY_DIFFERENTIAL"
     };
 
     console.log(dataToDB);
-
-    // Sauvegarde de l'activité
-    // const existingActivities = LOCAL_STORAGE.get("agricultures") ?? [];
-    // LOCAL_STORAGE.save("agricultures", [
-    //   ...existingActivities,
-    //   { id: existingActivities.length + 1, ...dataToDB },
-    // ]);
 
     // CREATE AGRICULTURAL ACTIVITY
     await mutateApiData(endpoint, dataToDB)

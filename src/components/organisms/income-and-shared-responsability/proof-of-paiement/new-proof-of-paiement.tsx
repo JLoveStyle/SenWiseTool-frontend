@@ -53,9 +53,13 @@ export function NewProofOfPaiement({ endpoint }: Props) {
     const dataToDB = {
       ...uploadedURLs,
       company_id: company?.id,
+      type: "PAYMENT_JUSTIFICATION",
+      producer_payment_proof: [""],
+      first_buyer_proof: [""],
+      management_plan: [""]
     };
 
-    console.log(dataToDB);
+    console.log('Payload', dataToDB);
 
     // Sauvegarde de l'activité
     // const existingActivities = LOCAL_STORAGE.get("agricultures") ?? [];

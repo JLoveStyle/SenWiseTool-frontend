@@ -48,6 +48,7 @@ export type AvailableRoute =
   | "environmentRequest"
   | "inspectionData"
   | "famerRequest"
+  | "revenuEtResponsabilite"
 
   // tracability
   | "markets"
@@ -99,6 +100,7 @@ export const Route: Record<AvailableRoute, string> = {
   agricultureRequest: "agricultures",
   inspectionData: "inspection_data",
   famerRequest: "farmers",
+  revenuEtResponsabilite: "revenu-et-responsabilite-partager",
 
   // tracability
   markets: "/dashboard/tracability/markets",
@@ -109,7 +111,7 @@ export const Route: Record<AvailableRoute, string> = {
   transmissionAndDeclarationSheet:
     "/dashboard/tracability/transmission-and-declaration-sheet",
   incomeAndSharedResponsabilityProofOfPaiement:
-    "/dashboard/income-and-shared-responsability/proof-of-paiement",
+    "/dashboard/income-and-shared-responsability/proof-of-payment",
   incomeAndSharedResponsabilityManagementPlan:
     "/dashboard/income-and-shared-responsability/management-plan",
   incomeAndSharedResponsabilityDifferential:

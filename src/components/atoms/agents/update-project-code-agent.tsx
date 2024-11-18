@@ -6,6 +6,7 @@ import { CodeProjectProps } from "@/types/agent-props";
 import { useEffect, useState } from "react";
 import { RxCross2, RxDotFilled } from "react-icons/rx";
 import { InputUI } from "../disign-system/form/input-ui";
+import { Spinner } from "../spinner/spinner";
 
 interface Props {
   updatedFormProjectCode: (data: CodeProjectProps[]) => void;
@@ -13,6 +14,7 @@ interface Props {
   initData?: CodeProjectProps[];
   errors: { [key: string]: any };
   isLoading: boolean;
+  isUpdating?: boolean
 }
 
 export const UpdateProjectCodeAgent = ({
@@ -21,6 +23,7 @@ export const UpdateProjectCodeAgent = ({
   initData,
   errors,
   isLoading,
+  isUpdating
 }: Props) => {
   const [formData, setFormData] = useState<CodeProjectProps[]>(initData ?? []);
 
@@ -81,9 +84,11 @@ export const UpdateProjectCodeAgent = ({
           <>
             <div className="flex justify-between items-center">
               <Label htmlFor="projectCodes" className="text-gray-400">
-                Liste des projets
+                List of projects
               </Label>
-              <Button onClick={() => onSubmitProjectCodeAgent()}>Submit</Button>
+              <Button onClick={() => onSubmitProjectCodeAgent()}>
+                {isUpdating ? <Spinner/> : "Submit"}
+              </Button>
             </div>
             <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 w-full overflow-y-scroll scrool-bar-hidden">
               {Array.isArray(formData) &&
@@ -107,9 +112,9 @@ export const UpdateProjectCodeAgent = ({
           </>
         )}
         <InputUI
-          label="Code du projet"
+          label="Project code"
           id="projectCodes"
-          placeholder="Entrer le code du projet"
+          placeholder="Enter project code and hit enter"
           isLoading={isLoading}
           value={projectCode?.value}
           errors={errors}

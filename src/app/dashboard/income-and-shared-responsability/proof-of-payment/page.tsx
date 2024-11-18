@@ -1,14 +1,10 @@
 "use client";
 
 import { Route } from "@/lib/route";
-
-import { Archive, Trash2 } from "lucide-react";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
+import { Archive, ListOrdered, Trash2 } from "lucide-react";
 import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
-
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-// import { Newagriculture } from "@/components/organisms/tracability/agriculture/new-agriculture";
 import { NewProofOfPaiement } from "@/components/organisms/income-and-shared-responsability/proof-of-paiement/new-proof-of-paiement";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
@@ -75,10 +71,13 @@ export default function ProofOfPaiement() {
       try {
         setIsLoading(true);
         const result = await fetchApiData(
-          Route.incomeAndSharedResponsabilityProofOfPaiement,
+          Route.revenuEtResponsabilite,
+          "?type=PAYMENT_JUSTIFICATION",
           ""
         );
         const dataFormated: ProofOfPaiementDisplayProps[] = [];
+
+        console.log('result => ', result)
 
         if (result.status === 200) {
           setIsLoading(false);
@@ -146,7 +145,7 @@ export default function ProofOfPaiement() {
       structure: {
         label: "Number",
         baseUrl: "",
-        icon: Archive,
+        icon: ListOrdered,
       },
       data: () => {
         return proofOfPaiementDatas.length;
@@ -159,14 +158,10 @@ export default function ProofOfPaiement() {
       newForms={[
         {
           title: "New activity",
-          form: (
-            <NewProofOfPaiement
-              endpoint={Route.incomeAndSharedResponsabilityProofOfPaiement}
-            />
-          ),
+          form: <NewProofOfPaiement endpoint={Route.revenuEtResponsabilite} />,
         },
       ]}
-      title="JUSTIFICATIF DE PAIEMENT"
+      title="PROOFS OF PAYMENT"
       formParams={formParams}
       statPanelDatas={stateActivity}
     >

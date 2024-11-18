@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { toast } from "react-toastify";
 
 interface Props {
   updatedFormData: (data: AgentProps) => void;
@@ -169,12 +170,23 @@ export const FormUniqAgent = ({
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>Projects codes ?</AccordionTrigger>
-            {projects?.map((codes, index) => (
-              <AccordionContent className="flex justify-between" key={index}>
-                <p>{codes?.title}</p>
-                <p className="font-semibold">{codes?.code}</p>
-              </AccordionContent>
-            ))}
+            <div className="max-h-[200px] overflow-y-scroll pr-4">
+              {projects?.map((codes, index) => (
+                <AccordionContent className="flex justify-between " key={index}>
+                  <p>{codes?.title?.slice(0, 40)}...</p>
+                  <p>{codes?.type}</p>
+                  <p
+                    onClick={() => {
+                      navigator.clipboard.writeText(codes?.code as string);
+                      toast.success("Code copied");
+                    }}
+                    className="font-semibold cursor-pointer hover:underline"
+                  >
+                    {codes?.code}
+                  </p>
+                </AccordionContent>
+              ))}
+            </div>
           </AccordionItem>
         </Accordion>
       </div>
