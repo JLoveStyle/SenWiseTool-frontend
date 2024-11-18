@@ -126,7 +126,7 @@ export default function ProjectDetailsForm({
 
       if (error) {
         console.log(error);
-        toast.error("Error while uploading logo");
+        toast.error("Error while uploading logo. Please try again");
         setIsLoading(false);
         throw new Error("Error lors de l'upload du logo");
       }
@@ -195,7 +195,7 @@ export default function ProjectDetailsForm({
           return;
         }
         setIsLoading((prev) => !prev);
-        toast.error("Something went wrong", {
+        toast.error("Something went wrong. Please refresh", {
           transition: Bounce,
           autoClose: 3000,
         });

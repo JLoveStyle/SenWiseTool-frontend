@@ -155,7 +155,7 @@ export default function ProjectDetails({
           ""
         )}
         {dataActive && pathname.includes("/mapping/") ? (
-          <MappingData />
+          <MappingData project_id={projectDetails?.id as string} />
         ) : dataActive ? (
           <InspectionData
             projectName={projectDetails?.title}
@@ -169,7 +169,7 @@ export default function ProjectDetails({
         ) : // <p>sdivosidvsd</p>
         formActive ? (
           <ProjectForm
-            projectObject={projectDetails ? projectDetails : undefined}
+            projectObject={projectDetails as ProjectType}
           />
         ) : (
           ""

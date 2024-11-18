@@ -6,7 +6,6 @@ export type AvailableRoute =
   | "checkout"
   | "signIn"
   | "signUp"
-  
   | "createCompany"
   | "dashboard"
   | "training"
@@ -25,7 +24,6 @@ export type AvailableRoute =
   | "details"
   | "training_session"
   | "login"
-  
   | "campaign"
   | "trainingProject"
   | "mapping"
@@ -33,6 +31,9 @@ export type AvailableRoute =
   | "social"
   | "environment"
   | "agriculture"
+  | "incomeAndSharedResponsabilityProofOfPaiement"
+  | "incomeAndSharedResponsabilityManagementPlan"
+  | "incomeAndSharedResponsabilityDifferential"
 
   // API endpoints
   | "agents"
@@ -46,6 +47,8 @@ export type AvailableRoute =
   | "agricultureRequest"
   | "environmentRequest"
   | "inspectionData"
+  | "famerRequest"
+  | "revenuEtResponsabilite"
 
   // tracability
   | "markets"
@@ -72,7 +75,7 @@ export const Route: Record<AvailableRoute, string> = {
   reclamationMecanism: "/dashboard/reclamation-mecanism",
   riskEvaluation: "/dashboard/risk-evaluation",
   organigram: "/dashboard/organigram",
-  managementPlan: "dashboard/management-plan",
+  managementPlan: "/dashboard/management-plan",
   details: "/dashboard/details",
   training_session: "training_sessions",
   createCompany: "/create-company",
@@ -96,6 +99,8 @@ export const Route: Record<AvailableRoute, string> = {
   environmentRequest: "environments",
   agricultureRequest: "agricultures",
   inspectionData: "inspection_data",
+  famerRequest: "farmers",
+  revenuEtResponsabilite: "revenu-et-responsabilite-partager",
 
   // tracability
   markets: "/dashboard/tracability/markets",
@@ -105,4 +110,10 @@ export const Route: Record<AvailableRoute, string> = {
     "/dashboard/tracability/factory-accompaniement-sheet",
   transmissionAndDeclarationSheet:
     "/dashboard/tracability/transmission-and-declaration-sheet",
+  incomeAndSharedResponsabilityProofOfPaiement:
+    "/dashboard/income-and-shared-responsability/proof-of-payment",
+  incomeAndSharedResponsabilityManagementPlan:
+    "/dashboard/income-and-shared-responsability/management-plan",
+  incomeAndSharedResponsabilityDifferential:
+    "/dashboard/income-and-shared-responsability/differential",
 };

@@ -1,21 +1,20 @@
 "use client";
 import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { DialogContent } from "../ui/dialog";
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
 import { ProjectsType, ProjectType, TrainingType } from "@/types/api-types";
-import CreateNewMapping from "./mapping/createNewMapping";
 
 type Props = {
   typeOfProject: ProjectsType;
-  projectsPerType: ProjectType[] | TrainingType[]
+  projectsPerType: ProjectType[] | TrainingType[];
   newForm?: React.ReactNode;
 };
 
@@ -58,7 +57,6 @@ export default function CloseSiveNav({
     (item) => item.status === "ARCHIVED"
   );
 
-
   return (
     <div
       className={
@@ -90,6 +88,12 @@ export default function CloseSiveNav({
           open={openModal}
         >
           <DialogContent className="sm:max-w-[800px]">
+            <VisuallyHidden.Root>
+              <DialogHeader>
+                <DialogTitle></DialogTitle>
+                <DialogDescription></DialogDescription>
+              </DialogHeader>
+            </VisuallyHidden.Root>
             {showProjectDetailsForm && (
               <ProjectDetailsForm
                 closeModal={closeModal}
@@ -100,13 +104,6 @@ export default function CloseSiveNav({
             {showProjectOptions && (
               <CreateProjectOptions onClick={handleOpenProjectOptions} />
             )}
-            {/* {showProjectOptions && pathname.includes("/mapping") ? (
-              <CreateNewMapping onClick={closeModal}/>
-            ) : showProjectOptions ? (
-              <CreateProjectOptions onClick={handleOpenProjectOptions} />
-            ) : (
-              ""
-            )} */}
           </DialogContent>
         </Dialog>
         <div className="flex justify-between gap-2 hover:cursor-pointer">

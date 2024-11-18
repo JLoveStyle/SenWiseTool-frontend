@@ -23,7 +23,9 @@ export function UpdateMarket() {
 
   const [formData, setFormData] = useState<MarketFormProps>({
     id: "",
-    price_of_day: 0,
+    price_of_theday: 0,
+    location: "",
+    supplier: "",
     start_date: "",
     end_date: "",
   });
@@ -38,7 +40,9 @@ export function UpdateMarket() {
 
   const handleCreateMarket = async (formData: MarketFormProps) => {
     const dataToDB = {
-      price_of_day: formData.price_of_day,
+      price_of_theday: formData.price_of_theday,
+      location: formData.location,
+      supplier: formData.supplier,
       start_date: formData.start_date,
       end_date: formData.end_date,
       company_id: company?.id,

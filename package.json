@@ -5,15 +5,17 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "deploy": "npm run build && firebase deploy",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.682.0",
     "@aws-sdk/s3-request-presigner": "^3.682.0",
-    "@clerk/nextjs": "^6.1.0",
+    "@clerk/nextjs": "^6.2.0",
     "@maphubs/tokml": "^0.6.1",
     "@paypal/react-paypal-js": "^8.7.0",
+    "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.2",

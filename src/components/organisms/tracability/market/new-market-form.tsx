@@ -2,12 +2,11 @@
 
 import { InputUI } from "@/components/atoms/disign-system/form/input-ui";
 import { TextareaUI } from "@/components/atoms/disign-system/form/textarea-ui";
-import { MarketDBProps } from "@/types/api-types";
 import { MarketFormProps } from "@/types/tracability/market";
 import { useEffect, useState } from "react";
 
 interface Props {
-  updatedFormData: (data: Partial<MarketDBProps>) => void;
+  updatedFormData: (data: MarketFormProps) => void;
   initData?: MarketFormProps;
   errors: { [key: string]: any };
   isLoading: boolean;
@@ -19,10 +18,10 @@ export const NewMarketForm = ({
   errors,
   isLoading,
 }: Props) => {
-  const [formData, setFormData] = useState<Partial<MarketDBProps>>({
+  const [formData, setFormData] = useState<MarketFormProps>({
     id: initData ? initData.id : "",
     location: initData ? initData.location : "",
-    price_of_day: initData ? initData.price_of_day : 0,
+    price_of_theday: initData ? initData.price_of_theday : 0,
     supplier: initData ? initData.supplier : "",
     start_date: initData ? initData.start_date : "",
     end_date: initData ? initData.end_date : "",
@@ -32,7 +31,7 @@ export const NewMarketForm = ({
   ) => {
     let { name, value } = e.target;
     console.log(value);
-    if (name === "price_of_day") {
+    if (name === "price_of_theday") {
       console.log({ name: +value });
       setFormData((prev) => ({ ...prev, [name]: +value }));
     } else setFormData((prev) => ({ ...prev, [name]: value }));
@@ -54,9 +53,9 @@ export const NewMarketForm = ({
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Lieu"
+          label="Location"
           id="location"
-          placeholder="entrer la Localité"
+          placeholder="Enter location"
           isLoading={isLoading}
           errors={errors}
           required
@@ -64,22 +63,22 @@ export const NewMarketForm = ({
           onChange={handleChange}
         />
         <InputUI
-          label="Prix du jour (en XAF)"
-          id="price_of_day"
+          label="Price of the day (in XAF)"
+          id="price_of_theday"
           type="number"
-          placeholder="Prix du jour"
+          placeholder="Price of the day"
           isLoading={isLoading}
           errors={errors}
           required
-          value={formData.price_of_day}
+          value={formData.price_of_theday}
           onChange={handleChange}
         />
       </div>
       <div className="grid items-center gap-4">
         <InputUI
-          label="Nom du Fournisseur"
+          label="Supplier name"
           id="supplier"
-          placeholder="Entrer le nom du Fournisseur"
+          placeholder="Enter supplier name"
           isLoading={isLoading}
           errors={errors}
           required
@@ -89,7 +88,7 @@ export const NewMarketForm = ({
       </div>
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="date de début du marché"
+          label="Market start date"
           id="start_date"
           type="datetime-local"
           isLoading={isLoading}
@@ -100,7 +99,7 @@ export const NewMarketForm = ({
         />
 
         <InputUI
-          label="date de fin du marché"
+          label="Market end day"
           id="end_date"
           type="datetime-local"
           isLoading={isLoading}

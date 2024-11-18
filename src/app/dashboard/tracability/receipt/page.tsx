@@ -69,39 +69,6 @@ export default function Receipt() {
     // refetch();
   }, [receiptDatas]);
 
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
-
   const statPanelDatas: DashboardStatPanelData[] = [
     {
       structure: {
@@ -110,7 +77,7 @@ export default function Receipt() {
         icon: Rocket,
       },
       data: () => {
-        return receiptStatData.totalSale;
+        // return receiptStatData.totalSale;
       },
     },
     {
@@ -120,7 +87,7 @@ export default function Receipt() {
         icon: FilePenLine,
       },
       data: () => {
-        return receiptStatData.distinctMarketCount;
+        // return receiptStatData.distinctMarketCount;
       },
     },
     {
@@ -130,7 +97,7 @@ export default function Receipt() {
         icon: Archive,
       },
       data: () => {
-        return receiptStatData.totalQuantity;
+        // return receiptStatData.totalQuantity;
       },
     },
     {
@@ -140,7 +107,7 @@ export default function Receipt() {
         icon: Archive,
       },
       data: () => {
-        return receiptStatData.totalNetWeight;
+        // return receiptStatData.totalNetWeight;
       },
     },
   ];

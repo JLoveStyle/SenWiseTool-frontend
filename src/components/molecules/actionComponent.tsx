@@ -196,8 +196,6 @@ export default function ActionComponent({
     ? "Archive project"
     : "";
 
-  const description = {};
-  console.log(heading);
   return (
     <CardLayout heading={heading}>
       <div className="py-4 px-6 ">
@@ -218,7 +216,7 @@ export default function ActionComponent({
             Cancel
           </Button>
           {isLoading ? (
-            <Button className="w-[150px] hover:cursor-not-allowed opacity-70 ">
+            <Button className={isLoading ? "hover: cursor-not-allowed bg-tertiary " : " w-[150px] hover:cursor-not-allowed opacity-70 "}>
               <Spinner />
             </Button>
           ) : (

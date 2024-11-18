@@ -15,10 +15,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FormMultipleAgent } from "./form-multiple-agent";
-import { AssigneeType } from "@/types/api-types";
+import { AssigneeType, ProjectType } from "@/types/api-types";
 import { mutateApiData } from "@/utiles/services/mutations";
 
-export function NewFormMiltipleAgent() {
+interface Props {
+  projects?: Partial<ProjectType[]>;
+}
+
+export function NewFormMiltipleAgent({ projects }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
 
@@ -39,7 +43,6 @@ export function NewFormMiltipleAgent() {
   };
 
   const handleCreateAgent = async (formData: MultipleFormAgentProps) => {
-    const serverResponses: any[] = [];
     setIsLoading((prev) => !prev);
     let assignees: Partial<AssigneeType>[] = [];
     arrayNumber(formData.accountNumber).map(async () => {
@@ -66,55 +69,19 @@ export function NewFormMiltipleAgent() {
           return;
         } else if (response.status === 409) {
           setIsLoading(false);
-          toast.warning(`Agent with code ${response.agentCode} already exist`)
-          return
+          toast.warning(`Agent with code ${response.agentCode} already exist`);
+          return;
         } else {
           setIsLoading(false);
-          toast.error('Something went wrong')
-          return
+          toast.error("Something went wrong");
+          return;
         }
       })
       .catch((error) => {
-        console.log(error)
-        toast.error('Something went wrong. Please try again')
-      })
+        console.log(error);
+        toast.error("Something went wrong. Please try again");
+      });
 
-    // const serverResponse = await Promise.all(
-    //   arrayNumber(formData.accountNumber).map(async () => {
-    //     const dataToDB = {
-    //       agentCode: generateUniqueCode(),
-    //       projectCodes: formData.projectCodes
-    //         ? formData.projectCodes.map((item) => item.value)
-    //         : [],
-    //     };
-
-    //     console.log('dataToDB', dataToDB)
-
-    //     // const result = await db_create_agent(dataToDB);
-    //     // const result = await dbCreateAgent(dataToDB);
-    //     // return result;
-    //   })
-    // );
-
-    // serverResponses.push(...serverResponse);
-
-    // for (const index in serverResponses) {
-    //   if (Object.prototype.hasOwnProperty.call(serverResponses, index)) {
-    //     const serverResponse = serverResponses[index];
-    //     if (serverResponse.status === "error") {
-    //       toast.error(`Faillure during agent ${index + 1} generation`);
-    //       setIsLoading(false);
-    //       return;
-    //     }
-    //   }
-    // }
-
-    // toast.success("All agents are generated successfull");
-    // setIsLoading(false);
-    // // closeDialog();
-    // router.refresh();
-    // router.push(Route.agents);
-    // return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -144,6 +111,7 @@ export function NewFormMiltipleAgent() {
         updatedFormData={handleUpdatedFormData}
         errors={errors}
         isLoading={isLoading}
+        projects={projects as Partial<ProjectType[]>}
       />
       <ButtonUI
         type="submit"

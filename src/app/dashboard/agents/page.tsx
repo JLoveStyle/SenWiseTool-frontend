@@ -4,8 +4,10 @@ import { Route } from "@/lib/route";
 
 import {
   Archive,
+  ListOrdered,
   LucideBlinds,
   LucideX,
+  Rocket,
   Trash2,
 } from "lucide-react";
 import { RiUserStarLine } from "react-icons/ri";
@@ -35,24 +37,27 @@ import {
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { statPanelDatas } from "@/utiles/services/constants";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { columnsListOfAgents } from "@/components/atoms/colums-of-tables/list-of-agets";
-
+import { ApiDataResponse, ProjectType } from "@/types/api-types";
+import { useCampaignStore } from "@/lib/stores/campaign-store";
+import { DashboardStatPanelData } from "@/types/app-link";
+import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
+import ModalContent from "@/components/organisms/modalContent";
 
 export default function Receipt() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [agentDatas, setAgentDatas] = useState<AgentPropsFromDB[]>([]);
   const [agentSelected, setAgentSelected] = useState<AgentPropsFromDB[]>([]);
   const [errors, setErrors] = useState({});
-
-  let fetchedData: AgentProps[] = []
+  const [projects, setProjects] = useState<ProjectType[]>([]);
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
   });
-  const projectCodeSeparator = " ";
+  // const projectCodeSeparator = " ";
 
   const closeDialog = () => {
     toggleOpenModel();
@@ -69,64 +74,54 @@ export default function Receipt() {
     false
   );
 
+  // Load current campaign
+  const currentCampaign = useCampaignStore((state) => state.currentCampaign);
   // Load company object from store
-  const company = useCompanyStore((state) => state.company)
-  console.log('fetching data with company_id', company?.id)
+  const company = useCompanyStore((state) => state.company);
 
-  async function getAllSubAccounts() {
-    // TODO: add company_id in the query of this function 
-    console.log('fetching data with company_id', company?.id)
-    await fetchApiData(
-      Route.assigne,
-      `perCompany?company_id=${company?.id}`
+  // get all company's project per campain
+  async function getAllProjectCodesPerCompnanyAndCampain() {
+    console.log("fetching all project codes");
+    await fetchApiData<ApiDataResponse<ProjectType[]>>(
+      Route.projects,
+      `company_projectCode?campaign_id=${currentCampaign?.id}`
     )
       .then((response) => {
         if (response.status === 200) {
-          fetchedData = response.data
-          setAgentDatas(response.data)
-          console.log('from useEffect', response);
-          return
+          setProjects(response.data);
+          console.log("AllprojectsCode\n", response.data);
+          return;
         }
-        toast.error('Could not load sub accouts. Please try again')
       })
       .catch((error) => {
         console.log(error);
-        toast.error('Internal Server Error')
+      });
+  }
+
+  async function getAllSubAccounts() {
+    // TODO: add company_id in the query of this function
+    console.log("fetching data with company_id", company?.id);
+
+    await fetchApiData(Route.assigne, `perCompany?company_id=${company?.id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          setAgentDatas(response.data);
+          setIsLoading(false);
+          console.log("from useEffect", response);
+          return;
+        }
+        toast.error("Could not load sub accouts. Please try again");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Internal Server Error");
       });
   }
 
   useEffect(() => {
-    console.log('Hello world from useEffect')
-    getAllSubAccounts()
-  }, [])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const result = await db_get_agents();
-        const result = LOCAL_STORAGE.get("agents");
-        // console.log("data agent list: ", result);
-        setAgentDatas(result as AgentPropsFromDB[]);
-      } catch (err) {
-        console.error("Error fetching agents: ", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    // const fetchData = async () => {
-    // const result = await db_get_agents()
-    // .then((result) => {
-    // console.log("data agent list: ", result);
-
-    // setAgentDatas(result as AgentProps[]);
-    // setIsLoading(false);
-    // })
-    // .catch((err) => console.error(err));
-    // };
-
-    // fetchData();
-  }, []);
+    getAllSubAccounts();
+    getAllProjectCodesPerCompnanyAndCampain();
+  }, [currentCampaign?.id, company?.id]);
 
   const valueToDisplay = (args: AgentPropsFromDB[]) => {
     return args?.map((agents) => ({
@@ -135,47 +130,10 @@ export default function Receipt() {
       fullName: agents.fullName,
       projectCodes:
         typeof agents.projectCodes != "string"
-          ? agents.projectCodes?.join(projectCodeSeparator)
+          ? agents.projectCodes?.join(" ")
           : agents.projectCodes,
     }));
   };
-
-  useEffect(() => {
-    // refetch();
-  }, [agentDatas]);
-
-  // const statPanelDatas: DashboardStatPanelData[] = [
-  //   {
-  //     structure: {
-  //       label: "Deployed",
-  //       baseUrl: "",
-  //       icon: Rocket,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Draft",
-  //       baseUrl: "",
-  //       icon: FilePenLine,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   {
-  //     structure: {
-  //       label: "Archive",
-  //       baseUrl: "",
-  //       icon: Archive,
-  //     },
-  //     data: () => {
-  //       return 0;
-  //     },
-  //   },
-  // ];
 
   const formParams = {
     trigger_btn_label_form: "New Agent",
@@ -185,21 +143,25 @@ export default function Receipt() {
     construct_form_btn_icon: RiUserStarLine,
   };
 
-  const deleteAgentAccounts = () => {
-    if (agentSelected.length !== 0) {
-      const allAgentsAccounts = LOCAL_STORAGE.get("agents");
-      const idSelecteds = agentSelected.map((objet) => objet.id);
-
-      const restAccount: AgentProps[] = [];
-      allAgentsAccounts.map((item: AgentProps) => {
-        if (!idSelecteds.includes(item.id)) {
-          restAccount.push(item);
+  const deleteAgentAccounts = async () => {
+    setIsUpdating((prev) => !prev);
+    await mutateDelApiData<ApiDataResponse<AgentPropsFromDB>>(
+      Route.assigne + `/${agentSelected[0]?.agentCode}`,
+      ""
+    )
+      .then((response) => {
+        console.log(response);
+        if (response?.status === 204) {
+          toast.success("Account deleted");
+          setIsUpdating((prev) => !prev);
+          setIsDeleting(prev => !prev) //close modal
+          return;
         }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsUpdating(prev => !prev);
       });
-      LOCAL_STORAGE.save("agents", restAccount);
-
-      toast.success("Accounts are deleted successfull");
-    }
   };
 
   const [formProjectCode, setFormProjectCode] = useState<CodeProjectProps[]>(
@@ -212,37 +174,51 @@ export default function Receipt() {
     setFormProjectCode(updatedFormProjectCode);
   };
 
-  const onSubmitProjectCodeAgent = () => {
-    const allAgents = LOCAL_STORAGE.get("agents");
-    let allAgentUpdated: AgentProps[] = [];
-
-    if (agentSelected.length !== 0) {
-      agentSelected.map((selected) => {
-        // const selected_projectCodes: any[] = (selected.projectCodes || []).map(
-        //   (code: CodeProjectProps) => code
-        // );
-        const selected_projectCodes =
-          typeof selected.projectCodes === "string"
-            ? selected.projectCodes.split(projectCodeSeparator)
-            : selected.projectCodes;
-
-        formProjectCode.map((projectCode) => {
-          if (!selected_projectCodes?.includes(projectCode.value)) {
-            selected_projectCodes?.push(projectCode.value);
-          }
-        });
-
-        selected.projectCodes = selected_projectCodes;
-
-        allAgentUpdated = allAgents.map((agent: AgentProps) =>
-          agent.id === selected.id ? selected : agent
-        );
-      });
+  const onSubmitProjectCodeAgent = async () => {
+    setIsUpdating((prev) => !prev);
+    const addedProjectCode: string[] = [];
+    for (const item of formProjectCode) {
+      addedProjectCode.push(item.value);
     }
-    LOCAL_STORAGE.save("agents", allAgentUpdated);
+    let allCodes: string[] = [];
+    if (agentSelected[0]?.projectCodes) {
+      let code = "";
+      for (const item of agentSelected[0]?.projectCodes) {
+        if (item != " ") {
+          code = code + item;
+        }
+        if (code.length === 4) {
+          allCodes.push(code);
+          code = "";
+        }
+      }
+    }
 
-    toast.success("Ajout avec success");
-    toggleOpenModel();
+    // update assignee by id
+    await mutateUpApiData(
+      Route.assigne,
+      {
+        projectCodes: addedProjectCode.concat(allCodes),
+      },
+      agentSelected[0]?.id
+    )
+      .then((response) => {
+        console.log(response);
+        if (response.status === 204) {
+          toast.success("Projects assigned successfully to agent");
+          setIsUpdating((prev) => !prev);
+          closeDialog;
+          return;
+        } else {
+          toast.error("Something went wrong. Please try again");
+          setIsUpdating(false);
+          return;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsUpdating((prev) => !prev);
+      });
   };
 
   const updateProjectCodeForm = (
@@ -262,12 +238,13 @@ export default function Receipt() {
         </Button>
         <DialogHeader className="p-4 flex h-[80px] bg-black justify-between rounded-t-lg">
           <DialogTitle className="text-xl p-4 font-semibold text-white">
-            Affectez les projets à ces comptes
+            Assigne more projects to this account
           </DialogTitle>
         </DialogHeader>
 
         <div className="p-5">
           <UpdateProjectCodeAgent
+            isUpdating={isUpdating}
             updatedFormProjectCode={handleUpdatedFormProjectCode}
             onSubmitProjectCodeAgent={onSubmitProjectCodeAgent}
             errors={errors}
@@ -278,36 +255,70 @@ export default function Receipt() {
     </Dialog>
   );
 
+  const sideBarPanel: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Number",
+        baseUrl: "",
+        icon: ListOrdered,
+      },
+      data: () => {
+        return agentDatas?.length;
+      },
+    },
+  ];
+
   return (
     <LayoutDashboardTemplate
       newForms={[
-        { title: "New sub account", form: <NewFormUniqAgent /> },
-        { title: "Generate sub account", form: <NewFormMiltipleAgent /> },
+        {
+          title: "New sub account",
+          form: (
+            <NewFormUniqAgent
+              projects={(projects as Partial<ProjectType[]>) ?? []}
+            />
+          ),
+        },
+        {
+          title: "Generate sub account",
+          form: (
+            <NewFormMiltipleAgent
+              projects={(projects as Partial<ProjectType[]>) ?? []}
+            />
+          ),
+        },
       ]}
-      title="Agent Manager"
+      title="Agent Management"
       formParams={formParams}
-      statPanelDatas={statPanelDatas}
+      statPanelDatas={sideBarPanel}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Users</h1>
         <div className="flex gap-4 text-gray-500">
           {agentSelected.length !== 0 && (
             <>
-              <CustomHoverCard content="archive project">
-                <Archive className="hover:cursor-pointer" />
-              </CustomHoverCard>
-              <CustomHoverCard content="Share project">
+              <CustomHoverCard content="Assign more projects">
                 {updateProjectCodeForm}
               </CustomHoverCard>
               <CustomHoverCard content="Delete Accounts">
                 <Trash2
                   className="hover:cursor-pointer"
-                  onClick={deleteAgentAccounts}
+                  onClick={() => setIsDeleting((prev) => !prev)}
                 />
               </CustomHoverCard>
             </>
           )}
         </div>
+        <ModalContent
+          openModal={isDeleting}
+          isProcessing={isUpdating}
+          dialogTitle={"Delete market ?"}
+          action={"Delete"}
+          dialogDescription={"Are you sure you want to delete this account ?"}
+          cancelationFunction={() => setIsDeleting((prev) => !prev)}
+          actionFunction={deleteAgentAccounts}
+          updateOpenModalState={() => setIsDeleting((prev) => !prev)}
+        />
       </div>
       <div className="px-6">
         <DataTable
@@ -316,8 +327,6 @@ export default function Receipt() {
           // incomingData={agentDatas}
           incomingData={
             agentDatas?.length
-              ? valueToDisplay(agentDatas)
-              : agentDatas?.length
               ? valueToDisplay(agentDatas as AgentPropsFromDB[])
               : []
           }

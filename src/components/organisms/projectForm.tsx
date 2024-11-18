@@ -88,6 +88,7 @@ export default function ProjectForm({ projectObject }: Props) {
 
   return (
     <PrintContent
+    showBackBtn={false}
     isDeploying={isLoading}
     handleExitPage={handleBackBtn}
     onClick={() => router.push(Route.editProject + `/${projectObject?.id}`)}

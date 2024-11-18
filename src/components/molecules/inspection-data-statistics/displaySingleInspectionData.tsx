@@ -11,7 +11,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useState } from "react";
 import DisplayInspectionAnalysis from "./displayInspectionAnalysis";
-import { InspectionDataPops, InspectionDataType } from "@/types/api-types";
+import { InspectionDataPops } from "@/types/api-types";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 
 type Props = {

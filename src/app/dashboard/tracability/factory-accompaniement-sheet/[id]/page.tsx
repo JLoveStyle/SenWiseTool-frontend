@@ -8,7 +8,7 @@ import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { ReceiptProps, ReceiptTableProps } from "@/types/tracability/receipt";
 import { db_get_receipts } from "@/utiles/services/tracability/receipt";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { Spinner } from "@/components/atoms/spinner/spinner";
@@ -25,15 +25,11 @@ import { MoveLeft } from "lucide-react";
 import Image from "next/image";
 import { PiPrinterFill } from "react-icons/pi";
 
-type TProps = {
-  params: {
-    id: string;
-  };
-};
+type TProps =  Promise<{id: string}>;
 
-export default function FactoryAccompaniementSheetPrintable({
-  params: { id },
-}: TProps) {
+export default function FactoryAccompaniementSheetPrintable(props: {params: TProps}) {
+  const params = use(props.params)
+  const id = params.id
   const [isLoading, setIsLoading] = useState(true);
   const [receiptDatas, setReceiptDatas] = useState<ReceiptProps[]>([]);
 

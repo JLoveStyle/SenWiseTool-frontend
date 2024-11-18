@@ -1,12 +1,13 @@
 import { Route } from "@/lib/route";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { allRequirements } from "@/utils/requirements";
+import { IJsonSheet } from "json-as-xlsx";
 import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { receiptStatData } from "../tracability.const/statistics";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
-export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [
@@ -216,6 +217,60 @@ export const mappingData: { [key: string]: any }[] = [
         lat: 34.05,
       },
     ],
+  },
+];
+
+// COLUMNS FOR EXCELL SHEET
+export const columns: IJsonSheet[] = [
+  {
+    sheet: "Données_Mapping",
+    columns: [
+      {
+        label: "Nom du producteur",
+        value: "nom_producteur",
+      },
+      {
+        label: "statut du producteur",
+        value: "statut_producteur",
+      },
+      {
+        label: "N° CNI",
+        value: "no_cni",
+      },
+      {
+        label: "Date de creation de la plantation",
+        value: "date_de_creation_plant",
+      },
+      {
+        label: "Village",
+        value: "village",
+      },
+      {
+        label: "Nom du mappeur",
+        value: "nom_du_mappeur",
+      },
+      {
+        label: "Date",
+        value: "date",
+      },
+      {
+        label: "Superficie estimé",
+        value: "superficie_estimé",
+      },
+      {
+        label: "Photo de la plantation",
+        value: "photo_plantation",
+      },
+      {
+        label: "Photo planteur",
+        value: "photo_planteur",
+      },
+      {
+        label: "Coordonées",
+        value: "coordinate",
+      },
+    ],
+    content: mappingData,
   },
 ];
 
@@ -437,19 +492,19 @@ export const optionsRevenu: {
 }[] = [
   {
     title: "Justificatifs de payement de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
+    href: Route.incomeAndSharedResponsabilityProofOfPaiement,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
     title: "Plan de gestion de l'investissement de durabilité",
-    href: "/docs/primitives/alert-dialog",
+    href: Route.incomeAndSharedResponsabilityManagementPlan,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
     title: "Différentiel de durabilité",
-    href: "/docs/primitives/alert-dialog",
+    href: Route.incomeAndSharedResponsabilityDifferential,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },

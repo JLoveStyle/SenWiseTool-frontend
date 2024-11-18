@@ -39,6 +39,34 @@ export type ProductStatus = ObjectValue<typeof PRODUCTSTATUS>;
 export type ProjectsType = ObjectValue<typeof PROJECTTYPE>;
 export type ProjectStatus = ObjectValue<typeof PROJECT_STATUS>;
 
+export interface MappingProjectData {
+  collector_name: string,
+  village: string
+  location: string
+  plantation_photos: string[]
+  farmer_photos: string[]
+  date: string
+  farmer_status: string
+  farmer_name: string
+  farmer_contact: string
+  farmer_ID_card_number: string
+  plantation_creation_date: string
+  estimated_area: string
+  coordinates: {
+    longitude: number,
+    latitude: number
+  }[]
+}
+export interface MappingDataType {
+  id: string
+  collected_at: string
+  project_id: string
+  updated_at: string
+  project_data: {
+    project_id: string
+    project_data: MappingProjectData
+  }
+}
 export interface Answer {
   num: string;
   NC: boolean;
@@ -305,7 +333,7 @@ export type OmitStrict<T, K extends keyof T> = Omit<T, K>;
 
 export type TrainingTableDisplayType = Pick<
   TrainingType,
-  "id" | "title" | "start_date" | "end_date" | "location" | "code"
+  "id" | "title" | "start_date" | "end_date" | "location" | "code" | "created_at"
 >;
 
 export interface RequirementType {
@@ -324,10 +352,19 @@ export type ChapterMetaDataType = {
   };
 };
 
+export type BordereauxVenteType = {
+  id: string
+  code: string
+  campagne_id: string
+  sale_slip_title: string
+  sale_slip_description: string
+  sale_slip_url: string
+}
+
 export type MarketDBProps = {
   id: string;
   location: string;
-  price_of_day: number;
+  price_of_theday: number;
   supplier: string;
   start_date: Date | string;
   end_date: Date | string;
@@ -342,7 +379,26 @@ export type MarketDBProps = {
   company_id?: string;
   company: string;
   market_audit: []; // market_audit object[]: to be defined
-  transaction: []; // transaction object[]: to be defined
+  transaction: {
+    id: string,
+    market_id: string,
+    date: string,
+    level_of_traceability: string,
+    driver_name: string,
+    quantity: string,
+    humidity: string,
+    net_weight_declared_in_Ton: string,
+    humidity_level_of_product: string,
+    total_quantity_in_bags: number,
+    receiver_name: string,
+    sender_signature: string[],
+    driver_signature: string[],
+    product_quantity: string,
+    vehicule_immatriculation_number: string,
+    min_con_verif_agent_name_and_sig: string,
+    created_at: string,
+    updated_at: string
+  }[]
   receipts?: []; // receipt object[]: to be defined
   sale_slip: string | null;
 
@@ -361,6 +417,5 @@ export type MarketDBProps = {
   quantity_in_bags_tone: number | null;
   quantity_product: number | null;
 
-  sale_slip_url: string | null;
   store_entry_voucher: string | null;
 };

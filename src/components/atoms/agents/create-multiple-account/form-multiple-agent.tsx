@@ -5,13 +5,21 @@ import { CodeProjectProps, MultipleFormAgentProps } from "@/types/agent-props";
 import { useEffect, useState } from "react";
 import { RxCross2, RxDotFilled } from "react-icons/rx";
 import { InputUI } from "../../disign-system/form/input-ui";
+import { ProjectType } from "@/types/api-types";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { toast } from "react-toastify";
 
 interface Props {
   updatedFormData: (data: MultipleFormAgentProps) => void;
   initData?: MultipleFormAgentProps;
   errors: { [key: string]: any };
   isLoading: boolean;
-  displayListOfProjects?: boolean
+  projects?: Partial<ProjectType[]>;
 }
 
 export const FormMultipleAgent = ({
@@ -19,7 +27,7 @@ export const FormMultipleAgent = ({
   initData,
   errors,
   isLoading,
-  displayListOfProjects
+  projects,
 }: Props) => {
   const [formData, setFormData] = useState<MultipleFormAgentProps>({
     id: initData ? initData.id : "",
@@ -100,10 +108,10 @@ export const FormMultipleAgent = ({
           onChange={handleChange}
         />
       </div>
-      
+
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="projectCodes" className="text-gray-400">
-          Liste des projets
+          List of projects
         </Label>
         <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 overflow-y-scroll scrool-bar-hidden">
           {formData.projectCodes &&
@@ -135,6 +143,30 @@ export const FormMultipleAgent = ({
           onChange={handleProjectCodeChange}
           onKeyDown={handleUpdateProjectCodes}
         />
+      </div>
+      <div className="">
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Projects codes ?</AccordionTrigger>
+            <div className="max-h-[200px] overflow-y-scroll pr-4">
+              {projects?.map((codes, index) => (
+                <AccordionContent className="flex justify-between " key={index}>
+                  <p>{codes?.title?.slice(0, 40)}...</p>
+                  <p>{codes?.type}</p>
+                  <p
+                    onClick={() => {
+                      navigator.clipboard.writeText(codes?.code as string);
+                      toast.success("Code copied");
+                    }}
+                    className="font-semibold cursor-pointer hover:underline"
+                  >
+                    {codes?.code}
+                  </p>
+                </AccordionContent>
+              ))}
+            </div>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );

@@ -14,8 +14,13 @@ import { Bounce, toast } from "react-toastify";
 import { dbCreateAgent } from "../create-multiple-account/new-form-multiple-agent";
 import { FormUniqAgent } from "./form-uniq-agent";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { ProjectType } from "@/types/api-types";
 
-export function NewFormUniqAgent() {
+interface Props {
+  projects?: Partial<ProjectType[]>;
+}
+
+export function NewFormUniqAgent({ projects }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
@@ -37,35 +42,6 @@ export function NewFormUniqAgent() {
     setFormData(updatedFormData);
   };
 
-  const handleCreateAgent = async (formData: AgentProps) => {
-    const dataToDB = {
-      fullName: formData.fullName,
-      agentCode: formData.agentCode,
-      // company_id: company?.id,
-      projectCodes: formData.projectCodes
-        ? formData.projectCodes.map((item) => item.value)
-        : [],
-    };
-
-    const serverResponse = await dbCreateAgent(dataToDB);
-    // const serverResponse = await db_create_training(dataToDB);
-
-    console.log("daaaaata:::::::::", serverResponse);
-
-    if (serverResponse.status === "error") {
-      toast.error("Updating training failed");
-      setIsLoading(false);
-      return;
-    }
-
-    toast.success("Your project are created successfull");
-    setIsLoading(false);
-    toggleOpenModal();
-    router.refresh();
-    router.push(Route.agents);
-    return;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -84,22 +60,25 @@ export function NewFormUniqAgent() {
 
     // check if there is atleast a project code
     if (!formData.projectCodes?.length) {
-      toast.warning("Please enter atleast one project code. Hit enter to validate code");
+      toast.warning(
+        "Please enter atleast one project code. Hit enter to validate code"
+      );
       setIsLoading(false);
       return;
     }
     // Because projectCodes should be of type string[]
-    const formatProjectcode = []
+    const formatProjectcode = [];
     for (const code of formData.projectCodes) {
-      formatProjectcode.push(code.value)
+      formatProjectcode.push(code.value);
     }
-    console.log('=>\n', {
+    console.log("=>\n", {
       company_id: company?.id,
       projectCodes: formatProjectcode,
       agentCode: formData.agentCode,
       fullName: formData.fullName,
-    })
+    });
 
+    // assigne a project or multiple projects to an agent
     await mutateApiData(Route.assigne, {
       company_id: company?.id,
       projectCodes: formatProjectcode,
@@ -115,6 +94,7 @@ export function NewFormUniqAgent() {
             autoClose: 3000,
           });
           // close modal
+
           router.refresh();
         } else if (response.status === 409) {
           setIsLoading(false);
@@ -140,6 +120,7 @@ export function NewFormUniqAgent() {
   return (
     <form onSubmit={handleSubmit} className="px-5 pb-5">
       <FormUniqAgent
+        projects={projects as Partial<ProjectType[]>}
         updatedFormData={handleUpdatedFormData}
         errors={errors}
         isLoading={isLoading}

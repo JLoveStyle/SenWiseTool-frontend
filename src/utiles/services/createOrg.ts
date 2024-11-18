@@ -1,9 +1,9 @@
 "use server"
-import { clerkClient, Organization } from "@clerk/nextjs/server";
 import { FormData } from "@/types/formData";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export async function createOrganization(payload: FormData, currentUserId: string) {
-  const response = await clerkClient.organizations.createOrganization({
+  const response = (await clerkClient()).organizations.createOrganization({
     name: payload.companyName,
     createdBy: currentUserId,
     // slug: slugify(payload.companyName),
@@ -20,6 +20,5 @@ export async function createOrganization(payload: FormData, currentUserId: strin
       telephone: payload.phone
     }
   })
-  console.log('comapny created')
   return JSON.stringify(response)
 }
