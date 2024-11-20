@@ -3,30 +3,36 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const carouselItems = [
+const slides = [
   {
     id: 1,
-    image: "/images/hero-top/illustrative1.png",
-    title: "Gestion efficace",
-    description: "Suivez la gestion et la traçabilité complète du cacao.",
+    background: "/images/image1.png",
+    image:
+      "https://cdn-3.expansion.mx/dims4/default/18e94bd/2147483647/strip/true/crop/1000x693+0+0/resize/1800x1247!/format/webp/quality/80/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F95%2F21%2F09929bae47738bb2d85e16fd7a61%2Fcacao.jpg",
+    title: "Gestion du cacao",
+    description:
+      "Optimisez la gestion des plantations pour une meilleure production et traçabilité. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla doloribus accusamus nihil, dolorum praesentium recusandae voluptatum repellat iure, eveniet necessitatibus quasi architecto itaque, sed enim minima. Illo distinctio ea fugit?",
+    buttonText: "En savoir plus",
   },
   {
     id: 2,
-    image: "/images/hero-top/illustrative2.png",
-    title: "Traçabilité transparente",
-    description: "Chaque étape de la culture est enregistrée avec précision.",
+    background: "/images/image2.png",
+    image:
+      "https://cdn-3.expansion.mx/dims4/default/442781a/2147483647/strip/true/crop/1254x836+0+0/resize/1200x800!/format/webp/quality/60/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F5e%2F18%2F1b1b4a7747bfb130f5c39d6467e5%2Fcacao-semillas.jpg",
+    title: "Traçabilité du cacao",
+    description:
+      "Suivez chaque étape du processus, de la graine à la tablette. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla doloribus accusamus nihil, dolorum praesentium recusandae voluptatum repellat iure, eveniet necessitatibus quasi architecto itaque, sed enim minima. Illo distinctio ea fugit?",
+    buttonText: "Découvrir",
   },
   {
     id: 3,
-    image: "/images/hero-top/illustrative1.png",
-    title: "Optimisation de la production",
-    description: "Améliorez la qualité grâce à des outils analytiques avancés.",
-  },
-  {
-    id: 4,
-    image: "/images/hero-top/illustrative2.png",
-    title: "Collaboration efficace",
-    description: "Travaillez en réseau avec d'autres producteurs.",
+    background: "/images/image3.png",
+    image:
+      "https://cdn-3.expansion.mx/dims4/default/394d05e/2147483647/strip/true/crop/1000x667+0+0/resize/1200x800!/format/webp/quality/60/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F27%2Ffe%2Fac694c0a492082d85e8154c8dd34%2Fcacao-planta.jpg",
+    title: "Qualité améliorée",
+    description:
+      "Apprenez à améliorer la qualité de votre production grâce à nos outils. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla doloribus accusamus nihil, dolorum praesentium recusandae voluptatum repellat iure, eveniet necessitatibus quasi architecto itaque, sed enim minima. Illo distinctio ea fugit?",
+    buttonText: "Commencer",
   },
 ];
 
@@ -35,50 +41,282 @@ export const AboutUs: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
-    }, 3000); // Change toutes les 3 secondes
-
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    }, 6000); // Change toutes les 6 secondes
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="relative w-full h-[500px] overflow-hidden">
-      <div
-        className="flex transition-transform duration-1000"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {carouselItems.map((item) => (
-          <div key={item.id} className="w-full flex-shrink-0">
-            <Image
-              src={item.image}
-              alt={item.title}
-              width={800}
-              height={500}
-              className="object-cover w-full h-full"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-white">
-              <h3 className="text-2xl font-bold">{item.title}</h3>
-              <p className="mt-2">{item.description}</p>
-            </div>
-          </div>
+    <div className="relative h-screen w-full overflow-hidden">
+      {/* Background slider */}
+      <div className="absolute inset-0 z-0">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
+              currentIndex === index ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ backgroundImage: `url(${slide.background})` }}
+          />
         ))}
       </div>
 
+      {/* Content */}
+      <div className="relative z-10 h-full flex justify-center items-center">
+        <div className="relative w-10/12 mx-auto h-96 flex items-center justify-center overflow-hidden">
+          {/* Image avec effet */}
+          <div className="relative w-1/2 h-full group overflow-hidden">
+            <Image
+              src={slides[currentIndex].image}
+              alt={slides[currentIndex].title}
+              layout="fill"
+              objectFit="cover"
+              className="transition-transform duration-700 ease-in-out group-hover:scale-110"
+            />
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+            {/* Contenu de l'image */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <h2 className="text-white text-3xl font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                {slides[currentIndex].title}
+              </h2>
+            </div>
+          </div>
+
+          {/* Section de contenu avec séparation inclinée */}
+          <div className="relative w-1/2 h-full bg-white text-gray-900 flex flex-col justify-center px-8 md:px-16">
+            {/* Inclinaison en utilisant clip-path */}
+            <div className="absolute inset-0 bg-white clip-triangle z-[-1]"></div>
+
+            {/* Contenu */}
+            <h2 className="text-4xl font-bold mb-4">
+              {slides[currentIndex].title}
+            </h2>
+            <p className="text-lg text-gray-700 mb-6">
+              {slides[currentIndex].description}
+            </p>
+            <button className="px-6 py-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-500">
+              {slides[currentIndex].buttonText}
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Navigation dots */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {carouselItems.map((_, index) => (
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+        {slides.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full ${
-              currentIndex === index ? "bg-white" : "bg-gray-400"
-            }`}
             onClick={() => setCurrentIndex(index)}
+            className={`w-4 h-4 rounded-full ${
+              currentIndex === index ? "bg-blue-600" : "bg-gray-300"
+            }`}
           ></button>
         ))}
       </div>
     </div>
   );
 };
+
+// "use client";
+
+// import Image from "next/image";
+// import { useEffect, useState } from "react";
+
+// const carouselItems = [
+//   {
+//     id: 1,
+//     image: "https://via.placeholder.com/800x400?text=Slide+1",
+//     title: "Gestion du cacao",
+//     description: "Optimisation de la gestion des plantations.",
+//   },
+//   {
+//     id: 2,
+//     image: "https://via.placeholder.com/800x400?text=Slide+2",
+//     title: "Traçabilité",
+//     description: "Suivi précis du processus de culture.",
+//   },
+//   {
+//     id: 3,
+//     image: "https://via.placeholder.com/800x400?text=Slide+3",
+//     title: "Partage de données",
+//     description: "Diffusion efficace des données sur la culture.",
+//   },
+//   {
+//     id: 4,
+//     image: "https://via.placeholder.com/800x400?text=Slide+4",
+//     title: "Qualité améliorée",
+//     description: "Conseils pratiques pour une production de qualité.",
+//   },
+//   {
+//     id: 5,
+//     image: "https://via.placeholder.com/800x400?text=Slide+5",
+//     title: "Collaboration",
+//     description: "Partage d'idées entre producteurs.",
+//   },
+// ];
+
+// export const AboutUs: React.FC = () => {
+//   const [currentIndex, setCurrentIndex] = useState(0);
+
+//   const handleNext = () => {
+//     setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+//   };
+
+//   const handlePrev = () => {
+//     setCurrentIndex(
+//       (prevIndex) =>
+//         (prevIndex - 1 + carouselItems.length) % carouselItems.length
+//     );
+//   };
+
+//   useEffect(() => {
+//     const interval = setInterval(handleNext, 5000); // Défilement automatique toutes les 5s
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   return (
+//     <div className="relative w-full max-w-6xl mx-auto overflow-hidden">
+//       {/* Slider */}
+//       <div
+//         className="flex transition-transform duration-700 ease-in-out"
+//         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+//       >
+//         {carouselItems.map((item) => (
+//           <div
+//             key={item.id}
+//             className="min-w-full flex-shrink-0 flex flex-col items-center justify-center bg-gray-100"
+//           >
+//             <Image
+//               src={item.image}
+//               alt={item.title}
+//               width={800}
+//               height={400}
+//               className="object-cover rounded-md"
+//             />
+//             <div className="p-4 text-center">
+//               <h2 className="text-2xl font-bold mb-2">{item.title}</h2>
+//               <p className="text-gray-700">{item.description}</p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Boutons de navigation */}
+//       <button
+//         onClick={handlePrev}
+//         className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75"
+//       >
+//         &#8592;
+//       </button>
+//       <button
+//         onClick={handleNext}
+//         className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75"
+//       >
+//         &#8594;
+//       </button>
+
+//       {/* Indicateurs */}
+//       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+//         {carouselItems.map((_, index) => (
+//           <button
+//             key={index}
+//             onClick={() => setCurrentIndex(index)}
+//             className={`w-3 h-3 rounded-full ${
+//               currentIndex === index ? "bg-black" : "bg-gray-400"
+//             }`}
+//           ></button>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// "use client";
+
+// import Image from "next/image";
+// import { useEffect, useState } from "react";
+
+// const carouselItems = [
+//   {
+//     id: 1,
+//     image: "/images/hero-top/illustrative1.png",
+//     title: "Gestion efficace",
+//     description: "Suivez la gestion et la traçabilité complète du cacao.",
+//   },
+//   {
+//     id: 2,
+//     image: "/images/hero-top/illustrative2.png",
+//     title: "Traçabilité transparente",
+//     description: "Chaque étape de la culture est enregistrée avec précision.",
+//   },
+//   {
+//     id: 3,
+//     image: "/images/hero-top/illustrative1.png",
+//     title: "Optimisation de la production",
+//     description: "Améliorez la qualité grâce à des outils analytiques avancés.",
+//   },
+//   {
+//     id: 4,
+//     image: "/images/hero-top/illustrative2.png",
+//     title: "Collaboration efficace",
+//     description: "Travaillez en réseau avec d'autres producteurs.",
+//   },
+// ];
+
+// export const AboutUs: React.FC = () => {
+//   const [currentIndex, setCurrentIndex] = useState(0);
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
+//     }, 3000); // Change toutes les 3 secondes
+
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   return (
+//     <div className="relative w-full h-[500px] overflow-hidden">
+//       <div
+//         className="flex transition-transform duration-1000"
+//         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+//       >
+//         {carouselItems.map((item) => (
+//           <div key={item.id} className="w-full flex-shrink-0">
+//             <Image
+//               src={item.image}
+//               alt={item.title}
+//               width={800}
+//               height={500}
+//               className="object-cover w-full h-full"
+//             />
+//             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-white">
+//               <h3 className="text-2xl font-bold">{item.title}</h3>
+//               <p className="mt-2">{item.description}</p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Navigation dots */}
+//       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+//         {carouselItems.map((_, index) => (
+//           <button
+//             key={index}
+//             className={`w-3 h-3 rounded-full ${
+//               currentIndex === index ? "bg-white" : "bg-gray-400"
+//             }`}
+//             onClick={() => setCurrentIndex(index)}
+//           ></button>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// *******************************************
 
 // "use client";
 
