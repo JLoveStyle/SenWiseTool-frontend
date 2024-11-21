@@ -98,7 +98,7 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center justify-between py-4 w-full transition-all duration-500">
           <div className="logo flex items-center gap-2">
             <Logo size="large" />
-            <span className="font-bold text-lg hidden md:block">
+            <span className="font-extrabold text-xl hidden md:block">
               SenWiseTool
             </span>
           </div>

@@ -62,7 +62,10 @@ export const AboutUs: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 h-full flex justify-center items-center">
+      <div className="relative z-10 h-full">
+        <div className="text-4xl font-bold text-center py-10 text-white shadow-md">
+          About Us
+        </div>
         <div className="relative w-10/12 mx-auto h-96 flex items-center justify-center overflow-hidden">
           {/* Image avec effet */}
           <div className="relative w-1/2 h-full group overflow-hidden">
