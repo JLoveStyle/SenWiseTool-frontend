@@ -16,7 +16,7 @@ import dynamic from "next/dynamic";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import {
   handleAnalysis,
-  testFonction,
+  overallStatistics,
 } from "@/utiles/services/Data-analysis/single-inspection-analysis";
 
 const DisplayInspectionAnalysis = dynamic(
@@ -146,11 +146,18 @@ export default function InspectionData({ project_id, projectName }: Props) {
             <div className="md:w-[450px] bg-white md:mr-6">
               <h1
                 className="font-bold py-2 text-center border-b"
-                onClick={() => testFonction(data)}
+                onClick={() => overallStatistics(data)}
               >
                 Overall statistics
               </h1>
-              <DisplayInspectionAnalysis inspectionData={testFonction(data)} />
+              <DisplayInspectionAnalysis
+                totalQuestions={
+                  singleInspectionData &&
+                  singleInspectionData?.project_data.project_data.requirements
+                    .length * data.length
+                }
+                inspectionData={overallStatistics(data)}
+              />
             </div>
           </div>
 

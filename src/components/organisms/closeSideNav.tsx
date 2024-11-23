@@ -7,7 +7,12 @@ import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
 import { ProjectsType, ProjectType, TrainingType } from "@/types/api-types";
@@ -157,8 +162,9 @@ export default function CloseSiveNav({
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {draftProjects?.map((item) => (
+          {draftProjects?.map((item, index) => (
             <p
+              key={index}
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
                 router.push(Route.details + `/${item.id}`);

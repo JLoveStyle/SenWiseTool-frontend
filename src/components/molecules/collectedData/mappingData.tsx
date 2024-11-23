@@ -1,19 +1,14 @@
 import { Button } from "@/components/ui/button";
-import {
-  columns,
-  mappingData,
-  MappingTableColumns,
-} from "@/utiles/services/constants";
+import { mappingData, MappingTableColumns } from "@/utiles/services/constants";
 import React, { useState, useEffect } from "react";
 import xlsx, { IJsonSheet } from "json-as-xlsx";
-import tokml from "tokml";
 import slugify from "slugify";
 import Link from "next/link";
 import Image from "next/image";
 import { fetchApiData } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
 import { toast } from "react-toastify";
-import { MappingDataType } from "@/types/api-types";
+import { MappingDataType, MappingProjectData } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 
 type Props = {
@@ -23,26 +18,85 @@ type Props = {
 export default function MappingData({ project_id }: Props) {
   const [kmlFile, setKmlFile] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [mappingDatas, setMappingDatas] = useState<MappingDataType[]>([]);
+  const [mappingDatas, setMappingDatas] = useState<MappingProjectData[]>([]);
 
-  const coordinates: { [key: string]: string }[] = [];
-  for (const cord of mappingData) {
-    coordinates.push(cord.coordinate);
+  const coordinates: any[] = [];
+  for (const cord of mappingDatas) {
+    coordinates.push(cord.coordinates);
   }
 
   // Download excell sheet
   const downloadExcell = () => {
+    // COLUMNS FOR EXCELL SHEET
+    const columns: IJsonSheet[] = [
+      {
+        sheet: "Données_Mapping",
+        columns: [
+          {
+            label: "Nom du producteur",
+            value: "farmer_name",
+          },
+          {
+            label: "Contact du planteur",
+            value: "farmer_contact",
+          },
+
+          {
+            label: "statut du producteur",
+            value: "farmer_status",
+          },
+          {
+            label: "N° CNI",
+            value: "farmer_ID_card_number",
+          },
+          {
+            label: "Date de creation de la plantation",
+            value: "plantation_creation_date",
+          },
+          {
+            label: "Village",
+            value: "village",
+          },
+          {
+            label: "Nom du mappeur",
+            value: "collector_name",
+          },
+          {
+            label: "Date",
+            value: "date",
+          },
+          {
+            label: "Superficie estimé",
+            value: "estimated_area",
+          },
+          {
+            label: "Photo de la plantation",
+            value: "plantation_photos[0]",
+          },
+          {
+            label: "Photo planteur",
+            value: "farmer_photos[0]",
+          },
+          {
+            label: "Coordonées",
+            value: "coordinates",
+          },
+        ],
+        content: mappingDatas as any[],
+      },
+    ];
+
     const cordinateColumns: IJsonSheet[] = [
       {
         sheet: "Farm_cordinates",
         columns: [
           {
             label: "Longitude",
-            value: "log",
+            value: "longitude",
           },
           {
             label: "Latitude",
-            value: "lat",
+            value: "latitude",
           },
         ],
         content: coordinates.flat(),
@@ -57,7 +111,11 @@ export default function MappingData({ project_id }: Props) {
     };
 
     xlsx(columns, settings);
-    xlsx(cordinateColumns, settings);
+    xlsx(cordinateColumns, {
+      fileName: "Mapping_coordinates",
+      extraLength: 3,
+      writeMode: "writeFile",
+    });
   };
 
   // EXPORT AS GEOJSON
@@ -81,6 +139,8 @@ export default function MappingData({ project_id }: Props) {
     return finalCordinates;
   };
 
+  let finalKmlFile: string | number | boolean;
+
   // CONVERT TO KML FILE
   const convertTokml = (
     name: string,
@@ -89,7 +149,9 @@ export default function MappingData({ project_id }: Props) {
     code: string,
     coordinates: { latitude: number; longitude: number }[]
   ) => {
+    console.log("kml file1\n =>", kmlFile);
     const finalCordinates = constructCordinates(coordinates);
+    console.log("Finale coodinates =>", finalCordinates);
     const polygon = {
       type: "Feature",
       properties: {
@@ -105,11 +167,12 @@ export default function MappingData({ project_id }: Props) {
       },
     };
 
-    const kml = tokml(polygon, {
+    finalKmlFile = tokml(polygon, {
       name: name,
       description: `Ce polygone montre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `,
     });
-    setKmlFile(kml);
+    console.log("finalKmlFile", finalKmlFile);
+    console.log("kml file =>", kmlFile);
   };
 
   // DOWNLOAD ALL FILES AS A SINGLE KML FILE
@@ -120,12 +183,16 @@ export default function MappingData({ project_id }: Props) {
   };
 
   async function fetchAllMappingData(id: string) {
+    let mapData = [];
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (response.status === 201) {
           console.log("mapping data", response.data);
-          setMappingDatas(response.data);
+          for (const data of response.data) {
+            mapData.push(data.project_data.project_data);
+          }
+          setMappingDatas(mapData);
           setIsLoading(false);
           return;
 
@@ -136,7 +203,7 @@ export default function MappingData({ project_id }: Props) {
           return;
         } else {
           setIsLoading(false);
-          toast.error("Could not fetch inspection data of this project");
+          toast.error("Something went wrong. Please refresh");
           return;
         }
       })
@@ -181,159 +248,101 @@ export default function MappingData({ project_id }: Props) {
               </thead>
               <tbody className="bg-white">
                 {mappingDatas?.map((item, idx) => (
-                  <tr key={item.id}>
+                  <tr key={idx}>
                     {/* <td className="px-2 border w-fit">{idx + 1}</td> */}
                     <td>{idx + 1}</td>
+                    <td className="px-2 border">{item.farmer_name}</td>
+                    <td className="px-2 border">{item.farmer_status}</td>
+                    <td className="px-2 border">{item.farmer_contact}</td>
                     <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.farmer_name
+                      {item.farmer_ID_card_number}
+                    </td>
+                    <td className="px-2 border">
+                      {item.plantation_creation_date}
+                    </td>
+                    <td className="px-2 border">{item.village}</td>
+                    <td className="px-2 border">{item.collector_name}</td>
+                    <td className="px-2 border">{item.date}</td>
+                    <td className="px-2 border">{item.estimated_area}</td>
+                    <td className="px-2 border">
+                      {typeof item !== "undefined"
+                        ? item.plantation_photos?.map((photo, idx) => (
+                            <div
+                              className="max-h-[300px] overflow-y-auto"
+                              key={idx}
+                            >
+                              <Link className="" target="_blank" href={photo}>
+                                <img
+                                  className="h-[100px] w-[500px]"
+                                  src={photo}
+                                  alt={
+                                    typeof item !== "undefined"
+                                      ? item.farmer_name
+                                      : ""
+                                  }
+                                  // height={100}
+                                  // width={100}
+                                />
+                                <div className="w-[200px] hover:underline truncate text-blue-500">
+                                  {photo}
+                                </div>
+                              </Link>
+                            </div>
+                          ))
                         : ""}
                     </td>
                     <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.farmer_status
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.farmer_contact
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.farmer_ID_card_number
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data
-                            .plantation_creation_date
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.village
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.collector_name
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.date
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.estimated_area
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.plantation_photos?.map(
-                            (photo, idx) => (
-                              <div
-                                className="max-h-[300px] overflow-y-auto"
-                                key={idx}
-                              >
-                                <Link className="" target="_blank" href={photo}>
-                                  <img
-                                    className="h-[100px] w-[500px]"
-                                    src={photo}
-                                    alt={
-                                      typeof item.project_data.project_data !==
-                                      "undefined"
-                                        ? item.project_data.project_data
-                                            .farmer_name
-                                        : ""
-                                    }
-                                    // height={100}
-                                    // width={100}
-                                  />
-                                  <div className="w-[200px] hover:underline truncate text-blue-500">
-                                    {photo}
-                                  </div>
-                                </Link>
-                              </div>
-                            )
-                          )
-                        : ""}
-                    </td>
-                    <td className="px-2 border">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.farmer_photos?.map(
-                            (photo, idx) => (
-                              <div
-                                className="max-h-[300px] overflow-y-auto"
-                                key={idx}
-                              >
-                                <Link className="" target="_blank" href={photo}>
-                                  <img
-                                    className="h-[100px] w-[500px]"
-                                    src={photo}
-                                    alt={
-                                      typeof item.project_data.project_data !==
-                                      "undefined"
-                                        ? item.project_data.project_data
-                                            .farmer_name
-                                        : ""
-                                    }
-                                    // height={100}
-                                    // width={100}
-                                  />
-                                  <div className="w-[200px] hover:underline truncate text-blue-500">
-                                    {typeof item.project_data.project_data !==
-                                    "undefined"
-                                      ? item.project_data.project_data
-                                          .farmer_photos[idx]
-                                      : ""}
-                                  </div>
-                                </Link>
-                              </div>
-                            )
-                          )
+                      {typeof item !== "undefined"
+                        ? item.farmer_photos?.map((photo, idx) => (
+                            <div
+                              className="max-h-[300px] overflow-y-auto"
+                              key={idx}
+                            >
+                              <Link className="" target="_blank" href={photo}>
+                                <img
+                                  className="h-[100px] w-[500px]"
+                                  src={photo}
+                                  alt={
+                                    typeof item !== "undefined"
+                                      ? item.farmer_name
+                                      : ""
+                                  }
+                                  // height={100}
+                                  // width={100}
+                                />
+                                <div className="w-[200px] hover:underline truncate text-blue-500">
+                                  {typeof item !== "undefined"
+                                    ? item.farmer_photos[idx]
+                                    : ""}
+                                </div>
+                              </Link>
+                            </div>
+                          ))
                         : ""}
                     </td>
                     <td className="px-2 border flex flex-col gap-2 max-h-[250px] overflow-y-scroll">
-                      {typeof item.project_data.project_data !== "undefined"
-                        ? item.project_data.project_data.coordinates?.map(
-                            (coord: any, i: number) => (
-                              <div
-                                className="flex border-b gap-2"
-                                key={i + 1.1}
-                              >
-                                <span className="">long:{coord.longitude}</span>
-                                <span className="">lat:{coord.latitude}</span>
-                                {/* <span key={i + 110}>long:{coord.log}</span>
-          <span className="border-b" key={i + 1.5}>
-            lat:{coord.lat}
-          </span> */}
-                              </div>
-                            )
-                          )
+                      {typeof item !== "undefined"
+                        ? item.coordinates?.map((coord: any, i: number) => (
+                            <div className="flex border-b gap-2" key={i + 1.1}>
+                              <span className="">long:{coord.longitude}</span>
+                              <span className="">lat:{coord.latitude}</span>
+                            </div>
+                          ))
                         : ""}
                       <div className="flex gap-2">
                         <button
                           onClick={() =>
                             convertTokml(
-                              typeof item.project_data.project_data !==
-                                "undefined"
-                                ? item.project_data.project_data.farmer_name
+                              typeof item !== "undefined"
+                                ? item.farmer_name
                                 : "",
-                              typeof item.project_data.project_data !==
-                                "undefined"
-                                ? item.project_data.project_data.village
+                              typeof item !== "undefined" ? item.village : "",
+                              typeof item !== "undefined"
+                                ? item.estimated_area
                                 : "",
-                              typeof item.project_data.project_data !==
-                                "undefined"
-                                ? item.project_data.project_data.estimated_area
-                                : "",
-                              item.id, // this should be the farmer code
-                              typeof item.project_data.project_data !==
-                                "undefined"
-                                ? item.project_data.project_data.coordinates
+                              (Math.random() * 10).toString(), // this should be the farmer code
+                              typeof item !== "undefined"
+                                ? item.coordinates
                                 : []
                             )
                           }
@@ -341,14 +350,14 @@ export default function MappingData({ project_id }: Props) {
                         >
                           <a
                             href={`data:application/vnd.google-earth,${encodeURIComponent(
-                              kmlFile
+                              finalKmlFile
                             )}`}
                             download={
                               slugify(
-                                typeof item.project_data.project_data !==
+                                typeof item !==
                                   "undefined"
-                                  ? item.project_data.project_data.farmer_name
-                                  : ""
+                                  ? item.farmer_name
+                                  : "Polygone_plantation"
                               ) + ".kml"
                             }
                           >
@@ -362,9 +371,8 @@ export default function MappingData({ project_id }: Props) {
                             )}`}
                             download={
                               slugify(
-                                typeof item.project_data.project_data !==
-                                  "undefined"
-                                  ? item.project_data.project_data.farmer_name
+                                typeof item !== "undefined"
+                                  ? item.farmer_name
                                   : ""
                               ) + ".geojson"
                             }
@@ -393,11 +401,14 @@ export default function MappingData({ project_id }: Props) {
               >
                 Export all as kml
               </Button>
+              <p className="text-red-500">{kmlFile}.....! </p>
             </div>
           </div>
         </>
       ) : (
-        <p className="flex justify-center mx-auto md:pt-30">No Data collected yet</p>
+        <p className="flex justify-center mx-auto md:pt-30">
+          No Data collected yet
+        </p>
       )}
     </div>
   );

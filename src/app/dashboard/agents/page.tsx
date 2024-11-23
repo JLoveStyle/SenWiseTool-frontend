@@ -39,7 +39,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { fetchApiData } from "@/utiles/services/queries";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { ApiDataResponse, ProjectType } from "@/types/api-types";
+import { ApiDataResponse, MarketDBProps, ProjectType } from "@/types/api-types";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
@@ -53,6 +53,9 @@ export default function Receipt() {
   const [agentSelected, setAgentSelected] = useState<AgentPropsFromDB[]>([]);
   const [errors, setErrors] = useState({});
   const [projects, setProjects] = useState<ProjectType[]>([]);
+  const [marketsCodes, setMarketsCodes] = useState<Partial<MarketDBProps>[]>(
+    []
+  );
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
@@ -78,6 +81,23 @@ export default function Receipt() {
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
   // Load company object from store
   const company = useCompanyStore((state) => state.company);
+
+  // get all company markets
+  async function getAllCompanyMarketCodes() {
+    await fetchApiData(
+      Route.marketRequest,
+      `company_marketCodes?campaign_id=${currentCampaign?.id}`
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          setMarketsCodes(response.data);
+          console.log("These are markets codes", response);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   // get all company's project per campain
   async function getAllProjectCodesPerCompnanyAndCampain() {
@@ -110,7 +130,6 @@ export default function Receipt() {
           console.log("from useEffect", response);
           return;
         }
-        toast.error("Could not load sub accouts. Please try again");
       })
       .catch((error) => {
         console.log(error);
@@ -118,8 +137,14 @@ export default function Receipt() {
       });
   }
 
+  // join both marketCodes and project codes
+  let joinedCodes: any[] = [];
+  if (projects.length && marketsCodes.length)
+    joinedCodes = projects.concat(marketsCodes as any[]);
+
   useEffect(() => {
     getAllSubAccounts();
+    getAllCompanyMarketCodes();
     getAllProjectCodesPerCompnanyAndCampain();
   }, [currentCampaign?.id, company?.id]);
 
@@ -154,13 +179,13 @@ export default function Receipt() {
         if (response?.status === 204) {
           toast.success("Account deleted");
           setIsUpdating((prev) => !prev);
-          setIsDeleting(prev => !prev) //close modal
+          setIsDeleting((prev) => !prev); //close modal
           return;
         }
       })
       .catch((error) => {
         console.log(error);
-        setIsUpdating(prev => !prev);
+        setIsUpdating((prev) => !prev);
       });
   };
 
@@ -273,17 +298,13 @@ export default function Receipt() {
       newForms={[
         {
           title: "New sub account",
-          form: (
-            <NewFormUniqAgent
-              projects={(projects as Partial<ProjectType[]>) ?? []}
-            />
-          ),
+          form: <NewFormUniqAgent projects={(joinedCodes as any[]) ?? []} />,
         },
         {
           title: "Generate sub account",
           form: (
             <NewFormMiltipleAgent
-              projects={(projects as Partial<ProjectType[]>) ?? []}
+              projects={(joinedCodes as any[]) ?? []}
             />
           ),
         },

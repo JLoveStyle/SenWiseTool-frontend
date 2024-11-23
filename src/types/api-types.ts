@@ -85,12 +85,12 @@ export interface AnalysisProps {
 
 export interface InspectionDataType {
   total_A: number;
-  chapter1: { C: number; NC: number; NA: number };
-  chapter2: { C: number; NC: number; NA: number };
-  chapter3: { C: number; NC: number; NA: number };
-  chapter4: { C: number; NC: number; NA: number };
-  chapter5: { C: number; NC: number; NA: number };
-  chapter6: { C: number; NC: number; NA: number };
+  chapter1: { C: number; NC: number; NA: number, TA: number };
+  chapter2: { C: number; NC: number; NA: number, TA: number };
+  chapter3: { C: number; NC: number; NA: number, TA: number };
+  chapter4: { C: number; NC: number; NA: number, TA: number };
+  chapter5: { C: number; NC: number; NA: number, TA: number };
+  chapter6: { C: number; NC: number; NA: number, TA: number };
 }
 
 export interface InspectionFieldDatatype {

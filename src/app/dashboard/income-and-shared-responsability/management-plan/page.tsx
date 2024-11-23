@@ -17,7 +17,6 @@ import {
   incomeAndSharedResponsabilityDBProps,
 } from "@/types/income-and-shared-responsability";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
