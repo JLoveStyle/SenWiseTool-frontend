@@ -7,9 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { fetchApiData } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
-import { toast } from "react-toastify";
 import { MappingDataType, MappingProjectData } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { toast } from "react-toastify";
+// import { tokml } from "tokml";
+import tokml from "geojson-to-kml";
 
 type Props = {
   project_id: string;
@@ -17,6 +19,7 @@ type Props = {
 
 export default function MappingData({ project_id }: Props) {
   const [kmlFile, setKmlFile] = useState("");
+  const [allKmlFiles, setAllKmlFiles] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [mappingDatas, setMappingDatas] = useState<MappingProjectData[]>([]);
 
@@ -139,47 +142,91 @@ export default function MappingData({ project_id }: Props) {
     return finalCordinates;
   };
 
-  let finalKmlFile: string | number | boolean;
-
-  // CONVERT TO KML FILE
-  const convertTokml = (
-    name: string,
-    village: string,
-    surfaceArea: string,
-    code: string,
-    coordinates: { latitude: number; longitude: number }[]
+  // DOWNLOAD SINGLE GEOJSON FILE
+  const downloadGeoJSON = (
+    coordinates: { longitude: number; latitude: number }[],
+    name: string
   ) => {
-    console.log("kml file1\n =>", kmlFile);
-    const finalCordinates = constructCordinates(coordinates);
-    console.log("Finale coodinates =>", finalCordinates);
-    const polygon = {
-      type: "Feature",
-      properties: {
-        name: name,
-        code: code,
-        superficie: surfaceArea,
-        village: village,
-        description: `Ce polygone illustre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `,
-      },
-      geometry: {
-        type: "Polygon",
-        coordinates: finalCordinates,
-      },
+    const geoJsonData = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: constructCordinates(coordinates),
+          },
+          properties: {
+            name: name,
+            // area: surfaceArea,
+            // image: image
+          },
+        },
+      ],
     };
 
-    finalKmlFile = tokml(polygon, {
-      name: name,
-      description: `Ce polygone montre la plantation de Mr ${name} situé au village ${village} qui s'étant sur une superficie de ${surfaceArea} `,
+    const blob = new Blob([JSON.stringify(geoJsonData)], {
+      type: "application/geo+json",
     });
-    console.log("finalKmlFile", finalKmlFile);
-    console.log("kml file =>", kmlFile);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = (name+'.geojson').replaceAll(" ", ""); // removes white space ithin the string
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
-  // DOWNLOAD ALL FILES AS A SINGLE KML FILE
+  //DOWNLOAD SINGLE KML FILE
+  function convertToKml(
+    name: string,
+    coordinates: { latitude: number; longitude: number }[]
+  ) {
+    console.log("hello");
+
+    const geoJsonData = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: constructCordinates(coordinates),
+          },
+          properties: {
+            name: name,
+            // area: surfaceArea,
+            // image: image
+          },
+        },
+      ],
+    };
+    const kmlDataFile = tokml(geoJsonData)
+    setKmlFile(kmlDataFile);
+  }
+
+  // DOWNLOAD ALL KML FILES AS A SINGLE KML FILE
   const downloadTokml = () => {
-    console.log(
-      `data:application/vnd.google-earth,${encodeURIComponent(kmlFile)}`
-    );
+    let mergedGeoJson: { type: string; features: any[] } = {
+      type: "FeatureCollection",
+      features: [],
+    };
+
+    let globalGeoJson = mappingDatas.map((data) => ({
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: constructCordinates(data.coordinates),
+      },
+      properties: {
+        name: data.farmer_name,
+      },
+    }));
+    console.log("globalGeoJson", globalGeoJson);
+    mergedGeoJson["features"] = globalGeoJson;
+    console.log("Merged geojson\n =>", mergedGeoJson);
+    setAllKmlFiles(tokml(mergedGeoJson));
   };
 
   async function fetchAllMappingData(id: string) {
@@ -213,11 +260,6 @@ export default function MappingData({ project_id }: Props) {
         toast.error("Something went wrong. Please refresh this page");
       });
   }
-
-  // mappingDatas?.map((item) => {
-  //   if (typeof item.project_data.project_data !== "undefined")
-  //     console.log("data\n", item.project_data.project_data.location);
-  // });
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {
@@ -332,30 +374,17 @@ export default function MappingData({ project_id }: Props) {
                       <div className="flex gap-2">
                         <button
                           onClick={() =>
-                            convertTokml(
-                              typeof item !== "undefined"
-                                ? item.farmer_name
-                                : "",
-                              typeof item !== "undefined" ? item.village : "",
-                              typeof item !== "undefined"
-                                ? item.estimated_area
-                                : "",
-                              (Math.random() * 10).toString(), // this should be the farmer code
-                              typeof item !== "undefined"
-                                ? item.coordinates
-                                : []
-                            )
+                            convertToKml(item.farmer_name, item.coordinates)
                           }
                           className="bg-tertiary text-white mb-2 p-2 hover:rounded-full"
                         >
                           <a
                             href={`data:application/vnd.google-earth,${encodeURIComponent(
-                              finalKmlFile
+                              kmlFile
                             )}`}
                             download={
                               slugify(
-                                typeof item !==
-                                  "undefined"
+                                typeof item !== "undefined" || ""
                                   ? item.farmer_name
                                   : "Polygone_plantation"
                               ) + ".kml"
@@ -364,21 +393,13 @@ export default function MappingData({ project_id }: Props) {
                             Export as kml
                           </a>
                         </button>
-                        <button className="bg-tertiary text-white mb-2 py-1 hover:rounded-full">
-                          <a
-                            href={`data:application/vnd.google-earth,${encodeURIComponent(
-                              kmlFile
-                            )}`}
-                            download={
-                              slugify(
-                                typeof item !== "undefined"
-                                  ? item.farmer_name
-                                  : ""
-                              ) + ".geojson"
-                            }
-                          >
-                            Export as geoJson
-                          </a>
+                        <button
+                          onClick={() =>
+                            downloadGeoJSON(item.coordinates, item.farmer_name)
+                          }
+                          className="bg-tertiary text-white mb-2 py-1 hover:rounded-full"
+                        >
+                          export as geojson
                         </button>
                       </div>
                     </td>
@@ -399,9 +420,15 @@ export default function MappingData({ project_id }: Props) {
                 className="mt-4 border hover:bg-green-500 bg-green-500 text-white  hover:rounded-full hover:text-white"
                 onClick={downloadTokml}
               >
-                Export all as kml
+                <a
+                  href={`data:application/vnd.google-earth,${encodeURIComponent(
+                    allKmlFiles
+                  )}`}
+                  download={"Polygons.kml"}
+                >
+                  Export all as kml
+                </a>
               </Button>
-              <p className="text-red-500">{kmlFile}.....! </p>
             </div>
           </div>
         </>
