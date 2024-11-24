@@ -1,5 +1,5 @@
 import { SessionStatusType } from "@/types/type-tools";
-import { Navbar as NavbarCustom } from "../molecules/navbar-custom";
+import { Navbar as NavbarCustom } from "../molecules/navbar";
 import { Session } from "./session";
 
 interface Props {

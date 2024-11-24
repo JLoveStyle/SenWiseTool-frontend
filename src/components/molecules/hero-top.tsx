@@ -44,6 +44,7 @@ export const HeroTop: React.FC = () => {
   return (
     <div
       className={`h-screen flex items-center justify-between px-4 lg:px-16 transition-colors duration-1000 ${backgroundColors[currentIndex]}`}
+      id="home"
     >
       {/* Texte à gauche */}
       <div className="w-full lg:w-1/2 flex flex-col items-start justify-center text-white space-y-6">

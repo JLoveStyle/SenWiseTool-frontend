@@ -46,39 +46,41 @@ export const Features: React.FC = () => {
   };
 
   return (
-    <section className="py-12 bg-gray-100">
+    <div className="py-12 bg-gray-100 dark:bg-gray-900" id="features">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-800">Features</h2>
-        <p className="text-lg text-gray-600 mt-2">
+      <div className="text-center mb-10">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+          Features
+        </h2>
+        <p className="text-md text-gray-600 dark:text-gray-300 mt-2">
           Découvrez les fonctionnalités clés qui font la différence.
         </p>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 lg:px-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 lg:px-8">
         {images.map((image) => (
           <div
             key={image.id}
-            className="relative group overflow-hidden rounded-lg shadow-lg cursor-pointer"
+            className="relative group overflow-hidden rounded-md shadow-md cursor-pointer"
           >
             {/* Image */}
             <Image
               src={image.src}
               alt={image.title}
               layout="responsive"
-              width={800}
-              height={600}
-              className="transition-transform duration-500 group-hover:scale-110"
+              width={600}
+              height={400}
+              className="transition-transform duration-500 group-hover:scale-105"
             />
 
             {/* Hover Content */}
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center text-white">
-              <h3 className="text-xl font-bold">{image.title}</h3>
-              <p className="text-sm mt-2">{image.shortDescription}</p>
+            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center text-white px-4 text-center">
+              <h3 className="text-lg font-bold">{image.title}</h3>
+              <p className="text-sm mt-1">{image.shortDescription}</p>
               <button
                 onClick={() => setSelectedImage(image.id)}
-                className="mt-4 px-4 py-2 bg-blue-600 rounded-md shadow-md hover:bg-blue-500"
+                className="mt-3 px-3 py-1.5 bg-blue-600 text-sm rounded-md shadow hover:bg-blue-500"
               >
                 Voir plus
               </button>
@@ -90,9 +92,9 @@ export const Features: React.FC = () => {
       {/* Modal for Full Preview */}
       {selectedImage !== null && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden w-11/12 md:w-3/4 lg:w-1/2">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden w-11/12 md:w-3/4 lg:w-1/2">
             {/* Image */}
-            <div className="relative h-64 md:h-96">
+            <div className="relative h-48 md:h-72">
               <Image
                 src={images.find((img) => img.id === selectedImage)?.src || ""}
                 alt={
@@ -104,11 +106,11 @@ export const Features: React.FC = () => {
             </div>
 
             {/* Content */}
-            <div className="p-6">
-              <h3 className="text-2xl font-bold text-gray-800">
+            <div className="p-4">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
                 {images.find((img) => img.id === selectedImage)?.title}
               </h3>
-              <p className="text-gray-600 mt-4">
+              <p className="text-gray-600 dark:text-gray-300 mt-3">
                 {
                   images.find((img) => img.id === selectedImage)
                     ?.fullDescription
@@ -117,7 +119,7 @@ export const Features: React.FC = () => {
               <div className="flex justify-center ">
                 <button
                   onClick={handleClose}
-                  className="mt-6 px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-600"
+                  className="mt-5 px-4 py-2 bg-green-700 text-white rounded-md hover:bg-green-600"
                 >
                   Compris
                 </button>
@@ -126,6 +128,6 @@ export const Features: React.FC = () => {
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 };
