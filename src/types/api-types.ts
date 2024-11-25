@@ -93,6 +93,19 @@ export interface InspectionDataType {
   chapter6: { C: number; NC: number; NA: number, TA: number };
 }
 
+
+export interface InspectionConclusionDataType {
+  metadata: {
+    nextYearRecom: string,
+    agent_signature: string,
+    farmer_signature: string
+  },
+  nonConformityRecom: {
+    comment: string,
+    deadline: string,
+    req_number: string
+  }[]
+}
 export interface InspectionFieldDatatype {
   metaData: {
     certification_year?: string,
@@ -109,6 +122,7 @@ export interface InspectionFieldDatatype {
     weed_application?: string,
     weed_application_quantity?: string
   },
+  inspectionConclusions: InspectionConclusionDataType
   requirements: {
     comment: string,
     status: string,

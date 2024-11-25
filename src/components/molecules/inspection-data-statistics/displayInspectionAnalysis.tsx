@@ -7,7 +7,6 @@ type Props = {
 };
 
 export default function DisplayInspectionAnalysis({ inspectionData, totalQuestions }: Props) {
-  console.log("result from comp", inspectionData);
   // Pourcentage C par Chapter
   const pourcentageC = (totalConforme: number, totalApplicable: number) => {
     return ((totalConforme / totalApplicable) * 100).toFixed(2);
@@ -37,9 +36,6 @@ export default function DisplayInspectionAnalysis({ inspectionData, totalQuestio
         total["NC"] += item.NC;
       }
     });
-
-    console.log('in %tage general =>', total)
-
     return total;
   };
 

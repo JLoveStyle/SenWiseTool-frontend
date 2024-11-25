@@ -183,7 +183,5 @@ export const overallStatistics = (data: InspectionDataPops[]) => {
   }
   if (overAllResults.length) total['total_A'] = overAllResults[0].total_A
   else total['total_A'] = 1
-  console.log("overAll total =>", total)
-
   return total
 };

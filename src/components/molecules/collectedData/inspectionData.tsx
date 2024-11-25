@@ -52,7 +52,6 @@ export default function InspectionData({ project_id, projectName }: Props) {
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
         if (response.status === 201) {
-          console.log(response.data);
           setData(response.data);
           setIsLoading(false);
           return;
@@ -72,7 +71,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
   }
 
   useEffect(() => {
-    fetchAllInpectionData("cm3c24mfj0003m9uh4k8clakw");
+    fetchAllInpectionData("cm3lgtlxd000b124xckbu2muw");
   }, [project_id]);
 
   return (
