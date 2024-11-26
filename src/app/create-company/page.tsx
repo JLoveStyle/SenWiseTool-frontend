@@ -13,14 +13,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 // import { createCompany } from "@/utiles/services/queries";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-<<<<<<< HEAD
 import { Session } from "@/components/templates/session";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Route } from "@/lib/route";
-import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
-import { NOT_HAS_COMPANY } from "@/lib/session-statut";
-=======
 import {
   Dialog,
   DialogContent,
@@ -31,19 +24,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Route } from "@/lib/route";
 import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
->>>>>>> origin/feature/export-inspectiondata
+import { NOT_HAS_COMPANY } from "@/lib/session-statut";
 import { businessActivity } from "@/utiles/services/constants";
 import { createOrganization } from "@/utiles/services/createOrg";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { uniqueString } from "@/utils/tool";
-import { Bounce, toast } from "react-toastify";
-<<<<<<< HEAD
-=======
-import { Session } from "@/components/templates/session";
-import { NOT_HAS_COMPANY } from "@/lib/session-statut";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
->>>>>>> origin/feature/export-inspectiondata
+import { Bounce, toast } from "react-toastify";
 
 type Props = {};
 
@@ -195,23 +183,16 @@ export default function Home({}: Props) {
             return;
           } else if (response.status === 409) {
             return toast.error("Company already exist");
-<<<<<<< HEAD
           }
           if (response.statusCode === 401) {
             return toast.error("Sorry not authorize");
           }
           if (!response.status.toString().startWith("2")) {
-=======
-          } else if (response.statusCode === 401) {
-            return toast.error("Sorry not authorize");
-          } else if (!response.status.toString().startWith("2")) {
->>>>>>> origin/feature/export-inspectiondata
             return toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
             });
           }
-<<<<<<< HEAD
           if (response.status === 201) {
             toast.success(`Success! routing to dashboard`, {
               transition: Bounce,
@@ -220,8 +201,6 @@ export default function Home({}: Props) {
             router.push(Route.dashboard);
             return;
           }
-=======
->>>>>>> origin/feature/export-inspectiondata
         })
         .catch((error) => {
           console.log("An error occured", error);
