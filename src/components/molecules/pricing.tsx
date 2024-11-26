@@ -93,7 +93,7 @@ export const Pricing: React.FC = () => {
             {/* Features */}
             <div className="z-10 mt-6 space-y-4 text-xs text-start text-gray-800 dark:text-dark">
               {chapterList(plan.chapters).map((chapter, idx) => (
-                <>
+                <div key={idx}>
                   {plan?.condition && idx != 0 && (
                     <div className="divide-y divide-gray-300 dark:divide-gray-700 w-full">
                       <div className="relative flex items-center justify-center my-5">
@@ -106,13 +106,13 @@ export const Pricing: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  <div key={idx}>
+                  <div>
                     <span className="font-bold mr-2">
                       {getChapterById(chapter)?.title} :
                     </span>
                     <span>{getChapterById(chapter)?.description}</span>
                   </div>
-                </>
+                </div>
               ))}
             </div>
 
