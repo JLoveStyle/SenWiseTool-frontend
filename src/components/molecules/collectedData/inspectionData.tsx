@@ -18,6 +18,8 @@ import {
   handleAnalysis,
   overallStatistics,
 } from "@/utiles/services/Data-analysis/single-inspection-analysis";
+import { Button } from "@/components/ui/button";
+import { downloadInspectionDataAsCsv } from "./downloadCsv";
 
 const DisplayInspectionAnalysis = dynamic(
   () => import("../inspection-data-statistics/displayInspectionAnalysis"),
@@ -52,6 +54,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
         if (response.status === 201) {
+          console.log("response =>", response.data)
           setData(response.data);
           setIsLoading(false);
           return;
@@ -82,9 +85,18 @@ export default function InspectionData({ project_id, projectName }: Props) {
         </div>
       ) : data.length ? (
         <div className="bg-[#f3f4f6] h-full md:w-full">
-          <h2 className="text-center py-6">
-            Project title: <span className=" font-semibold">{projectName}</span>
-          </h2>
+          <div className="flex">
+            <h2 className="text-center py-6 flex-1">
+              Project title:{" "}
+              <span className=" font-semibold">{projectName}</span>
+            </h2>
+            <Button
+              onClick={() => downloadInspectionDataAsCsv([], data)}
+              className="bg-tertiary hover:bg-tertiary hover:opacity-90 my-auto"
+            >
+              Export as csv
+            </Button>
+          </div>
           <div className="flex gap-3">
             <div className=" px-6">
               <table>

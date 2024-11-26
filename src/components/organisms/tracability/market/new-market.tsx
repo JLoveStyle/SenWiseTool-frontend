@@ -40,16 +40,6 @@ export function NewMarket() {
   };
 
   const handleCreateMarket = async (formData: Partial<MarketDBProps>) => {
-    // const dataToDB = {
-    //   location: formData.location,
-    //   price_of_day: formData.price_of_day,
-    //   start_date: formData.start_date,
-    //   end_date: formData.end_date,
-    //   company_id: company?.id,
-    //   campaign_id: "",
-    //   description: "",
-    // };
-
     // CREATE MARKET
     console.log("market payload", formData);
     await mutateApiData(Route.marketRequest, {

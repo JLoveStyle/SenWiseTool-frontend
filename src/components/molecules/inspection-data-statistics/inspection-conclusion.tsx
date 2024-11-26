@@ -50,14 +50,14 @@ export default function Inspectionconclusion({ conclusionData }: Props) {
         </div>
         <div className="flex justify-between">
           <div className="">
-            <p>Agent signature</p>
+            <p className="font-semibold pb-4">Agent signature</p>
             <img
               src={conclusionData.metadata.agent_signature}
               alt="agent_signature"
             />
           </div>
           <div className="">
-            <p className="">Farmer signature</p>
+            <p className="font-semibold pb-4">Farmer signature</p>
             <img
               src={conclusionData.metadata.farmer_signature}
               alt="agent_signature"

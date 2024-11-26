@@ -12,6 +12,12 @@ import { Spinner } from "@/components/atoms/spinner/spinner";
 import { toast } from "react-toastify";
 // import { tokml } from "tokml";
 import tokml from "geojson-to-kml";
+import { mappingCsvDownload } from "./downloadCsv";
+import {
+  downlaodSingleKml,
+  downloadAllAskml,
+  downloadGeoJSON,
+} from "./downloadKml";
 
 type Props = {
   project_id: string;
@@ -28,205 +34,17 @@ export default function MappingData({ project_id }: Props) {
     coordinates.push(cord.coordinates);
   }
 
-  // Download excell sheet
-  const downloadExcell = () => {
-    // COLUMNS FOR EXCELL SHEET
-    const columns: IJsonSheet[] = [
-      {
-        sheet: "Données_Mapping",
-        columns: [
-          {
-            label: "Nom du producteur",
-            value: "farmer_name",
-          },
-          {
-            label: "Contact du planteur",
-            value: "farmer_contact",
-          },
-
-          {
-            label: "statut du producteur",
-            value: "farmer_status",
-          },
-          {
-            label: "N° CNI",
-            value: "farmer_ID_card_number",
-          },
-          {
-            label: "Date de creation de la plantation",
-            value: "plantation_creation_date",
-          },
-          {
-            label: "Village",
-            value: "village",
-          },
-          {
-            label: "Nom du mappeur",
-            value: "collector_name",
-          },
-          {
-            label: "Date",
-            value: "date",
-          },
-          {
-            label: "Superficie estimé",
-            value: "estimated_area",
-          },
-          {
-            label: "Photo de la plantation",
-            value: "plantation_photos[0]",
-          },
-          {
-            label: "Photo planteur",
-            value: "farmer_photos[0]",
-          },
-          {
-            label: "Coordonées",
-            value: "coordinates",
-          },
-        ],
-        content: mappingDatas as any[],
-      },
-    ];
-
-    const cordinateColumns: IJsonSheet[] = [
-      {
-        sheet: "Farm_cordinates",
-        columns: [
-          {
-            label: "Longitude",
-            value: "longitude",
-          },
-          {
-            label: "Latitude",
-            value: "latitude",
-          },
-        ],
-        content: coordinates.flat(),
-      },
-    ];
-
-    const settings = {
-      fileName: "Mapping_data", // Name of the resulting spreadsheet
-      extraLength: 3, // A bigger number means that columns will be wider
-      writeMode: "writeFile", // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
-      writeOptions: {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
-    };
-
-    xlsx(columns, settings);
-    xlsx(cordinateColumns, {
-      fileName: "Mapping_coordinates",
-      extraLength: 3,
-      writeMode: "writeFile",
-    });
-  };
-
-  // EXPORT AS GEOJSON
-  const exportAsGeojson = (
-    name: string,
-    village: string,
-    surfaceArea: string,
-    code: string
-  ) => {};
-
-  // construct coordinates for polygon of type [][][] from {long: , lat:}[] form field
-  const constructCordinates = (
-    coordinates: { longitude: number; latitude: number }[]
-  ) => {
-    const finalCordinates: any[] = [];
-    let selObject: any[] = [];
-    for (const coordinate of coordinates) {
-      selObject.push(Object.values(coordinate));
-    }
-    finalCordinates.push(selObject);
-    return finalCordinates;
-  };
-
-  // DOWNLOAD SINGLE GEOJSON FILE
-  const downloadGeoJSON = (
-    coordinates: { longitude: number; latitude: number }[],
-    name: string
-  ) => {
-    const geoJsonData = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: constructCordinates(coordinates),
-          },
-          properties: {
-            name: name,
-            // area: surfaceArea,
-            // image: image
-          },
-        },
-      ],
-    };
-
-    const blob = new Blob([JSON.stringify(geoJsonData)], {
-      type: "application/geo+json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = (name+'.geojson').replaceAll(" ", ""); // removes white space ithin the string
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
   //DOWNLOAD SINGLE KML FILE
-  function convertToKml(
+  async function convertToKml(
     name: string,
     coordinates: { latitude: number; longitude: number }[]
   ) {
-    console.log("hello");
-
-    const geoJsonData = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: constructCordinates(coordinates),
-          },
-          properties: {
-            name: name,
-            // area: surfaceArea,
-            // image: image
-          },
-        },
-      ],
-    };
-    const kmlDataFile = tokml(geoJsonData)
-    setKmlFile(kmlDataFile);
+    setKmlFile(await downlaodSingleKml(name, coordinates));
   }
 
   // DOWNLOAD ALL KML FILES AS A SINGLE KML FILE
-  const downloadTokml = () => {
-    let mergedGeoJson: { type: string; features: any[] } = {
-      type: "FeatureCollection",
-      features: [],
-    };
-
-    let globalGeoJson = mappingDatas.map((data) => ({
-      type: "Feature",
-      geometry: {
-        type: "Polygon",
-        coordinates: constructCordinates(data.coordinates),
-      },
-      properties: {
-        name: data.farmer_name,
-      },
-    }));
-    console.log("globalGeoJson", globalGeoJson);
-    mergedGeoJson["features"] = globalGeoJson;
-    console.log("Merged geojson\n =>", mergedGeoJson);
-    setAllKmlFiles(tokml(mergedGeoJson));
+  const downloadAllTokml = async () => {
+    setAllKmlFiles(await downloadAllAskml(mappingDatas));
   };
 
   async function fetchAllMappingData(id: string) {
@@ -263,7 +81,7 @@ export default function MappingData({ project_id }: Props) {
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {
-    fetchAllMappingData("cm3c2d2xw0002ejml2e8it3af");
+    fetchAllMappingData(project_id);
   }, []);
 
   return (
@@ -411,14 +229,14 @@ export default function MappingData({ project_id }: Props) {
             <div className="flex justify-center gap-4">
               <Button
                 className="mt-4 text-white bg-blue-500 hover:bg-blue-500 hover:rounded-full"
-                onClick={downloadExcell}
+                onClick={() => mappingCsvDownload(mappingDatas, coordinates)}
               >
                 Export as excell sheet
               </Button>
               <Button
                 variant={"outline"}
                 className="mt-4 border hover:bg-green-500 bg-green-500 text-white  hover:rounded-full hover:text-white"
-                onClick={downloadTokml}
+                onClick={downloadAllTokml}
               >
                 <a
                   href={`data:application/vnd.google-earth,${encodeURIComponent(

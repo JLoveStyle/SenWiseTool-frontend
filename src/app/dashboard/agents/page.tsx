@@ -125,7 +125,13 @@ export default function Receipt() {
     await fetchApiData(Route.assigne, `perCompany?company_id=${company?.id}`)
       .then((response) => {
         if (response.status === 200) {
-          setAgentDatas(response.data);
+          const returnedProject = [];
+          for (const item of response.data) {
+            if (item.projectCodes[0].length < 5) {
+              returnedProject.push(item);
+            }
+          }
+          setAgentDatas(returnedProject);
           setIsLoading(false);
           console.log("from useEffect", response);
           return;
@@ -303,9 +309,7 @@ export default function Receipt() {
         {
           title: "Generate sub account",
           form: (
-            <NewFormMiltipleAgent
-              projects={(joinedCodes as any[]) ?? []}
-            />
+            <NewFormMiltipleAgent projects={(joinedCodes as any[]) ?? []} />
           ),
         },
       ]}
