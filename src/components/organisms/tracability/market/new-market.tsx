@@ -40,16 +40,6 @@ export function NewMarket() {
   };
 
   const handleCreateMarket = async (formData: Partial<MarketDBProps>) => {
-    // const dataToDB = {
-    //   location: formData.location,
-    //   price_of_day: formData.price_of_day,
-    //   start_date: formData.start_date,
-    //   end_date: formData.end_date,
-    //   company_id: company?.id,
-    //   campaign_id: "",
-    //   description: "",
-    // };
-
     // CREATE MARKET
     console.log("market payload", formData);
     await mutateApiData(Route.marketRequest, {
@@ -58,6 +48,9 @@ export function NewMarket() {
       campaign_id: formData.campaign_id,
       company_id: formData.company_id,
       description: formData.description,
+      supplier: formData?.supplier,
+      bon_entree_magazin_url: "",
+      bordereau_vente_url: "",
       start_date: new Date(formData.start_date as string).toISOString(),
       end_date: new Date(formData.end_date as string).toISOString(),
     })
@@ -149,7 +142,7 @@ export function NewMarket() {
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >
-        Créer
+        Create
       </ButtonUI>
     </form>
   );

@@ -31,7 +31,11 @@ export const NavbarDropdown = ({ navLinks, loginButtons }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className=" w-svw">
         {navLinks.map((navLink, index) => (
+<<<<<<< HEAD
           <DropdownMenuItem className="p-0" key={index}>
+=======
+          <DropdownMenuItem key={index} className="p-0">
+>>>>>>> origin/feature/export-inspectiondata
             <ActiveLink
               baseUrl={navLink.baseUrl}
               className="whitespace-nowrap font-medium py-2 px-3"

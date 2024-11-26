@@ -31,8 +31,8 @@ export default function Home({}: Props) {
           setIsLoading(false)
           return
         }
-        if (result.status === 404) {
-          toast.error("You don't have farmers yet")
+        if (result.status === 404 || result.status === 400) {
+          toast.warning("You don't have farmers yet")
           setIsLoading(false)
           return
         }

@@ -1,14 +1,10 @@
 "use client";
 
 import { Route } from "@/lib/route";
-
-import { Archive, Trash2 } from "lucide-react";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
+import { Archive, ListOrdered, Trash2 } from "lucide-react";
 import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
-
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-// import { Newagriculture } from "@/components/organisms/tracability/agriculture/new-agriculture";
 import { NewProofOfPaiement } from "@/components/organisms/income-and-shared-responsability/proof-of-paiement/new-proof-of-paiement";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
@@ -19,13 +15,16 @@ import {
   incomeAndSharedResponsabilityDBProps,
 } from "@/types/income-and-shared-responsability";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
+import { mutateDelApiData } from "@/utiles/services/mutations";
+import ModalContent from "@/components/organisms/modalContent";
 
 export default function ProofOfPaiement() {
   const [isLoading, setIsLoading] = useState(true);
+  const [deleteProof, setDeleteProof] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
   const [proofOfPaiementDatas, setProofOfPaiementDatas] = useState<
     ProofOfPaiementDisplayProps[]
   >([]);
@@ -75,10 +74,13 @@ export default function ProofOfPaiement() {
       try {
         setIsLoading(true);
         const result = await fetchApiData(
-          Route.incomeAndSharedResponsabilityProofOfPaiement,
+          Route.revenuEtResponsabilite,
+          "?type=PAYMENT_JUSTIFICATION",
           ""
         );
         const dataFormated: ProofOfPaiementDisplayProps[] = [];
+
+        console.log("result => ", result);
 
         if (result.status === 200) {
           setIsLoading(false);
@@ -124,20 +126,27 @@ export default function ProofOfPaiement() {
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
-  const deleteProofOfPayment = () => {
+  const deleteProofOfPayment = async () => {
+
     if (proofOfPaiementSelected.length !== 0) {
-      const allProof = LOCAL_STORAGE.get("proofOfPaiement");
-      const idSelecteds = proofOfPaiementSelected.map((objet) => objet.id);
-      const restProofOfPaiement: incomeAndSharedResponsabilityDBProps[] = [];
-
-      allProof.map((item: incomeAndSharedResponsabilityDBProps) => {
-        if (!idSelecteds.includes(item.id ?? "")) {
-          restProofOfPaiement.push(item);
-        }
-      });
-      LOCAL_STORAGE.save("proofOfPaiement", restProofOfPaiement);
-
-      toast.success("Accounts are deleted successfull");
+      setIsDeleting(true)
+      for (const item of proofOfPaiementSelected) {
+        console.log('deleted id => ', item?.id)
+        await mutateDelApiData(Route.revenuEtResponsabilite + `/${item?.id}`, "")
+          .then((response: any) => {
+            console.log(response);
+            if (response.status == 204) {
+              toast.success("Deleted");
+              setIsDeleting(prev => !prev)
+            } else {
+              setIsDeleting(prev => !prev)
+              toast.error("Could not delete. please try again")
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   };
 
@@ -146,7 +155,7 @@ export default function ProofOfPaiement() {
       structure: {
         label: "Number",
         baseUrl: "",
-        icon: Archive,
+        icon: ListOrdered,
       },
       data: () => {
         return proofOfPaiementDatas.length;
@@ -159,36 +168,37 @@ export default function ProofOfPaiement() {
       newForms={[
         {
           title: "New activity",
-          form: (
-            <NewProofOfPaiement
-              endpoint={Route.incomeAndSharedResponsabilityProofOfPaiement}
-            />
-          ),
+          form: <NewProofOfPaiement endpoint={Route.revenuEtResponsabilite} />,
         },
       ]}
-      title="JUSTIFICATIF DE PAIEMENT"
+      title="PROOFS OF PAYMENT"
       formParams={formParams}
       statPanelDatas={stateActivity}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">
-          Justificatifs de payement de l’investissement de durabilité
-        </h1>
+        <h1 className="text-xl font-semibold">Investissement de durabilité</h1>
         <div className="flex gap-4 text-gray-500">
           {proofOfPaiementSelected.length !== 0 && (
             <>
-              <CustomHoverCard content="archive project">
-                <Archive className="hover:cursor-pointer" />
-              </CustomHoverCard>
               <CustomHoverCard content="Delete Accounts">
                 <Trash2
-                  className="hover:cursor-pointer"
-                  onClick={deleteProofOfPayment}
+                  className="hover:cursor-pointer text-black"
+                  onClick={() => setDeleteProof((prev) => !prev)}
                 />
               </CustomHoverCard>
             </>
           )}
         </div>
+        <ModalContent
+          openModal={deleteProof}
+          isProcessing={isDeleting}
+          dialogTitle={"Delete documents"}
+          action={"Delete"}
+          dialogDescription={"Are you sure you want to delete this documents?"}
+          cancelationFunction={() => setDeleteProof(prev =>!prev)}
+          actionFunction={deleteProofOfPayment}
+          updateOpenModalState={() => setDeleteProof(prev => !prev)}
+        />
       </div>
       <div className="px-6">
         <DataTable<ProofOfPaiementDisplayProps, any>

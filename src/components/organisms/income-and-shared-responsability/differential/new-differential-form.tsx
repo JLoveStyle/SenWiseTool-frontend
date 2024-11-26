@@ -65,7 +65,7 @@ export const NewDifferentialForm = ({
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 gap-4 mt-4">
         {(
-          ["pv_url", "first_buyer_proof", "producer_payment_proof"] as Array<
+          ["first_buyer_proof", "producer_payment_proof"] as Array<
             keyof differentialFormProps
           >
         ).map((fileType, index) => (
@@ -95,7 +95,7 @@ export const NewDifferentialForm = ({
               </label>
 
               <div className="flex flex-wrap gap-2 mt-2">
-                {(formData[fileType] as File[]).map((file, fileIndex) => (
+                {(formData[fileType] as File[])?.map((file, fileIndex) => (
                   <div
                     key={fileIndex}
                     className="relative w-20 h-20 border rounded-md overflow-hidden shadow-md bg-gray-100"

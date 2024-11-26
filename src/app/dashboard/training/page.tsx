@@ -35,64 +35,30 @@ export default function Training() {
   // laod current campaigne
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
-  // Fetch all trainings
-  async function fetchTraining() {
-    console.log("into function");
-    // if (!currentCampaign && !company) return;
-
-    // const trainingData = await fetchTrainings(Route.training, currentCampaign?.id)
-
-    // if (trainingData) {
-    // console.log(trainingData)
-    // }
-
-    // await fetchApiData(Route.training)
-    //   .then((response) => {
-    //     console.log("trainings", response);
-    //     // if (response.status >= 200) {
-    //       setTrainingDatas(response.data);
-    //       setIsLoading(false);
-    //       return;
-    //     // }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     return;
-    //   });
-  }
-
-  const { data: trainings, refetch, isLoading: isLoading } = useApiOps<
-    TrainingType[],
-    ApiDataResponse<TrainingType[]>
-  >({
+  const {
+    data: trainings,
+    refetch,
+    isLoading: isLoading,
+  } = useApiOps<TrainingType[], ApiDataResponse<TrainingType[]>>({
     fn: () => fetchApiData<ApiDataResponse<TrainingType[]>>(Route.training, ""),
     route: Route.training,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      db_get_trainings()
-        .then((result) => {
-          console.log("data training: ", result);
-
-          setTrainingDatas(result as TrainingType[]);
-          // setIsLoading(false);
-        })
-        .catch((err) => console.error(err));
-    };
-
-    // fetchData();
-    fetchTraining();
-  }, [trainingDatas]);
-
   const valueToDisplay = (args: TrainingType[]) => {
-    return args?.map((training) => ({
+    const data: TrainingType[] = []
+    for (const item of args) {
+      if (item.code.length < 5) {
+        data.push(item)
+      }
+    }
+    return data?.map((training) => ({
       id: training.id,
       title: training.title,
       start_date: training.start_date,
       end_date: training.end_date,
       location: training.location,
       code: training.code,
+      created_at: training.created_at,
       // modules: training.modules.map((module: string, index: number) => ({
       //   id: index,
       //   value: module,
@@ -104,21 +70,14 @@ export default function Training() {
     // refetch();
   }, [trainingDatas]);
 
+  console.log("training =>", trainings);
+
   return (
     <LayoutDashboard
       projectsPerType={trainingDatas ?? []}
       typeOfProject={"TRAINING"}
       newForm={<NewTraining />}
     >
-      {/* <div className="flex flex-col justify-between gap-10  w-full">
-        <div className="flex justify-between items-center py-3 mr-10">
-          <span className="text-2xl font-bold">Formations</span>
-          <NewTraining />
-        </div>
-        <div>
-          <TrainingList /> 
-        </div>
-      </div> */}
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Projects</h1>
         <div className="flex gap-4 text-gray-500">
@@ -137,11 +96,7 @@ export default function Training() {
         <DataTable<TrainingTableDisplayType, any>
           incomingColumns={trainingColumnTable}
           incomingData={
-            trainingDatas?.length
-              ? valueToDisplay(trainingDatas)
-              : trainings?.length
-              ? valueToDisplay(trainings as TrainingType[])
-              : []
+            trainings?.length ? valueToDisplay(trainings as TrainingType[]) : []
           }
           onSelecteItem={() => {}}
           isLoading={isLoading}

@@ -51,6 +51,12 @@ export function NewManagementPlan({ endpoint }: Props) {
     const dataToDB = {
       ...uploadedURLs,
       company_id: company?.id,
+      type: "INVESTMENT_MANAGEMENT_PLAN",
+      agreement_pv: [''],
+      proof_of_paiement: [""],
+      proof_of_expenses: [""],
+      first_buyer_proof: [""],
+      producer_payment_proof: [""]
     };
 
     console.log(dataToDB);

@@ -6,15 +6,21 @@ import { useEffect, useState } from "react";
 import { RxCross2, RxDotFilled } from "react-icons/rx";
 import { InputUI } from "../../disign-system/form/input-ui";
 import { ProjectType } from "@/types/api-types";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { toast } from "react-toastify";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface Props {
   updatedFormData: (data: MultipleFormAgentProps) => void;
   initData?: MultipleFormAgentProps;
   errors: { [key: string]: any };
   isLoading: boolean;
-  displayListOfProjects?: boolean
-  projects?: Partial<ProjectType[]>
+  projects?: any[];
 }
 
 export const FormMultipleAgent = ({
@@ -22,8 +28,7 @@ export const FormMultipleAgent = ({
   initData,
   errors,
   isLoading,
-  displayListOfProjects,
-  projects
+  projects,
 }: Props) => {
   const [formData, setFormData] = useState<MultipleFormAgentProps>({
     id: initData ? initData.id : "",
@@ -104,10 +109,10 @@ export const FormMultipleAgent = ({
           onChange={handleChange}
         />
       </div>
-      
+
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="projectCodes" className="text-gray-400">
-          Liste des projets
+          List of projects
         </Label>
         <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 overflow-y-scroll scrool-bar-hidden">
           {formData.projectCodes &&
@@ -144,13 +149,42 @@ export const FormMultipleAgent = ({
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>Projects codes ?</AccordionTrigger>
-            {projects?.map((codes, index) => (
-              <AccordionContent className="flex justify-between" key={index}>
-                <p>{codes?.title.slice(0, 20)}</p>
-                <p>{codes?.type}</p>
-                <p className="font-semibold">{codes?.code}</p>
+            <div className="max-h-[200px] overflow-y-scroll pr-4">
+            <AccordionContent className="flex justify-between ">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>code</TableHead>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Location</TableHead>
+                      <TableHead>Supplier</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {projects?.map((codes, index) => (
+                      <TableRow key={index}>
+                        <TableCell
+                          className="hover:underline cursor-pointer"
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              codes?.code as string
+                            );
+                            toast.success("Copied");
+                          }}
+                        >
+                          {codes?.code}
+                        </TableCell>
+                        <TableCell>{codes?.title ? (codes?.title).slice(0, 20) : ""}... </TableCell>
+                        <TableCell>{codes?.type ?? "MARKET"} </TableCell>
+                        <TableCell>{codes?.location ?? ""} </TableCell>
+                        <TableCell>{codes?.supplier ?? ""} </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </AccordionContent>
-            ))}
+            </div>
           </AccordionItem>
         </Accordion>
       </div>

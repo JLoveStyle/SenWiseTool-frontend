@@ -17,7 +17,7 @@ import { mutateApiData } from "@/utiles/services/mutations";
 import { ProjectType } from "@/types/api-types";
 
 interface Props {
-  projects?: Partial<ProjectType[]>;
+  projects?: any[];
 }
 
 export function NewFormUniqAgent({ projects }: Props) {
@@ -40,35 +40,6 @@ export function NewFormUniqAgent({ projects }: Props) {
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: AgentProps) => {
     setFormData(updatedFormData);
-  };
-
-  const handleCreateAgent = async (formData: AgentProps) => {
-    const dataToDB = {
-      fullName: formData.fullName,
-      agentCode: formData.agentCode,
-      // company_id: company?.id,
-      projectCodes: formData.projectCodes
-        ? formData.projectCodes.map((item) => item.value)
-        : [],
-    };
-
-    const serverResponse = await dbCreateAgent(dataToDB);
-    // const serverResponse = await db_create_training(dataToDB);
-
-    console.log("daaaaata:::::::::", serverResponse);
-
-    if (serverResponse.status === "error") {
-      toast.error("Updating training failed");
-      setIsLoading(false);
-      return;
-    }
-
-    toast.success("Your project are created successfull");
-    setIsLoading(false);
-    toggleOpenModal();
-    router.refresh();
-    router.push(Route.agents);
-    return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -107,6 +78,7 @@ export function NewFormUniqAgent({ projects }: Props) {
       fullName: formData.fullName,
     });
 
+    // assigne a project or multiple projects to an agent
     await mutateApiData(Route.assigne, {
       company_id: company?.id,
       projectCodes: formatProjectcode,
@@ -122,6 +94,7 @@ export function NewFormUniqAgent({ projects }: Props) {
             autoClose: 3000,
           });
           // close modal
+
           router.refresh();
         } else if (response.status === 409) {
           setIsLoading(false);
@@ -147,6 +120,7 @@ export function NewFormUniqAgent({ projects }: Props) {
   return (
     <form onSubmit={handleSubmit} className="px-5 pb-5">
       <FormUniqAgent
+        projects={projects as any[]}
         updatedFormData={handleUpdatedFormData}
         errors={errors}
         isLoading={isLoading}

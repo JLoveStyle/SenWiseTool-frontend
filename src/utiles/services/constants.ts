@@ -220,60 +220,6 @@ export const mappingData: { [key: string]: any }[] = [
   },
 ];
 
-// COLUMNS FOR EXCELL SHEET
-export const columns: IJsonSheet[] = [
-  {
-    sheet: "Données_Mapping",
-    columns: [
-      {
-        label: "Nom du producteur",
-        value: "nom_producteur",
-      },
-      {
-        label: "statut du producteur",
-        value: "statut_producteur",
-      },
-      {
-        label: "N° CNI",
-        value: "no_cni",
-      },
-      {
-        label: "Date de creation de la plantation",
-        value: "date_de_creation_plant",
-      },
-      {
-        label: "Village",
-        value: "village",
-      },
-      {
-        label: "Nom du mappeur",
-        value: "nom_du_mappeur",
-      },
-      {
-        label: "Date",
-        value: "date",
-      },
-      {
-        label: "Superficie estimé",
-        value: "superficie_estimé",
-      },
-      {
-        label: "Photo de la plantation",
-        value: "photo_plantation",
-      },
-      {
-        label: "Photo planteur",
-        value: "photo_planteur",
-      },
-      {
-        label: "Coordonées",
-        value: "coordinate",
-      },
-    ],
-    content: mappingData,
-  },
-];
-
 // META DATA OPTIONS
 export const metaDataOptions: { [key: string]: string }[] = [
   {
@@ -299,6 +245,10 @@ export const metaDataOptions: { [key: string]: string }[] = [
   {
     name: "Village",
     value: "village",
+  },
+  {
+    name: "Nom de la copérative",
+    value: "nom_de_la_coperative"
   },
   {
     name: "Annee de certification",
@@ -491,7 +441,7 @@ export const optionsRevenu: {
   description: string;
 }[] = [
   {
-    title: "Justificatifs de payement de l'investissement de durabilité",
+    title: "Investissement de durabilité",
     href: Route.incomeAndSharedResponsabilityProofOfPaiement,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",

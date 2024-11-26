@@ -2,13 +2,11 @@
 
 import { Route } from "@/lib/route";
 
-import { Archive, Trash2 } from "lucide-react";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
+import { Archive, ListOrdered, Trash2 } from "lucide-react";
 import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
 
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-// import { Newagriculture } from "@/components/organisms/tracability/agriculture/new-agriculture";
 import { NewManagementPlan } from "@/components/organisms/income-and-shared-responsability/management-plan/new-management-plan";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
@@ -19,7 +17,6 @@ import {
   incomeAndSharedResponsabilityDBProps,
 } from "@/types/income-and-shared-responsability";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
@@ -66,7 +63,11 @@ export default function Agriculture() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const result = await fetchApiData(Route.agricultureRequest, "");
+        const result = await fetchApiData(
+          Route.revenuEtResponsabilite,
+          "?type=INVESTMENT_MANAGEMENT_PLAN",
+          ""
+        );
         const dataFormated: ManagementPlanDisplayProps[] = [];
 
         if (result.status === 200) {
@@ -110,20 +111,7 @@ export default function Agriculture() {
   };
 
   const deleteAgricultureAccounts = () => {
-    if (managementPlanSelected.length !== 0) {
-      const allManagementPlans = LOCAL_STORAGE.get("managementPlan");
-      const idSelecteds = managementPlanSelected.map((objet) => objet.id);
-      const restManagementPlans: incomeAndSharedResponsabilityDBProps[] = [];
-
-      allManagementPlans.map((item: incomeAndSharedResponsabilityDBProps) => {
-        if (!idSelecteds.includes(item.id ?? "")) {
-          restManagementPlans.push(item);
-        }
-      });
-      LOCAL_STORAGE.save("managementPlan", restManagementPlans);
-
-      toast.success("Accounts are deleted successfull");
-    }
+    console.log("del");
   };
 
   const stateActivity: DashboardStatPanelData[] = [
@@ -131,7 +119,7 @@ export default function Agriculture() {
       structure: {
         label: "Number",
         baseUrl: "",
-        icon: Archive,
+        icon: ListOrdered,
       },
       data: () => {
         return managementPlanDatas.length;
@@ -144,15 +132,15 @@ export default function Agriculture() {
       newForms={[
         {
           title: "New Management Plan",
-          form: <NewManagementPlan endpoint={Route.agricultureRequest} />,
+          form: <NewManagementPlan endpoint={Route.revenuEtResponsabilite} />,
         },
       ]}
-      title="PLAN DE GESTION"
+      title="MANAGEMENT PLAN"
       formParams={formParams}
       statPanelDatas={stateActivity}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Plan de gestion</h1>
+        <h1 className="text-xl font-semibold">Management plan</h1>
         <div className="flex gap-4 text-gray-500">
           {managementPlanSelected.length !== 0 && (
             <>

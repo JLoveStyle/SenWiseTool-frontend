@@ -105,20 +105,20 @@ export const columnTable = <T extends Record<string, any>>(
                   });
                 }}
               >
-                Copy project ID
+                Copy ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <Link href={routePage + `/${project.id}`}>
                 <DropdownMenuItem
                   onClick={() =>
-                    LOCAL_STORAGE.save("currentTrainingProject", project)
+                    LOCAL_STORAGE.save("currentMarket", project)
                   }
                 >
-                  View project details
+                  View details
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuItem className="text-red-500">
-                Delete project
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

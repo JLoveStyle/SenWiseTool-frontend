@@ -2,14 +2,14 @@ export interface MarketDisplayProps {
   id: string;
   code?: string | null;
   location: string;
-  price_of_day: number;
+  price_of_theday: number;
   supplier: string;
   start_date: Date | string;
   end_date: Date | string;
   status?: "OPEN" | "CLOSED";
   campagne?: string;
-  sale_slip: React.ReactNode | null;
-  store_entry_voucher: React.ReactNode | null;
+  sale_slip?: React.ReactNode | null;
+  store_entry_voucher?: React.ReactNode | null;
 }
 
 export interface FactoryAccompaniementSheetDisplayProps {
@@ -47,7 +47,7 @@ export interface SaleSlipDisplayProps {
 export interface MarketFormProps {
   id: string;
   location: string;
-  price_of_day: number;
+  price_of_theday: number;
   start_date: Date | string;
   supplier: string;
   end_date: Date | string;

@@ -24,8 +24,7 @@ export default function Home({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const company = useCompanyStore((state) => state.company);
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
-  console.log(currentCampaign?.id)
-  console.log('company_id', company?.id)
+  // console.log(currentCampaign?.id)
 
   // Fetch all projects with type "INITIAL_INSPECTION" and pass it as props to Layout
   async function fetchAllInitialInspectionProject() {

@@ -85,14 +85,27 @@ export interface AnalysisProps {
 
 export interface InspectionDataType {
   total_A: number;
-  chapter1: { C: number; NC: number; NA: number };
-  chapter2: { C: number; NC: number; NA: number };
-  chapter3: { C: number; NC: number; NA: number };
-  chapter4: { C: number; NC: number; NA: number };
-  chapter5: { C: number; NC: number; NA: number };
-  chapter6: { C: number; NC: number; NA: number };
+  chapter1: { C: number; NC: number; NA: number, TA: number };
+  chapter2: { C: number; NC: number; NA: number, TA: number };
+  chapter3: { C: number; NC: number; NA: number, TA: number };
+  chapter4: { C: number; NC: number; NA: number, TA: number };
+  chapter5: { C: number; NC: number; NA: number, TA: number };
+  chapter6: { C: number; NC: number; NA: number, TA: number };
 }
 
+
+export interface InspectionConclusionDataType {
+  metadata: {
+    nextYearRecom: string,
+    agent_signature: string,
+    farmer_signature: string
+  },
+  nonConformityRecom: {
+    comment: string,
+    deadline: string,
+    req_number: string
+  }[]
+}
 export interface InspectionFieldDatatype {
   metaData: {
     certification_year?: string,
@@ -109,6 +122,7 @@ export interface InspectionFieldDatatype {
     weed_application?: string,
     weed_application_quantity?: string
   },
+  inspectionConclusions: InspectionConclusionDataType
   requirements: {
     comment: string,
     status: string,
@@ -333,7 +347,7 @@ export type OmitStrict<T, K extends keyof T> = Omit<T, K>;
 
 export type TrainingTableDisplayType = Pick<
   TrainingType,
-  "id" | "title" | "start_date" | "end_date" | "location" | "code"
+  "id" | "title" | "start_date" | "end_date" | "location" | "code" | "created_at"
 >;
 
 export interface RequirementType {
@@ -379,7 +393,26 @@ export type MarketDBProps = {
   company_id?: string;
   company: string;
   market_audit: []; // market_audit object[]: to be defined
-  transaction: []; // transaction object[]: to be defined
+  transaction: {
+    id: string,
+    market_id: string,
+    date: string,
+    level_of_traceability: string,
+    driver_name: string,
+    quantity: string,
+    humidity: string,
+    net_weight_declared_in_Ton: string,
+    humidity_level_of_product: string,
+    total_quantity_in_bags: number,
+    receiver_name: string,
+    sender_signature: string[],
+    driver_signature: string[],
+    product_quantity: string,
+    vehicule_immatriculation_number: string,
+    min_con_verif_agent_name_and_sig: string,
+    created_at: string,
+    updated_at: string
+  }[]
   receipts?: []; // receipt object[]: to be defined
   sale_slip: string | null;
 

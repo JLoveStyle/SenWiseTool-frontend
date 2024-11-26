@@ -47,7 +47,7 @@ export default function Sidebar({ options }: Props) {
       <div className="flex flex-col items-center justify-center gap-7 pt-10">
         {options &&
           options.map((opt, index) => (
-            <>
+            <div key={index}>
               {opt.details ? (
                 <DropdownMenu key={index}>
                   <DropdownMenuTrigger
@@ -111,7 +111,7 @@ export default function Sidebar({ options }: Props) {
                   </div>
                 </Link>
               )}
-            </>
+            </div>
           ))}
       </div>
 

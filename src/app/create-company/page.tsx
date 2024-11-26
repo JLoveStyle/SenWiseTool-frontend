@@ -13,18 +13,37 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 // import { createCompany } from "@/utiles/services/queries";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+<<<<<<< HEAD
 import { Session } from "@/components/templates/session";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Route } from "@/lib/route";
 import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
 import { NOT_HAS_COMPANY } from "@/lib/session-statut";
+=======
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Route } from "@/lib/route";
+import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
+>>>>>>> origin/feature/export-inspectiondata
 import { businessActivity } from "@/utiles/services/constants";
 import { createOrganization } from "@/utiles/services/createOrg";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { uniqueString } from "@/utils/tool";
 import { Bounce, toast } from "react-toastify";
+<<<<<<< HEAD
+=======
+import { Session } from "@/components/templates/session";
+import { NOT_HAS_COMPANY } from "@/lib/session-statut";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+>>>>>>> origin/feature/export-inspectiondata
 
 type Props = {};
 
@@ -114,12 +133,12 @@ export default function Home({}: Props) {
     }
 
     // Company email and personal email must not be the same
-    if (formData.headOfficeEmail === user?.primaryEmailAddress?.emailAddress) {
-      toast.warning("Personal email must be different from Head office email", {
-        autoClose: 4000,
-      });
-      return;
-    }
+    // if (formData.headOfficeEmail === user?.primaryEmailAddress?.emailAddress) {
+    //   toast.warning("company email must be different from Head office email", {
+    //     autoClose: 4000,
+    //   });
+    //   return;
+    // }
 
     // Head office email and company email must not be the same
     if (formData.headOfficeEmail === formData.companyEmail) {
@@ -167,18 +186,32 @@ export default function Home({}: Props) {
       })
         .then((response) => {
           console.log("create company res =>", response);
-          if (response.status === 409) {
+          if (response.status === 201) {
+            toast.success(`Success! routing to dashboard`, {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            router.push(Route.dashboard);
+            return;
+          } else if (response.status === 409) {
             return toast.error("Company already exist");
+<<<<<<< HEAD
           }
           if (response.statusCode === 401) {
             return toast.error("Sorry not authorize");
           }
           if (!response.status.toString().startWith("2")) {
+=======
+          } else if (response.statusCode === 401) {
+            return toast.error("Sorry not authorize");
+          } else if (!response.status.toString().startWith("2")) {
+>>>>>>> origin/feature/export-inspectiondata
             return toast.error(`Sorry something went wrong`, {
               transition: Bounce,
               autoClose: 3000,
             });
           }
+<<<<<<< HEAD
           if (response.status === 201) {
             toast.success(`Success! routing to dashboard`, {
               transition: Bounce,
@@ -187,6 +220,8 @@ export default function Home({}: Props) {
             router.push(Route.dashboard);
             return;
           }
+=======
+>>>>>>> origin/feature/export-inspectiondata
         })
         .catch((error) => {
           console.log("An error occured", error);
@@ -293,7 +328,7 @@ export default function Home({}: Props) {
               label="Company email"
               inputName="companyEmail"
               type="email"
-              value={user?.primaryEmailAddress?.emailAddress}
+              value={formData?.companyEmail}
               onChange={(e) => handleInputChange(e)}
             />
             <InputField
@@ -420,6 +455,12 @@ export default function Home({}: Props) {
           open={isModalOpen}
         >
           <DialogContent>
+            <VisuallyHidden.Root>
+              <DialogHeader>
+                <DialogTitle></DialogTitle>
+                <DialogDescription></DialogDescription>
+              </DialogHeader>
+            </VisuallyHidden.Root>
             <CancelModal onClose={handleCloseModal} />
           </DialogContent>
         </Dialog>
