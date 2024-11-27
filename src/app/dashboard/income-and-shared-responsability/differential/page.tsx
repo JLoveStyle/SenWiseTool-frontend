@@ -56,7 +56,9 @@ export default function Agriculture() {
       producer_payment_proof:
         data.producer_payment_proof?.length !== 0 ? (
           <div className="flex justify-center gap-2 flex-wrap">
-            {data.agreement_pv?.map((url, index) => preview(url, index))}
+            {data.producer_payment_proof?.map((url, index) =>
+              preview(url, index)
+            )}
           </div>
         ) : (
           <div className="flex justify-center gap-2 flex-wrap">
@@ -66,7 +68,7 @@ export default function Agriculture() {
       first_buyer_proof:
         data.first_buyer_proof?.length !== 0 ? (
           <div className="flex justify-center gap-2 flex-wrap">
-            {data.agreement_pv?.map((url, index) => preview(url, index))}
+            {data.first_buyer_proof?.map((url, index) => preview(url, index))}
           </div>
         ) : (
           <div className="flex justify-center gap-2 flex-wrap">
@@ -121,7 +123,7 @@ export default function Agriculture() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "New",
+    trigger_btn_label_form: "New Differential",
     construct_form_btn_label: "New form",
     existing_form_btn_label: "Use Existing Form",
     new_form_title: "Create new differential sustanability differential",
