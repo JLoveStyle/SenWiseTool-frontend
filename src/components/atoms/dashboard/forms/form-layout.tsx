@@ -26,7 +26,7 @@ type Props = {
 
 export default function FormLayout({ forms, formParams }: Props) {
   const [formStep, setFormStep] = useState<"CHOOSE" | "NEW" | "EXIST">(
-    "CHOOSE"
+    formParams?.choose_form ? "CHOOSE" : "NEW"
   );
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
@@ -34,7 +34,7 @@ export default function FormLayout({ forms, formParams }: Props) {
   });
 
   const closeDialog = () => {
-    setFormStep("CHOOSE");
+    setFormStep(formParams?.choose_form ? "CHOOSE" : "NEW");
     toggleOpenModel();
   };
 
