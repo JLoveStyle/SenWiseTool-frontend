@@ -3,10 +3,10 @@ import React from "react";
 
 type Props = {
   inspectionData?: InspectionDataType;
+  totalQuestions?: number // this is the total number of requirements times the number of farmers
 };
 
-export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
-  console.log("result from comp", inspectionData);
+export default function DisplayInspectionAnalysis({ inspectionData, totalQuestions }: Props) {
   // Pourcentage C par Chapter
   const pourcentageC = (totalConforme: number, totalApplicable: number) => {
     return ((totalConforme / totalApplicable) * 100).toFixed(2);
@@ -36,7 +36,6 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
         total["NC"] += item.NC;
       }
     });
-
     return total;
   };
 
@@ -56,7 +55,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               C:{" "}
               {pourcentageC(
                 inspectionData?.chapter1.C ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter1.TA && inspectionData?.chapter1.TA > 0
+                  ? (inspectionData?.chapter1.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -64,7 +65,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NC:{" "}
               {pourcentageNC(
                 inspectionData?.chapter1.NC ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter1.TA && inspectionData?.chapter1.TA > 0
+                  ? (inspectionData?.chapter1.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -72,7 +75,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NA:{" "}
               {pourcentageNA(
                 inspectionData?.chapter1.NA ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter1.TA && inspectionData?.chapter1.TA > 0
+                  ? (inspectionData?.chapter1.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -84,7 +89,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               C:{" "}
               {pourcentageC(
                 inspectionData?.chapter2.C ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter2.TA && inspectionData?.chapter2.TA > 0
+                  ? (inspectionData?.chapter2.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -92,7 +99,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NC:{" "}
               {pourcentageNC(
                 inspectionData?.chapter2.NC ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter2.TA && inspectionData?.chapter2.TA > 0
+                  ? (inspectionData?.chapter2.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -100,7 +109,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NA:{" "}
               {pourcentageNA(
                 inspectionData?.chapter2.NA ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter2.TA && inspectionData?.chapter2.TA > 0
+                  ? (inspectionData?.chapter2.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -111,7 +122,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               C:{" "}
               {pourcentageC(
                 inspectionData?.chapter3.C ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter3.TA && inspectionData?.chapter3.TA > 0
+                  ? (inspectionData?.chapter3.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -119,7 +132,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NC:{" "}
               {pourcentageNC(
                 inspectionData?.chapter3.NC ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter3.TA && inspectionData?.chapter3.TA > 0
+                  ? (inspectionData?.chapter3.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -127,7 +142,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NA:{" "}
               {pourcentageNA(
                 inspectionData?.chapter3.NA ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter3.TA && inspectionData?.chapter3.TA > 0
+                  ? (inspectionData?.chapter3.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -140,7 +157,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               C:{" "}
               {pourcentageC(
                 inspectionData?.chapter4.C ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter4.TA && inspectionData?.chapter4.TA > 0
+                  ? (inspectionData?.chapter4.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -148,7 +167,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NC:{" "}
               {pourcentageNC(
                 inspectionData?.chapter4.NC ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter4.TA && inspectionData?.chapter4.TA > 0
+                  ? (inspectionData?.chapter4.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -156,7 +177,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NA:{" "}
               {pourcentageNA(
                 inspectionData?.chapter4.NA ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter4.TA && inspectionData?.chapter4.TA > 0
+                  ? (inspectionData?.chapter4.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -167,7 +190,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               C:{" "}
               {pourcentageC(
                 inspectionData?.chapter5.C ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter5.TA && inspectionData?.chapter5.TA > 0
+                  ? (inspectionData?.chapter5.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -175,7 +200,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NC:{" "}
               {pourcentageNC(
                 inspectionData?.chapter5.NC ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter5.TA && inspectionData?.chapter5.TA > 0
+                  ? (inspectionData?.chapter5.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -183,7 +210,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NA:{" "}
               {pourcentageNA(
                 inspectionData?.chapter5.NA ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter5.TA && inspectionData?.chapter5.TA > 0
+                  ? (inspectionData?.chapter5.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -194,15 +223,19 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               C:{" "}
               {pourcentageC(
                 inspectionData?.chapter6.C ?? 0,
-                inspectionData?.total_A ?? 1
-              )}
+                inspectionData?.chapter6.TA && inspectionData?.chapter6.TA > 0
+                  ? (inspectionData?.chapter6.TA as number)
+                  : 1
+              )}{" "}
               %
             </li>
             <li className="list-disc font-bold">
               NC:{" "}
               {pourcentageNC(
                 inspectionData?.chapter6.NC ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter6.TA && inspectionData?.chapter6.TA > 0
+                  ? (inspectionData?.chapter6.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -210,7 +243,9 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
               NA:{" "}
               {pourcentageNA(
                 inspectionData?.chapter6.NA ?? 0,
-                inspectionData?.total_A ?? 1
+                inspectionData?.chapter6.TA && inspectionData?.chapter6.TA > 0
+                  ? (inspectionData?.chapter6.TA as number)
+                  : 1
               )}{" "}
               %
             </li>
@@ -223,7 +258,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
           <li className="list-disc font-bold">
             C:{" "}
             {(
-              (pourcentageGeneral().C / (inspectionData?.total_A ?? 1)) *
+              (pourcentageGeneral().C / (totalQuestions ? totalQuestions : (inspectionData?.total_A ?? 1))) *
               100
             ).toFixed(2)}{" "}
             %
@@ -231,7 +266,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
           <li className="list-disc font-bold">
             NC:{" "}
             {(
-              (pourcentageGeneral().NC / (inspectionData?.total_A ?? 1)) *
+              (pourcentageGeneral().NC / (totalQuestions ? totalQuestions : (inspectionData?.total_A ?? 1))) *
               100
             ).toFixed(2)}{" "}
             %
@@ -239,7 +274,7 @@ export default function DisplayInspectionAnalysis({ inspectionData }: Props) {
           <li className="list-disc font-bold">
             NA:{" "}
             {(
-              (pourcentageGeneral().NA / (inspectionData?.total_A ?? 1)) *
+              (pourcentageGeneral().NA / (totalQuestions ? totalQuestions : (inspectionData?.total_A ?? 1))) *
               100
             ).toFixed(2)}{" "}
             %

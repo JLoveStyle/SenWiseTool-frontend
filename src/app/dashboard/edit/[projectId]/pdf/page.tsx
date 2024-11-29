@@ -100,13 +100,13 @@ export default function page({}: Props) {
           <img
             src={company.logo}
             alt="company logo"
-            className="h-[100px] w-[150px]"
+            className="h-[70px] w-[100px]"
           />
 
           <img
             src="/images/logo_forest.jpg"
             alt="rainforest aliance logo"
-            className="h-[60px] w-[100px]"
+            className="h-[70px] w-[100px]"
           />
           {/* Partner logo */}
 
@@ -114,7 +114,7 @@ export default function page({}: Props) {
             <img
               src={projectData?.another_logo}
               alt="Pathner logo"
-              className="h-[70px] w-[110px]"
+              className="h-[70px] w-[100px]"
             />
           )}
         </div>

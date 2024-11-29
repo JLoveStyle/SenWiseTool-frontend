@@ -7,7 +7,12 @@ import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import CreateProjectOptions from "./createProjectOptions";
 import ProjectDetailsForm from "./projectFormDetails/createForm";
 import { ProjectsType, ProjectType, TrainingType } from "@/types/api-types";
@@ -40,11 +45,6 @@ export default function CloseSiveNav({
 
   const closeModal = (val: boolean) => {
     setOpenModal(val);
-  };
-
-  const handleShowProjectDetails = (value1: boolean, value2: boolean) => {
-    setShowProjectDetailsForm(value1);
-    setShowProjectOptions(value2);
   };
 
   const draftProjects = projectsPerType?.filter(
@@ -97,7 +97,6 @@ export default function CloseSiveNav({
             {showProjectDetailsForm && (
               <ProjectDetailsForm
                 closeModal={closeModal}
-                onClick={handleShowProjectDetails}
                 typeOfProject={typeOfProject}
               />
             )}
@@ -157,8 +156,9 @@ export default function CloseSiveNav({
           </span>
         </div>
         <div className="max-h-[200px] overflow-y-auto">
-          {draftProjects?.map((item) => (
+          {draftProjects?.map((item, index) => (
             <p
+              key={index}
               onClick={() => {
                 LOCAL_STORAGE.save("projectId", item.id);
                 router.push(Route.details + `/${item.id}`);

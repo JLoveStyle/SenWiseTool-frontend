@@ -36,6 +36,9 @@ export const ActiveLink = ({
       target={type === "external" ? "_blank" : "_self"}
     >
       {label}
+      {isActive && (
+        <span className="absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-500 w-full"></span>
+      )}
     </Link>
   );
 };

@@ -389,6 +389,10 @@
     height: 0;
   }
 
+  .clip-triangle {
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+  }
+
   @keyframes blink {
     0%,
     100% {

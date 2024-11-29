@@ -3,8 +3,9 @@
 import { Route } from "@/lib/route";
 
 import { Archive, ListOrdered, Trash2 } from "lucide-react";
-import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
+import { FaHandHoldingDollar } from "react-icons/fa6";
 
+import FilePreview from "@/components/atoms/file-preview";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import { NewManagementPlan } from "@/components/organisms/income-and-shared-responsability/management-plan/new-management-plan";
@@ -17,12 +18,10 @@ import {
   incomeAndSharedResponsabilityDBProps,
 } from "@/types/income-and-shared-responsability";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
-import { ImCross } from "react-icons/im";
-import { toast } from "react-toastify";
+import { RiErrorWarningLine } from "react-icons/ri";
 
-export default function Agriculture() {
+export default function ManagementPlan() {
   const [isLoading, setIsLoading] = useState(true);
   const [managementPlanDatas, setManagementPlanDatas] = useState<
     ManagementPlanDisplayProps[]
@@ -39,6 +38,10 @@ export default function Agriculture() {
     toggleOpenModel();
   };
 
+  const preview = (url: string, index: number) => {
+    return <FilePreview url={url} variant="button" />;
+  };
+
   const columns = columnTable<ManagementPlanDisplayProps>(
     {
       id: "id",
@@ -47,16 +50,22 @@ export default function Agriculture() {
     Route.incomeAndSharedResponsabilityManagementPlan,
     false
   );
+
   const formatedDataFromDBToDisplay = (
     data: incomeAndSharedResponsabilityDBProps
   ) => {
     return {
       id: data.id ?? "",
-      management_plan: data.management_plan ? (
-        <FaCheck color="green" />
-      ) : (
-        <ImCross color="red" />
-      ),
+      management_plan:
+        data.management_plan?.length !== 0 ? (
+          <div className="flex justify-center gap-2 flex-wrap">
+            {data.management_plan?.map((url, index) => preview(url, index))}
+          </div>
+        ) : (
+          <div className="flex justify-center gap-2 flex-wrap">
+            <RiErrorWarningLine className="text-gray-500" size={20} />
+          </div>
+        ),
     };
   };
 
@@ -86,7 +95,7 @@ export default function Agriculture() {
           setIsLoading(false);
         }
       } catch (err) {
-        console.error("Error fetching agriculture datas: ", err);
+        console.error("Error fetching management datas: ", err);
       } finally {
         setIsLoading(false);
       }
@@ -104,18 +113,19 @@ export default function Agriculture() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "New agriculture",
-    construct_form_btn_label: "New agriculture form",
+    trigger_btn_label_form: "New plan",
+    construct_form_btn_label: "New plan form",
     existing_form_btn_label: "Use Existing Form",
-    new_form_title: "Create new agricultural activity",
+    new_form_title: "Create new management plan",
+    // choose_form: true,
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
-  const deleteAgricultureAccounts = () => {
+  const deletePlanAccounts = () => {
     console.log("del");
   };
 
-  const stateActivity: DashboardStatPanelData[] = [
+  const statePlan: DashboardStatPanelData[] = [
     {
       structure: {
         label: "Number",
@@ -138,7 +148,7 @@ export default function Agriculture() {
       ]}
       title="MANAGEMENT PLAN"
       formParams={formParams}
-      statPanelDatas={stateActivity}
+      statPanelDatas={statePlan}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Management plan</h1>
@@ -151,7 +161,7 @@ export default function Agriculture() {
               <CustomHoverCard content="Delete Accounts">
                 <Trash2
                   className="hover:cursor-pointer"
-                  onClick={deleteAgricultureAccounts}
+                  onClick={deletePlanAccounts}
                 />
               </CustomHoverCard>
             </>

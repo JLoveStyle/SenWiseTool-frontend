@@ -1,5 +1,5 @@
 import ApiCall from "./httpClients";
-import { BASE_URL, API_URL } from "./constants";
+import { API_URL } from "./constants";
 
 
 const apiCall = new ApiCall()

@@ -79,6 +79,12 @@ const config = {
             height: "0",
           },
         },
+        bounceFade: {
+          "0%": { transform: "translateY(0)", opacity: "0" },
+          "30%": { transform: "translateY(-20px)", opacity: "0.6" },
+          "60%": { transform: "translateY(-10px)", opacity: "0.8" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
         // "accordion-down": {
         //   from: {
         //     height: "0",
@@ -101,6 +107,8 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         // "accordion-down": "accordion-down 0.2s ease-out",
         // "accordion-up": "accordion-up 0.2s ease-out",
+
+        "bounce-fade": "bounceFade 1.5s ease-out forwards",
       },
       screens: {
         xs: "480px",

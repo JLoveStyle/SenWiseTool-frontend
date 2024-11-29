@@ -3,8 +3,9 @@
 import { Route } from "@/lib/route";
 
 import { Archive, ListOrdered, Trash2 } from "lucide-react";
-import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
+import { FaHandHoldingDollar } from "react-icons/fa6";
 
+import FilePreview from "@/components/atoms/file-preview";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import { NewDifferential } from "@/components/organisms/income-and-shared-responsability/differential/new-differential";
@@ -17,10 +18,8 @@ import {
   incomeAndSharedResponsabilityDBProps,
 } from "@/types/income-and-shared-responsability";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
-import { ImCross } from "react-icons/im";
-import { toast } from "react-toastify";
+import { RiErrorWarningLine } from "react-icons/ri";
 
 export default function Agriculture() {
   const [isLoading, setIsLoading] = useState(true);
@@ -35,8 +34,8 @@ export default function Agriculture() {
     initial: false,
   });
 
-  const closeDialog = () => {
-    toggleOpenModel();
+  const preview = (url: string, index: number) => {
+    return <FilePreview url={url} variant="button" />;
   };
 
   const columns = columnTable<differentialDisplayProps>(
@@ -54,16 +53,28 @@ export default function Agriculture() {
   ) => {
     return {
       id: data.id ?? "",
-      producer_payment_proof: data.producer_payment_proof ? (
-        <FaCheck color="green" />
-      ) : (
-        <ImCross color="red" />
-      ),
-      first_buyer_proof: data.first_buyer_proof ? (
-        <FaCheck color="green" />
-      ) : (
-        <ImCross color="red" />
-      ),
+      producer_payment_proof:
+        data.producer_payment_proof?.length !== 0 ? (
+          <div className="flex justify-center gap-2 flex-wrap">
+            {data.producer_payment_proof?.map((url, index) =>
+              preview(url, index)
+            )}
+          </div>
+        ) : (
+          <div className="flex justify-center gap-2 flex-wrap">
+            <RiErrorWarningLine className="text-gray-500" size={20} />
+          </div>
+        ),
+      first_buyer_proof:
+        data.first_buyer_proof?.length !== 0 ? (
+          <div className="flex justify-center gap-2 flex-wrap">
+            {data.first_buyer_proof?.map((url, index) => preview(url, index))}
+          </div>
+        ) : (
+          <div className="flex justify-center gap-2 flex-wrap">
+            <RiErrorWarningLine className="text-gray-500" size={20} />
+          </div>
+        ),
     };
   };
 
@@ -112,7 +123,7 @@ export default function Agriculture() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "New",
+    trigger_btn_label_form: "New Differential",
     construct_form_btn_label: "New form",
     existing_form_btn_label: "Use Existing Form",
     new_form_title: "Create new differential sustanability differential",
@@ -120,7 +131,7 @@ export default function Agriculture() {
   };
 
   const deleteDifferential = () => {
-    console.log("Delete sustanability differential")
+    console.log("Delete sustanability differential");
     // if (differentialSelected.length !== 0) {
     //   const allDifferential = LOCAL_STORAGE.get("differentials");
     //   const idSelecteds = differentialSelected.map((objet) => objet.id);

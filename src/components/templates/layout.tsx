@@ -1,5 +1,5 @@
 import { SessionStatusType } from "@/types/type-tools";
-import { Navbar } from "../molecules/navbar";
+import { Navbar as NavbarCustom } from "../molecules/navbar";
 import { Session } from "./session";
 
 interface Props {
@@ -11,7 +11,8 @@ export const Layout = ({ children, sessionStatus }: Props) => {
   return (
     <Session sessionStatus={sessionStatus}>
       <header>
-        <Navbar />
+        {/* <Navbar /> */}
+        <NavbarCustom />
       </header>
       <main>{children}</main>
     </Session>

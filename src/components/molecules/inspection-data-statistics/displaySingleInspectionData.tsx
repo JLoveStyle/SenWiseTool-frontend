@@ -11,8 +11,12 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import React, { useState } from "react";
 import DisplayInspectionAnalysis from "./displayInspectionAnalysis";
-import { InspectionDataPops } from "@/types/api-types";
+import {
+  InspectionConclusionDataType,
+  InspectionDataPops,
+} from "@/types/api-types";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import Inspectionconclusion from "./inspection-conclusion";
 
 type Props = {
   incomingData?: InspectionDataPops;
@@ -21,11 +25,11 @@ type Props = {
 export default function DisplaySingleInspectionData({ incomingData }: Props) {
   const [displayTable, setDipslayTable] = useState<boolean>(true);
   const [displayStatistics, setDipslayStatistics] = useState<boolean>(false);
+  const [displayConclusion, setDisplayConclusion] = useState<boolean>(false);
   // Headings to display
-  const headings: string[] = ["Data", "Statistics"];
+  const headings: string[] = ["Data", "Statistics", "Conclusion"];
 
-  const resultData = LOCAL_STORAGE.get('insection-data')
-  // const resultData: InspectionDataType = JSON.parse(localStorage.getItem('insection-data') || '{}')
+  const resultData = LOCAL_STORAGE.get("insection-data");
 
   return (
     <div className="max-h-[700px] px-3 py-4">
@@ -43,9 +47,15 @@ export default function DisplaySingleInspectionData({ incomingData }: Props) {
                 if (item === "Data") {
                   setDipslayTable(true);
                   setDipslayStatistics(false);
+                  setDisplayConclusion(false);
                 } else if (item === "Statistics") {
                   setDipslayTable(false);
                   setDipslayStatistics(true);
+                  setDisplayConclusion(false);
+                } else if (item === "Conclusion") {
+                  setDisplayConclusion(true);
+                  setDipslayTable(false);
+                  setDipslayStatistics(false);
                 }
               }}
             >
@@ -81,7 +91,17 @@ export default function DisplaySingleInspectionData({ incomingData }: Props) {
       )}
       {displayStatistics && (
         <div className="overflow-y-auto md:max-h-[500px]">
-          <DisplayInspectionAnalysis inspectionData={resultData}/>
+          <DisplayInspectionAnalysis inspectionData={resultData} />
+        </div>
+      )}
+      {displayConclusion && (
+        <div className="md:max-h-[500px] overflow-y-auto">
+          <Inspectionconclusion
+            conclusionData={
+              incomingData?.project_data.project_data
+                .inspectionConclusions as InspectionConclusionDataType
+            }
+          />
         </div>
       )}
     </div>

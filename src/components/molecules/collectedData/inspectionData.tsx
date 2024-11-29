@@ -16,8 +16,10 @@ import dynamic from "next/dynamic";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import {
   handleAnalysis,
-  testFonction,
+  overallStatistics,
 } from "@/utiles/services/Data-analysis/single-inspection-analysis";
+import { Button } from "@/components/ui/button";
+import { downloadInspectionDataAsCsv } from "./downloadCsv";
 
 const DisplayInspectionAnalysis = dynamic(
   () => import("../inspection-data-statistics/displayInspectionAnalysis"),
@@ -52,7 +54,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
         if (response.status === 201) {
-          console.log(response.data);
+          console.log("response =>", response.data);
           setData(response.data);
           setIsLoading(false);
           return;
@@ -72,21 +74,30 @@ export default function InspectionData({ project_id, projectName }: Props) {
   }
 
   useEffect(() => {
-    fetchAllInpectionData("cm3c24mfj0003m9uh4k8clakw");
+    fetchAllInpectionData("cm3lgtlxd000b124xckbu2muw");
   }, [project_id]);
 
   return (
-    <>
+    <div className="md:w-full h-full">
       {isLoading ? (
         <div className="flex justify-center my-auto">
           <Spinner />
         </div>
       ) : data.length ? (
         <div className="bg-[#f3f4f6] h-full md:w-full">
-          <h2 className="text-center py-6">
-            Project title: <span className=" font-semibold">{projectName}</span>
-          </h2>
-          <div className="flex gap-3">
+          <div className="flex">
+            <h2 className="text-center py-6 flex-1">
+              Project title:{" "}
+              <span className=" font-semibold">{projectName}</span>
+            </h2>
+            <Button
+              onClick={() => downloadInspectionDataAsCsv([], data)}
+              className="bg-tertiary hover:bg-tertiary hover:opacity-90 my-auto"
+            >
+              Export
+            </Button>
+          </div>
+          <div className="flex justify-between gap-3">
             <div className=" px-6">
               <table>
                 <thead>
@@ -95,9 +106,15 @@ export default function InspectionData({ project_id, projectName }: Props) {
                     <th className="p-2  border">Farmer name</th>
                     <th className="p-2  border">Farmer ID card number</th>
                     <th className="p-2  border">Village</th>
-                    <th className="p-2  border">Collector name</th>
-                    <th className="p-2  border">Collector contact</th>
+                    <th className="p-2  border">Agent name</th>
+                    <th className="p-2  border">Agent contact</th>
                     <th className="p-2  border">Inspection date</th>
+                    <th className="p-2  border">Certification year</th>
+                    <th className="p-2  border">Weed application</th>
+                    <th className="p-2  border">
+                      Weed application quantity (kg/ha)
+                    </th>
+                    <th className="p-2  border">Farmer picture</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -138,6 +155,36 @@ export default function InspectionData({ project_id, projectName }: Props) {
                       <td className="p-2 bg-white border ">
                         {dayjs(item.collected_at).toString().slice(0, -4)}{" "}
                       </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .certification_year
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .weed_application
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .weed_application_quantity
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        <img
+                          src={
+                            item.project_data.project_data.metaData
+                              .farmer_photos &&
+                            item.project_data.project_data.metaData
+                              ?.farmer_photos[0]
+                          }
+                          alt="farmer picture"
+                          className="h-[50px] w-[70px]"
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -146,11 +193,18 @@ export default function InspectionData({ project_id, projectName }: Props) {
             <div className="md:w-[450px] bg-white md:mr-6">
               <h1
                 className="font-bold py-2 text-center border-b"
-                onClick={() => testFonction(data)}
+                onClick={() => overallStatistics(data)}
               >
                 Overall statistics
               </h1>
-              <DisplayInspectionAnalysis inspectionData={testFonction(data)} />
+              <DisplayInspectionAnalysis
+                totalQuestions={
+                  singleInspectionData &&
+                  singleInspectionData?.project_data.project_data.requirements
+                    .length * data.length
+                }
+                inspectionData={overallStatistics(data)}
+              />
             </div>
           </div>
 
@@ -177,6 +231,6 @@ export default function InspectionData({ project_id, projectName }: Props) {
       ) : (
         <div className="flex justify-center mx-auto">No Data collected yet</div>
       )}
-    </>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client"
 import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDetails from "@/components/organisms/projectDetails";
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
@@ -50,8 +51,9 @@ export default function Home(props: {params: Props}) {
   }, [])
 
   return (
-    <LayoutDashboard typeOfProject={"MAPPING"} projectsPerType={[]}>
+
+    <LayoutDashboardTemplate title="MAPPING">
       <ProjectDetails isDataLoading={isLoading} projectDetails={projectObject as ProjectType} />
-    </LayoutDashboard>
+    </LayoutDashboardTemplate>
   );
 }

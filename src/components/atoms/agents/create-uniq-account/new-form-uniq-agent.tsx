@@ -17,7 +17,7 @@ import { mutateApiData } from "@/utiles/services/mutations";
 import { ProjectType } from "@/types/api-types";
 
 interface Props {
-  projects?: Partial<ProjectType[]>;
+  projects?: any[];
 }
 
 export function NewFormUniqAgent({ projects }: Props) {
@@ -120,7 +120,7 @@ export function NewFormUniqAgent({ projects }: Props) {
   return (
     <form onSubmit={handleSubmit} className="px-5 pb-5">
       <FormUniqAgent
-        projects={projects as Partial<ProjectType[]>}
+        projects={projects as any[]}
         updatedFormData={handleUpdatedFormData}
         errors={errors}
         isLoading={isLoading}

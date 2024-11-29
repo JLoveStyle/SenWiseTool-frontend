@@ -19,24 +19,16 @@ import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
 
 type Props = {
-  onClick: (val1: boolean, val2: boolean) => void;
   typeOfProject: ProjectsType;
-  project?: Project;
   closeModal: (value: boolean) => void;
 };
 
 export default function ProjectDetailsForm({
-  onClick,
   typeOfProject,
-  project,
   closeModal,
 }: Props) {
   const countries: any[] = Country.getAllCountries();
-  const showProjectOptions: boolean = true;
-  const showProjectDetails: boolean = false;
   const router = useRouter();
-  const company = useCompanyStore((state) => state.company);
-  const compains = useCampaignStore((state) => state.campaigns);
   const currentCampain = useCampaignStore((state) => state.currentCampaign);
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
@@ -44,9 +36,6 @@ export default function ProjectDetailsForm({
   const [state, setState] = useState<any[]>([]);
   const [city, setCity] = useState<object[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [companyLogo, setCompanyLogo] = useState<string | ArrayBuffer | null>(
-    ""
-  );
   const [errorDate, setErrorDate] = useState<string>("");
   const [otherLogo, setOtherLogo] = useState<File[]>([]);
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
@@ -90,20 +79,6 @@ export default function ProjectDetailsForm({
     }
   };
 
-  /*
-  const handlecompanyLogo = (e: any) => {
-    const reader = new FileReader();
-    if (e) {
-      reader.onload = (onLoadEvent) => {
-        if (onLoadEvent.target) {
-          console.log(onLoadEvent.target.result);
-          setCompanyLogo(onLoadEvent.target.result);
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  }; */
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setOtherLogo(Array.from(event.target.files)); // Convertir FileList en tableau
@@ -116,7 +91,7 @@ export default function ProjectDetailsForm({
 
     //upload company logo
     if (!otherLogo.length) {
-      return ""
+      return "";
     } else {
       console.log("otherLogo =>", otherLogo);
       const { data, error } = await UpdateFilesToS3({
@@ -132,11 +107,12 @@ export default function ProjectDetailsForm({
       }
 
       return data.URLs[0] as string;
-    } 
+    }
   };
 
   async function handleSubmit(e: any) {
     e.preventDefault();
+    const company = LOCAL_STORAGE.get("company");
     setIsLoading((prev) => !prev);
     const [URLOtherLogo] = await Promise.all([uploadOtherLogo()]);
 
@@ -149,8 +125,7 @@ export default function ProjectDetailsForm({
       setIsLoading((prev) => !prev);
       return;
     }
-
-    console.log(new Date(projectData.start_date as string).toISOString());
+    console.log("company =>", company);
 
     setErrorDate("");
     // CREATE NEW RECORD IN THE PROJECTS TABLE
@@ -216,149 +191,126 @@ export default function ProjectDetailsForm({
   }, [projectData.country]);
 
   return (
-    <CardLayout
-      heading={`Create a project (${typeOfProject}): Project details`}
-    >
-      <form className="w-full flex flex-col px-4 py-2" onSubmit={handleSubmit}>
-        {typeOfProject === "MAPPING" ? (
-          ""
-        ) : (
-          <>
-            <em>
-              <strong>NB</strong>: The Rain forest Alliances' and company logos
-              will be added by default on this project form
-            </em>
-            <div className="flex flex-col py-2">
-              <label htmlFor="company_logo">
-                <strong>Add another logo</strong>
-              </label>
-              <input
-                accept=".png, .jpeg, .jpg"
-                type="file"
-                onChange={(e) => handleFileChange(e)}
-              />
-            </div>
-          </>
-        )}
+    <form className="w-full flex flex-col px-4 py-2" onSubmit={handleSubmit}>
+      {typeOfProject === "MAPPING" ? (
+        ""
+      ) : (
+        <>
+          <em>
+            <strong>NB</strong>: The Rain forest Alliances' and company logos
+            will be added by default on this project form
+          </em>
+          <div className="flex flex-col py-2">
+            <label htmlFor="company_logo">
+              <strong>Add another logo</strong>
+            </label>
+            <input
+              accept=".png, .jpeg, .jpg"
+              type="file"
+              onChange={(e) => handleFileChange(e)}
+            />
+          </div>
+        </>
+      )}
 
-        <InputField
-          label="Project title"
-          inputName="title"
-          type="text"
-          value={projectData.title}
-          onChange={(e) => handleChangeEvent(e)}
-        />
-        <div className="flex justify-between gap-4">
-          <div className="md:w-1/2">
-            <InputField
-              label="Start date"
-              inputName="start_date"
-              type="datetime-local"
-              value={projectData.start_date}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div>
-          <div className="md:w-1/2">
-            <InputField
-              label="End date"
-              inputName="end_date"
-              type="datetime-local"
-              value={projectData.end_date}
-              onChange={(e) => handleChangeEvent(e)}
-            />
-          </div>
+      <InputField
+        label="Project title"
+        inputName="title"
+        type="text"
+        value={projectData.title}
+        onChange={(e) => handleChangeEvent(e)}
+      />
+      <div className="flex justify-between gap-4">
+        <div className="md:w-1/2">
+          <InputField
+            label="Start date"
+            inputName="start_date"
+            type="datetime-local"
+            value={projectData.start_date}
+            onChange={(e) => handleChangeEvent(e)}
+          />
         </div>
-        {errorDate && (
-          <span className="text-red-500 mt-4">
-            <em>{errorDate}</em>
-          </span>
-        )}
-        <label className="font-semibold" htmlFor="activity">
-          Business sector
-          <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="activity"
-          value={projectData.sector_activity}
-          name="sector_activity"
-          required
-          onChange={(event) => handleChangeEvent(event)}
-          className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+        <div className="md:w-1/2">
+          <InputField
+            label="End date"
+            inputName="end_date"
+            type="datetime-local"
+            value={projectData.end_date}
+            onChange={(e) => handleChangeEvent(e)}
+          />
+        </div>
+      </div>
+      {errorDate && (
+        <span className="text-red-500 mt-4">
+          <em>{errorDate}</em>
+        </span>
+      )}
+      <label className="font-semibold" htmlFor="activity">
+        Business sector
+        <span className="text-red-500">*</span>
+      </label>
+      <select
+        id="activity"
+        value={projectData.sector_activity}
+        name="sector_activity"
+        required
+        onChange={(event) => handleChangeEvent(event)}
+        className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+      >
+        <option>-- Select --</option>
+        {businessActivity?.map((item: any, index) => (
+          <option key={index} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+      <div className="flex justify-between gap-4">
+        <CustomSelectTag
+          selectName="country"
+          onChange={(e) => handleChangeEvent(e)}
+          label="Country"
+          arrayOfItems={countries}
+          value={projectData.country as string}
+          className="md:w-[33.33%]"
+        />
+        <CustomSelectTag
+          selectName="region"
+          onChange={(e) => handleChangeEvent(e)}
+          label="Region"
+          arrayOfItems={state}
+          value={projectData.region as string}
+          className="md:w-[33.33%]"
+        />
+        <CustomSelectTag
+          selectName="city"
+          onChange={(e) => handleChangeEvent(e)}
+          label="City"
+          arrayOfItems={city}
+          value={projectData.city as string}
+          className="md:w-[33.33%]"
+        />
+      </div>
+      <label className="font-semibold" htmlFor="activity">
+        Project description
+      </label>
+      <Textarea
+        placeholder="Enter description"
+        value={projectData.description}
+        name="description"
+        onChange={(e) => handleChangeEvent(e)}
+      />
+      <div className="flex justify-end py-2 gap-4">
+        <Button
+          type="submit"
+          className={
+            isLoading
+              ? "hover:cursor-wait opacity-70 bg-tertiary hover:bg-tertiary"
+              : "active:transition-y-1 bg-tertiary hover:bg-tertiary"
+          }
         >
-          <option>-- Select --</option>
-          {businessActivity?.map((item: any, index) => (
-            <option key={index} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-        <div className="flex justify-between gap-4">
-          <CustomSelectTag
-            selectName="country"
-            onChange={(e) => handleChangeEvent(e)}
-            label="Country"
-            arrayOfItems={countries}
-            value={projectData.country as string}
-            className="md:w-[33.33%]"
-          />
-          <CustomSelectTag
-            selectName="region"
-            onChange={(e) => handleChangeEvent(e)}
-            label="Region"
-            arrayOfItems={state}
-            value={projectData.region as string}
-            className="md:w-[33.33%]"
-          />
-          {/* <div className="flex flex-col ">
-            <label htmlFor="region">Region</label>
-            <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              isMulti
-              options={state}
-            />
-          </div> */}
-          <CustomSelectTag
-            selectName="city"
-            onChange={(e) => handleChangeEvent(e)}
-            label="City"
-            arrayOfItems={city}
-            value={projectData.city as string}
-            className="md:w-[33.33%]"
-          />
-        </div>
-        <label className="font-semibold" htmlFor="activity">
-          Project description
-        </label>
-        <Textarea
-          placeholder="Enter description"
-          value={projectData.description}
-          name="description"
-          onChange={(e) => handleChangeEvent(e)}
-        />
-        <div className="flex justify-end py-2 gap-4">
-          <Button
-            className="bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1"
-            onClick={(e: any) => {
-              e.preventDefault;
-              onClick(showProjectDetails, showProjectOptions);
-            }}
-          >
-            BACK
-          </Button>
-          <Button
-            type="submit"
-            className={
-              isLoading
-                ? "hover:cursor-wait opacity-70 bg-tertiary hover:bg-tertiary"
-                : "active:transition-y-1 bg-tertiary hover:bg-tertiary"
-            }
-          >
-            {isLoading ? <Spinner /> : "CREATE PROJECT"}
-          </Button>
-        </div>
-      </form>
-    </CardLayout>
-    // </div>
+          {isLoading ? <Spinner /> : "CREATE PROJECT"}
+        </Button>
+      </div>
+    </form>
   );
 }
