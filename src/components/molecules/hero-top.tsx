@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { Route } from "@/lib/route";
+import Link from "next/link";
 
 const backgroundColors = [
   "bg-[#14645b]",
@@ -55,9 +57,11 @@ export const HeroTop: React.FC = () => {
           Découvrez la traçabilité du cacao, de la graine jusqu'au chocolat. Une
           expérience unique de transparence et de qualité.
         </p>
-        <Button className="bg-primary text-white hover:opacity-90">
-          Getting Started
-        </Button>
+        <Link href={Route.signUp}>
+          <Button className="bg-primary text-white hover:opacity-90">
+            Getting Started
+          </Button>
+        </Link>
       </div>
 
       {/* Images à droite */}
@@ -93,9 +97,11 @@ export const HeroTop: React.FC = () => {
         <p className="text-base mt-4">
           Découvrez la traçabilité du cacao, de la graine jusqu'au chocolat.
         </p>
-        <Button className="mt-6 bg-blue-600 text-white hover:opacity-90">
-          Getting Started
-        </Button>
+        <Link href={Route.signUp}>
+          <Button className="mt-6 bg-blue-600 text-white hover:opacity-90">
+            Getting Started
+          </Button>
+        </Link>
       </div>
     </div>
   );
