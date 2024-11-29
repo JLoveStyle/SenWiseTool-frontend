@@ -272,7 +272,9 @@ export default function Home({}: Props) {
   };
 
   return (
-    <Session sessionStatus={NOT_HAS_COMPANY}>
+    <Session
+      sessionStatus={NOT_HAS_COMPANY}
+    >
       <div className="h-full">
         <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
           <div className="flex justify-center ">
