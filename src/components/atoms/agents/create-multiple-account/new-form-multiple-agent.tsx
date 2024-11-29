@@ -19,7 +19,7 @@ import { AssigneeType, ProjectType } from "@/types/api-types";
 import { mutateApiData } from "@/utiles/services/mutations";
 
 interface Props {
-  projects?: Partial<ProjectType[]>;
+  projects?: any[];
 }
 
 export function NewFormMiltipleAgent({ projects }: Props) {
@@ -111,7 +111,7 @@ export function NewFormMiltipleAgent({ projects }: Props) {
         updatedFormData={handleUpdatedFormData}
         errors={errors}
         isLoading={isLoading}
-        projects={projects as Partial<ProjectType[]>}
+        projects={projects as any[]}
       />
       <ButtonUI
         type="submit"

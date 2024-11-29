@@ -15,18 +15,19 @@ import { use, useEffect, useState } from "react";
 import { FaDownload, FaEye } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-type TProps = Promise<{id: string}>;
+type TProps = Promise<{ id: string }>;
 
-export default function AgricultureDetails(props: {params: TProps}) {
+export default function AgricultureDetails(props: { params: TProps }) {
   const router = useRouter();
-  const params = use(props.params)
-  const id = params.id
+  const params = use(props.params);
+  const id = params.id;
   const [currentActivity, setCurrentActivity] = useState<ActivityProps>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("fetching data")
       setIsLoading((prev) => !prev);
       const activities = await fetchApiData(
         Route.agricultureRequest + `/${id}`,
@@ -35,13 +36,14 @@ export default function AgricultureDetails(props: {params: TProps}) {
 
       if (!activities) {
         router.push("/");
+        setIsLoading(prev => !prev)
         toast.error("Page not found");
         return;
-        }
+      }
 
       if (activities.status === 200) {
         console.log("agricultural activity => ", activities);
-        setIsLoading(prev => !prev);
+        setIsLoading((prev) => !prev);
         setCurrentActivity(activities.data);
       }
     };
@@ -81,7 +83,7 @@ export default function AgricultureDetails(props: {params: TProps}) {
             <UserPlus className="hover:cursor-not-allowed" />
           </CustomHoverCard>
           <CustomHoverCard content="Delete Project">
-            <Delete className={isLoading ? 'hover:cursor-not-allowed' : ""} />
+            <Delete className={isLoading ? "hover:cursor-not-allowed" : ""} />
           </CustomHoverCard>
         </div>
       </div>

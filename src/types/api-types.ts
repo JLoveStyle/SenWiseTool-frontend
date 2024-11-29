@@ -85,14 +85,27 @@ export interface AnalysisProps {
 
 export interface InspectionDataType {
   total_A: number;
-  chapter1: { C: number; NC: number; NA: number };
-  chapter2: { C: number; NC: number; NA: number };
-  chapter3: { C: number; NC: number; NA: number };
-  chapter4: { C: number; NC: number; NA: number };
-  chapter5: { C: number; NC: number; NA: number };
-  chapter6: { C: number; NC: number; NA: number };
+  chapter1: { C: number; NC: number; NA: number, TA: number };
+  chapter2: { C: number; NC: number; NA: number, TA: number };
+  chapter3: { C: number; NC: number; NA: number, TA: number };
+  chapter4: { C: number; NC: number; NA: number, TA: number };
+  chapter5: { C: number; NC: number; NA: number, TA: number };
+  chapter6: { C: number; NC: number; NA: number, TA: number };
 }
 
+
+export interface InspectionConclusionDataType {
+  metadata: {
+    nextYearRecom: string,
+    agent_signature: string,
+    farmer_signature: string
+  },
+  nonConformityRecom: {
+    comment: string,
+    deadline: string,
+    req_number: string
+  }[]
+}
 export interface InspectionFieldDatatype {
   metaData: {
     certification_year?: string,
@@ -109,6 +122,7 @@ export interface InspectionFieldDatatype {
     weed_application?: string,
     weed_application_quantity?: string
   },
+  inspectionConclusions: InspectionConclusionDataType
   requirements: {
     comment: string,
     status: string,

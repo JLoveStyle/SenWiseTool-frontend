@@ -2,6 +2,7 @@
 import { useToggle } from "@/hooks/use-toggle";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
+import { HAS_COMPANY } from "@/lib/session-statut";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { ApiDataResponse, CampaignType, CompanyType } from "@/types/api-types";
 import {
@@ -28,15 +29,15 @@ import StatPanel from "../atoms/dashboard/stat-panel";
 import FloatingButton from "../atoms/disign-system/floating-button";
 import { FeaturesMenu } from "../organisms/navigationMenu";
 import { Session } from "../templates/session";
-import { AUTHENTICATED, HAS_COMPANY } from "@/lib/session-statut";
 // import CloseSideNav from "./closeSideNav";
-type Props = {
+interface Props {
   children: React.ReactNode;
   newForms?: NewFormProps[];
   formParams?: dasboardFormParams;
   title?: string;
+  isCloseModal?: boolean;
   statPanelDatas?: DashboardStatPanelData[];
-};
+}
 
 export default function LayoutDashboardTemplate({
   children,
@@ -44,6 +45,7 @@ export default function LayoutDashboardTemplate({
   newForms,
   formParams,
   statPanelDatas,
+  isCloseModal,
 }: Props) {
   // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
   const campaigns = useCampaignStore((state) => state.campaigns).map(
@@ -143,6 +145,7 @@ export default function LayoutDashboardTemplate({
           <div className="flex">
             {displayCloseSideNav && (
               <StatPanel
+                isCloseModal={isCloseModal}
                 newForms={newForms}
                 statPanelDatas={statPanelDatas}
                 formParams={formParams}

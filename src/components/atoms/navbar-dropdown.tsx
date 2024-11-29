@@ -31,7 +31,7 @@ export const NavbarDropdown = ({ navLinks, loginButtons }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className=" w-svw">
         {navLinks.map((navLink, index) => (
-          <DropdownMenuItem key={index} className="p-0">
+          <DropdownMenuItem className="p-0" key={index}>
             <ActiveLink
               baseUrl={navLink.baseUrl}
               className="whitespace-nowrap font-medium py-2 px-3"

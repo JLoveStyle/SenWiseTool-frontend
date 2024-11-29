@@ -7,7 +7,11 @@ import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { ProjectType } from "@/types/api-types";
 import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
+import { Archive, FilePenLine, PenLine, Rocket } from "lucide-react";
 import dynamic from "next/dynamic";
+import { DashboardStatPanelData } from "@/types/app-link";
+import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 
 const ProjectDisplay = dynamic(
   () => import("@/components/organisms/projectsDisplay"),
@@ -51,19 +55,80 @@ export default function Home({}: Props) {
       });
   }
 
+  // filter all deployed projects
+  const draftProjects = initialInspectionProjects?.filter(
+    (item) => item?.status === "DRAFT"
+  );
+  const deployedProjects = initialInspectionProjects?.filter(
+    (item) => item?.status === "DEPLOYED"
+  );
+  const archiveProjects = initialInspectionProjects?.filter(
+    (item) => item?.status === "ARCHIVED"
+  );
+
+  const formParams = {
+    trigger_btn_label_form: "New Form",
+    construct_form_btn_label: "Construct a form",
+    existing_form_btn_label: "Use a pre-defined model",
+    new_form_title: "Create a MAPPING project: Project details",
+    construct_form_btn_icon: PenLine,
+  };
+
+  const stateInspection: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Deployed",
+        baseUrl: "",
+        icon: Rocket,
+      },
+      data: () => {
+        return deployedProjects?.length;
+      },
+    },
+    {
+      structure: {
+        label: "Draft",
+        baseUrl: "",
+        icon: FilePenLine,
+      },
+      data: () => {
+        return draftProjects?.length;
+      },
+    },
+    {
+      structure: {
+        label: "Archive",
+        baseUrl: "",
+        icon: Archive,
+      },
+      data: () => {
+        return archiveProjects?.length;
+      },
+    },
+  ];
+
   useEffect(() => {
     fetchAllInitialInspectionProject();
     console.log("initial_inspection");
   }, [currentCampaign?.id, company?.id]);
 
   return (
-    <LayoutDashboard
-      projectsPerType={
-        initialInspectionProjects?.length
-          ? (initialInspectionProjects as ProjectType[])
-          : []
-      }
-      typeOfProject={"INITIAL_INSPECTION"}
+
+    <LayoutDashboardTemplate
+      title="INITIAL INSPECTION"
+      formParams={formParams}
+      statPanelDatas={stateInspection}
+      newForms={[
+        {
+          title: "",
+          form: (
+            <ProjectDetailsForm
+              typeOfProject={"INITIAL_INSPECTION"}
+              closeModal={() => console.log('')}
+            />
+          ),
+        },
+      ]}
     >
       <ProjectDisplay
         projects={
@@ -74,6 +139,6 @@ export default function Home({}: Props) {
         isLoading={isLoading}
         columnListProjects={columnListProjects}
       />
-    </LayoutDashboard>
+    </LayoutDashboardTemplate>
   );
 }

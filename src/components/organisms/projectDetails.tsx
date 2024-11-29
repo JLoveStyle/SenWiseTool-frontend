@@ -137,7 +137,7 @@ export default function ProjectDetails({
           </div>
         </div>
       </div>
-      <div className=" max-h-[600px] overflow-y-auto scrool-bar-hidden relative">
+      <div className=" max-h-[800px] overflow-y-auto scrool-bar-hidden relative">
         {summaryActive && pathname.includes("/mapping/") ? (
           <MappingProjectSummary
             showForm={showFormFromChild}
@@ -166,7 +166,7 @@ export default function ProjectDetails({
         )}
         {formActive && pathname.includes("/mapping/") ? (
           <MappingForm />
-        ) : // <p>sdivosidvsd</p>
+        ) : 
         formActive ? (
           <ProjectForm
             projectObject={projectDetails as ProjectType}

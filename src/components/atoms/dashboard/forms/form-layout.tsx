@@ -14,7 +14,7 @@ import { useToggle } from "@/hooks/use-toggle";
 import { NewFormProps } from "@/types/dashboard/form";
 import { dasboardFormParams } from "@/types/formData";
 import { LayoutTemplate, LucideX, PenLine } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import slugify from "slugify";
 import { Icon } from "../../icon";
 
@@ -22,26 +22,37 @@ type Props = {
   // children: React.ReactNode;
   forms?: NewFormProps[];
   formParams?: dasboardFormParams;
+  isCloseModal?: boolean;
 };
 
-export default function FormLayout({ forms, formParams }: Props) {
+export default function FormLayout({ forms, formParams, isCloseModal }: Props) {
   const [formStep, setFormStep] = useState<"CHOOSE" | "NEW" | "EXIST">(
-    "CHOOSE"
+    formParams?.choose_form ? "CHOOSE" : "NEW"
   );
+
+  const [closingDialog, setClosingDialog] = useState<boolean>(false);
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
   });
 
   const closeDialog = () => {
-    setFormStep("CHOOSE");
+    setFormStep(formParams?.choose_form ? "CHOOSE" : "NEW");
     toggleOpenModel();
+    setClosingDialog((prev) => !prev);
   };
 
+  useEffect(() => {
+    setClosingDialog(isCloseModal as boolean);
+  }, [isCloseModal]);
+
   return (
-    <Dialog open={openModal}>
+    <Dialog open={closingDialog}>
       <DialogTrigger asChild>
-        <Button className="px-10 mb-4" onClick={toggleOpenModel}>
+        <Button
+          className="px-10 mb-4"
+          onClick={() => setClosingDialog((prev) => !prev)}
+        >
           {formParams?.trigger_btn_label_form ?? "New Form"}
         </Button>
       </DialogTrigger>

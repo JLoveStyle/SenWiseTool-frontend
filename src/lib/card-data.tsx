@@ -4,6 +4,7 @@ import {
   cardDataType,
   chaptersType,
 } from "@/types/type-tools";
+import { FaCrown, FaGem, FaMedal } from "react-icons/fa";
 
 export const typeOfOffers = ["Bronze", "Gold", "Silver"];
 
@@ -101,10 +102,15 @@ export const cardDataPricing: cardDataPricingType[] = [
     biannualPricing: 1350,
     chapters: [1, 2],
     image: "/images/pricing/bronze.jpg",
+    icon: <FaMedal className="text-orange-600 text-4xl mx-auto" />,
     condition: {
       description: "Choose either Chapter 01 or Chapter 02",
       badge: "OR",
     },
+    color:
+      "bg-gradient-to-tr from-orange-500 via-orange-400 to-orange-300 bg-opacity-80",
+    textColor: "text-orange-900",
+    shadow: "shadow-orange-400/50",
   },
   {
     type: "Gold",
@@ -112,6 +118,11 @@ export const cardDataPricing: cardDataPricingType[] = [
     biannualPricing: 1800,
     chapters: "all",
     image: "/images/pricing/gold.jpg",
+    icon: <FaCrown className="text-yellow-600 text-4xl mx-auto" />,
+    color:
+      "bg-gradient-to-tr from-yellow-500 via-yellow-400 to-yellow-300 bg-opacity-80",
+    textColor: "text-yellow-900",
+    shadow: "shadow-yellow-400/50",
   },
   {
     type: "Silver",
@@ -119,6 +130,11 @@ export const cardDataPricing: cardDataPricingType[] = [
     biannualPricing: 1700,
     chapters: [1, 2],
     image: "/images/pricing/silver.jpg",
+    icon: <FaGem className="text-gray-600 text-4xl mx-auto" />,
+    color:
+      "bg-gradient-to-tr from-gray-300 via-gray-200 to-gray-100 bg-opacity-80",
+    textColor: "text-gray-900",
+    shadow: "shadow-gray-400/50",
   },
 ];
 
