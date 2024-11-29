@@ -186,11 +186,11 @@ export default function ProofOfPaiement() {
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "New activity",
+          title: "New Proof",
           form: <NewProofOfPaiement endpoint={Route.revenuEtResponsabilite} />,
         },
       ]}
-      title="PROOFS OF PAYMENT"
+      title="INVESTISSEMENT DE DURABILITÉ"
       formParams={formParams}
       statPanelDatas={stateActivity}
     >
