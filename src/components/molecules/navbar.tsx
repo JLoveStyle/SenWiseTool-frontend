@@ -3,12 +3,11 @@
 import { Route } from "@/lib/route";
 import { AppLink } from "@/types/app-link";
 import { useAuth } from "@clerk/nextjs";
-import { AlignRight, X } from "lucide-react";
+import { AlignRight, User, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Container } from "../atoms/container";
 import { Logo } from "../atoms/logo";
-import { NavbarDropdown } from "../atoms/navbar-dropdown";
 import { Button } from "../ui/button";
 
 export const Navbar: React.FC = () => {
@@ -159,10 +158,12 @@ export const Navbar: React.FC = () => {
             {!isMenuOpen && (
               <>
                 {userId ? (
-                  <NavbarDropdown
-                    navLinks={navLinks}
-                    loginButtons={loginButtons}
-                  />
+                  <Link
+                    href={Route.dashboard}
+                    className="hover:bg-primary p-1 hover:rounded-full"
+                  >
+                    <User />
+                  </Link>
                 ) : (
                   loginButtons
                 )}
@@ -197,7 +198,6 @@ export const Navbar: React.FC = () => {
                 </li>
               ))}
             </ul>
-            <div className="mt-4">{loginButtons}</div>
           </div>
         )}
       </Container>
