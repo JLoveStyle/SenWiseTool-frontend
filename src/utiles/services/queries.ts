@@ -1,24 +1,7 @@
-import { Company, User } from "@/types/formData";
 import ApiCall from "./httpClients";
-import { BASE_URL, API_URL } from "./constants";
-import { Project } from "@/types/gestion";
+import { API_URL } from "./constants";
 
 const apiCall = new ApiCall()
-
-// CREATE User
-export async function createUser(user: Partial<User>) {
-  return await apiCall.POST(BASE_URL + "/v1/users", user)
-}
-
-// SAVE PROOJECT AS DRAFT
-export async function saveProjectToDraft(id: string, project: Partial<Project>) {
-  return await apiCall.PUT(BASE_URL + "/v1/projects", id)
-}
-
-// CREATE PROJECT
-export async function createProject(project: Partial<Project>) {
-  return await apiCall.POST(BASE_URL + "v1/projects", project)
-}
 
 
 /**

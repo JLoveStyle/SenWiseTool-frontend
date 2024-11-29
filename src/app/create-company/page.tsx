@@ -73,16 +73,9 @@ export default function Home({}: Props) {
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
 
-<<<<<<< HEAD
     const bucketName = uniqueString()
     LOCAL_STORAGE.save("bucketName", bucketName)
     setBucketName(prev => prev = bucketName);
-=======
-    const bucketName = uniqueString();
-
-    // @todo Add s3 bucketName on database nemed "companyBucket"
-    LOCAL_STORAGE.save("bucketName", bucketName);
->>>>>>> 7311da3267316a2d044df2982e25e3747a5f7e0a
 
     const { data, error } = await CreateBucketToS3({
       bucketName,
@@ -192,22 +185,10 @@ export default function Home({}: Props) {
             return;
           } else if (response.status === 409) {
             return toast.error("Company already exist");
-<<<<<<< HEAD
           } else if (response.statusCode === 401) {
             return toast.error("Something went wrong. Please refresh");
           } else if (!response.status.toString().startWith("2")) {
             return toast.error(`Sorry something went wrong`);
-=======
-          }
-          if (response.statusCode === 401) {
-            return toast.error("Sorry not authorize");
-          }
-          if (!response.status.toString().startWith("2")) {
-            return toast.error(`Sorry something went wrong`, {
-              transition: Bounce,
-              autoClose: 3000,
-            });
->>>>>>> 7311da3267316a2d044df2982e25e3747a5f7e0a
           }
           if (response.status === 201) {
             toast.success(`Success! routing to dashboard`, {

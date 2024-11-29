@@ -135,9 +135,7 @@ export default function LayoutDashboardTemplate({
     useToggle({ initial: newForms || statPanelDatas ? true : false });
 
   return (
-    <Session
-    // sessionStatus={HAS_COMPANY}
-    >
+    <Session sessionStatus={HAS_COMPANY}>
       <div className="flex w-screen h-screen absolute overflow-hidden scrool-bar-hidden">
         <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2 text-white">
           <Sidebar options={dashboardSidebarOptions} />
