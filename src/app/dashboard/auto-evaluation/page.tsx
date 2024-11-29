@@ -8,6 +8,10 @@ import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import React, { useEffect, useState } from "react";
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
+import { DashboardStatPanelData } from "@/types/app-link";
+import { Archive, FilePenLine, PenLine, Rocket } from "lucide-react";
+import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
 
 const ProjectDisplay = dynamic(
   () => import("@/components/organisms/projectsDisplay"),
@@ -36,10 +40,10 @@ export default function Home({}: Props) {
     )
       .then((response) => {
         setIsLoading((prev) => !prev);
-        const filteredProjects = []
+        const filteredProjects = [];
         for (const data of response.data) {
           if (data.code.length < 5) {
-            filteredProjects.push(data)
+            filteredProjects.push(data);
           }
         }
         setAutoEvaluationProjects(filteredProjects);
@@ -55,14 +59,74 @@ export default function Home({}: Props) {
     fetchAllAutoEvaluationProject();
   }, [currentCampaign?.id]);
 
+  // filter all deployed projects
+  const draftProjects = autoEvalutionProjects?.filter(
+    (item) => item.status === "DRAFT"
+  );
+  const deployedProjects = autoEvalutionProjects?.filter(
+    (item) => item.status === "DEPLOYED"
+  );
+  const archiveProjects = autoEvalutionProjects?.filter(
+    (item) => item.status === "ARCHIVED"
+  );
+
+  const formParams = {
+    trigger_btn_label_form: "New Form",
+    construct_form_btn_label: "Construct a form",
+    existing_form_btn_label: "Use a pre-defined model",
+    new_form_title: "Create a project (AUTO EVALUATION): Project details",
+    construct_form_btn_icon: PenLine,
+  };
+
+  const stateInspection: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Deployed",
+        baseUrl: "",
+        icon: Rocket,
+      },
+      data: () => {
+        return deployedProjects?.length;
+      },
+    },
+    {
+      structure: {
+        label: "Draft",
+        baseUrl: "",
+        icon: FilePenLine,
+      },
+      data: () => {
+        return draftProjects?.length;
+      },
+    },
+    {
+      structure: {
+        label: "Archive",
+        baseUrl: "",
+        icon: Archive,
+      },
+      data: () => {
+        return archiveProjects?.length;
+      },
+    },
+  ];
+
   return (
-    <LayoutDashboard
-      projectsPerType={
-        autoEvalutionProjects?.length
-          ? (autoEvalutionProjects as ProjectType[])
-          : []
-      }
-      typeOfProject={"AUTO_EVALUATION"}
+    <LayoutDashboardTemplate
+      title="AUTO EVALUATION"
+      formParams={formParams}
+      statPanelDatas={stateInspection}
+      newForms={[
+        {
+          title: "",
+          form: (
+            <ProjectDetailsForm
+              typeOfProject={"AUTO_EVALUATION"}
+              closeModal={() => console.log('close modal')}
+            />
+          ),
+        },
+      ]}
     >
       <ProjectDisplay
         columnListProjects={columnListProjects}
@@ -74,6 +138,6 @@ export default function Home({}: Props) {
         // projects={[]}
         isLoading={isLoading}
       />
-    </LayoutDashboard>
+    </LayoutDashboardTemplate>
   );
 }

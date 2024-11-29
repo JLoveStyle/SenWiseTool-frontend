@@ -47,11 +47,6 @@ export default function CloseSiveNav({
     setOpenModal(val);
   };
 
-  const handleShowProjectDetails = (value1: boolean, value2: boolean) => {
-    setShowProjectDetailsForm(value1);
-    setShowProjectOptions(value2);
-  };
-
   const draftProjects = projectsPerType?.filter(
     (item) => item.status === "DRAFT"
   );
@@ -102,7 +97,6 @@ export default function CloseSiveNav({
             {showProjectDetailsForm && (
               <ProjectDetailsForm
                 closeModal={closeModal}
-                onClick={handleShowProjectDetails}
                 typeOfProject={typeOfProject}
               />
             )}

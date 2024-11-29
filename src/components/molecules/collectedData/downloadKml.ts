@@ -2,14 +2,21 @@ import { MappingProjectData } from "@/types/api-types";
 import tokml from "geojson-to-kml";
 
 
+const swapElement = (arr: number[], pos1: number, pos2: number) => {
+  const temp = arr[pos1]
+  arr[pos1] = arr[pos2]
+  arr[pos2] = temp
+  return arr
+}
  // construct coordinates for polygon of type [][][] from {long: , lat:}[] form field
  const constructCordinates = (
   coordinates: { longitude: number; latitude: number }[]
 ) => {
+  
   const finalCordinates: any[] = [];
   let selObject: any[] = [];
   for (const coordinate of coordinates) {
-    selObject.push(Object.values(coordinate));
+    selObject.push(swapElement(Object.values(coordinate), 0, 1));
   }
   finalCordinates.push(selObject);
   return finalCordinates;
@@ -55,7 +62,6 @@ export function downlaodSingleKml(
   name: string,
   coordinates: { latitude: number; longitude: number }[]
 ) {
-  console.log("hello");
 
   const geoJsonData = {
     type: "FeatureCollection",
@@ -74,7 +80,9 @@ export function downlaodSingleKml(
       },
     ],
   };
-  return tokml(geoJsonData);
+  const resKml = tokml(geoJsonData);
+  console.log(resKml)
+  return resKml
    
 }
 
@@ -95,8 +103,6 @@ export async function downloadAllAskml(mappingDatas: MappingProjectData[]) {
       name: data.farmer_name,
     },
   }));
-  console.log("globalGeoJson", globalGeoJson);
   mergedGeoJson["features"] = globalGeoJson;
-  console.log("Merged geojson\n =>", mergedGeoJson);
   return tokml(mergedGeoJson);
 };

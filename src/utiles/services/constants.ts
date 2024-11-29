@@ -6,8 +6,8 @@ import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { receiptStatData } from "../tracability.const/statistics";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
-// export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+// export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
 
 // BUSINESS ACTIVITIES
 export const businessActivity: string[] = [

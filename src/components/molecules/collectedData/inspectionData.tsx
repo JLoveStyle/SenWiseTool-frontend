@@ -54,7 +54,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
         if (response.status === 201) {
-          console.log("response =>", response.data)
+          console.log("response =>", response.data);
           setData(response.data);
           setIsLoading(false);
           return;
@@ -78,7 +78,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
   }, [project_id]);
 
   return (
-    <>
+    <div className="md:w-full h-full">
       {isLoading ? (
         <div className="flex justify-center my-auto">
           <Spinner />
@@ -94,10 +94,10 @@ export default function InspectionData({ project_id, projectName }: Props) {
               onClick={() => downloadInspectionDataAsCsv([], data)}
               className="bg-tertiary hover:bg-tertiary hover:opacity-90 my-auto"
             >
-              Export as csv
+              Export
             </Button>
           </div>
-          <div className="flex gap-3">
+          <div className="flex justify-between gap-3">
             <div className=" px-6">
               <table>
                 <thead>
@@ -106,9 +106,15 @@ export default function InspectionData({ project_id, projectName }: Props) {
                     <th className="p-2  border">Farmer name</th>
                     <th className="p-2  border">Farmer ID card number</th>
                     <th className="p-2  border">Village</th>
-                    <th className="p-2  border">Collector name</th>
-                    <th className="p-2  border">Collector contact</th>
+                    <th className="p-2  border">Agent name</th>
+                    <th className="p-2  border">Agent contact</th>
                     <th className="p-2  border">Inspection date</th>
+                    <th className="p-2  border">Certification year</th>
+                    <th className="p-2  border">Weed application</th>
+                    <th className="p-2  border">
+                      Weed application quantity (kg/ha)
+                    </th>
+                    <th className="p-2  border">Farmer picture</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -148,6 +154,36 @@ export default function InspectionData({ project_id, projectName }: Props) {
                       </td>
                       <td className="p-2 bg-white border ">
                         {dayjs(item.collected_at).toString().slice(0, -4)}{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .certification_year
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .weed_application
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        {
+                          item.project_data.project_data.metaData
+                            .weed_application_quantity
+                        }{" "}
+                      </td>
+                      <td className="p-2 bg-white border ">
+                        <img
+                          src={
+                            item.project_data.project_data.metaData
+                              .farmer_photos &&
+                            item.project_data.project_data.metaData
+                              ?.farmer_photos[0]
+                          }
+                          alt="farmer picture"
+                          className="h-[50px] w-[70px]"
+                        />
                       </td>
                     </tr>
                   ))}
@@ -195,6 +231,6 @@ export default function InspectionData({ project_id, projectName }: Props) {
       ) : (
         <div className="flex justify-center mx-auto">No Data collected yet</div>
       )}
-    </>
+    </div>
   );
 }

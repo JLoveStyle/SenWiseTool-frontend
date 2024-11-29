@@ -50,6 +50,7 @@ export default function Home({}: Props) {
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
+  const [bucketName, setBucketName] = useState<string>("")
   const [formData, setFormData] = useState<FormData>({
     companyEmail: "",
     companyName: "",
@@ -72,10 +73,9 @@ export default function Home({}: Props) {
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
 
-    const bucketName = uniqueString();
-
-    // @todo Add s3 bucketName on database
-    LOCAL_STORAGE.save("bucketName", bucketName);
+    const bucketName = uniqueString()
+    LOCAL_STORAGE.save("bucketName", bucketName)
+    setBucketName(prev => prev = bucketName);
 
     const { data, error } = await CreateBucketToS3({
       bucketName,
@@ -155,6 +155,7 @@ export default function Home({}: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
+        company_bucket: bucketName
       });
       // setIsLoading(false);
       // return;
@@ -171,6 +172,7 @@ export default function Home({}: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
+        company_bucket: bucketName
       })
         .then((response) => {
           console.log("create company res =>", response);
@@ -184,12 +186,9 @@ export default function Home({}: Props) {
           } else if (response.status === 409) {
             return toast.error("Company already exist");
           } else if (response.statusCode === 401) {
-            return toast.error("Sorry not authorize");
+            return toast.error("Something went wrong. Please refresh");
           } else if (!response.status.toString().startWith("2")) {
-            return toast.error(`Sorry something went wrong`, {
-              transition: Bounce,
-              autoClose: 3000,
-            });
+            return toast.error(`Sorry something went wrong`);
           }
         })
         .catch((error) => {

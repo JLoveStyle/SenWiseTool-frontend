@@ -111,7 +111,7 @@ export default function ProjectSummary({
   const jsonString = JSON.stringify(projectObject?.project_structure);
 
   return (
-    <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-screen">
+    <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
       <div className="md:w-[70%]">
         <p className="">Project details</p>
         <div className="bg-white md:w-full p-5 shadow">
