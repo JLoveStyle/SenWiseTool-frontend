@@ -98,6 +98,7 @@ export interface dasboardFormParams {
   construct_form_btn_label?: string;
   existing_form_btn_label?: string;
   new_form_title?: string;
+  choose_form?: boolean;
   construct_form_btn_icon?: ElementType;
   existing_form_btn_icon?: ElementType;
 }

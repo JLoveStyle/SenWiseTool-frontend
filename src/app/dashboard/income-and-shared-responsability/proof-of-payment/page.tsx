@@ -1,30 +1,30 @@
 "use client";
 
-import { Route } from "@/lib/route";
-import { Archive, ListOrdered, Trash2 } from "lucide-react";
-import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
+import FilePreview from "@/components/atoms/file-preview";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import { NewProofOfPaiement } from "@/components/organisms/income-and-shared-responsability/proof-of-paiement/new-proof-of-paiement";
+import ModalContent from "@/components/organisms/modalContent";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { useToggle } from "@/hooks/use-toggle";
+import { Route } from "@/lib/route";
 import { DashboardStatPanelData } from "@/types/app-link";
 import {
   ProofOfPaiementDisplayProps,
   incomeAndSharedResponsabilityDBProps,
 } from "@/types/income-and-shared-responsability";
-import { fetchApiData } from "@/utiles/services/queries";
-import { useEffect, useState } from "react";
-import { ImCross } from "react-icons/im";
-import { toast } from "react-toastify";
 import { mutateDelApiData } from "@/utiles/services/mutations";
-import ModalContent from "@/components/organisms/modalContent";
+import { fetchApiData } from "@/utiles/services/queries";
+import { ListOrdered, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { FaHandHoldingDollar } from "react-icons/fa6";
+import { RiErrorWarningLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 
 export default function ProofOfPaiement() {
   const [isLoading, setIsLoading] = useState(true);
   const [deleteProof, setDeleteProof] = useState<boolean>(false);
-  const [isDeleting, setIsDeleting] = useState<boolean>(false)
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [proofOfPaiementDatas, setProofOfPaiementDatas] = useState<
     ProofOfPaiementDisplayProps[]
   >([]);
@@ -32,12 +32,8 @@ export default function ProofOfPaiement() {
     ProofOfPaiementDisplayProps[]
   >([]);
 
-  const { value: openModal, toggle: toggleOpenModel } = useToggle({
-    initial: false,
-  });
-
-  const closeDialog = () => {
-    toggleOpenModel();
+  const preview = (url: string, index: number) => {
+    return <FilePreview url={url} variant="button" />;
   };
 
   const columns = columnTable<ProofOfPaiementDisplayProps>(
@@ -50,22 +46,42 @@ export default function ProofOfPaiement() {
     Route.incomeAndSharedResponsabilityProofOfPaiement,
     false
   );
+
   const formatedDataFromDBToDisplay = (
     data: incomeAndSharedResponsabilityDBProps
   ) => {
     return {
       id: data.id ?? "",
-      agreement_pv: data.agreement_pv,
-      proof_of_paiement: data.proof_of_paiement ? (
-        <FaCheck color="green" />
-      ) : (
-        <ImCross color="red" />
-      ),
-      proof_of_expenses: data.proof_of_expenses ? (
-        <FaCheck color="green" />
-      ) : (
-        <ImCross color="red" />
-      ),
+      agreement_pv:
+        data.agreement_pv?.length !== 0 ? (
+          <div className="flex justify-center gap-2 flex-wrap">
+            {data.agreement_pv?.map((url, index) => preview(url, index))}
+          </div>
+        ) : (
+          <div className="flex justify-center gap-2 flex-wrap">
+            <RiErrorWarningLine className="text-gray-500" size={20} />
+          </div>
+        ),
+      proof_of_paiement:
+        data.proof_of_paiement?.length !== 0 ? (
+          <div className="flex justify-center gap-2 flex-wrap">
+            {data.proof_of_paiement?.map((url, index) => preview(url, index))}
+          </div>
+        ) : (
+          <div className="flex justify-center gap-2 flex-wrap">
+            <RiErrorWarningLine className="text-gray-500" size={20} />
+          </div>
+        ),
+      proof_of_expenses:
+        data.proof_of_expenses?.length !== 0 ? (
+          <div className="flex justify-center gap-2 flex-wrap">
+            {data.proof_of_expenses?.map((url, index) => preview(url, index))}
+          </div>
+        ) : (
+          <div className="flex justify-center gap-2 flex-wrap cursor-not-allowed">
+            <RiErrorWarningLine className="text-gray-500" size={20} />
+          </div>
+        ),
     };
   };
 
@@ -123,24 +139,27 @@ export default function ProofOfPaiement() {
     construct_form_btn_label: "New proof form",
     existing_form_btn_label: "Use Existing Form",
     new_form_title: "Create new proof of paiement",
+    choose_form: true,
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
   const deleteProofOfPayment = async () => {
-
     if (proofOfPaiementSelected.length !== 0) {
-      setIsDeleting(true)
+      setIsDeleting(true);
       for (const item of proofOfPaiementSelected) {
-        console.log('deleted id => ', item?.id)
-        await mutateDelApiData(Route.revenuEtResponsabilite + `/${item?.id}`, "")
+        console.log("deleted id => ", item?.id);
+        await mutateDelApiData(
+          Route.revenuEtResponsabilite + `/${item?.id}`,
+          ""
+        )
           .then((response: any) => {
             console.log(response);
             if (response.status == 204) {
               toast.success("Deleted");
-              setIsDeleting(prev => !prev)
+              setIsDeleting((prev) => !prev);
             } else {
-              setIsDeleting(prev => !prev)
-              toast.error("Could not delete. please try again")
+              setIsDeleting((prev) => !prev);
+              toast.error("Could not delete. please try again");
             }
           })
           .catch((error) => {
@@ -195,9 +214,9 @@ export default function ProofOfPaiement() {
           dialogTitle={"Delete documents"}
           action={"Delete"}
           dialogDescription={"Are you sure you want to delete this documents?"}
-          cancelationFunction={() => setDeleteProof(prev =>!prev)}
+          cancelationFunction={() => setDeleteProof((prev) => !prev)}
           actionFunction={deleteProofOfPayment}
-          updateOpenModalState={() => setDeleteProof(prev => !prev)}
+          updateOpenModalState={() => setDeleteProof((prev) => !prev)}
         />
       </div>
       <div className="px-6">

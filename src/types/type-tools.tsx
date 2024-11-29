@@ -1,6 +1,10 @@
 export type objecType = { [key: string]: string };
 
-export type SessionStatusType = "guest" | "authenticated" | "has_company" | "not_has_company";
+export type SessionStatusType =
+  | "guest"
+  | "authenticated"
+  | "has_company"
+  | "not_has_company";
 
 export interface cardDataType {
   title: string;
@@ -27,6 +31,10 @@ export interface cardDataPricingType {
   biannualPricing: number;
   chapters: number[] | "all";
   image: string;
+  icon: React.ReactNode;
+  color: string;
+  textColor: string;
+  shadow: string;
   condition?: {
     description: string;
     badge: React.ReactNode;

@@ -1,84 +1,161 @@
-import { footerLinks, socialFooterLink } from "@/lib/footer-links";
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
-import { Container } from "../atoms/container";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { useState } from "react";
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FiMoon, FiSun } from "react-icons/fi";
 
-import { Language } from "../atoms/language";
-import { ToggleTheme } from "../atoms/toggle-theme";
+export const Footer: React.FC = () => {
+  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState("fr");
 
-export const Footer = () => {
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    document.documentElement.classList.toggle("dark");
+  };
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value);
+    // Logique pour appliquer les changements de langue (ex: i18n)
+    console.log("Langue sélectionnée :", e.target.value);
+  };
+
   return (
-    <Container className="bg-black text-white py-5">
-      <div className="divide-y divide-gray-600">
-        <div className="flex justify-center w-full flex-col sm:flex-row gap-10 py-5">
-          <div className="flex justify-between items-center flex-wrap gap-5 w-full">
-            {footerLinks.map((footerLink, index) => (
-              <div key={index} className="flex flex-col gap-2">
-                <h2 className="text-center">{footerLink.title}</h2>
-                <div className="flex flex-col justify-center items-center gap-1 text-sm text-gray-300">
-                  {footerLink.links.map((link, indexLink) => (
-                    <Link href={link.baseUrl}>{link.label}</Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex sm:flex-row  flex-col-reverse items-center sm:justify-between gap-10 min-w-max">
-            <div className="flex flex-col gap-5 max-w-xs">
-              <h1 className="font-semibold text-2xl">
-                GET IN <span className="text-primary">TOUCH</span> WITH US
-              </h1>
-              <p className="text-sm text-justify">
-                Subscribe to our SenWiseTool Updates newsletter to be the first
-                to learn about new features, resources, and user impact stories
-                from around the world.
-              </p>
-              <div className="flex flex-col gap-1">
-                <Input
-                  className="rounded-none"
-                  placeholder="Enter your Email"
-                />
-                <span>
-                  <Button size="sm" className="rounded-none">
-                    Submit
-                  </Button>
-                </span>
-              </div>
-            </div>
-            <div className="flex flex-col gap-5 items-center">
-              <div className="flex gap-2">
-                <ToggleTheme />
-              </div>
-              <Image
-                src="/images/logo2.png"
-                height={123}
-                width={221}
-                alt="SenWiseTool logo"
-              />
-              <div className="flex flex-col gap-3 font-semibold text-sm">
-                <span>SOCIAL MEDIA</span>
-                <div className="flex items-center gap-3">
-                  {socialFooterLink.map((sociaLink, index) => (
-                    <Link
-                      href={sociaLink.baseUrl}
-                      target={
-                        sociaLink.type === "external" ? "_blank" : "_self"
-                      }
-                    >
-                      {sociaLink.icon && <sociaLink.icon />}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+    <footer
+      className={`relative py-10 px-5 bg-black text-gray-300 ${
+        darkMode ? "dark" : ""
+      }`}
+    >
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Logo Section */}
+        <div className="flex flex-col items-center md:items-start">
+          <img
+            src="/images/logo.svg"
+            alt="Company Logo"
+            className="w-20 h-20 mb-4"
+          />
+          <h1 className="text-xl font-bold">SenWiseTool</h1>
+          <p className="text-sm mt-2 text-center md:text-left">
+            Une solution innovante pour un environment durable.
+          </p>
         </div>
-        <div className="pt-5 flex justify-end">
-          <Language />
+
+        {/* Navigation Links */}
+        <div className="flex flex-col items-center md:items-start">
+          <h2 className="text-lg font-semibold mb-4">Liens rapides</h2>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <Link href="/about" className="hover:underline">
+                À propos
+              </Link>
+            </li>
+            <li>
+              <Link href="/services" className="hover:underline">
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link href="/pricing" className="hover:underline">
+                Tarifs
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="hover:underline">
+                Contactez-nous
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Contact & Socials */}
+        <div className="flex flex-col items-center md:items-start">
+          <h2 className="text-lg font-semibold mb-4">Contactez-nous</h2>
+          <p className="text-sm">
+            Email :{" "}
+            <a
+              href="mailto:contact@senwisetool.com"
+              className="hover:underline"
+            >
+              contact@senwisetool.com
+            </a>
+          </p>
+          <p className="text-sm">Téléphone : +237 623 456 789</p>
+
+          {/* Social Links */}
+          <div className="flex space-x-4 mt-4">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl hover:text-blue-500"
+            >
+              <FaFacebook />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl hover:text-blue-400"
+            >
+              <FaTwitter />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl hover:text-pink-500"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl hover:text-blue-600"
+            >
+              <FaLinkedin />
+            </a>
+          </div>
         </div>
       </div>
-    </Container>
+
+      {/* Footer Bottom */}
+      <div className="mt-8 border-t border-gray-700 pt-4 flex flex-col items-center justify-between md:flex-row">
+        {/* Toggle Mode & Language Selector */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={toggleDarkMode}
+            className="flex items-center space-x-2 bg-gray-800 px-4 py-2 rounded-md shadow-md text-sm"
+          >
+            {darkMode ? (
+              <>
+                <FiSun className="text-yellow-400" />
+                <span>Mode Clair</span>
+              </>
+            ) : (
+              <>
+                <FiMoon className="text-gray-300" />
+                <span>Mode Sombre</span>
+              </>
+            )}
+          </button>
+
+          {/* Language Selector */}
+          <select
+            value={language}
+            onChange={handleLanguageChange}
+            className="bg-gray-800 text-gray-300 border border-gray-700 px-4 py-2 rounded-md text-sm"
+          >
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+        <p className="text-xs mt-4 md:mt-0">
+          &copy; {new Date().getFullYear()} Senima Company. Tous droits
+          réservés.
+        </p>
+      </div>
+    </footer>
   );
 };

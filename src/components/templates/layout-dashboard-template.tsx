@@ -2,6 +2,7 @@
 import { useToggle } from "@/hooks/use-toggle";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
+import { HAS_COMPANY } from "@/lib/session-statut";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { ApiDataResponse, CampaignType, CompanyType } from "@/types/api-types";
 import {
@@ -28,16 +29,15 @@ import StatPanel from "../atoms/dashboard/stat-panel";
 import FloatingButton from "../atoms/disign-system/floating-button";
 import { FeaturesMenu } from "../organisms/navigationMenu";
 import { Session } from "../templates/session";
-import { AUTHENTICATED, HAS_COMPANY } from "@/lib/session-statut";
 // import CloseSideNav from "./closeSideNav";
-type Props = {
+interface Props {
   children: React.ReactNode;
   newForms?: NewFormProps[];
   formParams?: dasboardFormParams;
   title?: string;
   isCloseModal?: boolean;
   statPanelDatas?: DashboardStatPanelData[];
-};
+}
 
 export default function LayoutDashboardTemplate({
   children,

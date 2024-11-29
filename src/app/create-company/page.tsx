@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 // import { createCompany } from "@/utiles/services/queries";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { Session } from "@/components/templates/session";
 import {
   Dialog,
   DialogContent,
@@ -23,15 +24,14 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Route } from "@/lib/route";
 import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
+import { NOT_HAS_COMPANY } from "@/lib/session-statut";
 import { businessActivity } from "@/utiles/services/constants";
 import { createOrganization } from "@/utiles/services/createOrg";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { uniqueString } from "@/utils/tool";
-import { Bounce, toast } from "react-toastify";
-import { Session } from "@/components/templates/session";
-import { NOT_HAS_COMPANY } from "@/lib/session-statut";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { Bounce, toast } from "react-toastify";
 
 type Props = {};
 
@@ -73,9 +73,16 @@ export default function Home({}: Props) {
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
 
+<<<<<<< HEAD
     const bucketName = uniqueString()
     LOCAL_STORAGE.save("bucketName", bucketName)
     setBucketName(prev => prev = bucketName);
+=======
+    const bucketName = uniqueString();
+
+    // @todo Add s3 bucketName on database nemed "companyBucket"
+    LOCAL_STORAGE.save("bucketName", bucketName);
+>>>>>>> 7311da3267316a2d044df2982e25e3747a5f7e0a
 
     const { data, error } = await CreateBucketToS3({
       bucketName,
@@ -185,10 +192,30 @@ export default function Home({}: Props) {
             return;
           } else if (response.status === 409) {
             return toast.error("Company already exist");
+<<<<<<< HEAD
           } else if (response.statusCode === 401) {
             return toast.error("Something went wrong. Please refresh");
           } else if (!response.status.toString().startWith("2")) {
             return toast.error(`Sorry something went wrong`);
+=======
+          }
+          if (response.statusCode === 401) {
+            return toast.error("Sorry not authorize");
+          }
+          if (!response.status.toString().startWith("2")) {
+            return toast.error(`Sorry something went wrong`, {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+>>>>>>> 7311da3267316a2d044df2982e25e3747a5f7e0a
+          }
+          if (response.status === 201) {
+            toast.success(`Success! routing to dashboard`, {
+              transition: Bounce,
+              autoClose: 3000,
+            });
+            router.push(Route.dashboard);
+            return;
           }
         })
         .catch((error) => {
