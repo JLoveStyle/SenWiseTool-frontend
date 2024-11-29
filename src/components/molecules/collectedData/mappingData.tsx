@@ -78,6 +78,7 @@ export default function MappingData({ project_id }: Props) {
         toast.error("Something went wrong. Please refresh this page");
       });
   }
+  
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {
