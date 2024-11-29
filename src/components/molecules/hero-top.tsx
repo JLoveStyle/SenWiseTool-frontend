@@ -55,7 +55,7 @@ export const HeroTop: React.FC = () => {
         </h1>
         <p className="text-lg lg:text-xl">
           Découvrez la traçabilité du cacao, de la graine jusqu'au chocolat. Une
-          expérience unique de transparence et de qualité.
+          expérience unique de transparence et de qualité supérieure.
         </p>
         <Link href={Route.signUp}>
           <Button className="bg-primary text-white hover:opacity-90">
