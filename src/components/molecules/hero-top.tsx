@@ -8,10 +8,10 @@ import { Button } from "../ui/button";
 
 const backgroundColors = [
   "bg-[#14645b]",
-  "bg-[#ffa200]",
+  "bg-[#be182b]",
   "bg-black",
   "bg-[#8a5da1]",
-  "bg-[#f2b500]",
+  "bg-[#edb933]",
 ];
 const images = [
   "/images/hero-top/1.png",
@@ -51,7 +51,7 @@ export const HeroTop: React.FC = () => {
       {/* Texte à gauche */}
       <div className="w-full lg:w-1/2 flex flex-col items-start justify-center text-white space-y-6">
         <h1 className="text-4xl lg:text-6xl font-bold">
-          Bienvenue dans le monde du cacao
+          Digitalisation des processus de traçabilités
         </h1>
         <p className="text-lg lg:text-xl">
           Découvrez la traçabilité du cacao, de la graine jusqu'au chocolat. Une
