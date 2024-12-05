@@ -136,7 +136,7 @@ export default function LayoutDashboardTemplate({
 
   return (
     <Session
-      // sessionStatus={HAS_COMPANY}
+      sessionStatus={HAS_COMPANY}
     >
       <div className="flex w-screen h-screen absolute overflow-hidden scrool-bar-hidden">
         <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2 text-white">
@@ -144,7 +144,7 @@ export default function LayoutDashboardTemplate({
         </div>
         <div className="w-[calc(100vw-100px)]">
           <Navbar title={title} />
-          <div className="flex">
+          <div className="flex"> 
             {displayCloseSideNav && (
               <StatPanel
                 isCloseModal={isCloseModal}

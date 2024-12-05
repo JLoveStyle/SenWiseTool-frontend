@@ -5,6 +5,7 @@ import { Route } from "@/lib/route";
 import { FarmerType } from "@/types/api-types";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { ColumnDef } from "@tanstack/react-table";
+import dayjs from "dayjs";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { Bounce, toast } from "react-toastify";
@@ -71,7 +72,7 @@ export const columnsListOfFarmers: ColumnDef<FarmerType>[] = [
   },
   {
     accessorKey: "inspection_date",
-    header: "Date of inspection"
+    header: "Date of inspection",
   },
   {
     id: "actions",

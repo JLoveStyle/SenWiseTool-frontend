@@ -1,17 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { mappingData, MappingTableColumns } from "@/utiles/services/constants";
+import { MappingTableColumns } from "@/utiles/services/constants";
 import React, { useState, useEffect } from "react";
-import xlsx, { IJsonSheet } from "json-as-xlsx";
 import slugify from "slugify";
 import Link from "next/link";
-import Image from "next/image";
 import { fetchApiData } from "@/utiles/services/queries";
 import { Route } from "@/lib/route";
-import { MappingDataType, MappingProjectData } from "@/types/api-types";
+import { MappingProjectData } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import { toast } from "react-toastify";
-// import { tokml } from "tokml";
-import tokml from "geojson-to-kml";
 import { mappingCsvDownload } from "./downloadCsv";
 import {
   downlaodSingleKml,
@@ -78,7 +74,7 @@ export default function MappingData({ project_id }: Props) {
         toast.error("Something went wrong. Please refresh this page");
       });
   }
-  
+
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {

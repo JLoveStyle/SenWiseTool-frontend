@@ -108,8 +108,63 @@ export const mappingCsvDownload = (mappingData: any[], coordinates: any[]) => {
   });
 };
 
+
+type NestedObject = { [key: string]: any }
+// FLATTEN COMPLEX AND NESTED OBJECT
+function flattenObject(obj: NestedObject, parentKey: string = '', result: NestedObject = {}): NestedObject {
+  // Iterate over each key in the object
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const newKey = parentKey ? `${parentKey}.${key}` : key; // Construct new key
+
+      // If the value is an object (but not an array), recurse into it
+      if (typeof obj[key] === 'object' && !Array.isArray(obj[key]) && obj[key] !== null) {
+        flattenObject(obj[key], newKey, result);
+      }
+      // If the value is an array, handle each element
+      else if (Array.isArray(obj[key])) {
+        obj[key].forEach((item, index) => {
+          // If the item is an object, recurse into it and add the index to the key
+          if (typeof item === 'object' && item !== null) {
+            flattenObject(item, `${newKey}[${index}]`, result);
+          } else {
+            // If it's not an object, directly assign it to the result with the index
+            result[`${newKey}[${index}]`] = item;
+          }
+        });
+      }
+      // If the value is a primitive type, just add it to the result object
+      else {
+        result[newKey] = obj[key];
+      }
+    }
+  }
+  return result;
+}
+
+// GET THE LAST CHARACTERS AFTER A PARTICULAR CHARACTER
+function getRestOfStringFromLast(str: string, char: string) {
+  // Find the index of the last occurrence of the character in the string
+  const index = str.lastIndexOf(char);
+  
+  // If the character is found, return the substring starting from that character
+  if (index !== -1) {
+      return str.slice(index + 1); // Add 1 to exclude the character itself
+  }
+  
+  // If the character is not found, return an empty string
+  return '';
+}
+
 // DOWNLOAD ALL INSPECTION DATA OF SINGLE PROJECT
 export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: InspectionDataPops[]) {
+
+  let data = []
+  for (const item of incomingData) {
+    data.push(flattenObject(item))
+  }
+
+  console.log("Flattened object\n =>", data)
 
   /*
    we need to flatten the data and structure it appropriately. The data has multiple levels with different arrays (like nonConformityRecom, requirements, and metaData). We can create different sheets for each part of the data and structure them accordingly.
@@ -337,5 +392,5 @@ export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: I
 
   // Write the workbook to a file
   XLSX.writeFile(wb, "output.xlsx");
-  
+
 }

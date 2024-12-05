@@ -10,36 +10,36 @@ export const allRequirements = [{
           "num": "1.1.1",
           "principal_requirement": "La  <u>direction du groupe</u> fait preuve de son engagement pour l&#39;agriculture durable en dédiant des ressources et du personnel appropriés à la mise en œuvre de la Norme pour l&#39;Agriculture Durable de Rainforest Alliance. \n\n Tous les trois ans au minimum, la direction du groupe évalue sa capacité à utiliser l&#39;outil d&#39;évaluation des capacités de gestion &#40;Annexe S02&#41;. La direction obtient au minimum un point par thématique dans l&#39;outil au cours de la première année de certification, et s&#39;améliore au fil des prochaines évaluations. \n\n <strong>Indicateur </strong>: • <ul><li>Scores sur chacune des thématiques de l&#39;Outil d&#39;évaluation des capacités de gestion</li></ul>",
           "certif_de_group": {
-            "direction_du_group": "yes",
-            "petite_exploitation_agricole": "no",
-            "grande_exploitation_agricole": "no"
+            "direction_du_group": "YES",
+            "petite_exploitation_agricole": "NO",
+            "grande_exploitation_agricole": "NO"
           }
         },
         {
           "num": "1.1.2",
           "principal_requirement": "La <u>direction du groupe</u> améliore ses capacités de gestion et inclut des actions dans le plan de gestion. \n\n  <strong>Indicateur </strong>: • <ul><li>SScores de chacune des thématiques de l&#39;Outil d&#39;évaluation des capacités de gestion</li></ul>",
           "certif_de_group": {
-            "direction_du_group": "yes",
-            "petite_exploitation_agricole": "no",
-            "grande_exploitation_agricole": "no"
+            "direction_du_group": "YES",
+            "petite_exploitation_agricole": "NO",
+            "grande_exploitation_agricole": "NO"
           }
         },
         {
           "num": "1.1.3",
           "principal_requirement": "Il existe un plan de gestion clairement documenté et mis en œuvre répondant à chaque exigence applicable de la chaîne d'approvisionnement de Rainforest Alliance. Les procédures documentées incluent le contrôle des produits certifiés pour tous les processus applicables, compris dans le champ d'application du certificat, pour conserver l&#39;intégrité du produit.",
           "certif_de_group": {
-            "direction_du_group": "",
-            "petite_exploitation_agricole": "",
-            "grande_exploitation_agricole": ""
+            "direction_du_group": "YES",
+            "petite_exploitation_agricole": "NO",
+            "grande_exploitation_agricole": "NO"
           }
         },
         {
           "num": "1.1.4",
           "principal_requirement": "Le titulaire de certificat de la chaîne d'approvisionnement a conçu, adopté et diffusé une ou plusieurs politiques pour garantir une conduite responsable de l&#39;entreprise au niveau de ses propres opérations, de sa chaîne d'approvisionnement et de ses autres relations commerciales. Les politiques traitent les impacts négatifs directs et indirects sur les droits humains et sur l&#39;environnement. <br/><br/> <ul> <li>Les politiques s&#39;engagent et se réfèrent au Guide OCDE sur le devoir de diligence pour une conduite responsable des entreprises. Les références et les engagements envers les Principes directeurs de l&#39;OCDE à l&#39;intention des entreprises multinationales ou envers les Principes directeurs relatifs aux entreprises et aux droits humains des Nations Unies sont également acceptables. </li> <li>La supervision et la responsabilité de ces politiques et de leur mise en œuvre sont assignées aux instances dirigeantes. Les politiques et leurs attentes sont spécifiées dans les accords avec les fournisseurs et dans les autres relations commerciales, dont les contrats et autres accords écrits.</li></ul><li>Les politiques et leurs attentes sont spécifiées dans les accords avec les fournisseurs et dans les autres relations commerciales, dont les contrats et autres accords écrits.</li><li>Un outil possible pour la conformité est d&#39;avoir mis en place un code de conduite pour les fournisseurs</li><li>Au minimum, cette politique requiert du titulaire de certificat de la chaîne d'approvisionnement, de ses fournisseurs et des autres relations commerciales :<br/>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;Une conformité avec les lois applicables et les normes appropriées au niveau des droits humains, des conditions et des droits des travailleurs, de la santé et de la sécurité.<br/>&nbsp;&nbsp;&nbsp;-&nbsp;Une conformité avec les lois applicables et les normes appropriées au niveau de la protection de l&#39;environnement, de la déforestation, de la biodiversité,  des déchets et de la gestion des eaux usées.</li> <br /><br />En ce qui concerne une politique type pour les chaînes d&#39;approvisionnement agricoles responsables, veuillez consulter le Guide OCDE pour des filières agricoles responsables, page 25-29.",
           "certif_de_group": {
-            "direction_du_group": "",
-            "petite_exploitation_agricole": "",
-            "grande_exploitation_agricole": ""
+            "direction_du_group": "NO",
+            "petite_exploitation_agricole": "YES",
+            "grande_exploitation_agricole": "NO"
           }
         },
         {
@@ -1848,7 +1848,7 @@ export const allRequirements = [{
           "certif_de_group": {
             "direction_du_group": "YES",
             "petite_exploitation_agricole": "YES",
-            "grande_exploitation_agricole": "No",
+            "grande_exploitation_agricole": "NO",
             "Petite/grandes": "YES"
           }
         },
@@ -1858,7 +1858,7 @@ export const allRequirements = [{
           "certif_de_group": {
             "direction_du_group": "YES",
             "petite_exploitation_agricole": "YES",
-            "grande_exploitation_agricole": "No",
+            "grande_exploitation_agricole": "NO",
             "Petite/grandes": "YES"
           }
         },

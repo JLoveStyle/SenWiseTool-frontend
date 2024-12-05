@@ -23,19 +23,22 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "../icon";
 import { FormTraining } from "./form-training";
+import { mutateUpApiData } from "@/utiles/services/mutations";
+import { ApiDataResponse, TrainingType } from "@/types/api-types";
+import { Spinner } from "../spinner/spinner";
 
 interface Props {
   currentTaining: TrainingProps;
   header: React.ReactNode;
+  trainingId: string;
 }
 
-export function UpdateTraining({ currentTaining, header }: Props) {
-  const { value: isLoading, setValue: setIsLoading } = useToggle();
+export function UpdateTraining({ currentTaining, header, trainingId }: Props) {
+  // const { value: isLoading, setValue: setIsLoading } = useToggle();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState({});
   const company = useCompanyStore((state) => state.company);
-  const { value: openModal, toggle: toggleOpenModal } = useToggle();
-
-  const router = useRouter();
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const initialize = {
     id: currentTaining.id,
@@ -58,28 +61,38 @@ export function UpdateTraining({ currentTaining, header }: Props) {
     // const { error, data } = await db_create_training(formData);
     const dataToDB = {
       title: formData.title,
-      start_date: formData.start_date,
-      end_date: formData.end_date,
+      start_date: new Date(formData.start_date as string).toISOString(),
+      end_date: new Date(formData.end_date as string).toISOString(),
       location: formData.location,
       modules: formData.modules.map((item) => item.value),
     };
 
-    const serverResponse = await db_update_training(dataToDB, formData.id);
-
-    if (serverResponse.status === "error") {
-      toast.error(serverResponse.response.message.message);
-      setIsLoading(false);
-      return;
-    }
-
-    toast.success("Your project are updated successfull");
-    setIsLoading(false);
-    toggleOpenModal();
-    router.push(Route.trainingProject + `/${formData.id}`);
-    return;
+    await mutateUpApiData<ApiDataResponse<TrainingType>>(
+      Route.training,
+      dataToDB,
+      trainingId
+    )
+      .then((response) => {
+        console.log(response);
+        setIsLoading(prev => !prev)
+        if (response.status === 204) {
+          toast.success("Training updated");
+          setOpenModal((prev) => !prev);
+        } else {
+          toast.error("Could not update. Please try again");
+        }
+      })
+      .catch((error) => {
+        setOpenModal((prev) => !prev);
+        setIsLoading((prev) => !prev);
+        toast.error("An error occured.please try again later");
+        console.log(error);
+      });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setIsLoading(prev => !prev)
+    e.preventDefault()
     try {
       setIsLoading(true);
       e.preventDefault();
@@ -99,15 +112,15 @@ export function UpdateTraining({ currentTaining, header }: Props) {
 
   return (
     <Dialog open={openModal}>
-      <DialogTrigger asChild onClick={toggleOpenModal}>
+      <DialogTrigger asChild onClick={() => setOpenModal((prev) => !prev)}>
         {header}
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
-        <DialogHeader className="bg-orange-300 p-5">
+        <DialogHeader className="bg-tertiary p-5">
           <DialogTitle className="text-black text-2xl">
             Editer le Projet de Formation
           </DialogTitle>
-          <DialogDescription className="text-gray-700">
+          <DialogDescription className="text-gray-100">
             Mettez à jour votre projet de formation en definisant de nouvelles
             valeurs pour l'amelioration...
           </DialogDescription>
@@ -120,12 +133,32 @@ export function UpdateTraining({ currentTaining, header }: Props) {
             isLoading={isLoading}
           />
           <DialogFooter className="mt-2">
-            <Button
-              type="submit"
-              className="bg-green-600 hover:bg-green-500 flex gap-1"
-            >
-              <Icon icon={{ icon: PenLine }}>ÉDITER</Icon>
-            </Button>
+            <div className="m-2 flex gap-5">
+              <Button
+                className=""
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setOpenModal((prev) => !prev)}
+              >
+                Annuler
+              </Button>
+              {isLoading ? (
+                <Button
+                  type="button"
+                  className="bg-green-600 hover:bg-green-500 flex gap-1 placeholder-opacity-90 hover:cursor-not-allowed"
+                >
+                  <Spinner />
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  className="bg-green-600 hover:bg-green-500 flex gap-1"
+                >
+                  <Icon icon={{ icon: PenLine }}>ÉDITER</Icon>
+                </Button>
+              )}
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

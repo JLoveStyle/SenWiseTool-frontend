@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { TrainingProps } from "@/types/formData";
 import dayjs from "dayjs";
+import { useCompanyStore } from "@/lib/stores/companie-store";
 
 interface Props {
   row?: number;
@@ -27,19 +28,22 @@ export const AttendanceSheetForm = ({
     Array.from({ length: 7 }, () => "")
   );
 
+  // Load company object
+  const company = useCompanyStore((state) => state.company)
+
   const backgroundImageUrl = "/images/logo-sm-senima.png";
 
   return (
     <PrintContent className="py-5">
       <div>
-        <div className="flex justify-center items-center">
+        {/* <div className="flex justify-center items-center">
           <Image
             src="/images/logo-lg-senima.png"
             alt="company logo"
             width={500}
             height={200}
           />
-        </div>
+        </div> */}
         <div className="items-center m-20">
           <div className="flex flex-col items-center gap-3">
             <u className="font-bold">
@@ -50,8 +54,9 @@ export const AttendanceSheetForm = ({
               <span>{data?.title}</span>
             </div>
             <div>
-              <span className="font-bold mr-2">Date :</span>
-              <span>{dayjs(new Date().toISOString()).toString().slice(0, -7)}</span>
+              <span className="font-bold mr-2">Date : .....................................</span>
+              {/* <span>{dayjs(new Date().toISOString()).toString().slice(0, -7)}</span> */}
+
             </div>
             <div className="my-5">
               <u className="font-bold text-lg">Fiche de présence</u>
@@ -71,7 +76,7 @@ export const AttendanceSheetForm = ({
                 left: 0,
                 width: "100%",
                 height: "100%",
-                backgroundImage: `url(${backgroundImageUrl})`,
+                backgroundImage: `url(${company?.logo})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 // opacity: 0.5,

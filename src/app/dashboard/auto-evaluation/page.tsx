@@ -1,6 +1,5 @@
 "use client";
 import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import dynamic from "next/dynamic";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
@@ -35,8 +34,8 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "?type=AUTO_EVALUATION",
-      currentCampaign?.id
+      `?type=AUTO_EVALUATION&campaign_id=${currentCampaign?.id}`,
+      ""
     )
       .then((response) => {
         setIsLoading((prev) => !prev);
@@ -122,7 +121,7 @@ export default function Home({}: Props) {
           form: (
             <ProjectDetailsForm
               typeOfProject={"AUTO_EVALUATION"}
-              closeModal={() => console.log('close modal')}
+              closeModal={() => console.log("close modal")}
             />
           ),
         },

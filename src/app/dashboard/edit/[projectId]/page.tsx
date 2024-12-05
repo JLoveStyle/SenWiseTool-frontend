@@ -35,6 +35,7 @@ import { DeployableFormMetadata } from "@/components/atoms/colums-of-tables/depl
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { ProjectType } from "@/types/api-types";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 const AddFormFromLibrary = dynamic(
   () => import("@/components/molecules/addFormFromLibrary"),
@@ -49,11 +50,11 @@ const EditProjectFormDatails = dynamic(
   }
 );
 
-type Props = Promise<{projectId: string}>;
+type Props = Promise<{ projectId: string }>;
 
-export default function page(props: {params: Props}) {
-  const params = use(props.params)
-  const projectId = params.projectId
+export default function page(props: { params: Props }) {
+  const params = use(props.params);
+  const projectId = params.projectId;
   const router = useRouter();
   const projectDetails: ProjectType = LOCAL_STORAGE.get("project"); // Only for project title editoring
   const [openSheet, setOpenSheet] = useState<boolean>(false);
@@ -68,13 +69,6 @@ export default function page(props: {params: Props}) {
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: projectDetails.title,
     id: projectDetails.id,
-    description: projectDetails.description,
-    start_date: projectDetails.start_date,
-    end_date: projectDetails.end_date,
-    sector_activity: projectDetails.sector_activity,
-    country: projectDetails.country,
-    city: projectDetails.city,
-    region: projectDetails.region,
   });
 
   const [chap1, chap2, chap3, chap4, chap5, chap6] = requirements;
@@ -165,6 +159,7 @@ export default function page(props: {params: Props}) {
       Route.projects,
       {
         project_structure: finalJson,
+        title: projectData.title,
       },
       projectId
     )
@@ -277,6 +272,12 @@ export default function page(props: {params: Props}) {
           </div>
           <Dialog onOpenChange={setOpenEditForm} open={openEditForm}>
             <DialogContent>
+              <VisuallyHidden.Root>
+                <DialogHeader>
+                  <DialogTitle></DialogTitle>
+                  <DialogDescription></DialogDescription>
+                </DialogHeader>
+              </VisuallyHidden.Root>
               <EditProjectFormDatails
                 project={projectData as ProjectType}
                 onClick={function (val: boolean): void {
@@ -285,11 +286,6 @@ export default function page(props: {params: Props}) {
               />
             </DialogContent>
           </Dialog>
-          {/* <div className="flex gap-4 hover:cursor-pointer ">
-            <Library />
-            <p className="font-semibold">Add from library</p>
-          </div> */}
-
           <div
             onClick={() => setOpenSheet((prev) => !prev)}
             className="flex gap-4 hover:cursor-pointer"

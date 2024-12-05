@@ -9,45 +9,62 @@ import {
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
+import { ApiDataResponse, TrainingType } from "@/types/api-types";
 import { TrainingProps } from "@/types/formData";
+import { mutateDelApiData } from "@/utiles/services/mutations";
 import { db_delete_training } from "@/utiles/services/training";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { Spinner } from "../spinner/spinner";
+import { useState } from "react";
 
 interface Props {
   training: TrainingProps;
   header: React.ReactNode;
+  trainingId: string;
 }
 
-export const DeleteTraining = ({ training, header }: Props) => {
-  const { value: openModal, toggle: toggleOpenModal } = useToggle();
+export const DeleteTraining = ({ training, header, trainingId }: Props) => {
+  // const { value: openModal, toggle: toggleOpenModal } = useToggle();
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const { value: isLoading, setValue: setIsLoading } = useToggle();
 
   const router = useRouter();
 
   const handleDeleteTraining = async () => {
     setIsLoading(true);
+    await mutateDelApiData<ApiDataResponse<Partial<TrainingType>>>(
+      Route.training,
+      trainingId
+    )
+      .then((response) => {
+        setIsLoading((prev) => !prev);
+        if (response?.status === 204) {
+          toast.success("Training Deleted");
+          router.back();
+          return;
+        } else {
+          toast.error("Could not delete. Please try again");
+          return;
+        }
+      })
+      .catch((error) => {
+        setIsLoading((prev) => !prev);
+        console.log("Hello");
+      });
 
-    const serverResponse = await db_delete_training(training.id);
-
-    if (serverResponse.error) {
-      toast.error(serverResponse.error.message);
-      setIsLoading(false);
-      return;
-    }
-
-    toast.success("Your project are updated successfull");
-    setIsLoading(false);
-    toggleOpenModal();
-    router.push(Route.trainingProject);
-    return;
+    // toast.success("Your project are updated successfull");
+    // setIsLoading(false);
+    // toggleOpenModal();
+    // router.push(Route.trainingProject);
+    // return;
   };
 
   return (
     <Dialog open={openModal}>
-      <DialogTrigger asChild onClick={toggleOpenModal}>
+      <DialogTrigger asChild onClick={() => setOpenModal((prev) => !prev)}>
         {header ?? <Trash2 className="hover:cursor-pointer text-red-500" />}
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
@@ -66,18 +83,27 @@ export const DeleteTraining = ({ training, header }: Props) => {
               className=""
               variant="outline"
               size="sm"
-              onClick={toggleOpenModal}
+              onClick={() => setOpenModal((prev) => !prev)}
             >
               Annuler
             </Button>
-            <Button
-              size="sm"
-              className="flex gap-1 bg-red-500 hover:bg-red-400"
-              onClick={handleDeleteTraining}
-            >
-              <Trash2 size={15} />
-              Supprimer
-            </Button>
+            {isLoading ? (
+              <Button
+                size="sm"
+                className="flex gap-1 bg-red-500 hover:cursor-not-allowed opacity-90 hover:bg-red-400"
+              >
+                <Spinner />
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                className="flex gap-1 bg-red-500 hover:bg-red-400"
+                onClick={handleDeleteTraining}
+              >
+                <Trash2 size={15} />
+                Supprimer
+              </Button>
+            )}
           </div>
         </DialogFooter>
       </DialogContent>

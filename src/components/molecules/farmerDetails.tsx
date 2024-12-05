@@ -2,6 +2,9 @@ import { FarmerType } from "@/types/api-types";
 import dayjs from "dayjs";
 import React from "react";
 import { FilePreview } from "./filePreview";
+import { Route } from "@/lib/route";
+import Link from "next/link";
+import { MoveLeft } from "lucide-react";
 
 type Props = {
   famerObject: FarmerType;
@@ -11,6 +14,13 @@ export default function FarmerDetails({ famerObject }: Props) {
   return (
     <div className="bg-[#f3f4f6] p-6 flex gap-5">
       <div className=" md:w-[70%]">
+        <Link
+          className="flex gap-1 underline hover:font-medium"
+          href={Route.listOfFarmers}
+        >
+          <MoveLeft />
+          Back
+        </Link>
         <div className="flex gap-2 py-2 border-b pb-4 items-baseline justify-center">
           <span className="text-sm text-gray-500">Name:</span>
           <span className=" font-semibold text-lg px-2 rounded-lg">
@@ -114,7 +124,9 @@ export default function FarmerDetails({ famerObject }: Props) {
         </div>
       </div>
       <div className="md:w-[30%] p">
-        <h1 className="font-semibold text-center pt-2 pb-4 border-b ">Farmer pictures</h1>
+        <h1 className="font-semibold text-center pt-2 pb-4 border-b ">
+          Farmer pictures
+        </h1>
         {famerObject?.farmer_photos?.map((item, idx) => (
           <div className="flex gap-2 py-4">
             <FilePreview key={idx} url={item} />

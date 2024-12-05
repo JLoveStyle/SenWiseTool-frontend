@@ -3,20 +3,14 @@
 import { Route } from "@/lib/route";
 
 import { Archive, ListOrdered, Trash2 } from "lucide-react";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
 
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-// import { Newsocial } from "@/components/organisms/tracability/social/new-social";
-import { NewActivitySocial } from "@/components/organisms/social-activities/new-activity";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useToggle } from "@/hooks/use-toggle";
-import { useCampaignStore } from "@/lib/stores/campaign-store";
-import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ActivityDisplayProps, ActivityProps } from "@/types/activity";
-import { statPanelDatas } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";

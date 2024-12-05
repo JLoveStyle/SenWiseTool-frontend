@@ -148,10 +148,7 @@ export default function ProofOfPaiement() {
       setIsDeleting(true);
       for (const item of proofOfPaiementSelected) {
         console.log("deleted id => ", item?.id);
-        await mutateDelApiData(
-          Route.revenuEtResponsabilite + `/${item?.id}`,
-          ""
-        )
+        await mutateDelApiData(Route.revenuEtResponsabilite, item?.id)
           .then((response: any) => {
             console.log(response);
             if (response.status == 204) {
