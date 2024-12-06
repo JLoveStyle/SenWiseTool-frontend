@@ -10,8 +10,7 @@ import { Route } from "@/lib/route";
 import { MarketDBProps } from "@/types/api-types";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import { fetchApiData } from "@/utiles/services/queries";
-import { marketData } from "@/utiles/tracability.const/market";
-import { Archive, Delete, MoveLeft, Trash2, UserPlus } from "lucide-react";
+import { Archive, MoveLeft, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
@@ -36,9 +35,9 @@ export default function ReceiptDetails(props: { params: TProps }) {
   // fetch single market
   async function fetchSingleMarket(marketId: string) {
     console.log("fetching single market");
-    await fetchApiData(Route.marketRequest + `/${marketId}`, "")
+    await fetchApiData(Route.marketRequest, marketId)
       .then((response) => {
-        console.log(response);
+        console.log("marketttttt :", response);
         if (response.status === 200) {
           setCurrentMarket(response.data);
           setIsLoading(false);
@@ -86,7 +85,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
     )
       .then((response) => {
         console.log(response);
-        toast.success("Market closed")
+        toast.success("Market closed");
         setIsDeleting((prev) => !prev);
         setCloseMarket((prev) => !prev);
       })
