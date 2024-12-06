@@ -9,21 +9,39 @@ type Props = {
 };
 
 export default function AddFormFromLibrary({ isSubmitting }: Props) {
-  const [metaData, setMetaData] = useState<string[]>([]);
   const metaDataFromLocalStorage = LOCAL_STORAGE.get("formMetadata");
+  const [metaData, setMetaData] = useState<string[]>(metaDataFromLocalStorage ?? []);
   const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value, name } = e.target;
     if (checked) {
+      if (name === "selectAll") {
+        let allChecked = [...metaData];
+        for (let i = 0; i < metaDataOptions.length; i++) {
+          allChecked.push(metaDataOptions[i].name);
+          metaDataOptions[i]["isChecked"] = true;
+        }
+        setMetaData([...new Set(allChecked)]);
+        return;
+      } 
       let data: string[] = [...metaData];
       data.push(e.target.name);
-      setMetaData(data);
+      const foundIndex = metaDataOptions.findIndex(
+        (item) => item.name === name
+      );
+      metaDataOptions[foundIndex].isChecked = true;
+      setMetaData([...new Set(data)]);
     } else {
       const filteredData = [...metaData].filter((item) => item !== name);
-      setMetaData(filteredData);
+      const foundIndex = metaDataOptions.findIndex(
+        (item) => item.name === name
+      );
+      metaDataOptions[foundIndex].isChecked = false;
+      setMetaData([...new Set(filteredData)]);
     }
   };
 
   useEffect(() => {
+    console.log("Here is metaData =>", metaData);
     if (!isSubmitting && metaData.length) {
       LOCAL_STORAGE.save("formMetadata", metaData);
       toast.success("Metadata saved", {
@@ -31,7 +49,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
         autoClose: 1000,
       });
     }
-  }, [isSubmitting]);
+  }, [isSubmitting, metaData.length]);
 
   const firstHalfMetaData = metaDataOptions.slice(
     0,
@@ -45,12 +63,23 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
   return (
     <div className="py-5">
       <h1 className="font-semibold uppercase pb-2">Metadata</h1>
+      <div className="flex gap-3">
+        <input
+          id="select-all"
+          type="checkbox"
+          name="selectAll"
+          onChange={(e) => handleCheckbox(e)}
+        />
+        <label htmlFor={"select-all"}>
+          <strong>Select all</strong>
+        </label>
+      </div>
       <fieldset className="flex gap-2 justify-between leading-loose">
         <div className="w-1/2">
           {firstHalfMetaData.map((item, index) => (
             <div key={index} className="flex gap-3">
               <input
-                // checked={metaDataFromLocalStorage?.includes(item.name)}
+                checked={item.isChecked}
                 type="checkbox"
                 name={item.name}
                 value={item.value}
@@ -65,7 +94,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           {secondHalfMetaData.map((item, index) => (
             <div key={index} className="flex gap-3">
               <input
-                // checked={metaDataFromLocalStorage?.includes(item.name)}
+                checked={item.isChecked}
                 type="checkbox"
                 name={item.name}
                 value={item.value}

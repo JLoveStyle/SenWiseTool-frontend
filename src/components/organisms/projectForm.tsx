@@ -3,13 +3,13 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Image from "next/image";
 import { Route } from "@/lib/route";
-import Print from "../atoms/print";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { Bounce, toast } from "react-toastify";
 import FinalFormData from "../molecules/chapters-table-data/finalFormData";
 import slugify from "slugify";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import PrintContent from "../atoms/print-and-edit-content";
+import InspectionConclusion from "../molecules/inspection-conclusion";
 
 type Props = {
   projectObject: ProjectType | undefined;
@@ -20,6 +20,7 @@ export default function ProjectForm({ projectObject }: Props) {
   const [personalInfo, setPersonalInfo] = useState({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
+  console.log('company object', company)
 
   const jsonString = JSON.stringify(projectObject?.project_structure);
   const finalJson = JSON.parse(jsonString);
@@ -170,6 +171,7 @@ export default function ProjectForm({ projectObject }: Props) {
         <div className=" mx-auto pt-5">
           <FinalFormData selectedProjects={finalJson?.requirements} />
         </div>
+        <InspectionConclusion/>
       </div>
     </PrintContent>
   );

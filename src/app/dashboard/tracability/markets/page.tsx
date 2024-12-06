@@ -2,7 +2,7 @@
 
 import { Route } from "@/lib/route";
 
-import { Archive, Trash2 } from "lucide-react";
+import { Archive, ListOrdered, Trash2 } from "lucide-react";
 // import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 
@@ -33,6 +33,7 @@ import {
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import ModalContent from "@/components/organisms/modalContent";
+import { DashboardStatPanelData } from "@/types/app-link";
 
 export default function Market() {
   const [isLoading, setIsLoading] = useState(true);
@@ -210,13 +211,18 @@ export default function Market() {
     // const allId: string[] = [];
     for (const item of marketSelected) {
       // allId.push(item?.id);
-      await mutateDelApiData(Route.marketRequest + `/${item?.id}`, "")
+      await mutateDelApiData(Route.marketRequest, item?.id)
         .then((response: any) => {
           console.log("response of delete", response);
           if (response.status === 204) {
             toast.success("Market deleted");
             setIsDeleting((prev) => !prev);
+            setDeleteMarket((prev) => !prev)
             return;
+          } else {
+            toast.error("Something went wrong. Please try again")
+            setIsDeleting((prev) => !prev);
+            setDeleteMarket((prev) => !prev)
           }
         })
         .catch((error) => {
@@ -224,7 +230,6 @@ export default function Market() {
           toast.error("something went wrong. please try again");
         });
     }
-    setDeleteMarket((prev) => !prev);
   }
 
   async function handleCloseMarket() {
@@ -234,10 +239,15 @@ export default function Market() {
       await mutateUpApiData(Route.marketRequest, { status: "CLOSED" }, item?.id)
         .then((response) => {
           console.log(response);
-          toast.success("Market closed")
-          setIsDeleting((prev) => !prev);
-          setCloseMarket((prev) => !prev)
-
+          if (response.status === 200) {
+            toast.success("Market closed");
+            setIsDeleting((prev) => !prev);
+            setCloseMarket((prev) => !prev);
+          } else {
+            toast.error("Something went wrong. Please try again")
+            setCloseMarket((prev) => !prev)
+            setIsDeleting((prev) => !prev);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -245,6 +255,19 @@ export default function Market() {
         });
     }
   }
+
+  const stateMarket: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Number",
+        baseUrl: "",
+        icon: ListOrdered,
+      },
+      data: () => {
+        return marketDatas.length;
+      },
+    },
+  ]
 
   return (
     <LayoutDashboardTemplate
@@ -256,7 +279,7 @@ export default function Market() {
       ]}
       title="Markets management"
       formParams={formParams}
-      statPanelDatas={statPanelDatas}
+      statPanelDatas={stateMarket}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Markets</h1>

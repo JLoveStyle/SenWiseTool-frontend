@@ -1,5 +1,4 @@
 "use client"
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDetails from "@/components/organisms/projectDetails";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";

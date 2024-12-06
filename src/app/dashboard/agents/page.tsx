@@ -177,8 +177,8 @@ export default function Receipt() {
   const deleteAgentAccounts = async () => {
     setIsUpdating((prev) => !prev);
     await mutateDelApiData<ApiDataResponse<AgentPropsFromDB>>(
-      Route.assigne + `/${agentSelected[0]?.agentCode}`,
-      ""
+      Route.assigne,
+      agentSelected[0]?.agentCode
     )
       .then((response) => {
         console.log(response);

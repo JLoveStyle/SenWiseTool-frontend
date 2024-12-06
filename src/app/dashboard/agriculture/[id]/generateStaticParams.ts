@@ -9,10 +9,3 @@ export async function generateStaticParams() {
     id: activity.id?.toString(),
   }));
 }
-
-// export async function generateStaticParams() {
-//   const activities = ["first", "second", "tirth"]; //await fetchApiData(Route.agricultureRequest, "");
-//   return activities.map((activity: string) => ({
-//     id: activity,
-//   }));
-// }

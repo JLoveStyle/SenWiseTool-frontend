@@ -61,7 +61,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
   // Delete market
   async function handleDeleteMarket() {
     setIsDeleting((prev) => !prev);
-    await mutateDelApiData(Route.marketRequest + `/${currentMarket?.id}`, "")
+    await mutateDelApiData(Route.marketRequest, currentMarket?.id)
       .then((response: any) => {
         console.log("response of delete", response);
         if (response.status === 204) {

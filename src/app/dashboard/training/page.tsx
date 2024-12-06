@@ -1,6 +1,5 @@
 "use client";
 
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import {
@@ -10,9 +9,7 @@ import {
 } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 
-import { Archive, Trash2, UserPlus } from "lucide-react";
-
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
+import { Archive, ListOrdered, PenLine, Trash2, UserPlus } from "lucide-react";
 
 import { NewTraining } from "@/components/atoms/training/new-trainer";
 import { trainingColumnTable } from "@/components/atoms/training/training-column-table";
@@ -23,6 +20,8 @@ import { useCompanyStore } from "@/lib/stores/companie-store";
 import { TrainingProps } from "@/types/formData";
 import { db_get_trainings } from "@/utiles/services/training";
 import { useEffect, useState } from "react";
+import { DashboardStatPanelData } from "@/types/app-link";
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
@@ -45,10 +44,10 @@ export default function Training() {
   });
 
   const valueToDisplay = (args: TrainingType[]) => {
-    const data: TrainingType[] = []
+    const data: TrainingType[] = [];
     for (const item of args) {
       if (item.code.length < 5) {
-        data.push(item)
+        data.push(item);
       }
     }
     return data?.map((training) => ({
@@ -70,13 +69,40 @@ export default function Training() {
     // refetch();
   }, [trainingDatas]);
 
+  const formParams = {
+    trigger_btn_label_form: "New Form",
+    construct_form_btn_label: "Construct a form",
+    existing_form_btn_label: "Use a pre-defined model",
+    new_form_title: "Create a project (AUTO EVALUATION): Project details",
+    construct_form_btn_icon: PenLine,
+  };
+
+  const stateTraining: DashboardStatPanelData[] = [
+    {
+      structure: {
+        label: "Number",
+        baseUrl: "",
+        icon: ListOrdered,
+      },
+      data: () => {
+        return valueToDisplay(trainings as TrainingType[])?.length;
+      },
+    },
+  ];
+
   console.log("training =>", trainings);
 
   return (
-    <LayoutDashboard
-      projectsPerType={trainingDatas ?? []}
-      typeOfProject={"TRAINING"}
-      newForm={<NewTraining />}
+    <LayoutDashboardTemplate
+      newForms={[
+        {
+          title: "New training project",
+          form: <NewTraining />,
+        },
+      ]}
+      title="TRAINING"
+      formParams={formParams}
+      statPanelDatas={stateTraining}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Projects</h1>
@@ -102,6 +128,6 @@ export default function Training() {
           isLoading={isLoading}
         />
       </div>
-    </LayoutDashboard>
+    </LayoutDashboardTemplate>
   );
 }

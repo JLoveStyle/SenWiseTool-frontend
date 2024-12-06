@@ -61,6 +61,18 @@ export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
     ),
   },
   {
+    accessorKey: "code",
+    header: "Code",
+    cell: ({ row }) => (
+      <div onClick={() => {
+        navigator.clipboard.writeText(row.getValue("code"))
+        toast.success("Copied")
+      }} className="hover:cursor-pointer font-semibold hover:underline">
+        {row.getValue("code")}
+      </div>
+    ),
+  },
+  {
     accessorKey: "location",
     header: "Location",
     cell: ({ row }) => (

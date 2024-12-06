@@ -6,7 +6,7 @@ import { DeleteTraining } from "@/components/atoms/training/delete-training";
 import { NewTraining } from "@/components/atoms/training/new-trainer";
 import { UpdateTraining } from "@/components/atoms/training/update-training";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
 import { TrainingType } from "@/types/api-types";
@@ -57,6 +57,7 @@ export default function TrainingDetails(props: { params: TProps }) {
       .then((response) => {
         if (response.status > 205) {
           toast.error("Could not fetch tranings. Please refresh");
+          setIsLoading(prev => !prev)
           return;
         }
         console.log("this are training =>", response);
@@ -114,11 +115,7 @@ export default function TrainingDetails(props: { params: TProps }) {
   useEffect(() => {}, [currentTrainingData]);
 
   return (
-    <LayoutDashboard
-      projectsPerType={[]}
-      typeOfProject={"TRAINING"}
-      newForm={<NewTraining />}
-    >
+    <LayoutDashboardTemplate title="Traning details">
       <div className="flex justify-between pb-4 pt-2 px-6 w-3/4">
         <h1 className="text-xl font-semibold">
           <Link
@@ -131,25 +128,21 @@ export default function TrainingDetails(props: { params: TProps }) {
         </h1>
         <div className="flex items-center gap-4 text-gray-500">
           <CustomHoverCard content="Edit Project">
-            {isLoading && <Spinner size="very-small" color="#999" />}
+            {/* {isLoading && <Spinner size="very-small" color="#999" />} */}
             {!isLoading && currentTrainingData !== undefined && (
               <UpdateTraining
+                trainingId={id}
                 currentTaining={currentTrainingData}
                 header={<PenLine className="hover:cursor-pointer" />}
               />
             )}
           </CustomHoverCard>
 
-          <CustomHoverCard content="archive project">
-            <Archive className="hover:cursor-pointer" />
-          </CustomHoverCard>
-          <CustomHoverCard content="Share project">
-            <UserPlus className="hover:cursor-pointer" />
-          </CustomHoverCard>
           <CustomHoverCard content="Delete Project">
-            {isLoading && <Spinner size="very-small" color="#999" />}
+            {/* {isLoading && <Spinner size="very-small" color="#999" />} */}
             {!isLoading && currentTrainingData !== undefined && (
               <DeleteTraining
+                trainingId={id}
                 training={currentTrainingData}
                 header={<Trash2 className="hover:cursor-pointer" />}
               />
@@ -201,8 +194,8 @@ export default function TrainingDetails(props: { params: TProps }) {
                         Les modules de la formation à dispenser
                       </div>
                       <div className="space-y-1">
-                        {currentTrainingData.modules.map((module) => (
-                          <div className="flex gap-1 items-center">
+                        {currentTrainingData.modules.map((module, index) => (
+                          <div key={index} className="flex gap-1 items-center">
                             <MoveRight className="text-gray-600" />
                             <span className="text-gray-500">
                               {module.value}
@@ -285,6 +278,6 @@ export default function TrainingDetails(props: { params: TProps }) {
           </div>
         </div>
       )}
-    </LayoutDashboard>
+    </LayoutDashboardTemplate>
   );
 }

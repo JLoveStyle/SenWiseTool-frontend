@@ -1,5 +1,4 @@
 "use client";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import React, { useEffect, useState } from "react";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -70,7 +69,7 @@ export default function Home({}: Props) {
     trigger_btn_label_form: "New Form",
     construct_form_btn_label: "Construct a form",
     existing_form_btn_label: "Use a pre-defined model",
-    new_form_title: "Create a MAPPING project: Project details",
+    new_form_title: "Create an INITIAL INSPECTION project: Project details",
     construct_form_btn_icon: PenLine,
   };
 

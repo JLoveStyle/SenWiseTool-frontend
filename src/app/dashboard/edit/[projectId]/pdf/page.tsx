@@ -1,6 +1,7 @@
 "use client";
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import FinalFormData from "@/components/molecules/chapters-table-data/finalFormData";
+import InspectionConclusion from "@/components/molecules/inspection-conclusion";
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
 import { mutateUpApiData } from "@/utiles/services/mutations";
@@ -166,6 +167,11 @@ export default function page({}: Props) {
         {/* LIST OF REQUIREMENTS TABULATED */}
         <div className=" mx-auto pt-5">
           <FinalFormData selectedProjects={finalJson.requirements} />
+        </div>
+
+        {/* INSPECTION CONCLUSION */}
+        <div className="">
+          <InspectionConclusion/>
         </div>
       </div>
     </PrintContent>

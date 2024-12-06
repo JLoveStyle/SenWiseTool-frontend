@@ -1,6 +1,5 @@
 "use client";
 import { columnListProjects } from "@/components/atoms/colums-of-tables/listOfProjects";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
@@ -36,8 +35,8 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(
       Route.projects,
-      "?type=INTERNAL_INSPECTION",
-      currentCampaign?.id
+      `?type=INTERNAL_INSPECTION&campaign_id=${currentCampaign?.id}`,
+      ""
     )
       .then((response) => {
         console.log("all internal_inspection projects", response);

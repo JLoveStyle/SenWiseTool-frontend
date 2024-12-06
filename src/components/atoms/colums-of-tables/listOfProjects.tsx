@@ -21,24 +21,23 @@ import { Bounce, toast } from "react-toastify";
 
 // DELETE PROJECT FUNCTION
 const handleDeleteProject = async (id: string) => {
-  console.log('delete project with id', id)
-  await mutateDelApiData<ApiDataResponse<ProjectType>>(
-    Route.projects,
-    id
-  ).then((res) => {
-    if (res && res?.status <= 205) {
-      toast.success('Project deleted', {
-        transition: Bounce,
-        autoClose: 3000
-      })
-    } else {
-      toast.error('Something went wrong', {
-        transition: Bounce,
-        autoClose: 3000
-      })
+  console.log("delete project with id", id);
+  await mutateDelApiData<ApiDataResponse<ProjectType>>(Route.projects, id).then(
+    (res) => {
+      if (res && res?.status <= 205) {
+        toast.success("Project deleted", {
+          transition: Bounce,
+          autoClose: 3000,
+        });
+      } else {
+        toast.error("Something went wrong", {
+          transition: Bounce,
+          autoClose: 3000,
+        });
+      }
     }
-  })
-}
+  );
+};
 
 export const columnListProjects: ColumnDef<ProjectType>[] = [
   {
@@ -85,6 +84,21 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
     header: "Status",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("status")}</div>
+    ),
+  },
+  {
+    accessorKey: "code",
+    header: "Code",
+    cell: ({ row }) => (
+      <div
+        className="font-semibold hover:underline hover:cursor-pointer"
+        onClick={() => {
+          navigator.clipboard.writeText(row.getValue("code"));
+          toast.success('Code copied')
+        }}
+      >
+        {row.getValue("code")}
+      </div>
     ),
   },
   {
