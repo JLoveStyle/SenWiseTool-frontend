@@ -66,9 +66,9 @@ export const AboutUs: React.FC = () => {
         <div className="text-4xl font-bold text-center py-10 text-gray-900 dark:text-gray-100 shadow-md">
           About Us
         </div>
-        <div className="relative w-10/12 mx-auto h-96 flex items-center justify-center overflow-hidden">
+        <div className="relative w-10/12 mx-auto h-auto md:h-96 flex flex-col md:flex-row items-center justify-center overflow-hidden">
           {/* Image avec effet */}
-          <div className="relative w-1/2 h-full group overflow-hidden">
+          <div className="relative w-full md:w-1/2 h-full group overflow-hidden hidden md:block">
             <Image
               src={slides[currentIndex].image}
               alt={slides[currentIndex].title}
@@ -88,12 +88,8 @@ export const AboutUs: React.FC = () => {
             </div>
           </div>
 
-          {/* Section de contenu avec séparation inclinée */}
-          <div className="relative w-1/2 h-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex flex-col justify-center px-8 md:px-16">
-            {/* Inclinaison en utilisant clip-path */}
-            <div className="absolute inset-0 bg-white dark:bg-gray-800 clip-triangle z-[-1]"></div>
-
-            {/* Contenu */}
+          {/* Section de contenu */}
+          <div className="relative w-full md:w-1/2 h-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex flex-col justify-center px-8 py-5 md:px-16">
             <h2 className="text-4xl font-bold mb-4">
               {slides[currentIndex].title}
             </h2>
