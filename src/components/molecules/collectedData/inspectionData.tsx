@@ -19,7 +19,7 @@ import {
   overallStatistics,
 } from "@/utiles/services/Data-analysis/single-inspection-analysis";
 import { Button } from "@/components/ui/button";
-import { downloadInspectionDataAsCsv } from "./downloadCsv";
+import { downloadInspectionDataAsCsv, inspectionDataAsCsv } from "./downloadCsv";
 
 const DisplayInspectionAnalysis = dynamic(
   () => import("../inspection-data-statistics/displayInspectionAnalysis"),
@@ -91,7 +91,8 @@ export default function InspectionData({ project_id, projectName }: Props) {
               <span className=" font-semibold">{projectName}</span>
             </h2>
             <Button
-              onClick={() => downloadInspectionDataAsCsv([], data)}
+              // onClick={() => downloadInspectionDataAsCsv([], data)}
+              onClick={() => inspectionDataAsCsv(data)}
               className="bg-tertiary hover:bg-tertiary hover:opacity-90 my-auto"
             >
               Export

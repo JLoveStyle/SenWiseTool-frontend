@@ -35,8 +35,8 @@ export default function ReceiptDetails(props: { params: TProps }) {
 
   // fetch single market
   async function fetchSingleMarket(marketId: string) {
-    console.log("fetching single market");
-    await fetchApiData(Route.marketRequest + `/${marketId}`, "")
+    console.log("fetching single market", marketId);
+    await fetchApiData(Route.marketRequest, marketId)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
@@ -85,10 +85,15 @@ export default function ReceiptDetails(props: { params: TProps }) {
       currentMarket?.id
     )
       .then((response) => {
-        console.log(response);
-        toast.success("Market closed")
         setIsDeleting((prev) => !prev);
-        setCloseMarket((prev) => !prev);
+        console.log(response);
+        if (response.status === 200) {
+          toast.success("Market closed");
+          setCloseMarket((prev) => !prev);
+        } else {
+          toast.error("Something went wrong. Please try again");
+          setCloseMarket((prev) => !prev);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -218,19 +223,37 @@ export default function ReceiptDetails(props: { params: TProps }) {
                       label="Car number"
                       value={`${item.vehicule_immatriculation_number}`}
                     />
-                    <DetailCard label="Quantity" value={`${item.quantity}`} />
-                    <DetailCard label="Humidity" value={`${item.humidity}`} />
+                    <DetailCard
+                      label="Quantity"
+                      value={item?.quantity ? `${item.quantity}` : ""}
+                    />
+                    <DetailCard
+                      label="Humidity"
+                      value={item?.humidity ? `${item.humidity}` : ""}
+                    />
                     <DetailCard
                       label="Net weigth in thones"
-                      value={`${item.net_weight_declared_in_Ton}`}
+                      value={
+                        item?.net_weight_declared_in_Ton
+                          ? `${item.net_weight_declared_in_Ton}`
+                          : ""
+                      }
                     />
                     <DetailCard
                       label="Humidity level of product"
-                      value={`${item.humidity_level_of_product}`}
+                      value={
+                        item.humidity_level_of_product
+                          ? `${item.humidity_level_of_product}`
+                          : ""
+                      }
                     />
                     <DetailCard
                       label="Total quantity in bags"
-                      value={`${item.total_quantity_in_bags}`}
+                      value={
+                        item.total_quantity_in_bags
+                          ? `${item.total_quantity_in_bags}`
+                          : ""
+                      }
                     />
                     <DetailCard
                       label="Receiver name"
@@ -279,6 +302,16 @@ export default function ReceiptDetails(props: { params: TProps }) {
           <div className="p-3">Metadata</div>
           <hr />
           <div className="p-3 text-xs flex flex-col gap-5">
+            <div className="flex flex-wrap gap-2">
+              {currentMarket?.transaction.map((item) => (
+                <div className="">
+                  <FilePreview url={""} />
+                  <p className="font-semibold">Bordereau de vente</p>
+                </div>
+              ))}
+
+              <p>iovoiev</p>
+            </div>
             {/* <Metadata label="Status" value={currentMarket?.status || "N/A"} />
             <Metadata label="Nombre de sac" value={currentMarket?.code} />
             <Metadata label="Poids net vendu" value={currentMarket?.code} />

@@ -85,7 +85,7 @@ export default function Training() {
         icon: ListOrdered,
       },
       data: () => {
-        return valueToDisplay(trainings as TrainingType[])?.length;
+        return trainings?.length;
       },
     },
   ];
