@@ -78,7 +78,7 @@ export default function Training() {
     trigger_btn_label_form: "New Form",
     construct_form_btn_label: "Construct a form",
     existing_form_btn_label: "Use a pre-defined model",
-    new_form_title: "Create a project (AUTO EVALUATION): Project details",
+    new_form_title: "Create a new training project",
     construct_form_btn_icon: PenLine,
   };
 

@@ -26,6 +26,7 @@ export function UpdateTraining({ currentTaining, header, trainingId }: Props) {
   const [errors, setErrors] = useState({});
   const company = useCompanyStore((state) => state.company);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  console.log("edit", currentTaining);
 
   const initialize = {
     id: currentTaining.id,
@@ -42,6 +43,7 @@ export function UpdateTraining({ currentTaining, header, trainingId }: Props) {
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: TrainingProps) => {
     setFormData(updatedFormData);
+    return updatedFormData;
   };
 
   const handleUpdateTraining = async (formData: TrainingProps) => {
@@ -156,6 +158,7 @@ export function UpdateTraining({ currentTaining, header, trainingId }: Props) {
     <form onSubmit={handleSubmit} className="px-5 pb-5">
       <FormTraining
         updatedFormData={handleUpdatedFormData}
+        initData={initialize}
         errors={errors}
         isLoading={isLoading}
       />
