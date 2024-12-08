@@ -114,15 +114,15 @@ export const Services: React.FC = () => {
         </p>
       </div>
 
-      {/* Carousel */}
-      <div className="relative flex justify-center items-center overflow-hidden px-6 sm:px-12 lg:px-20">
+      {/* Responsive Grid */}
+      <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 sm:px-12 lg:px-20">
         <AnimatePresence>
           {visibleCards.map((index) => {
             const service = services[index];
             return (
               <motion.div
                 key={index}
-                className={`relative mx-4 p-8 rounded-xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-500 bg-gradient-to-br ${service.gradient}`}
+                className={`relative p-8 rounded-xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-500 bg-gradient-to-br ${service.gradient}`}
                 initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 exit={{ opacity: 0, scale: 0.8, rotate: -10 }}
