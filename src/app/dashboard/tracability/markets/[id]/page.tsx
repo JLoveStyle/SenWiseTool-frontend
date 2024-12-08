@@ -10,8 +10,7 @@ import { Route } from "@/lib/route";
 import { MarketDBProps } from "@/types/api-types";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import { fetchApiData } from "@/utiles/services/queries";
-import { marketData } from "@/utiles/tracability.const/market";
-import { Archive, Delete, MoveLeft, Trash2, UserPlus } from "lucide-react";
+import { Archive, MoveLeft, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
@@ -38,7 +37,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
     console.log("fetching single market", marketId);
     await fetchApiData(Route.marketRequest, marketId)
       .then((response) => {
-        console.log(response);
+        console.log("marketttttt :", response);
         if (response.status === 200) {
           setCurrentMarket(response.data);
           setIsLoading(false);
@@ -167,7 +166,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
       </div>
 
       <div className="flex gap-5">
-        <div className="w-3/4 max-h-[480px] overflow-y-auto relative">
+        <div className="w-2/3 max-h-[480px] overflow-y-auto relative">
           {isLoading ? (
             <div className="flex justify-center text-center w-full">
               <Spinner color="#999" size="large" />
@@ -298,32 +297,56 @@ export default function ReceiptDetails(props: { params: TProps }) {
           )}
         </div>
 
-        <div className="bg-slate-100 w-1/4 relative">
-          <div className="p-3">Metadata</div>
+        <div className="bg-slate-100 w-1/3 relative max-h-[480px] overflow-y-auto">
+          <div className="p-3 text-sm text-gray-600">Metadata</div>
           <hr />
           <div className="p-3 text-xs flex flex-col gap-5">
             <div className="flex flex-wrap gap-2">
-              {currentMarket?.transaction.map((item) => (
+              {currentMarket?.bordereau_vente_url && (
                 <div className="">
-                  <FilePreview url={""} />
-                  <p className="font-semibold">Bordereau de vente</p>
+                  <FilePreview
+                    url={currentMarket?.bordereau_vente_url as string}
+                  />
+                  <p className="font-semibold py-2">Bordereau de vente</p>
                 </div>
-              ))}
-
-              <p>iovoiev</p>
+              )}
+              {currentMarket?.transmission_url && (
+                <div className="">
+                  <FilePreview
+                    url={currentMarket?.transmission_url as string}
+                  />
+                  <p className="font-semibold py-2">Fiche de transmission</p>
+                </div>
+              )}
+              {currentMarket?.accompanying_url && (
+                <div className="">
+                  <FilePreview
+                    url={currentMarket?.accompanying_url as string}
+                  />
+                  <p className="font-semibold py-2">Fiche de d'accompagnement</p>
+                </div>
+              )}
+              {currentMarket?.bon_entree_magazin_url && (
+                <div className="">
+                  <FilePreview
+                    url={currentMarket?.accompanying_url as string}
+                  />
+                  <p className="font-semibold py-2">Bon d'entrée en magazin</p>
+                </div>
+              )}
             </div>
             {/* <Metadata label="Status" value={currentMarket?.status || "N/A"} />
             <Metadata label="Nombre de sac" value={currentMarket?.code} />
             <Metadata label="Poids net vendu" value={currentMarket?.code} />
             <Metadata label="Poids net en Kg" value={currentMarket?.status} />
             <Metadata label="Humidité en %" value={currentMarket?.price_of_day} /> */}
-            <div className="flex justify-center items-center gap-10 bg-transparent absolute bottom-5">
+            <div className="flex justify-center items-center gap-10 bg-transparent  bottom-5">
               <ButtonUI
                 size="small"
                 className="flex gap-1 items-center bg-black hover:bg-gray-950"
                 baseURL={Route.factoryAccompaniementSheet}
               >
-                <IoReceipt /> Receipts
+                <IoReceipt /> Reçus
               </ButtonUI>
               {currentMarket?.sale_slip && (
                 <ButtonUI

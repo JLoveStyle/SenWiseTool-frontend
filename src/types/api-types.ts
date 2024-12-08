@@ -432,4 +432,8 @@ export type MarketDBProps = {
   quantity_product: number | null;
 
   store_entry_voucher: string | null;
+  transmission_url: string | null
+  accompanying_url: string | null
+  bon_entree_magazin_url: string | null
+  bordereau_vente_url: string | null
 };

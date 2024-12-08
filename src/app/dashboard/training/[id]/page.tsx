@@ -1,31 +1,23 @@
 "use client";
 
+import FormLayout from "@/components/atoms/dashboard/forms/form-layout";
+import { DisplayDocuments } from "@/components/atoms/display-documents";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import { AttendanceSheetForm } from "@/components/atoms/training/attendance-sheet-form";
 import { DeleteTraining } from "@/components/atoms/training/delete-training";
-import { NewTraining } from "@/components/atoms/training/new-trainer";
 import { UpdateTraining } from "@/components/atoms/training/update-training";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
 import { TrainingType } from "@/types/api-types";
-import { LocalTrainingProps, TrainingProps } from "@/types/formData";
+import { TrainingProps } from "@/types/formData";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { db_get_trainings } from "@/utiles/services/training";
 // import dayjs from "dayjs";
-import {
-  Archive,
-  MoveLeft,
-  MoveRight,
-  PenLine,
-  Trash2,
-  UserPlus,
-} from "lucide-react";
+import { MoveLeft, MoveRight, PenLine, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { PiFilesFill, PiPrinterFill } from "react-icons/pi";
@@ -45,11 +37,18 @@ export default function TrainingDetails(props: { params: TProps }) {
   const [currentTrainingData, setCurrentTrainingData] =
     useState<TrainingProps>();
   const [dbCurrentTrainingData, setDbCurrentTrainingData] =
-    useState<LocalTrainingProps>();
+    useState<TrainingType>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [displayComponent, setDisplayComponent] = useState<
-    "trainingDetails" | "attendanceSheet"
+    | "trainingDetails"
+    | "attendanceSheet"
+    | "attendanceSheetData"
+    | "pictures"
+    | "proofOfCompetency"
+    | "report"
   >("trainingDetails");
+
+  const [isModalClose, setIsModalClose] = useState<boolean>(false);
 
   async function fetchTraining() {
     setIsLoading((prev) => !prev);
@@ -57,10 +56,12 @@ export default function TrainingDetails(props: { params: TProps }) {
       .then((response) => {
         if (response.status > 205) {
           toast.error("Could not fetch tranings. Please refresh");
-          setIsLoading(prev => !prev)
+          setIsLoading((prev) => !prev);
           return;
         }
         console.log("this are training =>", response);
+        setDbCurrentTrainingData(response.data as TrainingType);
+
         setCurrentTrainingData({
           id: response.data.id,
           title: response.data.title,
@@ -81,6 +82,19 @@ export default function TrainingDetails(props: { params: TProps }) {
         console.log(error);
       });
   }
+
+  const formParams = {
+    trigger_btn_label_form: "Edit Form",
+    construct_form_btn_label: "Construct a form",
+    existing_form_btn_label: "Use a pre-defined model",
+    new_form_title: "Edit a TRAINING project",
+    construct_form_btn_icon: PenLine,
+  };
+
+  const closeModal = (value: boolean) => {
+    console.log("from mapping page", value);
+    setIsModalClose((prev) => (prev = value));
+  };
 
   useEffect(() => {
     fetchTraining();
@@ -115,8 +129,11 @@ export default function TrainingDetails(props: { params: TProps }) {
   useEffect(() => {}, [currentTrainingData]);
 
   return (
-    <LayoutDashboardTemplate title="Traning details">
-      <div className="flex justify-between pb-4 pt-2 px-6 w-3/4">
+    <LayoutDashboardTemplate
+      title="Traning details"
+      isCloseModal={isModalClose}
+    >
+      <div className="flex justify-between items-center pb-4 pt-2 px-6 w-3/4">
         <h1 className="text-xl font-semibold">
           <Link
             className="flex gap-1 items-center underline hover:font-medium"
@@ -127,17 +144,6 @@ export default function TrainingDetails(props: { params: TProps }) {
           </Link>
         </h1>
         <div className="flex items-center gap-4 text-gray-500">
-          <CustomHoverCard content="Edit Project">
-            {/* {isLoading && <Spinner size="very-small" color="#999" />} */}
-            {!isLoading && currentTrainingData !== undefined && (
-              <UpdateTraining
-                trainingId={id}
-                currentTaining={currentTrainingData}
-                header={<PenLine className="hover:cursor-pointer" />}
-              />
-            )}
-          </CustomHoverCard>
-
           <CustomHoverCard content="Delete Project">
             {/* {isLoading && <Spinner size="very-small" color="#999" />} */}
             {!isLoading && currentTrainingData !== undefined && (
@@ -218,6 +224,8 @@ export default function TrainingDetails(props: { params: TProps }) {
                 )}
               </>
             )}
+
+            {/* display an attendance sheet template */}
             {displayComponent === "attendanceSheet" && (
               <div>
                 {currentTrainingData ? (
@@ -233,36 +241,147 @@ export default function TrainingDetails(props: { params: TProps }) {
                     />
                   </div>
                 )}
-
-                <Button
-                  size="sm"
-                  className="absolute z-50 top-1 right-5 text-gray-700 bg-transparent hover:bg-transparent hover:text-red-500 font-medium"
-                  onClick={() => setDisplayComponent("trainingDetails")}
-                >
-                  <IoClose size={25} className="fixed" />
-                </Button>
               </div>
             )}
+
+            {/* display attendances sheet datas */}
+            {displayComponent === "attendanceSheetData" && (
+              <DisplayDocuments
+                documents={
+                  dbCurrentTrainingData?.training_attendance_sheet_url ?? []
+                }
+                // documents={url_test}
+              />
+            )}
+
+            {/* display pictures of the current training */}
+            {displayComponent === "pictures" && (
+              <DisplayDocuments
+                documents={dbCurrentTrainingData?.training_picture_url ?? []}
+              />
+            )}
+
+            {/* display proof of compatences of trainer */}
+            {displayComponent === "proofOfCompetency" && (
+              <DisplayDocuments
+                documents={
+                  dbCurrentTrainingData?.trainer_proof_of_competency ?? []
+                }
+              />
+            )}
+
+            {/* display report url */}
+            {displayComponent === "report" && (
+              <DisplayDocuments
+                documents={
+                  Array.isArray(dbCurrentTrainingData?.report_url)
+                    ? dbCurrentTrainingData.report_url
+                    : dbCurrentTrainingData?.report_url
+                    ? [dbCurrentTrainingData.report_url]
+                    : []
+                }
+              />
+            )}
+
+            {displayComponent !== "trainingDetails" && (
+              <Button
+                size="sm"
+                className="absolute z-50 top-1 right-5 text-gray-700 bg-transparent hover:bg-transparent hover:text-red-500 font-medium"
+                onClick={() => setDisplayComponent("trainingDetails")}
+              >
+                <IoClose size={25} className="fixed" />
+              </Button>
+            )}
           </div>
+
           <div className="bg-slate-100 w-1/4 relative">
-            <div className="p-3">Metadata</div>
+            <div className="flex justify-between items-center p-3">
+              <div className="font-bold text-xl">Metadata</div>
+
+              <CustomHoverCard content="Edit Project">
+                {!isLoading && currentTrainingData !== undefined && (
+                  <FormLayout
+                    isCloseModal={isModalClose}
+                    forms={[
+                      {
+                        title: "Edit training project",
+                        form: (
+                          <UpdateTraining
+                            trainingId={id}
+                            currentTaining={currentTrainingData}
+                            header={
+                              <PenLine className="hover:cursor-pointer" />
+                            }
+                          />
+                        ),
+                      },
+                    ]}
+                    formParams={formParams}
+                  />
+                )}
+              </CustomHoverCard>
+            </div>
             <hr />
             <div className="p-3 text-xs flex flex-col gap-5">
               <div className="flex justify-between items-center">
                 <span>Status</span>
-                <span className="text-red-500 font-medium">
+                <span className="text-blue-500 font-medium">
                   {dbCurrentTrainingData?.status}
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span>No Fiche de presence</span>
-                <span>0</span>
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setDisplayComponent("attendanceSheetData")}
+              >
+                <span>Fiches de presences</span>
+                <span>
+                  {dbCurrentTrainingData?.training_attendance_sheet_url
+                    ? dbCurrentTrainingData.training_attendance_sheet_url.length
+                    : 0}
+                </span>
               </div>
-              <div className="flex justify-between items-center gap-5 bg-transparent absolute bottom-5">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setDisplayComponent("pictures")}
+              >
+                <span>Image de la formation</span>
+                <span>
+                  {dbCurrentTrainingData?.training_picture_url
+                    ? dbCurrentTrainingData?.training_picture_url.length
+                    : 0}
+                </span>
+              </div>
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setDisplayComponent("report")}
+              >
+                <span>Rapport de la formation</span>
+                <span>
+                  {dbCurrentTrainingData?.report_url ? (
+                    <span className="text-green-500">Available</span>
+                  ) : (
+                    <span className="text-red-500">Unavailable</span>
+                  )}
+                </span>
+              </div>
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setDisplayComponent("proofOfCompetency")}
+              >
+                <span>Preuve de compétence des formateurs</span>
+                <span>
+                  {dbCurrentTrainingData?.trainer_proof_of_competency
+                    ? dbCurrentTrainingData?.trainer_proof_of_competency.length
+                    : 0}
+                </span>
+              </div>
+              <hr className="mt-10" />
+              <div className="flex justify-between items-center gap-5 bg-transparent">
                 <Button
                   size="sm"
                   variant="outline"
                   className="flex gap-1 items-center"
+                  onClick={() => setDisplayComponent("attendanceSheetData")}
                 >
                   <PiFilesFill /> Tout voir
                 </Button>

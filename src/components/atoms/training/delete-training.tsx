@@ -12,13 +12,12 @@ import { Route } from "@/lib/route";
 import { ApiDataResponse, TrainingType } from "@/types/api-types";
 import { TrainingProps } from "@/types/formData";
 import { mutateDelApiData } from "@/utiles/services/mutations";
-import { db_delete_training } from "@/utiles/services/training";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { Spinner } from "../spinner/spinner";
-import { useState } from "react";
 
 interface Props {
   training: TrainingProps;
@@ -42,8 +41,8 @@ export const DeleteTraining = ({ training, header, trainingId }: Props) => {
       .then((response) => {
         setIsLoading((prev) => !prev);
         if (response?.status === 204) {
-          toast.success("Training Deleted");
-          router.back();
+          toast.success("Training Deleted successful");
+          router.push(Route.training);
           return;
         } else {
           toast.error("Could not delete. Please try again");

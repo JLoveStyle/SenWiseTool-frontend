@@ -15,7 +15,7 @@ export default function Home({}: Props) {
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   LOCAL_STORAGE.save("username", user?.firstName);
-  console.log("user", user);
+  // console.log("user", user);
 
   // fetch user and set him to the store
   const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
@@ -26,7 +26,7 @@ export default function Home({}: Props) {
   async function fetchData() {
     const token = await getToken();
     if (token) {
-      console.log(token)
+      // console.log(token)
       LOCAL_STORAGE.save("token", token);
     }
   }

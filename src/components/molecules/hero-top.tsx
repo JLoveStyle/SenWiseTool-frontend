@@ -1,17 +1,17 @@
 "use client";
 
+import { Route } from "@/lib/route";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Route } from "@/lib/route";
-import Link from "next/link";
 
 const backgroundColors = [
   "bg-[#14645b]",
-  "bg-[#ffa200]",
+  "bg-[#be182b]",
   "bg-black",
   "bg-[#8a5da1]",
-  "bg-[#f2b500]",
+  "bg-[#edb933]",
 ];
 const images = [
   "/images/hero-top/1.png",
@@ -49,13 +49,13 @@ export const HeroTop: React.FC = () => {
       id="home"
     >
       {/* Texte à gauche */}
-      <div className="w-full lg:w-1/2 flex flex-col items-start justify-center text-white space-y-6">
-        <h1 className="text-4xl lg:text-6xl font-bold">
-          Bienvenue dans le monde du cacao
+      <div className="w-full lg:w-1/2 flex flex-col lg:items-start items-center justify-center text-white space-y-10 lg:space-y-6">
+        <h1 className="text-4xl lg:text-6xl font-bold lg:text-start text-center">
+          Digitalisation des processus de traçabilités
         </h1>
-        <p className="text-lg lg:text-xl">
+        <p className="text-lg lg:text-xl lg:text-start text-center">
           Découvrez la traçabilité du cacao, de la graine jusqu'au chocolat. Une
-          expérience unique de transparence et de qualité.
+          expérience unique de transparence et de qualité supérieure.
         </p>
         <Link href={Route.signUp}>
           <Button className="bg-primary text-white hover:opacity-90">
@@ -92,7 +92,7 @@ export const HeroTop: React.FC = () => {
       </div>
 
       {/* Pour les écrans plus petits */}
-      <div className="block lg:hidden w-full text-center text-white mt-8 bg-red-400">
+      {/* <div className="block lg:hidden w-full text-center text-white mt-8 bg-red-400">
         <h1 className="text-3xl font-bold">Bienvenue dans le monde du cacao</h1>
         <p className="text-base mt-4">
           Découvrez la traçabilité du cacao, de la graine jusqu'au chocolat.
@@ -102,7 +102,7 @@ export const HeroTop: React.FC = () => {
             Getting Started
           </Button>
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };

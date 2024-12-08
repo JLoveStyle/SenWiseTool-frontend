@@ -69,6 +69,7 @@ export default function Home({}: Props) {
 
   const { isSignedIn, user } = useUser();
   console.log("userId from clerk =>", user?.id);
+  // console.log('token\n =>', LOCAL_STORAGE.get('token'))
 
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket

@@ -15,13 +15,12 @@ import { NewTraining } from "@/components/atoms/training/new-trainer";
 import { trainingColumnTable } from "@/components/atoms/training/training-column-table";
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
+import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { TrainingProps } from "@/types/formData";
-import { db_get_trainings } from "@/utiles/services/training";
-import { useEffect, useState } from "react";
 import { DashboardStatPanelData } from "@/types/app-link";
-import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
+import { TrainingProps } from "@/types/formData";
+import { useEffect, useState } from "react";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
@@ -45,11 +44,17 @@ export default function Training() {
 
   const valueToDisplay = (args: TrainingType[]) => {
     const data: TrainingType[] = [];
+    if (!Array.isArray(args)) {
+      console.error("Invalid argument: args must be an array.");
+      return data; // Retourne un tableau vide si args n'est pas valide.
+    }
+
     for (const item of args) {
       if (item.code.length < 5) {
         data.push(item);
       }
     }
+
     return data?.map((training) => ({
       id: training.id,
       title: training.title,
@@ -73,7 +78,7 @@ export default function Training() {
     trigger_btn_label_form: "New Form",
     construct_form_btn_label: "Construct a form",
     existing_form_btn_label: "Use a pre-defined model",
-    new_form_title: "Create a project (AUTO EVALUATION): Project details",
+    new_form_title: "Create a new training project",
     construct_form_btn_icon: PenLine,
   };
 

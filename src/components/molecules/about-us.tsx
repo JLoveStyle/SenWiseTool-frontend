@@ -6,32 +6,29 @@ import { useEffect, useState } from "react";
 const slides = [
   {
     id: 1,
-    background: "/images/image1.png",
-    image:
-      "https://cdn-3.expansion.mx/dims4/default/18e94bd/2147483647/strip/true/crop/1000x693+0+0/resize/1800x1247!/format/webp/quality/80/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F95%2F21%2F09929bae47738bb2d85e16fd7a61%2Fcacao.jpg",
-    title: "Gestion du cacao",
+    background: "/images/image2.png",
+    image: "/images/image2.png",
+    title: "Gestion des processus",
     description:
-      "Optimisez la gestion des plantations pour une meilleure production et traçabilité. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla doloribus accusamus nihil, dolorum praesentium recusandae voluptatum repellat iure, eveniet necessitatibus quasi architecto itaque, sed enim minima. Illo distinctio ea fugit?",
+      "Impose de nouvelles règles pour l'importation du cacao en Europe, les entreprises doivent donc prouver que tous leurs produits sont indemnes de déforestation avant toute exportation. cela implique une traçabilité renforcée, des pratiques agricoles durables et le soutient aux communautés locales et ceci en apportant des preuves à chaque étapes du du processus",
     buttonText: "En savoir plus",
   },
   {
     id: 2,
-    background: "/images/image2.png",
-    image:
-      "https://cdn-3.expansion.mx/dims4/default/442781a/2147483647/strip/true/crop/1254x836+0+0/resize/1200x800!/format/webp/quality/60/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F5e%2F18%2F1b1b4a7747bfb130f5c39d6467e5%2Fcacao-semillas.jpg",
+    background: "/images/image1.png",
+    image: "/images/image1.png",
     title: "Traçabilité du cacao",
     description:
-      "Suivez chaque étape du processus, de la graine à la tablette. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla doloribus accusamus nihil, dolorum praesentium recusandae voluptatum repellat iure, eveniet necessitatibus quasi architecto itaque, sed enim minima. Illo distinctio ea fugit?",
+      "Les entreprises sont légalement tenu de prouver que leurs produits ne participe pas la dégradation et la destruction des forêts; pour y parvenir une traçabilité rigoureuse est indispensable de la plantation jusqu'à l'usine ainsi que son entreposage",
     buttonText: "Découvrir",
   },
   {
     id: 3,
     background: "/images/image3.png",
-    image:
-      "https://cdn-3.expansion.mx/dims4/default/394d05e/2147483647/strip/true/crop/1000x667+0+0/resize/1200x800!/format/webp/quality/60/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F27%2Ffe%2Fac694c0a492082d85e8154c8dd34%2Fcacao-planta.jpg",
+    image: "/images/image3.png",
     title: "Qualité améliorée",
     description:
-      "Apprenez à améliorer la qualité de votre production grâce à nos outils. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla doloribus accusamus nihil, dolorum praesentium recusandae voluptatum repellat iure, eveniet necessitatibus quasi architecto itaque, sed enim minima. Illo distinctio ea fugit?",
+      "la RDUE est un levier puissant pour l'amélioration de la qualité des produits consommés car créant autour de se produit un environnement favorable pour la mise en oeuvre des pratiques agricoles durable ainsi que la valorisation des ce produit",
     buttonText: "Commencer",
   },
 ];
