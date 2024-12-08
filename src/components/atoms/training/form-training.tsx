@@ -7,7 +7,7 @@ import { RxCross2, RxDotFilled } from "react-icons/rx";
 import { InputUI } from "../disign-system/form/input-ui";
 
 interface Props {
-  updatedFormData: (data: TrainingProps) => TrainingProps;
+  updatedFormData: (data: TrainingProps) => void;
   initData?: TrainingProps;
   errors: { [key: string]: any };
   isLoading: boolean;
