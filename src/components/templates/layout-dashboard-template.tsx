@@ -27,9 +27,10 @@ import Navbar from "../atoms/dashboard/navbar";
 import Sidebar from "../atoms/dashboard/sidebar";
 import StatPanel from "../atoms/dashboard/stat-panel";
 import FloatingButton from "../atoms/disign-system/floating-button";
+import { Footer } from "../molecules/footer";
 import { FeaturesMenu } from "../organisms/navigationMenu";
 import { Session } from "../templates/session";
-// import CloseSideNav from "./closeSideNav";
+
 interface Props {
   children: React.ReactNode;
   newForms?: NewFormProps[];
@@ -47,7 +48,6 @@ export default function LayoutDashboardTemplate({
   statPanelDatas,
   isCloseModal,
 }: Props) {
-  // BUILD AN OBJECT OF SAME TYPE AS APILINK. Bcz details is of type APILINK
   const campaigns = useCampaignStore((state) => state.campaigns).map(
     (comp) => ({
       label: comp.name,
@@ -55,12 +55,11 @@ export default function LayoutDashboardTemplate({
       baseUrl: "",
     })
   );
-  // sort campains
+
   const sortedCampains = campaigns.sort((a, b) =>
     a.label.localeCompare(b.label)
   );
 
-  // SIDEBAR OPTIONS
   const dashboardSidebarOptions: DashboardSidebarOption[] = [
     {
       option: {
@@ -135,29 +134,33 @@ export default function LayoutDashboardTemplate({
     useToggle({ initial: newForms || statPanelDatas ? true : false });
 
   return (
-    <Session
-      sessionStatus={HAS_COMPANY}
-    >
-      <div className="flex w-screen h-screen absolute overflow-hidden scrool-bar-hidden">
-        <div className="h-screen p-2 w-[90px] overflow-hidden bg-tertiary border-r-2 text-white">
+    <Session sessionStatus={HAS_COMPANY}>
+      <div className="flex w-screen h-screen overflow-hidden">
+        <div className="fixed top-0 left-0 h-full w-[90px] p-2 bg-tertiary border-r-2 text-white">
           <Sidebar options={dashboardSidebarOptions} />
         </div>
-        <div className="w-[calc(100vw-100px)]">
-          <Navbar title={title} />
-          <div className="flex"> 
+        <div className="ml-[90px] w-[calc(100vw-90px)]">
+          <div className="fixed top-0 left-[90px] w-[calc(100vw-90px)] z-10">
+            <Navbar title={title} />
+          </div>
+          <div className="mt-[64px] flex">
             {displayCloseSideNav && (
-              <StatPanel
-                isCloseModal={isCloseModal}
-                newForms={newForms}
-                statPanelDatas={statPanelDatas}
-                formParams={formParams}
-              />
+              <div className="fixed top-[64px] left-[90px] z-10">
+                <StatPanel
+                  isCloseModal={isCloseModal}
+                  newForms={newForms}
+                  statPanelDatas={statPanelDatas}
+                  formParams={formParams}
+                />
+              </div>
             )}
-            <div className="w-full ">
-              <div className="px-6 pt-1 pb-3 flex justify-center items-center">
+            <div className="w-full pl-[10px] pt-[64px]">
+              <div className="fixed top-[64px] left-[calc(400px)] z-10 w-full">
                 <FeaturesMenu />
               </div>
-              <div className="overflow-y-auto">{children}</div>
+              <div className="overflow-y-auto h-[calc(100vh-64px)] scrool-bar-hidden mb-10">
+                {children}
+              </div>
             </div>
           </div>
         </div>
@@ -165,12 +168,15 @@ export default function LayoutDashboardTemplate({
           <FloatingButton
             className="rounded-full bg-white text-black"
             positionLeft={70}
-            positionTop={400}
+            positionTop={480}
             action={toggleDisplayCloseSideNav}
           >
             <HiViewGridAdd />
           </FloatingButton>
         )}
+      </div>
+      <div className="w-[calc(100vw-90px)] ml-[90px]">
+        <Footer />
       </div>
     </Session>
   );
