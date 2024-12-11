@@ -10,6 +10,7 @@ type Props = {
   formParams?: dasboardFormParams;
   statPanelDatas?: DashboardStatPanelData[];
   isCloseModal?: boolean;
+  className?: string;
 };
 
 export default function StatPanel({
@@ -17,13 +18,22 @@ export default function StatPanel({
   statPanelDatas,
   formParams,
   isCloseModal,
+  className,
 }: Props) {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   return (
-    <div className="bg-[#f7f6f6] w-fit h-screen px-1 pt-2 shadow-lg">
+    <div
+      className={`bg-[#f7f6f6] w-fit h-screen px-1 pt-2 shadow-lg ${className}`}
+    >
       <div className="flex flex-col gap-3 p-2">
-        {newForms && <FormLayout isCloseModal={isCloseModal} forms={newForms} formParams={formParams} />}
+        {newForms && (
+          <FormLayout
+            isCloseModal={isCloseModal}
+            forms={newForms}
+            formParams={formParams}
+          />
+        )}
 
         {statPanelDatas && (
           <div className="flex flex-col gap-5 p-2">

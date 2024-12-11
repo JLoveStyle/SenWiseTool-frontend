@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaMapMarkerAlt } from "react-icons/fa";
+import { FaSkype, FaWhatsapp } from "react-icons/fa6";
 import { FiMoon, FiSun } from "react-icons/fi";
 
 export const Footer: React.FC = () => {
@@ -79,12 +80,12 @@ export const Footer: React.FC = () => {
               contact@senwisetool.com
             </a>
           </p>
-          <p className="text-sm">Téléphone : +237 623 456 789</p>
+          <p className="text-sm">Téléphone : +237 653 003 828</p>
 
           {/* Social Links */}
           <div className="flex space-x-4 mt-4">
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/SENIMA.Company"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xl hover:text-blue-500"
@@ -92,28 +93,28 @@ export const Footer: React.FC = () => {
               <FaFacebook />
             </a>
             <a
-              href="https://twitter.com"
+              href="https://join.skype.com/invite/cYVLcbeoUJ9J"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xl hover:text-blue-400"
             >
-              <FaTwitter />
+              <FaSkype />
             </a>
             <a
-              href="https://instagram.com"
+              href="https://wa.me/237653003828"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xl hover:text-pink-500"
             >
-              <FaInstagram />
+              <FaWhatsapp />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://maps.app.goo.gl/SjaeNgDAy9bxdNwz7"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xl hover:text-blue-600"
             >
-              <FaLinkedin />
+              <FaMapMarkerAlt />
             </a>
           </div>
         </div>

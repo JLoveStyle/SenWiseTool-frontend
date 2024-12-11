@@ -25,10 +25,10 @@ export function FeaturesMenu() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem className="">
-          <NavigationMenuTrigger className="">GESTION</NavigationMenuTrigger>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>GESTION</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[1000px] md:grid-cols-3 lg:w-[600px] ">
+            <ul className="grid w-full gap-3 p-4 sm:w-[80%] md:w-[1000px] md:grid-cols-3 lg:w-[600px] mx-auto">
               {optionsGestions.map((component) => (
                 <ListItem
                   key={component.title}
@@ -41,12 +41,12 @@ export function FeaturesMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="">
-          <NavigationMenuTrigger className=" uppercase">
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="uppercase">
             Traçabilité
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+            <ul className="grid w-full gap-3 p-4 sm:w-[80%] md:w-[500px] md:grid-cols-2 lg:w-[600px] mx-auto">
               {optionsTracabilité.map((component) => (
                 <ListItem
                   key={component.title}
@@ -59,12 +59,12 @@ export function FeaturesMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="">
-          <NavigationMenuTrigger className=" uppercase">
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="uppercase">
             Revenus et Responsabilités partagés
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+            <ul className="grid w-full gap-3 p-4 sm:w-[80%] md:w-[500px] md:grid-cols-2 lg:w-[600px] mx-auto">
               {optionsRevenu.map((component) => (
                 <ListItem
                   key={component.title}
@@ -77,21 +77,21 @@ export function FeaturesMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="">
+        <NavigationMenuItem>
           <Link href={Route.agriculture} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               AGRICULTURE
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem className="">
+        <NavigationMenuItem>
           <Link href={Route.social} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               SOCIAL
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem className="">
+        <NavigationMenuItem>
           <Link href={Route.environment} legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               ENVIRONNEMENT
