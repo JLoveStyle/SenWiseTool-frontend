@@ -157,11 +157,118 @@ function getRestOfStringFromLast(str: string, char: string) {
   return '';
 }
 
+
+
+const generateExcel = (data: ExcellDataType[]): void => {
+  const sheetData: any[] = [];
+
+  let requirementHead: string[] = []
+  let nonConformityRecom: string[] = []
+  for (const item of data[0].requirements) {
+    requirementHead.push(Object.keys(item) as unknown as string)
+    console.log(Object.values(item))
+    console.log()
+  }
+
+  const longestRecomendation: { comment: string, deadline: string, req_number: string }[] = []
+
+  // for (let i = 0; i<data.length; i++) {
+  //   if (data[i])
+  // }
+
+  const flat = data[0].requirements.map((item: { status: string, req_number: string, comment: string }) => Object.values(item))
+
+  console.log('flat Data test', data[0].requirements.map((item: { status: string, req_number: string, comment: string }) => Object.values(item)).flat())
+
+  console.log("requirementHead\n =>", requirementHead.flat())
+
+  // Adding headers to the sheet
+  const headers = [
+    'Farmer Name',
+    'Farmer ID',
+    'Farmer Contact',
+    'Inspection Date',
+    'Inspector Contact',
+    'Inspector Name',
+    'Farmer Photos',
+    'Certification Year',
+    'Pesticide Quantity (kg/ha)',
+    'Pesticide Used',
+    'Village',
+    'Weed Application',
+    'Weed Application Quantity',
+    'Agent Signature',
+    'Farmer Signature',
+    'Next Year Recommendations',
+    'Non-Conformity Comments',
+    'Non-Conformity Deadlines',
+    'Non-Conformity Requirement Numbers',
+    // 'Requirement Comments',
+    // 'Requirement Status',
+    // 'Requirement Numbers',
+  ];
+
+  let finalHeader = headers.concat(requirementHead.flat())
+  console.log("finalHeader\n", finalHeader)
+
+  // Add data rows
+  data.forEach((item) => {
+    const row: any[] = [
+      item.metaData.farmer_name,
+      item.metaData.farmer_ID_card_number,
+      item.metaData.farmer_contact,
+      item.metaData.inspection_date,
+      item.metaData.inspector_contact,
+      item.metaData.inspector_name,
+      item.metaData.farmer_photos.join(', '), // Concatenate multiple photos
+      item.metaData.certification_year,
+      item.metaData.pesticide_quantity,
+      item.metaData.pesticide_used,
+      item.metaData.village,
+      item.metaData.weed_application,
+      item.metaData.weed_application_quantity,
+      item.inspectionConclusions.agent_signature,
+      item.inspectionConclusions.farmer_signature,
+      item.inspectionConclusions.nextYearRecom,
+      item.nonConformityRecom.map((nc: { comment: string; }) => nc.comment).join(', '), // Concatenate comments
+      item.nonConformityRecom.map((nc: { deadline: string }) => nc.deadline).join(', '), // Concatenate deadlines
+      item.nonConformityRecom.map((nc: { req_number: string }) => nc.req_number).join(', '), // Concatenate requirement numbers
+      item.requirements.map((item: { status: string, req_number: string, comment: string }) => Object.values(item)).flat().map((req) => req)
+
+      // item.requirements.map((req: { comment: string; }) => req.comment).join(', '), // Concatenate comments
+      // item.requirements.map((req: { status: string; }) => req.status).join(', '), // Concatenate statuses
+      // item.requirements.map((req: { req_number: string; }) => req.req_number).join(', ') // Concatenate requirement numbers
+    ];
+
+    sheetData.push(row);
+  });
+
+  // Create worksheet from data
+  const ws = XLSX.utils.aoa_to_sheet([finalHeader, ...sheetData]);
+
+  // Create workbook from worksheet
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Inspection Data');
+
+  // Write Excel file and trigger download
+  XLSX.writeFile(wb, 'Inspection_Data.xlsx');
+};
+
+
+
 // SECOND FUNCTION FOR EXCEL SHEET
 export function inspectionDataAsCsv(incomingData: InspectionDataPops[]) {
 
+  
+}
+
+
+// DOWNLOAD ALL INSPECTION DATA OF SINGLE PROJECT
+export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: InspectionDataPops[]) {
+
+  // FIRST CSV
   // flatten data and structure it appropriately
-  const formatedData: ExcellDataType[] = []
+  let formatedData: ExcellDataType[] = [] 
 
   let record: ExcellDataType = {
     inspectionConclusions: {},
@@ -186,107 +293,10 @@ export function inspectionDataAsCsv(incomingData: InspectionDataPops[]) {
     }
   }
 
-  const generateExcel = (data: ExcellDataType[]): void => {
-    const sheetData: any[] = [];
-
-    let requirementHead: string[] = []
-    let nonConformityRecom: string[] = []
-    for (const item of data[0].requirements) {
-      requirementHead.push(Object.keys(item) as unknown as string)
-      console.log(Object.values(item))
-      console.log()
-    }
-    
-    const longestRecomendation: { comment: string, deadline: string, req_number: string }[] = []
-
-    // for (let i = 0; i<data.length; i++) {
-    //   if (data[i])
-    // }
-    
-    const flat =  data[0].requirements.map((item: {status: string, req_number: string, comment: string}) => Object.values(item))
-
-    console.log('flat Data test',data[0].requirements.map((item: {status: string, req_number: string, comment: string}) => Object.values(item)).flat())
-
-    console.log("requirementHead\n =>", requirementHead.flat())
-
-    // Adding headers to the sheet
-    const headers = [
-      'Farmer Name',
-      'Farmer ID',
-      'Farmer Contact',
-      'Inspection Date',
-      'Inspector Contact',
-      'Inspector Name',
-      'Farmer Photos',
-      'Certification Year',
-      'Pesticide Quantity (kg/ha)',
-      'Pesticide Used',
-      'Village',
-      'Weed Application',
-      'Weed Application Quantity',
-      'Agent Signature',
-      'Farmer Signature',
-      'Next Year Recommendations',
-      'Non-Conformity Comments',
-      'Non-Conformity Deadlines',
-      'Non-Conformity Requirement Numbers',
-      // 'Requirement Comments',
-      // 'Requirement Status',
-      // 'Requirement Numbers',
-    ];
-
-    let finalHeader = headers.concat(requirementHead.flat())
-    console.log("finalHeader\n", finalHeader)
-
-    // Add data rows
-    data.forEach((item) => {
-      const row: any[] = [
-        item.metaData.farmer_name,
-        item.metaData.farmer_ID_card_number,
-        item.metaData.farmer_contact,
-        item.metaData.inspection_date,
-        item.metaData.inspector_contact,
-        item.metaData.inspector_name,
-        item.metaData.farmer_photos.join(', '), // Concatenate multiple photos
-        item.metaData.certification_year,
-        item.metaData.pesticide_quantity,
-        item.metaData.pesticide_used,
-        item.metaData.village,
-        item.metaData.weed_application,
-        item.metaData.weed_application_quantity,
-        item.inspectionConclusions.agent_signature,
-        item.inspectionConclusions.farmer_signature,
-        item.inspectionConclusions.nextYearRecom,
-        item.nonConformityRecom.map((nc: { comment: string; }) => nc.comment).join(', '), // Concatenate comments
-        item.nonConformityRecom.map((nc: { deadline: string }) => nc.deadline).join(', '), // Concatenate deadlines
-        item.nonConformityRecom.map((nc: { req_number: string }) => nc.req_number).join(', '), // Concatenate requirement numbers
-        item.requirements.map((item: {status: string, req_number: string, comment: string}) => Object.values(item)).flat().map((req) => req)
-        
-        // item.requirements.map((req: { comment: string; }) => req.comment).join(', '), // Concatenate comments
-        // item.requirements.map((req: { status: string; }) => req.status).join(', '), // Concatenate statuses
-        // item.requirements.map((req: { req_number: string; }) => req.req_number).join(', ') // Concatenate requirement numbers
-      ];
-
-      sheetData.push(row);
-    });
-
-    // Create worksheet from data
-    const ws = XLSX.utils.aoa_to_sheet([finalHeader, ...sheetData]);
-
-    // Create workbook from worksheet
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Inspection Data');
-
-    // Write Excel file and trigger download
-    XLSX.writeFile(wb, 'Inspection_Data.xlsx');
-  };
-
   // Trigger Excel file generation
   generateExcel(formatedData);
-}
 
-// DOWNLOAD ALL INSPECTION DATA OF SINGLE PROJECT
-export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: InspectionDataPops[]) {
+
 
   let data = []
   for (const item of incomingData) {
@@ -304,32 +314,6 @@ export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: I
     3. Non-Conformity Recommendations: Contains comment, deadline, and req_number.
     4. Requirements: Contains status, comment, and req_number.
   */
-
-  // flatten data and structure it appropriately
-  const formatedData: ExcellDataType[] = []
-
-  let record: ExcellDataType = {
-    inspectionConclusions: {},
-    metaData: {},
-    nonConformityRecom: [],
-    requirements: []
-  }
-
-  for (const item of incomingData) {
-    record["inspectionConclusions"] = item.project_data.project_data.inspectionConclusions.metadata
-    record["metaData"] = item.project_data.project_data.metaData
-    record["nonConformityRecom"] = item.project_data.project_data.inspectionConclusions.nonConformityRecom
-    record["requirements"] = item.project_data.project_data.requirements
-
-    formatedData.push(record)
-
-    record = {
-      inspectionConclusions: {},
-      metaData: {},
-      nonConformityRecom: [],
-      requirements: []
-    }
-  }
 
   console.log("formatedData", formatedData)
 
