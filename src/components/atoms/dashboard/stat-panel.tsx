@@ -20,7 +20,6 @@ export default function StatPanel({
   isCloseModal,
   className,
 }: Props) {
-  const [openModal, setOpenModal] = useState<boolean>(false);
 
   return (
     <div

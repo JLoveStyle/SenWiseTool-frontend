@@ -3,7 +3,6 @@
 import { Route } from "@/lib/route";
 
 import { Printer, Trash2 } from "lucide-react";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 
 import { DataTable } from "@/components/molecules/projectsTable";
@@ -29,13 +28,9 @@ export default function FactoryAccompaniementSheet() {
   const [marketSelected, setmarketSelected] = useState<
     FactoryAccompaniementSheetDisplayProps[]
   >([]);
-  const [errors, setErrors] = useState({});
-
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
   });
-  const projectCodeSeparator = " ";
-
   const closeDialog = () => {
     toggleOpenModel();
   };
@@ -116,16 +111,6 @@ export default function FactoryAccompaniementSheet() {
       }
     };
 
-    // const fetchData = async () => {
-    // const result = await db_get_markets()
-    // .then((result) => {
-    // console.log("data market list: ", result);
-
-    // setIsLoading(false);
-    // })
-    // .catch((err) => console.error(err));
-    // };
-
     fetchData();
   }, []);
 
@@ -149,9 +134,9 @@ export default function FactoryAccompaniementSheet() {
   }, [marketDatas]);
 
   const formParams = {
-    trigger_btn_label_form: "New Market",
-    construct_form_btn_label: "New market form",
-    existing_form_btn_label: "Use Existing Form",
+    trigger_btn_label_form: "Nouveau marché",
+    construct_form_btn_label: "Nouveau formulaire",
+    existing_form_btn_label: "Utiliser un formulaire existant",
     new_form_title: "Définir un marché",
     construct_form_btn_icon: FaHandHoldingDollar,
   };

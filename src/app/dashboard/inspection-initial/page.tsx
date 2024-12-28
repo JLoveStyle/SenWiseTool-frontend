@@ -76,7 +76,7 @@ export default function Home({}: Props) {
   const stateInspection: DashboardStatPanelData[] = [
     {
       structure: {
-        label: "Deployed",
+        label: "Deployé",
         baseUrl: "",
         icon: Rocket,
       },
@@ -86,7 +86,7 @@ export default function Home({}: Props) {
     },
     {
       structure: {
-        label: "Draft",
+        label: "Brouillon",
         baseUrl: "",
         icon: FilePenLine,
       },
@@ -96,7 +96,7 @@ export default function Home({}: Props) {
     },
     {
       structure: {
-        label: "Archive",
+        label: "Archivé",
         baseUrl: "",
         icon: Archive,
       },
@@ -114,7 +114,7 @@ export default function Home({}: Props) {
   return (
 
     <LayoutDashboardTemplate
-      title="INITIAL INSPECTION"
+      title="INSPECTION INITIAL"
       formParams={formParams}
       statPanelDatas={stateInspection}
       newForms={[

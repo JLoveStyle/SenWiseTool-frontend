@@ -41,14 +41,14 @@ export default function DisplayInspectionAnalysis({ inspectionData, totalQuestio
 
   return (
     <>
-      <h1 className="font-bold text-center pt-2">Percentages per chapters</h1>
+      <h1 className="font-bold text-center pt-2">Pourcentage par chapitre</h1>
       <div className="flex gap-4 justify-evenly ">
         <div className="">
           <h1
             className="font-semibold py-3 "
             onClick={() => pourcentageGeneral()}
           >
-            Chapter 1
+            Chaptre 1
           </h1>
           <ul>
             <li className="list-disc font-bold">
@@ -83,7 +83,7 @@ export default function DisplayInspectionAnalysis({ inspectionData, totalQuestio
             </li>
           </ul>
 
-          <h1 className="font-semibold py-3">Chapter 2</h1>
+          <h1 className="font-semibold py-3">Chaptre 2</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -116,7 +116,7 @@ export default function DisplayInspectionAnalysis({ inspectionData, totalQuestio
               %
             </li>
           </ul>
-          <h1 className="font-semibold py-3">Chapter 3</h1>
+          <h1 className="font-semibold py-3">Chaptre 3</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -151,7 +151,7 @@ export default function DisplayInspectionAnalysis({ inspectionData, totalQuestio
           </ul>
         </div>
         <div>
-          <h1 className="font-semibold py-3 ">Chapter 4</h1>
+          <h1 className="font-semibold py-3 ">Chaptre 4</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -184,7 +184,7 @@ export default function DisplayInspectionAnalysis({ inspectionData, totalQuestio
               %
             </li>
           </ul>
-          <h1 className="font-semibold py-3 ">Chapter 5</h1>
+          <h1 className="font-semibold py-3 ">Chaptre 5</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}
@@ -217,7 +217,7 @@ export default function DisplayInspectionAnalysis({ inspectionData, totalQuestio
               %
             </li>
           </ul>
-          <h1 className="font-semibold py-3 ">Chapter 6</h1>
+          <h1 className="font-semibold py-3 ">Chaptre 6</h1>
           <ul className="">
             <li className="list-disc font-bold">
               C:{" "}

@@ -68,8 +68,6 @@ export default function Home({}: Props) {
   });
 
   const { isSignedIn, user } = useUser();
-  console.log("userId from clerk =>", user?.id);
-  // console.log('token\n =>', LOCAL_STORAGE.get('token'))
 
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
@@ -120,14 +118,6 @@ export default function Home({}: Props) {
       setHasAgree((prev) => !prev);
       return;
     }
-
-    // Company email and personal email must not be the same
-    // if (formData.headOfficeEmail === user?.primaryEmailAddress?.emailAddress) {
-    //   toast.warning("company email must be different from Head office email", {
-    //     autoClose: 4000,
-    //   });
-    //   return;
-    // }
 
     // Head office email and company email must not be the same
     if (formData.headOfficeEmail === formData.companyEmail) {

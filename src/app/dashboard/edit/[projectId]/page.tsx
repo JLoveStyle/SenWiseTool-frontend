@@ -85,7 +85,6 @@ export default function page(props: { params: Props }) {
       [event.target.name]: event.target.value,
     };
     setProjectData(data);
-    console.log("pro =>", projectData);
   };
 
   async function handleProjectSave() {
@@ -141,7 +140,6 @@ export default function page(props: { params: Props }) {
       requirements: constructedRequirements,
     };
     LOCAL_STORAGE.save("finalJson", finalJson);
-    console.log("finalJson =>", finalJson);
 
     // router.push(Route.editProject + `/${projectId}/pdf`);
 
@@ -164,10 +162,9 @@ export default function page(props: { params: Props }) {
       projectId
     )
       .then((response) => {
-        console.log("here is the response", response);
 
         if (response.status <= 205) {
-          toast.success("Project saved", {
+          toast.success("Projet enregisté", {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -212,7 +209,7 @@ export default function page(props: { params: Props }) {
         </Link>
         <div className="flex my-auto md:w-[80%] items-center gap-5">
           <label htmlFor="projectTitle" className="font-semibold">
-            PROJECT TITLE
+            TITRE PROJET
           </label>
           <div className="flex-1">
             <input
@@ -248,10 +245,10 @@ export default function page(props: { params: Props }) {
                   onClick={discartProjectForm}
                   className="text-red-500 bg-white border border-red-500 hover:bg-[#ef44441e]"
                 >
-                  Discart
+                  Annuler
                 </Button>
                 <Button onClick={handleProjectSave} className="px-6">
-                  Draft
+                  Brouillon
                 </Button>
               </div>
             </DialogContent>
@@ -260,7 +257,7 @@ export default function page(props: { params: Props }) {
       </nav>
       <div className="flex justify-between px-9 bg-[#f7f6f6] py-4 w-full">
         <em className=" ">
-          Click on <strong>Form metadata</strong> to select form metadata
+          Cliquer sur <strong>Form metadata</strong> pour selectionner les metadonnées du projet
         </em>
         <div className="flex justify-between gap-10 ">
           <div
@@ -268,7 +265,7 @@ export default function page(props: { params: Props }) {
             className="flex gap-4 hover:cursor-pointer "
           >
             <Pencil />
-            <p className="font-semibold">Edit project</p>
+            <p className="font-semibold">Editer projet</p>
           </div>
           <Dialog onOpenChange={setOpenEditForm} open={openEditForm}>
             <DialogContent>
@@ -300,10 +297,10 @@ export default function page(props: { params: Props }) {
             <SheetContent>
               <SheetHeader>
                 <SheetTitle className="uppercase font-bold">
-                  Form style
+                  Style de formulaire
                 </SheetTitle>
                 <SheetDescription className="py-3">
-                  Choose the metadata of your project form.
+                  Choisir les metadonnées du formulaire de votre projet.
                 </SheetDescription>
               </SheetHeader>
               <AddFormFromLibrary isSubmitting={openSheet} />

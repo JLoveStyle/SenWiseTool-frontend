@@ -34,10 +34,8 @@ export default function ReceiptDetails(props: { params: TProps }) {
 
   // fetch single market
   async function fetchSingleMarket(marketId: string) {
-    console.log("fetching single market", marketId);
     await fetchApiData(Route.marketRequest, marketId)
       .then((response) => {
-        console.log("marketttttt :", response);
         if (response.status === 200) {
           setCurrentMarket(response.data);
           setIsLoading(false);
@@ -62,7 +60,6 @@ export default function ReceiptDetails(props: { params: TProps }) {
     setIsDeleting((prev) => !prev);
     await mutateDelApiData(Route.marketRequest, currentMarket?.id)
       .then((response: any) => {
-        console.log("response of delete", response);
         if (response.status === 204) {
           toast.success("Market deleted");
           setIsDeleting((prev) => !prev);
@@ -85,7 +82,6 @@ export default function ReceiptDetails(props: { params: TProps }) {
     )
       .then((response) => {
         setIsDeleting((prev) => !prev);
-        console.log(response);
         if (response.status === 200) {
           toast.success("Market closed");
           setCloseMarket((prev) => !prev);
@@ -186,18 +182,18 @@ export default function ReceiptDetails(props: { params: TProps }) {
                   value={currentMarket.campaign_id}
                 />
                 <DetailCard
-                  label="Price of the day"
+                  label="Prix du jour"
                   value={`${currentMarket.price_of_theday} XAF`}
                 />
                 <DetailCard label="Supplier" value={currentMarket.supplier} />
                 <DetailCard
-                  label="Start date"
+                  label="Date de debut"
                   value={new Date(
                     currentMarket.start_date
                   ).toLocaleDateString()}
                 />
                 <DetailCard
-                  label="End date"
+                  label="Date de fin"
                   value={new Date(currentMarket.end_date).toLocaleDateString()}
                 />
                 <DetailCard
@@ -215,23 +211,23 @@ export default function ReceiptDetails(props: { params: TProps }) {
                     className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6"
                   >
                     <DetailCard
-                      label="Driver name"
+                      label="Nom du chauffeur"
                       value={`${item.driver_name}`}
                     />
                     <DetailCard
-                      label="Car number"
+                      label="N° d'immatriculation du vehicule"
                       value={`${item.vehicule_immatriculation_number}`}
                     />
                     <DetailCard
-                      label="Quantity"
+                      label="Quantité"
                       value={item?.quantity ? `${item.quantity}` : ""}
                     />
                     <DetailCard
-                      label="Humidity"
+                      label="Humidité"
                       value={item?.humidity ? `${item.humidity}` : ""}
                     />
                     <DetailCard
-                      label="Net weigth in thones"
+                      label="Poid net en thone"
                       value={
                         item?.net_weight_declared_in_Ton
                           ? `${item.net_weight_declared_in_Ton}`
@@ -239,7 +235,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
                       }
                     />
                     <DetailCard
-                      label="Humidity level of product"
+                      label="Niveau d'humidité du produit"
                       value={
                         item.humidity_level_of_product
                           ? `${item.humidity_level_of_product}`
@@ -247,7 +243,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
                       }
                     />
                     <DetailCard
-                      label="Total quantity in bags"
+                      label="Quantité total en sacs"
                       value={
                         item.total_quantity_in_bags
                           ? `${item.total_quantity_in_bags}`
@@ -255,11 +251,11 @@ export default function ReceiptDetails(props: { params: TProps }) {
                       }
                     />
                     <DetailCard
-                      label="Receiver name"
+                      label="Nom du receveur"
                       value={`${item.receiver_name}`}
                     />
                     <div className="bg-gray-50 p-4 rounded-md">
-                      <p className="text-sm text-gray-600">Diver signature</p>
+                      <p className="text-sm text-gray-600">Signature du chauffeur</p>
                       <div className="text-xl font-bold text-gray-800">
                         <FilePreview
                           // url={item.driver_signature[0]}
@@ -270,7 +266,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
                       </div>
                     </div>
                     <div className="bg-gray-50 p-4 rounded-md">
-                      <p className="text-sm text-gray-600">Sender signature</p>
+                      <p className="text-sm text-gray-600">Signature de l'envoyeur</p>
                       <div className="text-xl font-bold text-gray-800">
                         <FilePreview
                           // url={item.sender_signature[0]}
@@ -298,7 +294,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
         </div>
 
         <div className="bg-slate-100 w-1/3 relative max-h-[480px] overflow-y-auto">
-          <div className="p-3 text-sm text-gray-600">Metadata</div>
+          <div className="p-3 text-sm text-gray-600">Meta donnée</div>
           <hr />
           <div className="p-3 text-xs flex flex-col gap-5">
             <div className="flex flex-wrap gap-2">
@@ -354,7 +350,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
                   className="flex gap-1 items-center bg-blue-500 hover:bg-blue-400"
                   action={() => togglePopup(currentMarket.sale_slip)}
                 >
-                  Sale slip
+                  Bordereau de vente
                 </ButtonUI>
               )}
               {currentMarket?.store_entry_voucher && (
@@ -363,7 +359,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
                   className="flex gap-1 items-center bg-blue-500 hover:bg-blue-400"
                   action={() => togglePopup(currentMarket.store_entry_voucher)}
                 >
-                  Store entry voucher
+                  Bon d'entrer au magazin
                 </ButtonUI>
               )}
             </div>

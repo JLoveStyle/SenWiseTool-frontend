@@ -78,14 +78,14 @@ export default function LayoutDashboardTemplate({
     },
     {
       option: {
-        label: "Markets",
+        label: "Marchés",
         baseUrl: Route.markets,
         icon: FaHandHoldingUsd,
       },
     },
     {
       option: {
-        label: "Share",
+        label: "Partager",
         baseUrl: "",
         icon: IoMdShareAlt,
       },
@@ -175,9 +175,9 @@ export default function LayoutDashboardTemplate({
           </FloatingButton>
         )}
       </div>
-      <div className="w-[calc(100vw-90px)] ml-[90px]">
+      {/* <div className="w-[calc(100vw-90px)] ml-[90px]">
         <Footer />
-      </div>
+      </div> */}
     </Session>
   );
 }

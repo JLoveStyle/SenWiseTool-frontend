@@ -18,15 +18,15 @@ export default function Inspectionconclusion({ conclusionData }: Props) {
   return (
     <div className="">
       <h1 className="font-semibold text-center">
-        Non conformity recommendations
+        Recommendations de non conformité
       </h1>
       <div className="">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>N°</TableHead>
-              <TableHead>Comment</TableHead>
-              <TableHead>Deadline</TableHead>
+              <TableHead>Commentaire</TableHead>
+              <TableHead>Delai</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -43,21 +43,21 @@ export default function Inspectionconclusion({ conclusionData }: Props) {
       </div>
       <div className="py-4">
         <div className="py-4">
-          <span>Next year recommendation: </span>
+          <span>Recommendation pour l'année prochaine: </span>
           <p className="font-semibold">
             {conclusionData?.metadata.nextYearRecom ?? ""}
           </p>
         </div>
         <div className="flex justify-between">
           <div className="">
-            <p className="font-semibold pb-4">Agent signature</p>
+            <p className="font-semibold pb-4">Signature agent</p>
             <img
               src={conclusionData.metadata.agent_signature}
               alt="agent_signature"
             />
           </div>
           <div className="">
-            <p className="font-semibold pb-4">Farmer signature</p>
+            <p className="font-semibold pb-4">Signature planteur</p>
             <img
               src={conclusionData.metadata.farmer_signature}
               alt="agent_signature"

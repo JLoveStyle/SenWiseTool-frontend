@@ -123,7 +123,7 @@ export default function ProjectForm({ projectObject }: Props) {
           )}
         </div>
         <h1 className="font-bold text-2xl text-center py-8 ">
-          Project title: {projectObject?.title}
+          Titre: {projectObject?.title}
         </h1>
 
         {/* METADATA */}

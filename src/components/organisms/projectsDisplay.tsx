@@ -43,7 +43,7 @@ export default function ProjectDisplay({
   return (
     <div>
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Projects</h1>
+        <h1 className="text-xl font-semibold">Projets</h1>
         <div className="flex gap-4 text-gray-500">
           <CustomHoverCard content="Share project">
             <UserPlus

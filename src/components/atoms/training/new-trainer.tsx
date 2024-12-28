@@ -59,7 +59,7 @@ export function NewTraining() {
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
-          toast.success("Training created");
+          toast.success("Formation créer, Rafraichir");
           // close modal
           setIsLoading(false);
           toggleOpenModal();
@@ -90,18 +90,6 @@ export function NewTraining() {
       company_id: company?.id,
       modules: formData.modules.map((item) => item.value),
     };
-
-    // const serverResponse = await db_create_training(dataToDB);
-
-    // console.log("daaaaata:::::::::", serverResponse);
-
-    // if (serverResponse.status === "error") {
-    //   toast.error("Updating training failed");
-    //   setIsLoading(false);
-    //   return;
-    // }
-
-    // toast.success("Your project are created successfull");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -137,7 +125,7 @@ export function NewTraining() {
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >
-        Create
+        Créer
       </ButtonUI>
     </form>
   );

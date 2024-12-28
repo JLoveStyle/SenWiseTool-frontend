@@ -103,9 +103,9 @@ export default function social() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "New social",
-    construct_form_btn_label: "New social form",
-    existing_form_btn_label: "Use Existing Form",
+    trigger_btn_label_form: "Nouveau",
+    construct_form_btn_label: "Nouveau formulaire",
+    existing_form_btn_label: "Utiliser un formulaire existant",
     new_form_title: "Créer une activité sociale",
     construct_form_btn_icon: FaHandHoldingDollar,
   };
@@ -156,10 +156,10 @@ export default function social() {
         <div className="flex gap-4 text-gray-500">
           {socualSelected.length !== 0 && (
             <>
-              <CustomHoverCard content="archive project">
+              <CustomHoverCard content="Archiver">
                 <Archive className="hover:cursor-pointer" />
               </CustomHoverCard>
-              <CustomHoverCard content="Delete Accounts">
+              <CustomHoverCard content="Supprimer">
                 <Trash2
                   className="hover:cursor-pointer"
                   onClick={deleteSocialAccounts}

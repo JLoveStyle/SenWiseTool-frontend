@@ -21,18 +21,18 @@ export const businessActivity: string[] = [
 // MAPPING DATA COLUMNS
 export const MappingTableColumns: string[] = [
   "No",
-  "Farmer name",
-  "Farmer status",
-  "Farmer contact",
-  "ID card number",
-  "Farm creation date",
+  "Nom planteur",
+  "Statut planteur",
+  "Contact planteur",
+  "N° CNI",
+  "Date de creation de la plantation",
   "Village",
-  "Mapper name",
-  "Mapping date",
-  "Farm surface area",
-  "Farm picture",
-  "Farmer picture",
-  "Coordinates",
+  "Nom du mappeur",
+  "Date de mappage",
+  "Superficie",
+  "Photo plantation",
+  "Photo de planteur",
+  "Coordonnées",
 ];
 
 // META DATA OPTIONS
@@ -120,19 +120,19 @@ export const optionsGestions: {
   description: string;
 }[] = [
   {
-    title: "Initial inspection",
+    title: "Inspection Initial",
     href: Route.inspectionInitial,
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
   },
   {
-    title: "Internal inspection",
+    title: "Inspection Interne",
     href: Route.inspectionInterne,
     description:
       "For sighted users to preview content available behind a link.",
   },
   {
-    title: "Auto evaluation of group",
+    title: "Auto evaluation du groupe",
     href: Route.autoEvaluation,
     description:
       "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
@@ -143,25 +143,25 @@ export const optionsGestions: {
     description: "Visually or semantically separates content.",
   },
   {
-    title: "Evalution risks tools",
+    title: "Outil d'évaluation des risques",
     href: Route.riskEvaluation,
     description:
       "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
   },
   {
-    title: "Management plan",
+    title: "Plan de management",
     href: Route.managementPlan,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Maps",
+    title: "Cartes",
     href: Route.map,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Reclamation mechanism",
+    title: "Mechanisme de reclamation",
     href: Route.reclamationMecanism,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
@@ -173,13 +173,13 @@ export const optionsGestions: {
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "Training",
+    title: "Formation",
     href: Route.trainingProject,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
   {
-    title: "List of farmers",
+    title: "Liste des planteurs",
     href: Route.listOfFarmers,
     description:
       "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
@@ -303,22 +303,22 @@ export const optionsRevenu: {
 
 // THESE ARE OPTIONS OF TABLEHEAD IN INSPECTION INITIAL UNDER 'GESTION'
 export const tableHead: string[] = [
-  "Project name",
-  "Status",
-  "Creator",
-  "Last update",
-  "Deployment date",
-  "Start date",
+  "Nom projet",
+  "Statut",
+  "Createur",
+  "Dernière mise à jour",
+  "Date de deployment",
+  "Date de debut",
 ];
 
 // DIFFERENTS CHAMPTERS
 export const chapters: string[] = [
-  "Chapter 1",
-  "Chapter 2",
-  "Chapter 3",
-  "Chapter 4",
-  "Chapter 5",
-  "Chapter 6",
+  "Chapitre 1",
+  "Chapitre 2",
+  "Chapitre 3",
+  "Chapitre 4",
+  "Chapitre 5",
+  "Chapitre 6",
 ];
 
 export const requirements = allRequirements;

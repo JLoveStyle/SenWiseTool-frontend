@@ -74,7 +74,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
   }
 
   useEffect(() => {
-    fetchAllInpectionData("cm3lgtlxd000b124xckbu2muw");
+    fetchAllInpectionData(project_id);
   }, [project_id]);
 
   return (
@@ -87,7 +87,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
         <div className="bg-[#f3f4f6] h-full md:w-full">
           <div className="flex">
             <h2 className="text-center py-6 flex-1">
-              Project title:{" "}
+              Titre projet:{" "}
               <span className=" font-semibold">{projectName}</span>
             </h2>
             <Button
@@ -104,18 +104,18 @@ export default function InspectionData({ project_id, projectName }: Props) {
                 <thead>
                   <tr>
                     <th className="p-2  border">N°</th>
-                    <th className="p-2  border">Farmer name</th>
-                    <th className="p-2  border">Farmer ID card number</th>
+                    <th className="p-2  border">Nom planteur</th>
+                    <th className="p-2  border">CNI</th>
                     <th className="p-2  border">Village</th>
-                    <th className="p-2  border">Agent name</th>
-                    <th className="p-2  border">Agent contact</th>
-                    <th className="p-2  border">Inspection date</th>
-                    <th className="p-2  border">Certification year</th>
+                    <th className="p-2  border">Nom agent</th>
+                    <th className="p-2  border">Contact agent</th>
+                    <th className="p-2  border">Date inspection</th>
+                    <th className="p-2  border">Année de certification</th>
                     <th className="p-2  border">Weed application</th>
                     <th className="p-2  border">
-                      Weed application quantity (kg/ha)
+                      Qté angrais (kg/ha)
                     </th>
-                    <th className="p-2  border">Farmer picture</th>
+                    <th className="p-2  border">Photo planteur</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -196,7 +196,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
                 className="font-bold py-2 text-center border-b"
                 onClick={() => overallStatistics(data)}
               >
-                Overall statistics
+                Statistiques global
               </h1>
               <DisplayInspectionAnalysis
                 totalQuestions={
@@ -230,7 +230,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center mx-auto">No Data collected yet</div>
+        <div className="flex justify-center mx-auto">Aucune donnée collectée</div>
       )}
     </div>
   );

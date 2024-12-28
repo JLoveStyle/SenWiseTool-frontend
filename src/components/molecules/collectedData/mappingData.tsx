@@ -47,9 +47,7 @@ export default function MappingData({ project_id }: Props) {
     let mapData = [];
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
-          console.log("mapping data", response.data);
           for (const data of response.data) {
             mapData.push(data.project_data.project_data);
           }
@@ -60,7 +58,7 @@ export default function MappingData({ project_id }: Props) {
           // setInspectionDatas(response.data);
         } else if (response.status === 404) {
           setIsLoading(false);
-          toast.warning("No mapping data yet");
+          toast.warning("Aucune donnée trouvée");
           return;
         } else {
           setIsLoading(false);
@@ -84,7 +82,7 @@ export default function MappingData({ project_id }: Props) {
   return (
     <div className=" p-6 md:w-full h-screen">
       <h1 className="text-center pb-5 font-semibold text-lg flex justify-center">
-        Data collected from field
+        Données collectée sur le terrain
       </h1>
       {isLoading ? (
         <div className="flex items-center justify-center">
@@ -249,7 +247,7 @@ export default function MappingData({ project_id }: Props) {
         </>
       ) : (
         <p className="flex justify-center mx-auto md:pt-30">
-          No Data collected yet
+          Aucune donnée collectée
         </p>
       )}
     </div>

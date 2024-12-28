@@ -31,7 +31,7 @@ export default function Home(props: {params: Props}) {
   }, [Route.projects, id]);
 
   return (
-    <LayoutDashboardTemplate title="Project details">
+    <LayoutDashboardTemplate title="Détails du projet">
       <ProjectDetails
       isDataLoading={isLoading}
         projectDetails={projectData as ProjectType}

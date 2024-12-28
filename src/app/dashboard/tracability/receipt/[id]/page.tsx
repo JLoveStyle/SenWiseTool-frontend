@@ -67,7 +67,7 @@ export default function ReceiptDetails(props: {params: TProps}) {
             href={Route.receipt}
           >
             <MoveLeft />
-            Projects
+            Projets
           </Link>
         </h1>
         <div className="flex items-center gap-4 text-gray-500">
@@ -130,7 +130,7 @@ export default function ReceiptDetails(props: {params: TProps}) {
                   onClick={togglePopup}
                   className="absolute top-4 right-4 bg-blue-500 text-white py-1 px-3 rounded-md shadow-lg"
                 >
-                  Preview
+                  Apperçu
                 </Button>
               </div>
 
@@ -139,24 +139,24 @@ export default function ReceiptDetails(props: {params: TProps}) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6">
                 <DetailCard label="Village" value={currentReceipt.village} />
                 <DetailCard
-                  label="Farmer ID"
+                  label="ID du planteur"
                   value={currentReceipt.farmer_id}
                 />
                 <DetailCard label="Date" value={currentReceipt.date} />
                 <DetailCard
-                  label="Net Weight"
+                  label="Poid net"
                   value={`${currentReceipt.net_weight_in_kg} kg`}
                 />
                 <DetailCard
-                  label="Quantity"
-                  value={`${currentReceipt.quantity_in_bags} bags`}
+                  label="Quantité"
+                  value={`${currentReceipt.quantity_in_bags} sacs`}
                 />
                 <DetailCard
-                  label="Humidity Level"
+                  label="Niveau d'humidité"
                   value={`${currentReceipt.humidity_level_of_product}%`}
                 />
                 <DetailCard
-                  label="Buyer"
+                  label="Acheteur"
                   value={currentReceipt.buyer}
                   colSpan={2}
                 />
@@ -165,11 +165,11 @@ export default function ReceiptDetails(props: {params: TProps}) {
               <div className="flex justify-between items-center mt-6 py-6 px-24">
                 <SignatureCard
                   src={currentReceipt.farmer_signature}
-                  label="Farmer Signature"
+                  label="Signature du planteur"
                 />
                 <SignatureCard
                   src={currentReceipt.buyer_signature}
-                  label="Buyer Signature"
+                  label="Signature de l'acheteur"
                 />
               </div>
 
@@ -196,7 +196,7 @@ export default function ReceiptDetails(props: {params: TProps}) {
           )}
         </div>
         <div className="bg-slate-100 w-1/4 relative">
-          <div className="p-3">Metadata</div>
+          <div className="p-3">Meta données</div>
           <hr />
           <div className="p-3 text-xs flex flex-col gap-5">
             <div className="flex justify-between items-center">

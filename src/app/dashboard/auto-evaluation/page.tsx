@@ -70,17 +70,17 @@ export default function Home({}: Props) {
   );
 
   const formParams = {
-    trigger_btn_label_form: "New Form",
-    construct_form_btn_label: "Construct a form",
-    existing_form_btn_label: "Use a pre-defined model",
-    new_form_title: "Create a project (AUTO EVALUATION): Project details",
+    trigger_btn_label_form: "Nouveau formulaire",
+    construct_form_btn_label: "construire un formulaire",
+    existing_form_btn_label: "Utiliser u model pre-definit",
+    new_form_title: "Créer un projet (AUTO EVALUATION): Details",
     construct_form_btn_icon: PenLine,
   };
 
   const stateInspection: DashboardStatPanelData[] = [
     {
       structure: {
-        label: "Deployed",
+        label: "Deployé",
         baseUrl: "",
         icon: Rocket,
       },
@@ -90,7 +90,7 @@ export default function Home({}: Props) {
     },
     {
       structure: {
-        label: "Draft",
+        label: "Brouillon",
         baseUrl: "",
         icon: FilePenLine,
       },
@@ -100,7 +100,7 @@ export default function Home({}: Props) {
     },
     {
       structure: {
-        label: "Archive",
+        label: "Archivé",
         baseUrl: "",
         icon: Archive,
       },

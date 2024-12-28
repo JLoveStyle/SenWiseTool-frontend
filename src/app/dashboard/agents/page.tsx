@@ -167,10 +167,10 @@ export default function Receipt() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "New Agent",
-    construct_form_btn_label: "Generate Sub Accounts",
-    existing_form_btn_label: "Use Existing Sub Accounts",
-    new_form_title: "Generate a new agent Coordinate",
+    trigger_btn_label_form: "Nouveau Agent",
+    construct_form_btn_label: "Generate Sous compte",
+    existing_form_btn_label: "Utiliser un compte existant",
+    new_form_title: "Generer des nouveaux code agent",
     construct_form_btn_icon: RiUserStarLine,
   };
 
@@ -183,7 +183,7 @@ export default function Receipt() {
       .then((response) => {
         console.log(response);
         if (response?.status === 204) {
-          toast.success("Account deleted");
+          toast.success("Compte supprimé");
           setIsUpdating((prev) => !prev);
           setIsDeleting((prev) => !prev); //close modal
           return;

@@ -5,7 +5,6 @@ import { Spinner } from "@/components/atoms/spinner/spinner";
 import { FilePreview } from "@/components/molecules/filePreview";
 import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { Dialog,DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Route } from "@/lib/route";
 import { ActivityProps } from "@/types/activity";
 import { ApiDataResponse } from "@/types/api-types";
@@ -19,7 +18,6 @@ import { use, useEffect, useState } from "react";
 type TProps = Promise<{id: string}>
 
 export default function SocialDetails(props: {params: TProps}) {
-  const router = useRouter();
   const params = use(props.params)
   const id = params.id
   const [currentActivity, setCurrentActivity] = useState<ActivityProps>();
@@ -95,20 +93,6 @@ export default function SocialDetails(props: {params: TProps}) {
           </CustomHoverCard>
         </div>
       </div>
-      {/* <Dialog
-        open={openModal}
-        onOpenChange={() => setOpenModal((prev) => !prev)}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog> */}
 
       <div className="flex items-center w-full gap-5 px-2">
         <div className="bg-slate-50 w-full mt-3">

@@ -23,14 +23,6 @@ import { marketData } from "@/utiles/tracability.const/market";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Spinner } from "@/components/atoms/spinner/spinner";
 import { mutateDelApiData, mutateUpApiData } from "@/utiles/services/mutations";
 import ModalContent from "@/components/organisms/modalContent";
 import { DashboardStatPanelData } from "@/types/app-link";
@@ -127,7 +119,6 @@ export default function Market() {
       ""
     )
       .then((response) => {
-        console.log("from useEffect market", response);
         if (response.status === 400 || response.status === 404) {
           toast.warning("No market created yet");
           setIsLoading(false);
@@ -197,23 +188,21 @@ export default function Market() {
   }, [marketDatas]);
 
   const formParams = {
-    trigger_btn_label_form: "New Market",
-    construct_form_btn_label: "New market form",
-    existing_form_btn_label: "Use Existing Form",
+    trigger_btn_label_form: "Nouveau marché",
+    construct_form_btn_label: "Nouvaux formulaire",
+    existing_form_btn_label: "Utiliser un model existant",
     new_form_title: "Définir un marché",
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
   // delete created market
   async function handleDeletemarket() {
-    console.log("selected market", marketSelected);
     setIsDeleting((prev) => !prev);
     // const allId: string[] = [];
     for (const item of marketSelected) {
       // allId.push(item?.id);
       await mutateDelApiData(Route.marketRequest, item?.id)
         .then((response: any) => {
-          console.log("response of delete", response);
           if (response.status === 204) {
             toast.success("Market deleted");
             setIsDeleting((prev) => !prev);
@@ -234,7 +223,6 @@ export default function Market() {
 
   async function handleCloseMarket() {
     setIsDeleting((prev) => !prev);
-    console.log("close market");
     for (const item of marketSelected) {
       await mutateUpApiData(Route.marketRequest, { status: "CLOSED" }, item?.id)
         .then((response) => {
@@ -273,16 +261,16 @@ export default function Market() {
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "New market",
+          title: "Nouveau marché",
           form: <NewMarket />,
         },
       ]}
-      title="Markets management"
+      title="Gestion duu marché"
       formParams={formParams}
       statPanelDatas={stateMarket}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Markets</h1>
+        <h1 className="text-xl font-semibold">Marchés</h1>
         <div className="flex gap-4 text-gray-500">
           {marketSelected.length !== 0 && (
             <>

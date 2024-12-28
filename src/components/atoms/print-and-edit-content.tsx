@@ -55,10 +55,10 @@ const PrintContent: React.FC<Props> = (props) => {
             className={props.showBackBtn ? "hidden" : "bg-[#e7e9ee] font-semibold text-black hover:bg-[#e7e9ee] hover:shadow active:transition-y-1 hover:rounded-full"}
             onClick={props.handleExitPage}
           >
-            BACK
+            Retour
           </Button>
           <Button className="px-10 hover:rounded-full" onClick={props.onClick}>
-            Edit
+            Editer
           </Button>
 
           {props.isDeploying ? (
@@ -73,7 +73,7 @@ const PrintContent: React.FC<Props> = (props) => {
               className="hover:rounded-full hover:bg-green-400 bg-green-500"
               onClick={props.deployProject}
             >
-              <Rocket /> Deploy
+              <Rocket /> Deployer
             </Button>
           )}
         </div>
@@ -82,7 +82,7 @@ const PrintContent: React.FC<Props> = (props) => {
           onClick={handlePrint}
         >
           <PiPrinterFill />
-          {isPrinting ? <Spinner /> : "Print to PDF"}
+          {isPrinting ? <Spinner /> : "Imprimer en PDF"}
         </Button>
       </div>
     </div>

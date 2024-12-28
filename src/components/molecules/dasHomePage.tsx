@@ -1,9 +1,55 @@
 "use client";
 
+import { Route } from "@/lib/route";
+import { ApiDataResponse, ProjectType, TrainingType } from "@/types/api-types";
+import { fetchApiData } from "@/utiles/services/queries";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { FaCrown } from "react-icons/fa";
+import { useApiOps } from "@/lib/api-provider";
 
 export const DasHomePage = () => {
+  const [allProjects, setAllProjects] = useState<ProjectType[]>([]);
+  const [archiveProjects, setArchiveProjects] = useState<ProjectType[]>([])
+
+  async function fetchAllActiveProjects() {
+    await fetchApiData(Route.projects, "?status=DEPLOYED", "")
+      .then((response) => {
+        console.log("deployed", response);
+        if (response.status === 200 && response.data.length) {
+          setAllProjects(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    
+      await fetchApiData(Route.projects, "?status=ARCHIVED", "")
+      .then((response) => {
+        console.log("Archived", response);
+        if (response.status === 200 && response.data.length) {
+          setArchiveProjects(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    
+  }
+
+  const {
+      data: trainings,
+      refetch,
+      isLoading: isLoading,
+    } = useApiOps<TrainingType[], ApiDataResponse<TrainingType[]>>({
+      fn: () => fetchApiData<ApiDataResponse<TrainingType[]>>(Route.training, ""),
+      route: Route.training,
+    });
+
+  useEffect(() => {
+    fetchAllActiveProjects();
+  }, []);
+
   return (
     <div className=" font-sans min-h-screen flex flex-col mb-5">
       <main className="p-6 space-y-8 flex-grow">
@@ -33,9 +79,9 @@ export const DasHomePage = () => {
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { title: "Projets Actifs", value: 12 },
-            { title: "Champs Inspectés", value: 56 },
-            { title: "Données Collectées", value: 204 },
+            { title: "Projets Actifs", value: allProjects?.length },
+            { title: "Projets Archivés", value: archiveProjects?.length },
+            { title: "Projets de formation", value: trainings?.length ?? 0 },
           ].map((stat, index) => (
             <motion.div
               key={index}
@@ -100,7 +146,7 @@ export const DasHomePage = () => {
           </div>
         </section>
 
-        <section className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl">
+        {/* <section className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl">
           <h2 className="text-2xl font-semibold mb-4 text-orange-700 dark:text-orange-300">
             Projets
           </h2>
@@ -140,7 +186,7 @@ export const DasHomePage = () => {
               ))}
             </tbody>
           </table>
-        </section>
+        </section> */}
       </main>
     </div>
   );

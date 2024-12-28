@@ -111,10 +111,10 @@ export default function Agriculture() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "New agriculture",
-    construct_form_btn_label: "New agriculture form",
-    existing_form_btn_label: "Use Existing Form",
-    new_form_title: "Create new agricultural activity",
+    trigger_btn_label_form: "Nouveau",
+    construct_form_btn_label: "Noveau formulaire",
+    existing_form_btn_label: "Utiliser un formulaire existant",
+    new_form_title: "Créer une nouvelle activité",
     construct_form_btn_icon: FaHandHoldingDollar,
   };
 
@@ -131,7 +131,7 @@ export default function Agriculture() {
       });
       LOCAL_STORAGE.save("agricultures", restAgricultures);
 
-      toast.success("Accounts are deleted successfull");
+      toast.success("Compte supprimé");
     }
   };
 
@@ -152,7 +152,7 @@ export default function Agriculture() {
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "New activity",
+          title: "Nouvelle activité",
           form: <NewActivityAgriculture endpoint={Route.agricultureRequest} />,
         },
       ]}

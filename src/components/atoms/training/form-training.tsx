@@ -75,18 +75,18 @@ export const FormTraining = ({
   return (
     <div className="flex flex-col gap-5">
       <InputUI
-        label="Title"
+        label="Titre"
         id="title"
-        placeholder="Enter training title"
+        placeholder="Entrer le titre du projet"
         isLoading={isLoading}
         errors={errors}
         value={formData.title}
         onChange={handleChange}
       />
       <InputUI
-        label="Location"
+        label="Lieu de la formation"
         id="location"
-        placeholder="Where training will hold"
+        placeholder="Lieu"
         isLoading={isLoading}
         errors={errors}
         value={formData.location}
@@ -94,7 +94,7 @@ export const FormTraining = ({
       />
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Start date"
+          label="Date de debut"
           id="start_date"
           type="datetime-local"
           isLoading={isLoading}
@@ -104,7 +104,7 @@ export const FormTraining = ({
         />
 
         <InputUI
-          label="End training"
+          label="Date de fin"
           id="end_date"
           type="datetime-local"
           isLoading={isLoading}
@@ -138,7 +138,7 @@ export const FormTraining = ({
         <InputUI
           label="Modules"
           id="modules"
-          placeholder="Enter module and hit enter"
+          placeholder="Renseigner le module et frapper Entrer"
           isLoading={isLoading}
           value={module?.value}
           errors={errors}

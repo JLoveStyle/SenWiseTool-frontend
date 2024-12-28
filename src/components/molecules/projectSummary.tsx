@@ -36,13 +36,13 @@ export default function ProjectSummary({
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
-      text: "Data collected",
+      text: "Données collectés",
       secondIcon: <ChevronRight />,
       function: () => showData(true),
     },
     {
       firstIcon: <Rocket />,
-      text: "Deploy project",
+      text: "Deployer projet",
       secondIcon: (
         <div className="flex gap-6">
           {isLoading ? <Spinner size="small" /> : ""}
@@ -82,7 +82,7 @@ export default function ProjectSummary({
               });
             });
         } else {
-          toast.warning("Project deployed already", {
+          toast.warning("Projet déjà deployer", {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -91,7 +91,7 @@ export default function ProjectSummary({
     },
     {
       firstIcon: <FilePenLine />,
-      text: "Edit form",
+      text: "Modifier formulaire",
       secondIcon: <ChevronRight />,
       function: () => {
         // router.push(Route.editProject + `/${project?.id}`);
@@ -100,7 +100,7 @@ export default function ProjectSummary({
     },
     {
       firstIcon: <Eye />,
-      text: "View form",
+      text: "Apperçu",
       secondIcon: <ChevronRight />,
       function: () => {
         showForm(true);
@@ -113,11 +113,11 @@ export default function ProjectSummary({
   return (
     <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
       <div className="md:w-[70%]">
-        <p className="">Project details</p>
+        <p className="">Details projet</p>
         <div className="bg-white md:w-full p-5 shadow">
           {/* project title */}
           <div className="flex gap-2 py-2 border-b pb-4 items-baseline">
-            <span className="text-sm text-gray-500 ">Title:</span>
+            <span className="text-sm text-gray-500 ">Titre:</span>
             {isDataLoading ? (
               <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
             ) : (
@@ -142,7 +142,7 @@ export default function ProjectSummary({
               </div>
 
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">N° of Questions</span>
+                <span className="text-sm text-gray-500 ">N° de Questions</span>
                 {projectObject?.project_structure && (
                   <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
                     {JSON.parse(jsonString).requirements.length}
@@ -150,7 +150,7 @@ export default function ProjectSummary({
                 )}
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Project Type</span>
+                <span className="text-sm text-gray-500 ">Type de projet</span>
                 <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
                   {projectObject?.type}
                 </span>
@@ -160,19 +160,19 @@ export default function ProjectSummary({
           <div className="flex justify-between md:w-full py-4 border-b ">
             <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Start date</span>
+                <span className="text-sm text-gray-500 ">Date de debut</span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {dayjs(projectObject?.start_date).toString().slice(0, -13)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">End date</span>
+                <span className="text-sm text-gray-500 ">Date de fin</span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {dayjs(projectObject?.end_date).toString().slice(0, -13)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Last update</span>
+                <span className="text-sm text-gray-500 ">Dernière mise à jour</span>
                 <span className=" text-sm rounded-lg font-semibold">
                   {dayjs(projectObject?.updated_at).toString().slice(0, -4)}
                 </span>
@@ -182,13 +182,13 @@ export default function ProjectSummary({
           <div className="flex justify-between md:w-full py-4 border-b ">
             <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Created at</span>
+                <span className="text-sm text-gray-500 ">Date de creation</span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {dayjs(projectObject?.created_at).toString().slice(0, -4)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Last deployment</span>
+                <span className="text-sm text-gray-500 ">Date de deploiment</span>
                 <span className=" text-sm rounded-lg text-center font-semibold">
                   {projectObject?.deployed_at.includes("1969")
                     ? "--"
@@ -218,7 +218,7 @@ export default function ProjectSummary({
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Business sector</span>
+                <span className="text-sm text-gray-500 ">Secteur d'activité</span>
                 <span className=" text-sm rounded-lg font-semibold">
                   {projectObject?.sector_activity}
                 </span>
@@ -230,7 +230,7 @@ export default function ProjectSummary({
 
       {/* RAPID LINKS */}
       <div className="md:w-[30%]">
-        <p className="">Links</p>
+        <p className="">Liens rapide</p>
         <div className="bg-white px-5 shadow">
           {lienRapide.map((link: any, index: number) => (
             <div

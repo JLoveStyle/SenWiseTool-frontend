@@ -21,11 +21,10 @@ import { Bounce, toast } from "react-toastify";
 
 // DELETE PROJECT FUNCTION
 const handleDeleteProject = async (id: string) => {
-  console.log("delete project with id", id);
   await mutateDelApiData<ApiDataResponse<ProjectType>>(Route.projects, id).then(
     (res) => {
       if (res && res?.status <= 205) {
-        toast.success("Project deleted", {
+        toast.success("Projet supprimé", {
           transition: Bounce,
           autoClose: 3000,
         });
@@ -149,7 +148,7 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">Ouvrir menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -164,21 +163,21 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
                 });
               }}
             >
-              Copy project code
+              Copier code
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Link href={Route.details + `/${project.id}`}>
               <DropdownMenuItem
                 onClick={() => LOCAL_STORAGE.save("projectId", project.id)}
               >
-                View project details
+                Details
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem
               onClick={() => handleDeleteProject(project.id as string)}
               className="text-red-500 hover:text-red-500"
             >
-              Delete project
+              Supprimer
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

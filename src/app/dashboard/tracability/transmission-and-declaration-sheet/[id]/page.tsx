@@ -55,7 +55,7 @@ export default function TransmissionAndDeclarationSheetDetail(props: {params: TP
           <CustomHoverCard content="Share project">
             <UserPlus className="hover:cursor-pointer" />
           </CustomHoverCard>
-          <CustomHoverCard content="Delete Project">
+          <CustomHoverCard content="Supprimer">
             {isLoading ? (
               <Spinner size="very-small" color="#999" />
             ) : (
@@ -135,7 +135,7 @@ export default function TransmissionAndDeclarationSheetDetail(props: {params: TP
 
         <div className="bg-slate-100 w-1/6 h-full p-3">
           <div className="w-full">
-            <div className="p-3">Metadata</div>
+            <div className="p-3">Meta donnée</div>
             <hr />
             <div className="flex flex-col gap-10 justify-between h-full">
               <div className="p-3 text-xs flex flex-col gap-3 h-full">

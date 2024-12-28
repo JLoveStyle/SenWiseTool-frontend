@@ -89,7 +89,7 @@ export function ChaptersRequirements<TData, TValue>({
           ""
         ) : (
           <Input
-            placeholder="Filter projects by No..."
+            placeholder="Filtrer par No..."
             value={(table.getColumn("num")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn("num")?.setFilterValue(event.target.value)

@@ -84,26 +84,20 @@ export default function TrainingDetails(props: { params: TProps }) {
   }
 
   const formParams = {
-    trigger_btn_label_form: "Edit Form",
-    construct_form_btn_label: "Construct a form",
-    existing_form_btn_label: "Use a pre-defined model",
-    new_form_title: "Edit a TRAINING project",
+    trigger_btn_label_form: "Modifier le formulaire",
+    construct_form_btn_label: "Construire un formulaire",
+    existing_form_btn_label: "Utiliser un model prédefinit",
+    new_form_title: "Modifier un projet de formation",
     construct_form_btn_icon: PenLine,
   };
 
   const closeModal = (value: boolean) => {
-    console.log("from mapping page", value);
     setIsModalClose((prev) => (prev = value));
   };
 
   useEffect(() => {
     fetchTraining();
     const fetchData = async () => {
-      // const result = await LOCAL_STORAGE.get("trainings");
-
-      // const training = result.find(
-      //   (training: LocalTrainingProps) => training.id == id
-      // );
       const training = (await db_get_trainings(id!)) as TrainingType;
       // setDbCurrentTrainingData(training);
 
@@ -130,7 +124,7 @@ export default function TrainingDetails(props: { params: TProps }) {
 
   return (
     <LayoutDashboardTemplate
-      title="Traning details"
+      title="Details de la formation"
       isCloseModal={isModalClose}
     >
       <div className="flex justify-between items-center pb-4 pt-2 px-6 w-3/4">
@@ -140,11 +134,11 @@ export default function TrainingDetails(props: { params: TProps }) {
             href={Route.trainingProject}
           >
             <MoveLeft />
-            Back
+            Retour
           </Link>
         </h1>
         <div className="flex items-center gap-4 text-gray-500">
-          <CustomHoverCard content="Delete Project">
+          <CustomHoverCard content="Supprimer projet">
             {/* {isLoading && <Spinner size="very-small" color="#999" />} */}
             {!isLoading && currentTrainingData !== undefined && (
               <DeleteTraining
@@ -296,7 +290,7 @@ export default function TrainingDetails(props: { params: TProps }) {
 
           <div className="bg-slate-100 w-1/4 relative">
             <div className="flex justify-between items-center p-3">
-              <div className="font-bold text-xl">Metadata</div>
+              <div className="font-bold text-xl">Meta données</div>
 
               <CustomHoverCard content="Edit Project">
                 {!isLoading && currentTrainingData !== undefined && (

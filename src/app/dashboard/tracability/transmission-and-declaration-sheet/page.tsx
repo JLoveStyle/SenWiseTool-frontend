@@ -143,9 +143,9 @@ export default function FactoryAccompaniementSheet() {
   }, [marketDatas]);
 
   const formParams = {
-    trigger_btn_label_form: "New Market",
-    construct_form_btn_label: "New market form",
-    existing_form_btn_label: "Use Existing Form",
+    trigger_btn_label_form: "Nouvaux marché",
+    construct_form_btn_label: "Nouveau formulaire",
+    existing_form_btn_label: "Utiliser un formulaire existant",
     new_form_title: "Définir un marché",
     construct_form_btn_icon: FaHandHoldingDollar,
   };

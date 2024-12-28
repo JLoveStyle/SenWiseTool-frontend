@@ -159,10 +159,9 @@ export default function ProjectDetailsForm({
       campaign_id: currentCampain?.id,
     })
       .then((res: ApiDataResponse<ProjectType>) => {
-        console.log("project cereated", res);
         if (res.status === 201) {
           setIsLoading((prev) => !prev);
-          toast.success("Success, redirecting...", {
+          toast.success("Success, redirection...", {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -211,12 +210,11 @@ export default function ProjectDetailsForm({
       ) : (
         <>
           <em>
-            <strong>NB</strong>: The Rain forest Alliances' and company logos
-            will be added by default on this project form
+            <strong>NB</strong>: Les logos de votre company et celui de rainforest aliance seront attaché par defaut sur ce projet.
           </em>
           <div className="flex flex-col py-2">
             <label htmlFor="company_logo">
-              <strong>Add another logo</strong>
+              <strong>Autre logo</strong>
             </label>
             <input
               accept=".png, .jpeg, .jpg"
@@ -228,7 +226,7 @@ export default function ProjectDetailsForm({
       )}
 
       <InputField
-        label="Project title"
+        label="Titre"
         inputName="title"
         type="text"
         value={projectData.title}
@@ -237,7 +235,7 @@ export default function ProjectDetailsForm({
       <div className="flex justify-between gap-4">
         <div className="md:w-1/2">
           <InputField
-            label="Start date"
+            label="Date de debut"
             inputName="start_date"
             type="datetime-local"
             value={projectData.start_date}
@@ -246,7 +244,7 @@ export default function ProjectDetailsForm({
         </div>
         <div className="md:w-1/2">
           <InputField
-            label="End date"
+            label="Date de fin"
             inputName="end_date"
             type="datetime-local"
             value={projectData.end_date}
@@ -260,7 +258,7 @@ export default function ProjectDetailsForm({
         </span>
       )}
       <label className="font-semibold" htmlFor="activity">
-        Business sector
+        Secteur d'activité
         <span className="text-red-500">*</span>
       </label>
       <select
@@ -282,7 +280,7 @@ export default function ProjectDetailsForm({
         <CustomSelectTag
           selectName="country"
           onChange={(e) => handleChangeEvent(e)}
-          label="Country"
+          label="Pays"
           arrayOfItems={countries}
           value={projectData.country as string}
           className="md:w-[33.33%]"
@@ -298,14 +296,14 @@ export default function ProjectDetailsForm({
         <CustomSelectTag
           selectName="city"
           onChange={(e) => handleChangeEvent(e)}
-          label="City"
+          label="Ville"
           arrayOfItems={city}
           value={projectData.city as string}
           className="md:w-[33.33%]"
         />
       </div>
       <label className="font-semibold" htmlFor="activity">
-        Project description
+        Description du projet
       </label>
       <Textarea
         placeholder="Enter description"
@@ -322,7 +320,7 @@ export default function ProjectDetailsForm({
               : "active:transition-y-1 bg-tertiary hover:bg-tertiary"
           }
         >
-          {isLoading ? <Spinner /> : "CREATE PROJECT"}
+          {isLoading ? <Spinner /> : "CREER"}
         </Button>
       </div>
     </form>

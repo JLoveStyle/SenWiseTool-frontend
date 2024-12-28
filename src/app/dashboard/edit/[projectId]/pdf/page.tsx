@@ -20,7 +20,6 @@ export default function page({}: Props) {
   const projectData: ProjectType = LOCAL_STORAGE.get("project");
   const finalJson = LOCAL_STORAGE.get("finalJson");
   const company = LOCAL_STORAGE.get("company");
-  console.log("company=> ", company);
 
   const firstHalfMetaData = finalJson.metaData.slice(
     0,
@@ -38,7 +37,7 @@ export default function page({}: Props) {
 
   async function deployProject() {
     if (projectData.status === "DEPLOYED") {
-      toast.warning("Project deployed already", {
+      toast.warning("projet déjà deployé", {
         transition: Bounce,
         autoClose: 3000,
       });
@@ -54,7 +53,7 @@ export default function page({}: Props) {
         console.log(response);
         setIsLoading((prev) => !prev);
         if (response.status <= 204) {
-          toast.success("Project deployed", {
+          toast.success("Projet deployé", {
             transition: Bounce,
             autoClose: 3000,
           });

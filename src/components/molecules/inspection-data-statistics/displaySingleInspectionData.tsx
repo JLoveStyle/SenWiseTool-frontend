@@ -72,7 +72,7 @@ export default function DisplaySingleInspectionData({ incomingData }: Props) {
               <TableRow>
                 <TableHead>N° exigence</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Comments</TableHead>
+                <TableHead>Commentaires</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

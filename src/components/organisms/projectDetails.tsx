@@ -25,7 +25,6 @@ export default function ProjectDetails({
   const [summaryActive, setSummaryActive] = useState<boolean>(true);
   const [formActive, setFormActive] = useState<boolean>(false);
   const [dataActive, setDataActive] = useState<boolean>(false);
-  const [settingsActive, setSettingsActive] = useState<boolean>(false);
 
   let id: string | undefined | null = "";
 
@@ -51,7 +50,7 @@ export default function ProjectDetails({
           className="active:translate-y-1 flex gap-2 items-baseline underline hover:cursor-pointer absolute font-semibold pl-6"
         >
           <MoveLeft size={15} />
-          <span className="">Back</span>
+          <span className="">Retour</span>
         </div>
         {/* NAVIGATION FOR A SINGLE PROJECT */}
         <div className="flex justify-between md:w-[400px] mx-auto ">
@@ -66,10 +65,10 @@ export default function ProjectDetails({
                 setFormActive(false);
                 setSummaryActive((prev) => !prev);
                 setDataActive(false);
-                setSettingsActive(false);
+              
               }}
             >
-              Summary
+              Sommaire
             </h1>
             {summaryActive ? (
               <div className="w-full h-1 bg-tertiary"></div>
@@ -88,10 +87,9 @@ export default function ProjectDetails({
                 setFormActive((prev) => !prev);
                 setSummaryActive(false);
                 setDataActive(false);
-                setSettingsActive(false);
               }}
             >
-              Form
+              Formulaire
             </h1>
             {formActive ? <div className="w-full h-1 bg-tertiary"></div> : ""}
           </div>
@@ -106,34 +104,11 @@ export default function ProjectDetails({
                 setFormActive(false);
                 setSummaryActive(false);
                 setDataActive((prev) => !prev);
-                setSettingsActive(false);
               }}
             >
-              Data
+              Données
             </h1>
             {dataActive ? <div className="w-full h-1 bg-tertiary"></div> : ""}
-          </div>
-          <div className="flex flex-col gap-2">
-            <h1
-              className={
-                settingsActive
-                  ? "uppercase hover:cursor-pointer font-bold"
-                  : "uppercase text-gray-500 hover:cursor-pointer "
-              }
-              onClick={() => {
-                setFormActive(false);
-                setSummaryActive(false);
-                setDataActive(false);
-                setSettingsActive((prev) => !prev);
-              }}
-            >
-              Settings
-            </h1>
-            {settingsActive ? (
-              <div className="w-full h-1 bg-tertiary"></div>
-            ) : (
-              ""
-            )}
           </div>
         </div>
       </div>
@@ -174,7 +149,6 @@ export default function ProjectDetails({
         ) : (
           ""
         )}
-        {settingsActive && <p>Show settings</p>}
       </div>
     </div>
   );

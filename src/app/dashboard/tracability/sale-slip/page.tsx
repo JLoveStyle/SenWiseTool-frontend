@@ -27,7 +27,6 @@ export default function FactoryAccompaniementSheet() {
   const [marketSelected, setmarketSelected] = useState<SaleSlipDisplayProps[]>(
     []
   );
-  const [errors, setErrors] = useState({});
 
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,

@@ -22,6 +22,34 @@ import { DashboardStatPanelData } from "@/types/app-link";
 import { TrainingProps } from "@/types/formData";
 import { useEffect, useState } from "react";
 
+export const valueToDisplay = (args: TrainingType[]) => {
+  const data: TrainingType[] = [];
+  if (!Array.isArray(args)) {
+    console.error("Invalid argument: args must be an array.");
+    return data; // Retourne un tableau vide si args n'est pas valide.
+  }
+
+  for (const item of args) {
+    if (item.code.length < 5) {
+      data.push(item);
+    }
+  }
+
+  return data?.map((training) => ({
+    id: training.id,
+    title: training.title,
+    start_date: training.start_date,
+    end_date: training.end_date,
+    location: training.location,
+    code: training.code,
+    created_at: training.created_at,
+    // modules: training.modules.map((module: string, index: number) => ({
+    //   id: index,
+    //   value: module,
+    // })),
+  }));
+};
+
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
   // const [isLoading, setIsLoading] = useState(true);
@@ -42,75 +70,46 @@ export default function Training() {
     route: Route.training,
   });
 
-  const valueToDisplay = (args: TrainingType[]) => {
-    const data: TrainingType[] = [];
-    if (!Array.isArray(args)) {
-      console.error("Invalid argument: args must be an array.");
-      return data; // Retourne un tableau vide si args n'est pas valide.
-    }
-
-    for (const item of args) {
-      if (item.code.length < 5) {
-        data.push(item);
-      }
-    }
-
-    return data?.map((training) => ({
-      id: training.id,
-      title: training.title,
-      start_date: training.start_date,
-      end_date: training.end_date,
-      location: training.location,
-      code: training.code,
-      created_at: training.created_at,
-      // modules: training.modules.map((module: string, index: number) => ({
-      //   id: index,
-      //   value: module,
-      // })),
-    }));
-  };
 
   useEffect(() => {
     // refetch();
   }, [trainingDatas]);
 
   const formParams = {
-    trigger_btn_label_form: "New Form",
-    construct_form_btn_label: "Construct a form",
-    existing_form_btn_label: "Use a pre-defined model",
-    new_form_title: "Create a new training project",
+    trigger_btn_label_form: "Nouveau formulaire",
+    construct_form_btn_label: "Construire un formulaire",
+    existing_form_btn_label: "Utiliser un model pré-définit",
+    new_form_title: "Créer un nouveau projet formation",
     construct_form_btn_icon: PenLine,
   };
 
   const stateTraining: DashboardStatPanelData[] = [
     {
       structure: {
-        label: "Number",
+        label: "Nombre",
         baseUrl: "",
         icon: ListOrdered,
       },
       data: () => {
-        return trainings?.length;
+        return valueToDisplay(trainings as TrainingType[])?.length ?? 0;
       },
     },
   ];
-
-  console.log("training =>", trainings);
 
   return (
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "New training project",
+          title: "Nouveau projet de formation",
           form: <NewTraining />,
         },
       ]}
-      title="TRAINING"
+      title="FORMATION"
       formParams={formParams}
       statPanelDatas={stateTraining}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Projects</h1>
+        <h1 className="text-xl font-semibold">Projets</h1>
         <div className="flex gap-4 text-gray-500">
           <CustomHoverCard content="archive project">
             <Archive className="hover:cursor-pointer" />

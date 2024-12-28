@@ -4,6 +4,8 @@ import { OrganizationSwitcher } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Logo } from "../logo";
+import Link from "next/link";
+import { Route } from "@/lib/route";
 
 interface Props {
   title?: string;
@@ -20,19 +22,10 @@ export default function Navbar({ title, className }: Props) {
       className={` bg-tertiary  text-white z-50 flex justify-between ${className}`}
     >
       <div className=" px-2 items-center flex justify-between mr-0 top-0  left-[100px]">
-        {/* LOGO & PROJECT NAME IF DEFINED */}
         <div className="flex justify-between gap-10">
-          <Logo variant="text" />
-          {/* <div
-            className={
-              pathname === Route.details + `/455`
-                ? "flex gap-4 my-auto absolute left-[330px] top-6"
-                : "hidden"
-            }
-          >
-            <ClipboardType />
-            <p className="text-xl font-semibold ">{"selectedProject?.title"}</p>
-          </div> */}
+          <Link href={Route.dashboard}>
+            <Logo variant="text" />
+          </Link>
         </div>
       </div>
 
