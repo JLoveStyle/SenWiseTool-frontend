@@ -119,7 +119,7 @@ export function NewFormMiltipleAgent({ projects }: Props) {
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >
-        Generate
+        Generer
       </ButtonUI>
     </form>
   );

@@ -67,7 +67,7 @@ export default function Home({}: Props) {
     description: "",
   });
 
-  const { isSignedIn, user } = useUser();
+  const { user } = useUser();
 
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
@@ -81,25 +81,20 @@ export default function Home({}: Props) {
     });
 
     if (error) {
-      console.log(error);
       toast.error("Erreur lors de la creation du bucket");
       setIsLoading(false);
       throw new Error("Erreur lors de la creation du bucket");
     }
-
-    console.log("creation bucket response", data);
 
     //upload company logo
     if (companyLogo && companyLogo.length !== 0) {
       const { data, error } = await UpdateFilesToS3({ files: companyLogo });
 
       if (error) {
-        console.log(error);
         toast.error("Erreur lors de l'upload du logo");
         setIsLoading(false);
         throw new Error("Error lors de l'upload du logo");
       }
-      console.log("URLLLLLL", data);
       return data.URLs[0] as string;
     }
   };
@@ -166,7 +161,6 @@ export default function Home({}: Props) {
         company_bucket: bucketName
       })
         .then((response) => {
-          console.log("create company res =>", response);
           if (response.status === 201) {
             toast.success(`Success! routing to dashboard`, {
               transition: Bounce,
@@ -191,7 +185,6 @@ export default function Home({}: Props) {
           }
         })
         .catch((error) => {
-          console.log("An error occured", error);
           toast.error("An error occured. Please try again later", {
             transition: Bounce,
             autoClose: 3000,
@@ -243,12 +236,11 @@ export default function Home({}: Props) {
 
   const handleCloseModal = (value: boolean) => {
     setIsModalOpen(value);
-    console.log("from function", value);
   };
 
   const fetchToken = async () => {
     const token = await getToken();
-    console.log(token);
+    // console.log(token);
     LOCAL_STORAGE.save("token", token);
   };
 
@@ -396,7 +388,7 @@ export default function Home({}: Props) {
             <CheckBox onChange={() => handleOnCheck()} />
             {hasAgree && (
               <span className="text-red-500">
-                Please agree to the terms and conditions
+                Please agree to the Terms of service
               </span>
             )}
 

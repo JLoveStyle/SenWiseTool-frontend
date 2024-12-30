@@ -25,14 +25,13 @@ export default function Home({}: Props) {
           `?company_id=${company?.id}`
           // "?company_id=cm2qjm4mg000dshwofqj1uplx"
         );
-        console.log("farmers =>", result);
         if (result.status === 200) {
           setFarmer(result.data)
           setIsLoading(false)
           return
         }
         if (result.status === 404 || result.status === 400) {
-          toast.warning("You don't have farmers yet")
+          toast.warning("Aucun planteur enregistrer.")
           setIsLoading(false)
           return
         }

@@ -289,7 +289,7 @@ export default function Receipt() {
   const sideBarPanel: DashboardStatPanelData[] = [
     {
       structure: {
-        label: "Number",
+        label: "Nombre",
         baseUrl: "",
         icon: ListOrdered,
       },
@@ -303,22 +303,22 @@ export default function Receipt() {
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "New sub account",
+          title: "Nouveau sous compte",
           form: <NewFormUniqAgent projects={(joinedCodes as any[]) ?? []} />,
         },
         {
-          title: "Generate sub account",
+          title: "Genere sous comptes",
           form: (
             <NewFormMiltipleAgent projects={(joinedCodes as any[]) ?? []} />
           ),
         },
       ]}
-      title="Agent Management"
+      title="Gestion des agents"
       formParams={formParams}
       statPanelDatas={sideBarPanel}
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
-        <h1 className="text-xl font-semibold">Users</h1>
+        <h1 className="text-xl font-semibold">Utilisateur</h1>
         <div className="flex gap-4 text-gray-500">
           {agentSelected.length !== 0 && (
             <>
@@ -337,9 +337,9 @@ export default function Receipt() {
         <ModalContent
           openModal={isDeleting}
           isProcessing={isUpdating}
-          dialogTitle={"Delete market ?"}
-          action={"Delete"}
-          dialogDescription={"Are you sure you want to delete this account ?"}
+          dialogTitle={"Supprimer marché ?"}
+          action={"Supprimer"}
+          dialogDescription={"êtes vous sure de vouloir supprimer cette agent ?"}
           cancelationFunction={() => setIsDeleting((prev) => !prev)}
           actionFunction={deleteAgentAccounts}
           updateOpenModalState={() => setIsDeleting((prev) => !prev)}
@@ -359,7 +359,7 @@ export default function Receipt() {
             setAgentSelected(selects);
           }}
           isLoading={isLoading}
-          inputPlaceholder="Filter by agent code..."
+          inputPlaceholder="Filter par code d'agent..."
         />
       </div>
     </LayoutDashboardTemplate>

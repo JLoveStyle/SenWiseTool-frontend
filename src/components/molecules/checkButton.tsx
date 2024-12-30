@@ -1,3 +1,6 @@
+import { Route } from "@/lib/route";
+import { SquareArrowOutUpRight } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
@@ -21,13 +24,17 @@ export default function CheckBox({ onChange }: Props) {
           >
             Accept terms and conditions
           </label>
-          <p className="text-sm text-muted-foreground">
-            You agree to our{" "}
-            <span className="underline hover:cursor-pointer">
-              Terms of Service and Privacy Policy
-            </span>
-            .
-          </p>
+          <div className="text-sm text-muted-foreground flex gap-2 align-baseline">
+            <p>
+              You agree to our{" "}
+              <Link href={Route.legal}>
+                <span className="underline hover:cursor-pointer">
+                  Terms of Service and Privacy Policy.
+                </span>
+              </Link>
+            </p>
+            <SquareArrowOutUpRight size={20} />
+          </div>
         </div>
       </div>
     </div>

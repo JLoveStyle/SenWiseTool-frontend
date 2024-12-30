@@ -58,7 +58,7 @@ export const HeroTop: React.FC = () => {
           expérience unique de transparence et de qualité supérieure.
         </p>
         <Link href={Route.signUp}>
-          <Button className="bg-primary text-white hover:opacity-90">
+          <Button className="py-4 text-white rounded-full hover:opacity-90 bg-gradient-to-r from-primary to-[#2eaaa8]">
             Getting Started
           </Button>
         </Link>

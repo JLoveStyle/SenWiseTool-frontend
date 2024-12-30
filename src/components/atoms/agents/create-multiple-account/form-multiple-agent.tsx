@@ -99,9 +99,9 @@ export const FormMultipleAgent = ({
     <div className="flex flex-col gap-5">
       <div className="grid w-full items-center gap-1.5">
         <InputUI
-          label="Number of sub account to generate"
+          label="Nombre de sous comptes à generer"
           id="accountNumber"
-          placeholder="Enter number of account"
+          placeholder="Nombres de comptes"
           required
           isLoading={isLoading}
           errors={errors}
@@ -112,7 +112,7 @@ export const FormMultipleAgent = ({
 
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="projectCodes" className="text-gray-400">
-          List of projects
+          Liste de codes de projets
         </Label>
         <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 overflow-y-scroll scrool-bar-hidden">
           {formData.projectCodes &&
@@ -135,9 +135,9 @@ export const FormMultipleAgent = ({
         </div>
 
         <InputUI
-          label="Project code(s)"
+          label="Code projet"
           id="projectCodes"
-          placeholder="Enter project code and hit enter"
+          placeholder="Entrer le code de projet et frapper entrer"
           isLoading={isLoading}
           value={projectCode?.value}
           errors={errors}
@@ -148,17 +148,17 @@ export const FormMultipleAgent = ({
       <div className="">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Projects codes ?</AccordionTrigger>
+            <AccordionTrigger>Code de projets ?</AccordionTrigger>
             <div className="max-h-[200px] overflow-y-scroll pr-4">
             <AccordionContent className="flex justify-between ">
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>code</TableHead>
-                      <TableHead>Title</TableHead>
+                      <TableHead>Titre</TableHead>
                       <TableHead>Type</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>Supplier</TableHead>
+                      <TableHead>Localisation</TableHead>
+                      <TableHead>Fournisseur</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

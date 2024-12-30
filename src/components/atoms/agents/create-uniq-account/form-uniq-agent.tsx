@@ -54,7 +54,7 @@ export const FormUniqAgent = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (e.target.value.trim().length !== 4) {
-      errors["agentCode"] = "Please enter 4 digits code";
+      errors["agentCode"] = "Veillez entrer un code à 4 chiffres";
       return;
     } else {
       delete errors["agentCode"];
@@ -70,7 +70,7 @@ export const FormUniqAgent = ({
     });
 
     if (e.target.value.trim().length !== 4) {
-      errors["projectCodes"] = "Please enter 4 digits code";
+      errors["projectCodes"] = "Veillez entrer un code à 4 chiffres";
       return;
     } else {
       delete errors["projectCodes"];
@@ -119,7 +119,7 @@ export const FormUniqAgent = ({
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Agent name"
+          label="Nom de l'agent"
           id="fullName"
           placeholder="Enter agent name "
           isLoading={isLoading}
@@ -129,9 +129,9 @@ export const FormUniqAgent = ({
         />
 
         <InputUI
-          label="Agent code"
+          label="Code de l'agent"
           id="agentCode"
-          placeholder="Enter a 4 digits code"
+          placeholder="Veillez entrer un code à 4 chiffres"
           required
           isLoading={isLoading}
           errors={errors}
@@ -141,7 +141,7 @@ export const FormUniqAgent = ({
       </div>
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="projectCodes" className="text-gray-400">
-          Projects of {formData.fullName ?? "..."}
+          Projets de {formData.fullName ?? "..."}
         </Label>
         <div className="outline-none border-gray-800 block bg-gray-50 p-1 mb-2 max-h-28 overflow-y-scroll scrool-bar-hidden">
           {formData.projectCodes &&
@@ -164,9 +164,9 @@ export const FormUniqAgent = ({
         </div>
 
         <InputUI
-          label="Project code"
+          label="Code projet"
           id="projectCodes"
-          placeholder="Enter code and hit enter"
+          placeholder="Veillez entrer le code et frepper entrer"
           isLoading={isLoading}
           value={projectCode?.value}
           errors={errors}
@@ -177,17 +177,17 @@ export const FormUniqAgent = ({
       <div className="">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Projects codes ?</AccordionTrigger>
+            <AccordionTrigger>Codes projets ?</AccordionTrigger>
             <div className="max-h-[200px] overflow-y-scroll pr-4">
               <AccordionContent className="flex justify-between ">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>code</TableHead>
-                      <TableHead>Title</TableHead>
+                      <TableHead>Code</TableHead>
+                      <TableHead>Titre</TableHead>
                       <TableHead>Type</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>Supplier</TableHead>
+                      <TableHead>Localisation</TableHead>
+                      <TableHead>Fournisseur</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

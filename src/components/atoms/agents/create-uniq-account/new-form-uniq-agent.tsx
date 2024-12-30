@@ -61,7 +61,7 @@ export function NewFormUniqAgent({ projects }: Props) {
     // check if there is atleast a project code
     if (!formData.projectCodes?.length) {
       toast.warning(
-        "Please enter atleast one project code. Hit enter to validate code"
+        "Veillez entrer au moins un code de projet et frapper la touche entrer pour validé de code"
       );
       setIsLoading(false);
       return;
@@ -98,7 +98,7 @@ export function NewFormUniqAgent({ projects }: Props) {
           router.refresh();
         } else if (response.status === 409) {
           setIsLoading(false);
-          toast.warning(`Agent with code ${formData.agentCode} already exist`, {
+          toast.warning(`Code ${formData.agentCode} existe déjà`, {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -112,7 +112,6 @@ export function NewFormUniqAgent({ projects }: Props) {
         console.log(error);
         toast.error("Sorry something went wrong. Please try again");
       });
-    console.log("formData", { ...formData, company_id: company?.id });
 
     // handleCreateAgent(formData);
   };

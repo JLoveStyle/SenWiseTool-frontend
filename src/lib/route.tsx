@@ -6,6 +6,7 @@ export type AvailableRoute =
   | "checkout"
   | "signIn"
   | "signUp"
+  | "legal"
   | "createCompany"
   | "dashboard"
   | "listOfFarmers"
@@ -57,6 +58,7 @@ export type AvailableRoute =
 
 export const Route: Record<AvailableRoute, string> = {
   home: "/",
+  legal: "/legal",
   aboutUs: "/about-us",
   features: "/features",
   services: "/services",
