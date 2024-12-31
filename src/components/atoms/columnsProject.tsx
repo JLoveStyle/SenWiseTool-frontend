@@ -31,7 +31,6 @@ export type ChapterMetaData = {
 };
 
 let allProject = LOCAL_STORAGE.get("all_projects");
-console.log("all projects", allProject);
 
 // this could be wrapped in a hook inorder to have a stable reference to prevent infinite re-rendres
 export const column: ColumnDef<ChapterMetaData>[] = [
