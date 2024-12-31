@@ -26,7 +26,6 @@ export default function Home({}: Props) {
   async function fetchData() {
     const token = await getToken();
     if (token) {
-      // console.log(token)
       LOCAL_STORAGE.save("token", token);
     }
   }
