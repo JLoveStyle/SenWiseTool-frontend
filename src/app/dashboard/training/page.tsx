@@ -20,35 +20,7 @@ import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { TrainingProps } from "@/types/formData";
-import { useEffect, useState } from "react";
-
-export const valueToDisplay = (args: TrainingType[]) => {
-  const data: TrainingType[] = [];
-  if (!Array.isArray(args)) {
-    console.error("Invalid argument: args must be an array.");
-    return data; // Retourne un tableau vide si args n'est pas valide.
-  }
-
-  for (const item of args) {
-    if (item.code.length < 5) {
-      data.push(item);
-    }
-  }
-
-  return data?.map((training) => ({
-    id: training.id,
-    title: training.title,
-    start_date: training.start_date,
-    end_date: training.end_date,
-    location: training.location,
-    code: training.code,
-    created_at: training.created_at,
-    // modules: training.modules.map((module: string, index: number) => ({
-    //   id: index,
-    //   value: module,
-    // })),
-  }));
-};
+import { useState } from "react";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
@@ -70,10 +42,33 @@ export default function Training() {
     route: Route.training,
   });
 
+  const valueToDisplay = (args: TrainingType[]) => {
+    const data: TrainingType[] = [];
+    if (!Array.isArray(args)) {
+      console.error("Invalid argument: args must be an array.");
+      return data; // Retourne un tableau vide si args n'est pas valide.
+    }
 
-  useEffect(() => {
-    // refetch();
-  }, [trainingDatas]);
+    for (const item of args) {
+      if (item.code.length < 5) {
+        data.push(item);
+      }
+    }
+
+    return data?.map((training) => ({
+      id: training.id,
+      title: training.title,
+      start_date: training.start_date,
+      end_date: training.end_date,
+      location: training.location,
+      code: training.code,
+      created_at: training.created_at,
+      // modules: training.modules.map((module: string, index: number) => ({
+      //   id: index,
+      //   value: module,
+      // })),
+    }));
+  };
 
   const formParams = {
     trigger_btn_label_form: "Nouveau formulaire",
