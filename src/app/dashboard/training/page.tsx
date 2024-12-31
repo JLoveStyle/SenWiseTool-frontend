@@ -71,7 +71,7 @@ export default function Training() {
   };
 
   const formParams = {
-    trigger_btn_label_form: "Nouveau formulaire",
+    trigger_btn_label_form: "Nouvelle formation",
     construct_form_btn_label: "Construire un formulaire",
     existing_form_btn_label: "Utiliser un model pré-définit",
     new_form_title: "Créer un nouveau projet formation",
@@ -105,7 +105,7 @@ export default function Training() {
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Projets</h1>
-        <div className="flex gap-4 text-gray-500">
+        {/* <div className="flex gap-4 text-gray-500">
           <CustomHoverCard content="archive project">
             <Archive className="hover:cursor-pointer" />
           </CustomHoverCard>
@@ -115,7 +115,7 @@ export default function Training() {
           <CustomHoverCard content="Delete Project">
             <Trash2 className="hover:cursor-pointer" />
           </CustomHoverCard>
-        </div>
+        </div> */}
       </div>
       <div className="px-6">
         <DataTable<TrainingTableDisplayType, any>

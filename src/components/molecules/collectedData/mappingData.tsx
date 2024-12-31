@@ -76,7 +76,7 @@ export default function MappingData({ project_id }: Props) {
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {
-    fetchAllMappingData(project_id);
+    fetchAllMappingData("cm40i54dg0004j6p8l5jspca2");
   }, []);
 
   return (

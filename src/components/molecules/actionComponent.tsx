@@ -172,8 +172,8 @@ export default function ActionComponent({
     <div className="">
       <h2 className="font-semibold text-xl text-center pb-2">
         {projects.length > 1
-          ? "Archive these projects"
-          : "Archive this project"}
+          ? "Archiver ces projets"
+          : "Archiver ce projet"}
       </h2>
     </div>
   );
@@ -182,18 +182,18 @@ export default function ActionComponent({
   const deleteProjectContent = (
     <div className="pb-4">
       <h2 className="">
-        Are you sure you want to delete{" "}
-        <span>{projects.length > 1 ? "these" : "this"}</span> project?
+        Etes vous sure de vouloir supprimer{" "}
+        <span>{projects.length > 1 ? "ces" : "ce"}</span> projet?
       </h2>
     </div>
   );
 
   const heading = shareProject
-    ? "Share project"
+    ? "Partager"
     : deleteProject
-    ? "Delete project"
+    ? "Supprimer"
     : archiveProject
-    ? "Archive project"
+    ? "Archiver"
     : "";
 
   return (
@@ -213,7 +213,7 @@ export default function ActionComponent({
             }
             onClick={() => closeDialog(false)}
           >
-            Cancel
+            Annuler
           </Button>
           {isLoading ? (
             <Button className={isLoading ? "hover: cursor-not-allowed bg-tertiary " : " w-[150px] hover:cursor-not-allowed opacity-70 "}>

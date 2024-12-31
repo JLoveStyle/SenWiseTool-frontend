@@ -74,7 +74,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
   }
 
   useEffect(() => {
-    fetchAllInpectionData(project_id);
+    fetchAllInpectionData("cm3lgtlxd000b124xckbu2muw");
   }, [project_id]);
 
   return (
@@ -85,7 +85,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
         </div>
       ) : data.length ? (
         <div className="bg-[#f3f4f6] h-full md:w-full">
-          <div className="flex">
+          <div className="flex px-6">
             <h2 className="text-center py-6 flex-1">
               Titre projet:{" "}
               <span className=" font-semibold">{projectName}</span>

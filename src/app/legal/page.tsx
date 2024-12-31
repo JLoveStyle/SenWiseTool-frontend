@@ -10,7 +10,7 @@ export default function Home({}: Props) {
   const [language, setLanguage] = useState<boolean>(true);
   return (
     <div className="">
-      <div className="flex justify-between p-4  bg-gray-100">
+      <div className="flex justify-between p-4 w-full bg-gray-100">
         <div className="logo flex items-center gap-2 ">
           <Logo size="large" />
           <span className="font-extrabold text-xl hidden md:block">
@@ -24,7 +24,7 @@ export default function Home({}: Props) {
           {language ? "Français" : "English"}
         </Button>
       </div>
-      <div className="relative ">
+      <div className="relative">
         {language ? (
           <div className="text-gray-100 absolute text-center top-1/2 right-1/2 md:ml-[100px] ">
             <h1 className="text-4xl font-bold pb-4 font-serif">Legal</h1>
@@ -33,8 +33,8 @@ export default function Home({}: Props) {
             </p>
           </div>
         ) : (
-          <div className="text-gray-100 absolute text-center top-1/2 right-1/2 md:ml-[100px] ">
-            <h1 className="text-4xl font-bold pb-4 font-serif">Légal</h1>
+          <div className="font-serif text-gray-100 absolute text-center top-1/2 right-1/2 md:ml-[100px] ">
+            <h1 className="text-4xl font-bold pb-4">Légal</h1>
             <p className="text-xl font-semibold">
               Tout ce que vous devez savoir au même endroit
             </p>

@@ -94,7 +94,6 @@ export default function page(props: { params: Props }) {
 
   async function handleProjectDraft() {
     // get data from localStorage
-    const id = LOCAL_STORAGE.get("projectId");
     const metaData: string[] = LOCAL_STORAGE.get("formMetadata");
 
     // Check if user has tick metadata
@@ -164,7 +163,7 @@ export default function page(props: { params: Props }) {
       .then((response) => {
 
         if (response.status <= 205) {
-          toast.success("Projet enregisté", {
+          toast.success("Projet enregisté, redirection...", {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -322,42 +321,42 @@ export default function page(props: { params: Props }) {
                   key={index}
                   value={chap}
                   onClick={() => {
-                    if (chap === "Chapter 1") {
+                    if (chap === "Chapitre 1") {
                       setDisplayChapOne(true);
                       setDisplayChapTwo(false);
                       setDisplayChapThree(false);
                       setDisplayChapFour(false);
                       setDisplayChapFive(false);
                       setDisplayChapSix(false);
-                    } else if (chap === "Chapter 2") {
+                    } else if (chap === "Chapitre 2") {
                       setDisplayChapOne(false);
                       setDisplayChapTwo(true);
                       setDisplayChapThree(false);
                       setDisplayChapFour(false);
                       setDisplayChapFive(false);
                       setDisplayChapSix(false);
-                    } else if (chap === "Chapter 3") {
+                    } else if (chap === "Chapitre 3") {
                       setDisplayChapThree(true);
                       setDisplayChapOne(false);
                       setDisplayChapTwo(false);
                       setDisplayChapFour(false);
                       setDisplayChapFive(false);
                       setDisplayChapSix(false);
-                    } else if (chap === "Chapter 4") {
+                    } else if (chap === "Chapitre 4") {
                       setDisplayChapThree(false);
                       setDisplayChapOne(false);
                       setDisplayChapTwo(false);
                       setDisplayChapFour(true);
                       setDisplayChapFive(false);
                       setDisplayChapSix(false);
-                    } else if (chap === "Chapter 5") {
+                    } else if (chap === "Chapitre 5") {
                       setDisplayChapThree(false);
                       setDisplayChapOne(false);
                       setDisplayChapTwo(false);
                       setDisplayChapFour(false);
                       setDisplayChapFive(true);
                       setDisplayChapSix(false);
-                    } else if (chap === "Chapter 6") {
+                    } else if (chap === "Chapitre 6") {
                       setDisplayChapThree(false);
                       setDisplayChapOne(false);
                       setDisplayChapTwo(false);

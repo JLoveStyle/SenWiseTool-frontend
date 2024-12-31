@@ -45,7 +45,7 @@ export default function ProjectDisplay({
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Projets</h1>
         <div className="flex gap-4 text-gray-500">
-          <CustomHoverCard content="Share project">
+          <CustomHoverCard content="Partager">
             <UserPlus
               onClick={() => {
                 if (selectedProjects?.length) {
@@ -63,7 +63,7 @@ export default function ProjectDisplay({
               }
             />
           </CustomHoverCard>
-          <CustomHoverCard content="archive project">
+          <CustomHoverCard content="archiver">
             <Archive
               onClick={() => {
                 if (selectedProjects?.length) {
@@ -80,7 +80,7 @@ export default function ProjectDisplay({
               }
             />
           </CustomHoverCard>
-          <CustomHoverCard content="Delete Project">
+          <CustomHoverCard content="Supprimer">
             <Trash2
               onClick={() => {
                 if (selectedProjects?.length) {

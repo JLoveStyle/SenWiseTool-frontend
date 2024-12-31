@@ -41,7 +41,6 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
   };
 
   useEffect(() => {
-    console.log("Here is metaData =>", metaData);
     if (!isSubmitting && metaData.length) {
       LOCAL_STORAGE.save("formMetadata", metaData);
       toast.success("Metadata saved", {

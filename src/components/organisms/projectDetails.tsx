@@ -112,7 +112,7 @@ export default function ProjectDetails({
           </div>
         </div>
       </div>
-      <div className=" max-h-[800px] overflow-y-auto scrool-bar-hidden relative">
+      <div className="max-h-[cal(100vh - 400px)] overflow-y-auto scrool-bar-hidden ">
         {summaryActive && pathname.includes("/mapping/") ? (
           <MappingProjectSummary
             showForm={showFormFromChild}

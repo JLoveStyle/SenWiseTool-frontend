@@ -265,7 +265,7 @@ export default function Market() {
           form: <NewMarket />,
         },
       ]}
-      title="Gestion duu marché"
+      title="Gestion du marché"
       formParams={formParams}
       statPanelDatas={stateMarket}
     >

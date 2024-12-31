@@ -183,7 +183,7 @@ export default function Receipt() {
       .then((response) => {
         console.log(response);
         if (response?.status === 204) {
-          toast.success("Compte supprimé");
+          toast.success("Sous compte supprimé");
           setIsUpdating((prev) => !prev);
           setIsDeleting((prev) => !prev); //close modal
           return;
@@ -236,7 +236,7 @@ export default function Receipt() {
       .then((response) => {
         console.log(response);
         if (response.status === 204) {
-          toast.success("Projects assigned successfully to agent");
+          toast.success("Projet assigner avec success.");
           setIsUpdating((prev) => !prev);
           closeDialog;
           return;
@@ -337,9 +337,9 @@ export default function Receipt() {
         <ModalContent
           openModal={isDeleting}
           isProcessing={isUpdating}
-          dialogTitle={"Supprimer marché ?"}
+          dialogTitle={"Supprimer Sous compte ?"}
           action={"Supprimer"}
-          dialogDescription={"êtes vous sure de vouloir supprimer cette agent ?"}
+          dialogDescription={"êtes vous sure de vouloir supprimer sous compte ?"}
           cancelationFunction={() => setIsDeleting((prev) => !prev)}
           actionFunction={deleteAgentAccounts}
           updateOpenModalState={() => setIsDeleting((prev) => !prev)}
