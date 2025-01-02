@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/atoms/theme-provider";
+// import { ThemeProvider } from "@/components/atoms/theme-provider";
 import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
@@ -31,17 +31,17 @@ export default function RootLayout({
           // fontSans.variable
         )}
       >
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
-          <ClerkProvider dynamic>
-            {children}
-            <ToastContainer position="top-center" transition={Flip} />
-          </ClerkProvider>
-        </ThemeProvider>
+        > */}
+        <ClerkProvider dynamic>
+          {children}
+          <ToastContainer position="top-center" transition={Flip} />
+        </ClerkProvider>
+        {/* </ThemeProvider> */}
         {/* <Toaster richColors theme="light" closeButton position="top-right" /> */}
       </body>
     </html>
