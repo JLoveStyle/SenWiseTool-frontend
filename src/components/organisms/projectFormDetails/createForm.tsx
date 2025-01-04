@@ -125,21 +125,6 @@ export default function ProjectDetailsForm({
       setIsLoading((prev) => !prev);
       return;
     }
-    console.log("payload =>", {
-      type: projectData.type,
-      company_id: company?.id,
-      title: projectData.title,
-      description: projectData.description,
-      sector_activity: projectData.sector_activity,
-      country: projectData.country,
-      city: projectData.city,
-      region: projectData.region,
-      status: projectData.status,
-      another_logo: URLOtherLogo,
-      start_date: new Date(projectData.start_date as string).toISOString(),
-      end_date: new Date(projectData.end_date as string).toISOString(),
-      campaign_id: currentCampain?.id,
-    });
 
     setErrorDate("");
     // CREATE NEW RECORD IN THE PROJECTS TABLE
