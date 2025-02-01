@@ -23,9 +23,9 @@ import { fetchApiData } from "@/utiles/services/queries";
 // paypal component
 // import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from "@paypal/react-paypal-js";
 
-type TProps = Promise<{typeOfOffer: string}>;
+type TProps = Promise<{ typeOfOffer: string }>;
 
-export default function page(props: {params: TProps}) {
+export default function page(props: { params: TProps }) {
   const router = useRouter();
   // const { typeOfOffer } = useParams();
   const params = use(props.params)
@@ -146,7 +146,7 @@ export default function page(props: {params: TProps}) {
                 Checkout
               </h1>
             </div>
-            <section className="pb-5">
+            {/* <section className="pb-5">
               <div className="flex justify-between py-3">
                 <h2 className="font-semibold text-xl my-auto md:text-2xl leading-normal">
                   Payment method
@@ -176,10 +176,10 @@ export default function page(props: {params: TProps}) {
                       alt="paypal logo"
                     />
                   </div>
-                  <p className=" font-bold">PayPal</p>
+                  <p className=" font-bold ">PayPal</p>
                 </div>
                 <hr />
-                {/* I have add the text color here because it is not visible at the moment: text and bg was white */}
+             
                 <p
                   className={
                     paypalActive
@@ -202,7 +202,7 @@ export default function page(props: {params: TProps}) {
                         onChange={() => setCartActive((prev) => !prev)}
                       />
                       <div className="bg-white h-fit my-auto rounded">
-                        {/* why using udemy stuff here ? */}
+                       
                         <Image
                           width={40}
                           height={20}
@@ -259,7 +259,7 @@ export default function page(props: {params: TProps}) {
                   </div>
                 </div>
               </div>
-            </section>
+            </section> */}
             <div>
               {typeof typeOfOffer == "string" && (
                 <>
@@ -305,8 +305,8 @@ export default function page(props: {params: TProps}) {
                 {annualPricing
                   ? `${formatPrice(currentOffer?.annualPricing)} / Year`
                   : `${formatPrice(
-                      currentOffer?.biannualPricing
-                    )}  /   ¹⁄₂Year`}
+                    currentOffer?.biannualPricing
+                  )}  /   ¹⁄₂Year`}
               </span>
             </div>
             {pricePlan ? (
