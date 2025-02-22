@@ -71,10 +71,8 @@ export const HeroTop: React.FC = () => {
           src={images[currentIndex]}
           alt="Cocoa Image"
           layout="fill"
-          objectFit="cover"
-          className={`rounded-lg transform transition-transform duration-1000 ${
-            transitioning ? "opacity-0" : "opacity-100"
-          }`}
+          className={`rounded-lg object-cover transform transition-transform duration-1000 ${transitioning ? "opacity-0" : "opacity-100"
+            }`}
         />
 
         {/* Image suivante (en train d'apparaître) */}
@@ -82,12 +80,10 @@ export const HeroTop: React.FC = () => {
           src={images[nextIndex]}
           alt="Next Cocoa Image"
           layout="fill"
-          objectFit="cover"
-          className={`rounded-lg transform transition-transform duration-1000 absolute top-0 left-0 ${
-            transitioning
-              ? "opacity-100 translate-x-0"
-              : "opacity-0 translate-x-10"
-          }`}
+          className={`rounded-lg object-cover transform transition-transform duration-1000 absolute top-0 left-0 ${transitioning
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 translate-x-10"
+            }`}
         />
       </div>
 

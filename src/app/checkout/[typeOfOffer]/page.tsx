@@ -14,11 +14,12 @@ import { useParams, useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { PaypalPaypements } from "@/components/atoms/paypal-payment/paypal-button";
+import NokashPaymentForm from "@/components/molecules/payment-modal/components/nokash-payment-form.tsx";
 import { Spinner } from "@/components/atoms/spinner/spinner";
 import { useApiOps } from "@/lib/api-provider";
 import { ApiDataResponse, PricePlanType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
+import PaymentModal from "@/components/molecules/payment-modal";
 // import { generateStaticParams } from "./generate-static-params";
 // paypal component
 // import { PayPalButtons, PayPalButtonsComponentProps, PayPalScriptProvider, ReactPayPalScriptOptions } from "@paypal/react-paypal-js";
@@ -38,6 +39,9 @@ export default function page(props: { params: TProps }) {
 
   const [showError, setShowError] = useState(false);
   // set paypal options
+
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
 
   const handlePaypal = () => {
     setPaypalActive((prev) => !prev);
@@ -81,6 +85,8 @@ export default function page(props: { params: TProps }) {
       ),
     route: Route.pricing,
   });
+
+  console.log("\n\n current price plan: ", pricePlan);
 
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
@@ -309,18 +315,26 @@ export default function page(props: { params: TProps }) {
                   )}  /   ¹⁄₂Year`}
               </span>
             </div>
-            {pricePlan ? (
-              <PaypalPaypements />
-            ) : (
-              <Button className="cursor-wait flex gap-3 py-6 bg-primary hover:cursor-not-allowed opacity-70 font-semibold text-white w-full">
-                <Spinner />
-                <span>loading paypal checkout...</span>
-              </Button>
-            )}
+
+            {/* checkout */}
+            <Button
+              className="py-6 bg-primary font-semibold text-white w-full hover:bg-primary/90"
+              onClick={() => setIsPaymentModalOpen(true)}
+            >
+              Checkout
+            </Button>
+
+            <PaymentModal
+              isOpen={isPaymentModalOpen}
+              onClose={() => setIsPaymentModalOpen(false)}
+              amount={annualPricing ? currentOffer?.annualPricing as number : currentOffer?.biannualPricing as number}
+              planType={`${typeOfOffer} ${annualPricing ? 'Annual' : 'Biannual'} Plan`}
+              currentPricePlan={pricePlan?.id}
+            />
           </div>
         </div>
       </div>
-      {/* <Popup>
+      {/* <Popup isVisible={isVisible} onCloseModal={() => onclose()}>
         <main className="w-[450px] h-fit p-5 bg-white rounded-[12px] mx-3">
           <h1 className="font-semibold text-xl py-3">Cancel registration ?</h1>
           <p className="">
@@ -343,7 +357,7 @@ export default function page(props: { params: TProps }) {
           </div>
         </main>
       </Popup> */}
-    </main>
+    </main >
   );
 }
 // export { generateStaticParams };
