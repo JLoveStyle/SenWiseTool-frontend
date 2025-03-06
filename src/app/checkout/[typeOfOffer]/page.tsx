@@ -73,19 +73,6 @@ export default function page(props: { params: TProps }) {
     }
   }, [router]);
 
-  useEffect(() => {
-    checkPaymentStatus(); // route the user to the payment success page
-  }, [router]);
-
-  const checkPaymentStatus = async () => {
-    const data = await fetch(`/api/nokash/payment_response`);
-    const response = await data.json();
-    console.log("\n\n response of status check: ", response);
-
-    if (response)
-      router.push('/payment/success')
-  }
-
   const { data: pricePlan } = useApiOps<
     PricePlanType,
     ApiDataResponse<PricePlanType>
@@ -165,120 +152,7 @@ export default function page(props: { params: TProps }) {
                 Checkout
               </h1>
             </div>
-            {/* <section className="pb-5">
-              <div className="flex justify-between py-3">
-                <h2 className="font-semibold text-xl my-auto md:text-2xl leading-normal">
-                  Payment method
-                </h2>
-                <div className="flex justify-between my-auto gap-2 ">
-                  <span className="text-sm text-gray-400">
-                    Secured connection
-                  </span>
-                  <LockKeyhole />
-                </div>
-              </div>
-              <div className="">
-                <div
-                  className="hover:cursor-pointer p-3 flex gap-3 "
-                  onClick={handlePaypal}
-                >
-                  <input
-                    type="radio"
-                    className="hover:cursor-pointer w-4"
-                    onChange={handleCart}
-                  />
-                  <div className="bg-white rounded">
-                    <Image
-                      width={40}
-                      height={20}
-                      src="https://www.udemy.com/staticx/udemy/images/v9/hpp-paypal.svg"
-                      alt="paypal logo"
-                    />
-                  </div>
-                  <p className=" font-bold ">PayPal</p>
-                </div>
-                <hr />
-             
-                <p
-                  className={
-                    paypalActive
-                      ? "flex p-6 bg-white text-muted-foreground"
-                      : "hidden"
-                  }
-                >
-                  In order to complete your transaction, we will transfer you
-                  over to PayPals secure servers.
-                </p>
-                <div
-                  className="hover:cursor-pointer p-3"
-                  onClick={() => handleCart()}
-                >
-                  <div className="flex justify-between w-full">
-                    <div className="flex gap-3 flex-1 w-[60%] ">
-                      <input
-                        type="radio"
-                        className="hover:cursor-pointer w-4"
-                        onChange={() => setCartActive((prev) => !prev)}
-                      />
-                      <div className="bg-white h-fit my-auto rounded">
-                       
-                        <Image
-                          width={40}
-                          height={20}
-                          src="https://www.udemy.com/staticx/udemy/images/v9/card-default.svg"
-                          alt="cart deault logo"
-                        />
-                      </div>
-                      <p className="my-auto font-bold flex-1">
-                        Credit/Debit Cart
-                      </p>
-                    </div>
-                    <div className="flex gap-2 flex-wrap w-[40%]  pl-8">
-                      <div className="bg-white rounded">
-                        <Image
-                          height={20}
-                          width={40}
-                          src="https://www.udemy.com/staticx/udemy/images/v9/card-amex.svg"
-                          alt="card-amex"
-                        />
-                      </div>
-                      <div className="bg-white rounded">
-                        <Image
-                          height={20}
-                          width={40}
-                          src="https://www.udemy.com/staticx/udemy/images/v9/card-discover.svg"
-                          alt="card-amex"
-                        />
-                      </div>
-                      <div className="bg-white rounded">
-                        <Image
-                          height={20}
-                          width={40}
-                          src="https://www.udemy.com/staticx/udemy/images/v9/card-mastercard.svg"
-                          alt="card-mastercard"
-                        />
-                      </div>
-                      <div className="bg-white rounded">
-                        <Image
-                          height={20}
-                          width={40}
-                          src="https://www.udemy.com/staticx/udemy/images/v9/card-visa.svg"
-                          alt="card-visa"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr className={cartActive ? "flex" : "hidden"} />
-                <div className={cartActive ? "w-full px-5 py-5" : "hidden"}>
-                  <div className="flex justify-between py-2">
-                    <label htmlFor=" cart name" className="font-bold">
-                      Name on cart
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </section> */}
+
             <div>
               {typeof typeOfOffer == "string" && (
                 <>
@@ -347,29 +221,6 @@ export default function page(props: { params: TProps }) {
           </div>
         </div>
       </div>
-      {/* <Popup isVisible={isVisible} onCloseModal={() => onclose()}>
-        <main className="w-[450px] h-fit p-5 bg-white rounded-[12px] mx-3">
-          <h1 className="font-semibold text-xl py-3">Cancel registration ?</h1>
-          <p className="">
-            Are you sure you don't want to register your company ?
-          </p>
-          <p className="">You can still do this from your dashboard</p>
-          <div className="flex py-4 gap-3">
-            <Button
-              onClick={() => router.push(Route.dashboard)}
-              className="border w-1/2 rounded-[10px] bg-white text-red-500 border-red-500 hover:bg-[#ef44441e] "
-            >
-              Yes
-            </Button>
-            <Button
-              onClick={() => onClose()}
-              className="bg-primary w-1/2 rounded-[10px] py-2 text-white "
-            >
-              NO
-            </Button>
-          </div>
-        </main>
-      </Popup> */}
     </main >
   );
 }
