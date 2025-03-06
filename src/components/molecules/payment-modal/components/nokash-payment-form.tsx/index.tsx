@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from 'react';
 import { PaymentMethod, PaymentType } from '@/types/nokash-type';
 import { createId } from '@paralleldrive/cuid2';
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { BASE_URL } from '@/utiles/services/constants';
+import { API_URL, BASE_URL } from '@/utiles/services/constants';
 import { ValidationErrors } from '../type';
 import EmailInputField from '../email-payment-info';
 
@@ -27,6 +27,7 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
     const [isNigeria, setIsNigeria] = useState(false);
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [hasInitiate, setHasInitiate] = useState(false);
 
 
     const validatePhoneNumber = (number: string, selectedOperator: string): boolean => {
@@ -223,7 +224,8 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
             payment_method: formData.get('payment_method') as PaymentMethod,
             order_id: createId(),
             amount: String(amountValue) ?? String(amount),
-            callback_url: `http://192.168.100.30:3000/api/nokash/payment_response`,
+            // callback_url: `${API_URL}/api/nokash/payment_response`,
+            callback_url: `https://wsflnurjpk6y4rfu66vtm2uz4q.srv.us/api/nokash/payment_response`,
             user_data: {
                 user_phone: '237' + phone,
                 user_email: formData.get('user_email') as string,
@@ -246,7 +248,6 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
 
             if (result.status === 'REQUEST_OK' && result.data) {
                 setTransactionId(result.data.id);
-
                 // poll the status of this transaction
                 // setTimeout(async () => {
                 //     await pollPaymentStatus(result.data.id, currentPlan as string);
@@ -373,10 +374,10 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
 
             <button
                 type="submit"
-                disabled={loading || Object.keys(validationErrors).length > 0}
+                disabled={loading || Object.keys(validationErrors).length > 0 || (hasInitiate && !!transactionId)}
                 className={`
                     flex items-center justify-center gap-3 p-2
-                    ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-blue-600'}
+                    ${loading || (hasInitiate && transactionId) ? 'opacity-70 cursor-not-allowed' : 'hover:bg-blue-600'}
                     ${Object.keys(validationErrors).length > 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary'}
                     font-semibold text-white w-full rounded
                 `}

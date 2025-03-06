@@ -73,6 +73,19 @@ export default function page(props: { params: TProps }) {
     }
   }, [router]);
 
+  useEffect(() => {
+    checkPaymentStatus(); // route the user to the payment success page
+  }, [router]);
+
+  const checkPaymentStatus = async () => {
+    const data = await fetch(`/api/nokash/payment_response`);
+    const response = await data.json();
+    console.log("\n\n response of status check: ", response);
+
+    if (response)
+      router.push('/payment/success')
+  }
+
   const { data: pricePlan } = useApiOps<
     PricePlanType,
     ApiDataResponse<PricePlanType>

@@ -24,6 +24,8 @@ export interface NokashCallback {
     status: 'PENDING' | 'FAILED' | 'CANCELED' | 'TIMEOUT' | 'SUCCESS'
     amount: number
     phone?: string
+    initiatedAt?: number[] | string
+    statusReason?: string
     orderId: string
     current_price_id?: string
 }

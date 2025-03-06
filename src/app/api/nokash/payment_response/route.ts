@@ -3,6 +3,7 @@ import { NokashPaymentService } from '@/lib/ nokash'
 import { NokashCallback } from '@/types/nokash-type';
 import { BASE_URL } from '@/utiles/services/constants';
 import { LOCAL_STORAGE } from '@/utiles/services/storage';
+import { getStorageData } from '@/utils/tool';
 import { NextResponse } from 'next/server'
 
 // Define the expected payload structure
@@ -12,17 +13,17 @@ const nokashService = new NokashPaymentService(
     process.env.NEXT_PUBLIC_NOKASH_APP_SPACE_KEY!
 );
 
-const currentPlan = JSON.parse(localStorage.getItem('current_price_plan') ?? '{}');
+const currentPlan = getStorageData('current_price_plan');
 // console.log("\n\n\ninside the payment_response currentPlan: ", currentPlan);
 
 
 export async function POST(request: Request) {
     try {
 
-
         console.log("\n\n\n inside the payment_response response: ", request);
         // Ensure the request has a body
         if (!request.json) {
+            console.error("No request body found in NOKASH callback")
             return NextResponse.redirect(new URL(`${BASE_URL}/payment/cancel`))
         }
 
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
 
         switch (callbackData.status) {
             case 'SUCCESS':
-                await handleSuccessfulPayment(callbackData);
+                await handleSuccessfulPayment(callbackData, request);
                 break
             case 'FAILED':
                 await handleFailedPayment(callbackData, request);
@@ -69,29 +70,35 @@ export async function POST(request: Request) {
 }
 
 // Example handler functions - implement these based on your needs
-async function handleSuccessfulPayment(data: NokashCallback) {
-    // Update order status to confirmed
-    const response = await fetch('/api/nokash/check_payment_status', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ transaction_id: data?.id, current_price_id: currentPlan.id }),
-    });
+async function handleSuccessfulPayment(data: NokashCallback, request: Request) {
 
-    const result = await response.json();
-    if (result.data?.status === 'REQUEST_OK') {  //we can now store the transaction in the database.
-        // Handle successful payment
-        console.log("\n\n\n inside the payment_response data to store: ", data);
-        const resp = await nokashService.storePaymentDetails({ ...data, current_price_id: currentPlan.id });
-        if (!resp) {
-            return NextResponse.redirect(new URL(`${BASE_URL}/payment/cancel`))
+    // Log successful payment details
+    console.log('\n\nProcessing successful payment:', { data, currentPlan });
+
+
+    try {
+        if (data?.status === 'SUCCESS' || !data?.statusReason) {
+            // construct object to send to an api.
+            const dataobj = {
+                ...data,
+                current_price_id: currentPlan?.id,
+                initiatedAt: data?.initiatedAt && data?.initiatedAt.toString().split(',').join(''),
+            };
+
+            console.log("Storing payment details...");
+            try {
+                const response = await nokashService.storePaymentDetails(dataobj);
+                console.log("Data stored:", response);
+            } catch (error) {
+                console.error("Failed to store payment details:", error);
+                return NextResponse.json({ error: 'Failed to store payment details' }, { status: 500 });
+            }
+            return NextResponse.redirect(new URL('/payment/success', request.url), { status: 302 });
         }
-        // Release purchased items-services
-        // TODO: Send confirmation email to customer
-        console.log('\n\n Processing successful payment:', resp);
-    }
+    } catch (error) {
+        console.error("errror checking for payment status", error);
 
+    }
 }
 
 async function handleFailedPayment(data: NokashCallback, request: Request) {
@@ -100,6 +107,7 @@ async function handleFailedPayment(data: NokashCallback, request: Request) {
     // Log failure reason
     console.log('\n\nProcessing failed payment:', data);
     return NextResponse.redirect(new URL(`/payment/cancel`, request.url));
+    // return NextResponse.redirect(new URL(`/payment/success`, `${BASE_URL}`));
 }
 
 async function handleCanceledPayment(data: NokashCallback, request: Request) {

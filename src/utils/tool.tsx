@@ -17,3 +17,10 @@ export const uniqueString = (string?: string): string => {
     .toString(36)
     .substring(2, 15)}${cleanString}`;
 };
+
+
+export const getStorageData = (key: string) => {
+  if (typeof window !== "undefined") {
+    return JSON.parse(localStorage.getItem(key) || "").toString();
+  }
+}
