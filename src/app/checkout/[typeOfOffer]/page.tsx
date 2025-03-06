@@ -222,6 +222,7 @@ export default function page(props: { params: TProps }) {
         </div>
       </div>
     </main >
+    </Session >
   );
 }
 // export { generateStaticParams };
