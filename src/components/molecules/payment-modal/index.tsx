@@ -1,7 +1,6 @@
 // src/components/molecules/PaymentModal.tsx
 import React from 'react';
 import NokashPaymentForm from '@/components/molecules/payment-modal/components/nokash-payment-form.tsx';
-import { PricePlanType } from '@/types/api-types';
 
 interface PaymentModalProps {
     isOpen: boolean;

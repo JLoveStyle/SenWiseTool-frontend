@@ -28,4 +28,5 @@ export interface NokashCallback {
     statusReason?: string
     orderId: string
     current_price_id?: string
+    token?: string
 }

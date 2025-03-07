@@ -4,7 +4,8 @@ export type SessionStatusType =
   | "guest"
   | "authenticated"
   | "has_company"
-  | "not_has_company";
+  | "not_has_company"
+  | "company_disabled";
 
 export interface cardDataType {
   title: string;

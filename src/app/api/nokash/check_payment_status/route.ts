@@ -8,7 +8,7 @@ const nokashService = new NokashPaymentService(
 
 export async function POST(request: Request) {
     try {
-        const { transaction_id, current_price_id } = await request.json();
+        const { transaction_id, current_price_id, token } = await request.json();
         const response = await nokashService.checkStatus(transaction_id);
 
         console.log("\n\n Response of status check:", response);
@@ -17,12 +17,12 @@ export async function POST(request: Request) {
             console.log("Storing payment details...");
             const data = await nokashService.storePaymentDetails({
                 ...response.data,
-                current_price_id
+                current_price_id,
+                token
             });
-            console.log("Data stored:", data);
-
-            return NextResponse.redirect(new URL('/payment/success', request.url));
+            return NextResponse.json(data?.data);
         }
+        return NextResponse.json(null);
     } catch (error) {
         console.error("Failed to store payment details:", error);
         return NextResponse.redirect(new URL('/payment/cancel', request.url));

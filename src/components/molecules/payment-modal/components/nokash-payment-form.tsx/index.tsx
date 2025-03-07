@@ -1,17 +1,22 @@
+"use client";
 
-
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { PaymentMethod, PaymentType } from '@/types/nokash-type';
 import { createId } from '@paralleldrive/cuid2';
-import { Spinner } from "@/components/atoms/spinner/spinner";
-import { API_URL, BASE_URL } from '@/utiles/services/constants';
 import { ValidationErrors } from '../type';
 import EmailInputField from '../email-payment-info';
+import { useRouter } from 'next/navigation';
+import PaymentButton from './button-component';
+import { toast } from 'sonner';
+import { BASE_URL } from '@/utiles/services/constants';
+import { useCompanyStore } from '@/lib/stores/companie-store';
+
 
 type NokashPaymentProps = {
     isLoading?: boolean;
     amount?: number;
     currentPlan?: string;
+    token?: string;
 };
 
 
@@ -19,7 +24,7 @@ type NokashPaymentProps = {
 const indicatifOrange = ['655', '656', '657', '658', '6590', '6591', '6592', '6593', '6594', '6595', '69'];
 const indicatifMTN = ['650', '651', '652', '653', '654', '67', '680', '681', '682', '683', '684'];
 
-export default function NokashPaymentForm({ amount, currentPlan }: NokashPaymentProps) {
+export default function NokashPaymentForm({ amount, currentPlan, token }: NokashPaymentProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [transactionId, setTransactionId] = useState<string | null>(null);
@@ -28,6 +33,24 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
     const [phoneNumber, setPhoneNumber] = useState('');
     const [hasInitiate, setHasInitiate] = useState(false);
+    const [message, setMessage] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
+
+
+    // Load company object from store
+    const company = useCompanyStore((state) => state.company);
+
+    useEffect(() => {
+
+        if (company?.payment_id) {
+            toast.success(`This company has already an account with ID: ${company?.payment_id}`);
+            setTimeout(() => {
+                router.replace('/dashboard');
+            }, 2000);
+        }
+    }, []);
+
+    const router = useRouter();
 
 
     const validatePhoneNumber = (number: string, selectedOperator: string): boolean => {
@@ -151,33 +174,57 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
 
 
     // Automatic polling of payment status after initiation
-    const pollPaymentStatus = async (id: string, current_price_id: string) => {
+    const pollPaymentStatus = async (id: string, pricePlan: any) => {
 
-        const response = await fetch('/api/nokash/check_payment_status', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ transaction_id: id, current_price_id }),
-        });
+        try {
+            const response = await fetch('/api/nokash/check_payment_status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ transaction_id: id, current_price_id: pricePlan?.id, token }),
+            });
 
-        const result = await response.json();
+            const result = await response.json();
 
-        console.log("\n\n response of status check UI: ", result?.data);
-        if (result.data?.status === 'SUCCESS') {
-            // Handle successful payment
-            return true;
-        } else {
-            if ((['FAILED', 'CANCELED', 'TIMEOUT']).includes(result.data?.status)) {
-                setError(`Payment ${result.data.status.toLowerCase()}`);
-                return true;
-            }
-            if (result.data?.status === 'REQUEST_BAD_INFOS') {
+            console.log("\n\n response rom api storage: ", result);
+            if (!result) {
                 setError(`Payment ${result.data.status.toLowerCase().split('_').join(' ')}`);
-                return true;
+                // Redirect to failure page
+                return router.replace(BASE_URL + '/payment/cancel');
             }
+            // Redirect to success page
+            router.replace(BASE_URL + '/payment/success');
+            return;
         }
-        return false;
+
+        catch (err) {
+            console.log(`Error polling payment status: ${err}`);
+        }
+    }
+
+    // check payment status from payment api
+    const getPaymentStatusFromCallback = async (orderId: string) => {
+
+        try {
+            const response = await fetch('/api/nokash/payment_response?orderId=' + orderId);
+            const result = await response.json();
+            console.log(`Response of payment status check: ${JSON.stringify(result)}`);
+            if (result && result?.status === 'SUCCESS') {
+                setTransactionId(null);
+                toast.success('Payment successful');
+                setMessage(`PAYMENT SUCCESSFULL`);
+                return result;
+            }
+            if (result?.status === 'FAILED') {
+                setTransactionId(null);
+                toast.error('Payment Failed. Please try again.');
+                setMessage(`PAYMENT FAILED! PLEASE TRY AGAIN`);
+            }
+        } catch (err) {
+            console.log(`Error polling payment status: ${err}`);
+        }
+
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -244,14 +291,18 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
 
             const result = await response.json();
 
-            console.log("\n\n response of initiate payment UI: ", result);
-
             if (result.status === 'REQUEST_OK' && result.data) {
                 setTransactionId(result.data.id);
-                // poll the status of this transaction
-                // setTimeout(async () => {
-                //     await pollPaymentStatus(result.data.id, currentPlan as string);
-                // }, 3000);
+                let paymentStatus;
+                // check the payment status fromm the callback 
+                setTimeout(async () => {
+                    paymentStatus = await getPaymentStatusFromCallback(result.data.orderId);
+
+                    console.log("\n\n response of payment callback: ", paymentStatus);
+                    // poll the status of this transaction
+                    if (paymentStatus)
+                        await pollPaymentStatus(result.data.id, currentPlan as string);
+                }, 1000 * 60);
             } else {
                 setError(result.message || 'Payment initiation failed');
             }
@@ -372,19 +423,13 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
                 <div className="text-red-500 text-sm">{error}</div>
             )}
 
-            <button
-                type="submit"
-                disabled={loading || Object.keys(validationErrors).length > 0 || (hasInitiate && !!transactionId)}
-                className={`
-                    flex items-center justify-center gap-3 p-2
-                    ${loading || (hasInitiate && transactionId) ? 'opacity-70 cursor-not-allowed' : 'hover:bg-blue-600'}
-                    ${Object.keys(validationErrors).length > 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary'}
-                    font-semibold text-white w-full rounded
-                `}
-            >
-                {loading && <Spinner />}
-                <span>Initiate Payment</span>
-            </button>
+            <PaymentButton
+                loading={loading}
+                hasInitiate={hasInitiate}
+                transactionId={transactionId as string}
+                validationErrors={validationErrors}
+                handleSubmit={handleSubmit}
+            />
 
             {transactionId && (
                 <>
@@ -393,6 +438,16 @@ export default function NokashPaymentForm({ amount, currentPlan }: NokashPayment
                     </div>
                     <div className="text-green-600 text-xl">
                         Transaction initiated. please check you phone to validate. 🚀
+                    </div>
+                </>
+            )}
+            {!!message && (
+                <>
+                    <div className="text-sm text-gray-500">
+                        Transaction ID: {transactionId}
+                    </div>
+                    <div className="text-green-600 text-xl">
+                        {message.toLocaleLowerCase().includes('try again') ? <span className='text-red-600'>{message}</span> : message}
                     </div>
                 </>
             )}

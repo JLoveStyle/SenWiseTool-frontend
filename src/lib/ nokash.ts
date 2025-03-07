@@ -3,7 +3,10 @@ import { API_URL, PAYMENT_API_URL } from "@/utiles/services/constants";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { Route } from "@/lib/route";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
-import { toast } from "sonner";
+// import { toast } from "sonner";
+import { getStorageData } from "@/utils/tool";
+
+console.log("\n\n token in storage: ", getStorageData('token'));
 
 export class NokashPaymentService {
     private baseUrl = PAYMENT_API_URL;
@@ -68,12 +71,12 @@ export class NokashPaymentService {
 
     // store payment details on senwisetool 
     async storePaymentDetails(paymentDetails: NokashCallback) {
-        if (!paymentDetails.current_price_id) {
-            toast.error("No current price Identifier provided");
+        const { current_price_id, token } = paymentDetails;
+        if (!current_price_id || !token) {
+            console.error("No current price Identifier provided");
             return;
         }
-        const token = LOCAL_STORAGE.get('token');
-        console.log("\n\n data to store: ", paymentDetails, token);
+        console.log("\n\n data to store with token: ", paymentDetails, token);
         try {
             const response = await fetch(`${API_URL}/subscriptions/success_payment`, {
                 method: 'POST',
