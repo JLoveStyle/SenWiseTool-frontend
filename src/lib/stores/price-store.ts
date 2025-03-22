@@ -2,7 +2,7 @@
 // libs
 
 import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { devtools, persist } from 'zustand/middleware';
 
 // local import
 import { PricePlanType } from '@/types/api-types'

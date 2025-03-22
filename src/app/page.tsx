@@ -17,7 +17,7 @@ export default function Home() {
           key={index}
           id={`section-${index}`}
           className="section w-full"
-          // style={{ backgroundColor: color }}
+        // style={{ backgroundColor: color }}
         >
           {React.createElement(sectionPage)}
         </div>

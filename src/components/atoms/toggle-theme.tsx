@@ -1,9 +1,9 @@
 "use client";
 
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
 
 export function ToggleTheme() {
-  const { theme, setTheme } = useTheme();
+  // const { theme, setTheme } = useTheme();
 
   return (
     <>
@@ -12,9 +12,9 @@ export function ToggleTheme() {
           <input
             type="checkbox"
             onClick={() => {
-              setTheme(theme == "dark" ? "light" : "dark");
+              // setTheme(theme == "dark" ? "light" : "dark");
             }}
-            checked={theme === "dark" ? true : false}
+            // checked={theme === "dark" ? true : false}
           />
           <div className="slider bg-white dark:bg-primary">
             <div className="circle bg-slate-400"></div>

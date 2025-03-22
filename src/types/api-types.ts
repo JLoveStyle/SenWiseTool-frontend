@@ -266,6 +266,7 @@ export type CompanyType = {
   email: string;
   logo: string;
   payment_mode: string;
+  payment_id?: string;
   company_paypal_email: string;
   paypal_id: string;
   sector_of_activity: string;

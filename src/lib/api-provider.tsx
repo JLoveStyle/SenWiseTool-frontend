@@ -55,6 +55,7 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
 
   const refetch = () => fetchData();
 
+
   if (data) {
     if (route?.includes("users")) {
       setCurrentUser(data as unknown as UserType);
@@ -67,7 +68,8 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
     }
     if (route?.includes("price_plans")) {
       setPricePlan(data as unknown as PricePlanType);
-      // console.log('price plan from store', data)
+      LOCAL_STORAGE.save("current_price_plan", data);
+      // console.log('price plan from store', data);
     }
     if (route?.includes("campaigns")) {
       setCampaigns(data as unknown as CampaignType[]);
