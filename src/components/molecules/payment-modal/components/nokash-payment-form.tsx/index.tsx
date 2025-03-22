@@ -10,21 +10,35 @@ import PaymentButton from './button-component';
 import { toast } from 'sonner';
 import { BASE_URL } from '@/utiles/services/constants';
 import { useCompanyStore } from '@/lib/stores/companie-store';
+import { usePriceStore } from '@/lib/stores/price-store';
+import { PricePlanType } from '@/types/api-types';
+import { Spinner } from '@/components/atoms/spinner/spinner';
+import { LOCAL_STORAGE } from '@/utiles/services/storage';
+import { NokashPaymentService } from '@/lib/ nokash';
+import { sanitizeObject } from '@/utils/tool';
 
 
 type NokashPaymentProps = {
     isLoading?: boolean;
     amount?: number;
-    currentPlan?: string;
+    currentPlanId?: string;
     token?: string;
 };
 
+const nokashService = new NokashPaymentService(
+    process.env.NEXT_PUBLIC_NOKASH_I_SPACE_KEY!,
+    process.env.NEXT_PUBLIC_NOKASH_APP_SPACE_KEY!
+);
 
 
 const indicatifOrange = ['655', '656', '657', '658', '6590', '6591', '6592', '6593', '6594', '6595', '69'];
 const indicatifMTN = ['650', '651', '652', '653', '654', '67', '680', '681', '682', '683', '684'];
 
-export default function NokashPaymentForm({ amount, currentPlan, token }: NokashPaymentProps) {
+export default function NokashPaymentForm({
+    amount,
+    currentPlanId,
+    token
+}: NokashPaymentProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [transactionId, setTransactionId] = useState<string | null>(null);
@@ -35,15 +49,19 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
     const [hasInitiate, setHasInitiate] = useState(false);
     const [message, setMessage] = useState('');
     const [isUploading, setIsUploading] = useState(false);
-
+    const [currentPricePlanId, setCurrentPricePlanId] = useState<string | null>(currentPlanId as string);
 
     // Load company object from store
     const company = useCompanyStore((state) => state.company);
+    const pricePlan = usePriceStore((state) => state.price_plan);
+    const accessToken = LOCAL_STORAGE.get('token');
 
     useEffect(() => {
+        if (!currentPlanId)
+            setCurrentPricePlanId(pricePlan?.id as string);
 
         if (company?.payment_id) {
-            toast.success(`This company has already an account with ID: ${company?.payment_id}`);
+            toast.success(`This company has an ongoing account with ID: ${company?.payment_id}`);
             setTimeout(() => {
                 router.replace('/dashboard');
             }, 2000);
@@ -172,9 +190,9 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
         }
     };
 
-
+    console.log('\n\n current price plan and token inside index: ', { accessToken, currentPricePlanId, currentPlanId });
     // Automatic polling of payment status after initiation
-    const pollPaymentStatus = async (id: string, pricePlan: any) => {
+    const pollPaymentStatus = async (id: string, pricePlanId: string) => {
 
         try {
             const response = await fetch('/api/nokash/check_payment_status', {
@@ -182,49 +200,74 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ transaction_id: id, current_price_id: pricePlan?.id, token }),
+                body: JSON.stringify({ transaction_id: id, current_price_id: pricePlanId || currentPricePlanId, token: accessToken }),
             });
 
             const result = await response.json();
+            console.log("\n\n response from api storage: ", result);
 
-            console.log("\n\n response rom api storage: ", result);
+
             if (!result) {
                 setError(`Payment ${result.data.status.toLowerCase().split('_').join(' ')}`);
                 // Redirect to failure page
                 return router.replace(BASE_URL + '/payment/cancel');
             }
             // Redirect to success page
-            router.replace(BASE_URL + '/payment/success');
-            return;
+            return router.replace(BASE_URL + '/payment/success');
         }
 
         catch (err) {
-            console.log(`Error polling payment status: ${err}`);
+            console.log(`Error polling payment status:`, err);
+        } finally {
+            setIsUploading(false);
         }
     }
 
     // check payment status from payment api
-    const getPaymentStatusFromCallback = async (orderId: string) => {
+    const getPaymentStatusFromCallback = async (orderId: string, transaction_id?: string) => {
 
         try {
             const response = await fetch('/api/nokash/payment_response?orderId=' + orderId);
             const result = await response.json();
-            console.log(`Response of payment status check: ${JSON.stringify(result)}`);
+            console.log(`Response of payment status check:`, result);
             if (result && result?.status === 'SUCCESS') {
                 setTransactionId(null);
                 toast.success('Payment successful');
-                setMessage(`PAYMENT SUCCESSFULL`);
-                return result;
+                setMessage(`PAYMENT REUSSI`);
+                // poll the status of this transaction
+                // await pollPaymentStatus(result?.id, currentPricePlanId as string);
+                const data = await nokashService.storePaymentDetails({
+                    ...result,
+                    current_price_id: currentPricePlanId as string,
+                    token: accessToken
+                })
+                console.log("Data to return:", data?.data);
+                if (data?.data) {
+                    return router.replace(BASE_URL + '/payment/success');
+                }
             }
             if (result?.status === 'FAILED') {
                 setTransactionId(null);
                 toast.error('Payment Failed. Please try again.');
-                setMessage(`PAYMENT FAILED! PLEASE TRY AGAIN`);
+                setMessage(`ECHEC DE PAYMENT. VEULLEZ REESSAYER`);
+                await nokashService.alertUserOfFailedPayment({
+                    ...result,
+                    current_price_id: currentPricePlanId as string,
+                    token: accessToken
+                })
+                return router.replace(BASE_URL + '/payment/cancel');
+            }
+
+            if (result?.error) {
+                // checck the payment status
+                await pollPaymentStatus(transaction_id as string, currentPricePlanId as string);
             }
         } catch (err) {
             console.log(`Error polling payment status: ${err}`);
+            return null;
+        } finally {
+            setIsUploading(false);
         }
-
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -236,25 +279,25 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
 
         const phone = formData.get('user_phone') as string;
         if (!validatePhoneNumber(phone, operator)) {
-            validationErrors.phone = `Invalid phone number for ${operator === 'MTN_MOMO' ? 'MTN' : 'Orange'} Mobile Money`;
+            validationErrors.phone = `Numero de telephone incorrecte pour ${operator === 'MTN_MOMO' ? 'MTN' : 'Orange'} Mobile Money`;
         }
 
         // For Nigeria only.
         if (isNigeria) {
             const email = formData.get('user_email') as string;
             if (!validateEmail(email)) {
-                validationErrors.email = 'Please enter a valid email address';
+                validationErrors.email = 'Veuillez entrer un mail correspond';
             }
 
             const name = formData.get('user_name') as string;
             if (!validateName(name)) {
-                validationErrors.name = 'Name must be at least 2 characters long';
+                validationErrors.name = 'Le nom doit avoir au moins 2 caracteres';
             }
         }
 
         const amountValue = Number(formData.get('amount'));
         if (!validateAmount(amountValue)) {
-            validationErrors.amount = `Minimum amount is ${isNigeria ? '100 NGN' : '1 XAF'}`;
+            validationErrors.amount = `Le Montant minimum est ${isNigeria ? '100 NGN' : '1 XAF'}`;
         }
 
         if (Object.keys(validationErrors).length > 0) {
@@ -272,7 +315,7 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
             order_id: createId(),
             amount: String(amountValue) ?? String(amount),
             // callback_url: `${API_URL}/api/nokash/payment_response`,
-            callback_url: `https://wsflnurjpk6y4rfu66vtm2uz4q.srv.us/api/nokash/payment_response`,
+            callback_url: `${BASE_URL}/api/nokash/payment_response`,
             user_data: {
                 user_phone: '237' + phone,
                 user_email: formData.get('user_email') as string,
@@ -294,22 +337,20 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
             if (result.status === 'REQUEST_OK' && result.data) {
                 setTransactionId(result.data.id);
                 let paymentStatus;
+                setIsUploading(true);
                 // check the payment status fromm the callback 
                 setTimeout(async () => {
-                    paymentStatus = await getPaymentStatusFromCallback(result.data.orderId);
-
-                    console.log("\n\n response of payment callback: ", paymentStatus);
-                    // poll the status of this transaction
-                    if (paymentStatus)
-                        await pollPaymentStatus(result.data.id, currentPlan as string);
+                    await getPaymentStatusFromCallback(result.data.orderId, result.data.id);
                 }, 1000 * 60);
+
             } else {
-                setError(result.message || 'Payment initiation failed');
+                setError(result.message || 'Erreur lors de l\'initiation du payement');
             }
         } catch (err) {
-            setError('Failed to process payment');
+            setError('Error d\'initiation du payement');
         } finally {
             setLoading(false);
+            // setIsUploading(false);
         }
     };
 
@@ -324,7 +365,7 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Country <span className='text-red-500 ml-1'>*</span></label>
+                <label className="block text-sm font-medium mb-1">Pays <span className='text-red-500 ml-1'>*</span></label>
                 <select
                     // onChange={getSelectedCountry}
                     name="country"
@@ -337,7 +378,7 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Payment Method <span className='text-red-500 ml-1'>*</span></label>
+                <label className="block text-sm font-medium mb-1">Methode de payment <span className='text-red-500 ml-1'>*</span></label>
                 <select
                     name="payment_method"
                     className="w-full p-2 border rounded"
@@ -352,7 +393,7 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Amount (in African CFA franc) <span className='text-red-500 ml-1'>*</span></label>
+                <label className="block text-sm font-medium mb-1">Montant (en FCFA) <span className='text-red-500 ml-1'>*</span></label>
                 <input
                     type="number"
                     name="amount"
@@ -367,12 +408,11 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
                 )}
             </div>
 
-
             {/* add email field with tooltip info */}
             <EmailInputField handleInputChange={handleInputChange} validationErrors={validationErrors} />
 
             <div>
-                <label className="block text-sm font-medium mb-1">Phone Number <span className='text-red-500 ml-1'>*</span></label>
+                <label className="block text-sm font-medium mb-1">Numero de telephone<span className='text-red-500 ml-1'>*</span></label>
                 <input
                     type="tel"
                     name="user_phone"
@@ -444,10 +484,12 @@ export default function NokashPaymentForm({ amount, currentPlan, token }: Nokash
             {!!message && (
                 <>
                     <div className="text-sm text-gray-500">
-                        Transaction ID: {transactionId}
+                        Transaction ID: {transactionId} {isUploading && <Spinner size="small" />}
                     </div>
                     <div className="text-green-600 text-xl">
-                        {message.toLocaleLowerCase().includes('try again') ? <span className='text-red-600'>{message}</span> : message}
+                        {message.toLocaleLowerCase().includes('try again') ? <span className='text-red-600'>{message}</span> : <div>
+                            {message}
+                        </div>}
                     </div>
                 </>
             )}

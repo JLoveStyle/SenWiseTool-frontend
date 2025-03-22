@@ -35,7 +35,6 @@ export const Session = ({ children, sessionStatus }: Props) => {
     route: Route.user,
   });
 
-  console.log("Token  from session : ", LOCAL_STORAGE.get("token"));
 
   // FETCH COMPANY
   const { isLoading: loadingCompany, data: company } = useApiOps<
@@ -88,24 +87,25 @@ export const Session = ({ children, sessionStatus }: Props) => {
     }
   }
 
-  if (
-    sessionStatus === COMPANY_DISABLED &&
-    !authUserIsLoading &&
-    !loadingCompany
-  ) {
-    if (authUser) {
-      if (company) {
-        if (company.status == "INACTIVE") {
-          return <>{children}</>;
-        }
-      } else {
-        router.push(Route.createCompany);
-      }
-      router.push(Route.dashboard);
-    } else {
-      router.push(Route.home);
-    }
-  }
+  // if (
+  //   sessionStatus === COMPANY_DISABLED &&
+  //   !authUserIsLoading &&
+  //   !loadingCompany
+  // ) {
+  //   if (authUser) {
+  //     if (company) {
+  //       if (company.status == "INACTIVE") {
+  //         return <>{children}</>;
+  //       }
+  //     }
+  //     else {
+  //       router.push(Route.createCompany);
+  //     }
+  //     router.push(Route.dashboard);
+  //   } else {
+  //     router.push(Route.home);
+  //   }
+  // }
 
   if (!sessionStatus && !authUserIsLoading) {
     return <>{children}</>;
