@@ -1,8 +1,10 @@
 "use client";
 import { DasHomePage } from "@/components/molecules/dasHomePage";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
+import { Session } from "@/components/templates/session";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
+import { AUTHENTICATED } from "@/lib/session-statut";
 import { ApiDataResponse, UserType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
@@ -36,8 +38,10 @@ export default function Home({}: Props) {
   }, []);
 
   return (
-    <LayoutDashboardTemplate title="Welcome to SENWISETOOL Dashboard">
-      <DasHomePage />
-    </LayoutDashboardTemplate>
+    <Session sessionStatus={AUTHENTICATED}>
+      <LayoutDashboardTemplate title="Welcome to SENWISETOOL Dashboard">
+        <DasHomePage />
+      </LayoutDashboardTemplate>
+    </Session>
   );
 }

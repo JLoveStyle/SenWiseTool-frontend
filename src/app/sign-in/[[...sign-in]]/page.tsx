@@ -1,21 +1,14 @@
-
 import { Session } from "@/components/templates/session";
-import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
-import { GUEST } from "@/lib/session-statut";
-import { useSignIn } from "@clerk/nextjs";
 import Link from "next/link";
-import { useState } from "react";
 import { FaHome } from "react-icons/fa";
-import { MdError } from "react-icons/md";
-import { toast } from "react-toastify";
 
 import { SignIn } from "@clerk/nextjs";
 type Props = {};
 
 export default function page({}: Props) {
   return (
-    <Session>
+    <Session sessionStatus="guest">
       <main
         className="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-gradient-to-b from-gray-900/70 to-gray-900/90"
         style={{
