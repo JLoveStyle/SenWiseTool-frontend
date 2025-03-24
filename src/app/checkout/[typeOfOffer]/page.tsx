@@ -55,15 +55,6 @@ export default function page(props: { params: TProps }) {
     setPaypalActive(false);
   };
 
-  async function handlePayment() {
-    setIsLoading((prev) => !prev);
-    console.log("how are u");
-  }
-
-  // const params = useParams();
-
-  // const { typeOfOffer } = params;
-
   useEffect(() => {
     if (
       typeof typeOfOffer !== "string" ||

@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProjectSummary from "../molecules/projectSummary";
-import { Project } from "@/types/gestion";
 import { MoveLeft } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { ProjectType } from "@/types/api-types";
@@ -26,11 +25,8 @@ export default function ProjectDetails({
   const [formActive, setFormActive] = useState<boolean>(false);
   const [dataActive, setDataActive] = useState<boolean>(false);
 
-  let id: string | undefined | null = "";
-
   const showDataFuntionFromChild = (val: boolean) => {
     setDataActive(val);
-    // setSettingsActive(false)
     setFormActive(false);
     setSummaryActive(false);
   };
@@ -39,7 +35,6 @@ export default function ProjectDetails({
     setFormActive(val);
     setSummaryActive(false);
     setDataActive(false);
-    // setSettingsActive(false)
   };
 
   return (

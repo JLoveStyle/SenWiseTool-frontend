@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewProofOfPaiementForm } from "./new-proof-of-paiement-form";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 interface Props {
   endpoint: string;
@@ -27,7 +28,7 @@ export function NewProofOfPaiement({ endpoint }: Props) {
   const [URLs, setURLs] = useState<
     Partial<incomeAndSharedResponsabilityDBProps>
   >({});
-  const [closeModal, setCloseModal] = useState<boolean>(false);
+  const {isDialogOpen, setIsDialogOpen} = useDialogControl()
 
   const router = useRouter();
 
@@ -59,15 +60,6 @@ export function NewProofOfPaiement({ endpoint }: Props) {
       management_plan: [""]
     };
 
-    console.log('Payload', dataToDB);
-
-    // Sauvegarde de l'activité
-    // const existingActivities = LOCAL_STORAGE.get("agricultures") ?? [];
-    // LOCAL_STORAGE.save("agricultures", [
-    //   ...existingActivities,
-    //   { id: existingActivities.length + 1, ...dataToDB },
-    // ]);
-
     // CREATE AGRICULTURAL ACTIVITY
     await mutateApiData(endpoint, dataToDB)
       .then((response) => {
@@ -77,7 +69,7 @@ export function NewProofOfPaiement({ endpoint }: Props) {
           setIsLoading(false);
 
           // closeModal
-          setCloseModal(false);
+          setIsDialogOpen(!isDialogOpen);
           router.refresh();
           // router.push(Route.agriculture);
           return;

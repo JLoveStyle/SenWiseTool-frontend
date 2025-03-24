@@ -12,7 +12,6 @@ import {
 import { ApiDataResponse, CompanyType, UserType } from "@/types/api-types";
 import { SessionStatusType } from "@/types/type-tools";
 import { fetchApiData } from "@/utiles/services/queries";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { ScreenSpinner } from "../atoms/spinner/screen-spinner";
@@ -24,8 +23,6 @@ interface Props {
 
 export const Session = ({ children, sessionStatus }: Props) => {
   const router = useRouter();
-  // const {authUserIsLoading, setAuthUserIsLoading} = useState<boolean>()
-
   const {
     refetch,
     isLoading: authUserIsLoading,
@@ -34,8 +31,6 @@ export const Session = ({ children, sessionStatus }: Props) => {
     fn: () => fetchApiData(Route.user, "current"),
     route: Route.user,
   });
-
-  console.log("Token  from session : ", LOCAL_STORAGE.get("token"));
 
   // FETCH COMPANY
   const { isLoading: loadingCompany, data: company } = useApiOps<
@@ -103,7 +98,7 @@ export const Session = ({ children, sessionStatus }: Props) => {
       }
       router.push(Route.dashboard);
     } else {
-      router.push(Route.home);
+      router.push(Route.signIn);
     }
   }
 

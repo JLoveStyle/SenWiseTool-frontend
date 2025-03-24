@@ -11,7 +11,6 @@ import CustomHoverCard from "@/components/organisms/hoverCard";
 import { NewDifferential } from "@/components/organisms/income-and-shared-responsability/differential/new-differential";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { useToggle } from "@/hooks/use-toggle";
 import { DashboardStatPanelData } from "@/types/app-link";
 import {
   differentialDisplayProps,
@@ -20,6 +19,7 @@ import {
 import { fetchApiData } from "@/utiles/services/queries";
 import { useEffect, useState } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 export default function Agriculture() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,12 +29,9 @@ export default function Agriculture() {
   const [differentialSelected, setDifferentialSelected] = useState<
     differentialDisplayProps[]
   >([]);
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
 
-  const { value: openModal, toggle: toggleOpenModel } = useToggle({
-    initial: false,
-  });
-
-  const preview = (url: string, index: number) => {
+  const preview = (url: string) => {
     return <FilePreview url={url} variant="button" />;
   };
 

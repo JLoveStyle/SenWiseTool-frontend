@@ -21,6 +21,7 @@ import { ImCross } from "react-icons/im";
 import { toast } from "react-toastify";
 import { fetchApiData } from "@/utiles/services/queries";
 import { DashboardStatPanelData } from "@/types/app-link";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 export default function Agriculture() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,13 +32,7 @@ export default function Agriculture() {
     ActivityDisplayProps[]
   >([]);
 
-  const { value: openModal, toggle: toggleOpenModel } = useToggle({
-    initial: false,
-  });
-
-  const closeDialog = () => {
-    toggleOpenModel();
-  };
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
 
   const columns = columnTable<ActivityDisplayProps>(
     {
@@ -78,12 +73,10 @@ export default function Agriculture() {
         if (result.status === 200) {
           setIsLoading(false);
           if (Array.isArray(result.data)) {
-            console.log("if condition");
             result.data.forEach((res: ActivityProps) => {
               dataFormated.push(formatedDataFromDBToDisplay(res));
             });
           } else {
-            console.log("if else condition");
             dataFormated.push(formatedDataFromDBToDisplay(result.data));
           }
           setAgricultureDatas(dataFormated);
@@ -146,7 +139,7 @@ export default function Agriculture() {
         return agricultureDatas.length;
       },
     },
-  ]
+  ];
 
   return (
     <LayoutDashboardTemplate

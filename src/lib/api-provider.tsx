@@ -87,7 +87,6 @@ export function useApiOps<T, TBase extends Partial<ApiDataResponse<T>>>({
       }
     }
   }
-  // console.log("fro provider service: ", data)
   return {
     data,
     error,

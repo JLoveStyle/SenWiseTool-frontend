@@ -143,44 +143,15 @@ function flattenObject(obj: NestedObject, parentKey: string = '', result: Nested
   return result;
 }
 
-// GET THE LAST CHARACTERS AFTER A PARTICULAR CHARACTER
-function getRestOfStringFromLast(str: string, char: string) {
-  // Find the index of the last occurrence of the character in the string
-  const index = str.lastIndexOf(char);
-
-  // If the character is found, return the substring starting from that character
-  if (index !== -1) {
-    return str.slice(index + 1); // Add 1 to exclude the character itself
-  }
-
-  // If the character is not found, return an empty string
-  return '';
-}
-
-
-
 const generateExcel = (data: ExcellDataType[]): void => {
   const sheetData: any[] = [];
 
   let requirementHead: string[] = []
-  let nonConformityRecom: string[] = []
   for (const item of data[0].requirements) {
     requirementHead.push(Object.keys(item) as unknown as string)
-    console.log(Object.values(item))
-    console.log()
   }
 
-  const longestRecomendation: { comment: string, deadline: string, req_number: string }[] = []
-
-  // for (let i = 0; i<data.length; i++) {
-  //   if (data[i])
-  // }
-
   const flat = data[0].requirements.map((item: { status: string, req_number: string, comment: string }) => Object.values(item))
-
-  console.log('flat Data test', data[0].requirements.map((item: { status: string, req_number: string, comment: string }) => Object.values(item)).flat())
-
-  console.log("requirementHead\n =>", requirementHead.flat())
 
   // Adding headers to the sheet
   const headers = [
@@ -209,7 +180,6 @@ const generateExcel = (data: ExcellDataType[]): void => {
   ];
 
   let finalHeader = headers.concat(requirementHead.flat())
-  console.log("finalHeader\n", finalHeader)
 
   // Add data rows
   data.forEach((item) => {
@@ -254,15 +224,6 @@ const generateExcel = (data: ExcellDataType[]): void => {
   XLSX.writeFile(wb, 'Inspection_Data.xlsx');
 };
 
-
-
-// SECOND FUNCTION FOR EXCEL SHEET
-export function inspectionDataAsCsv(incomingData: InspectionDataPops[]) {
-
-  
-}
-
-
 // DOWNLOAD ALL INSPECTION DATA OF SINGLE PROJECT
 export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: InspectionDataPops[]) {
 
@@ -303,8 +264,6 @@ export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: I
     data.push(flattenObject(item))
   }
 
-  console.log("Flattened object\n =>", data)
-
   /*
    we need to flatten the data and structure it appropriately. The data has multiple levels with different arrays (like nonConformityRecom, requirements, and metaData). We can create different sheets for each part of the data and structure them accordingly.
 
@@ -314,8 +273,6 @@ export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: I
     3. Non-Conformity Recommendations: Contains comment, deadline, and req_number.
     4. Requirements: Contains status, comment, and req_number.
   */
-
-  console.log("formatedData", formatedData)
 
   // Create a new workbook
   const wb = XLSX.utils.book_new();

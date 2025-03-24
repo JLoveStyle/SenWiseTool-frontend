@@ -14,8 +14,6 @@ interface Props {
 export const NewProofOfPaiementForm = ({
   updatedFormData,
   initData,
-  errors,
-  isLoading,
 }: Props) => {
   const [formData, setFormData] = useState<ProofOfPaiementFormProps>({
     agreement_pv: initData ? initData.agreement_pv : [],

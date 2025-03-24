@@ -1,21 +1,20 @@
 "use client";
 
 import { Route } from "@/lib/route";
-import { ApiDataResponse, ProjectType, TrainingType } from "@/types/api-types";
+import { ProjectType, TrainingType } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaCrown } from "react-icons/fa";
-import { useApiOps } from "@/lib/api-provider";
 
 export const DasHomePage = () => {
   const [allProjects, setAllProjects] = useState<ProjectType[]>([]);
-  const [archiveProjects, setArchiveProjects] = useState<ProjectType[]>([])
+  const [archiveProjects, setArchiveProjects] = useState<ProjectType[]>([]);
+  const [allTrainings, setAllTrainigs] = useState<Array<TrainingType>>([]);
 
   async function fetchAllActiveProjects() {
     await fetchApiData(Route.projects, "?status=DEPLOYED", "")
       .then((response) => {
-        console.log("deployed", response);
         if (response.status === 200 && response.data.length) {
           setAllProjects(response.data);
         }
@@ -23,10 +22,9 @@ export const DasHomePage = () => {
       .catch((error) => {
         console.log(error);
       });
-    
-      await fetchApiData(Route.projects, "?status=ARCHIVED", "")
+
+    await fetchApiData(Route.projects, "?status=ARCHIVED", "")
       .then((response) => {
-        console.log("Archived", response);
         if (response.status === 200 && response.data.length) {
           setArchiveProjects(response.data);
         }
@@ -34,17 +32,20 @@ export const DasHomePage = () => {
       .catch((error) => {
         console.log(error);
       });
-    
-  }
 
-  const {
-      data: trainings,
-      refetch,
-      isLoading: isLoading,
-    } = useApiOps<TrainingType[], ApiDataResponse<TrainingType[]>>({
-      fn: () => fetchApiData<ApiDataResponse<TrainingType[]>>(Route.training, ""),
-      route: Route.training,
-    });
+    await fetchApiData(Route.training, "")
+      .then((response) => {
+        if (response.status === 200 && response.data.length) {
+          let filteredData = response.data.filter((t: TrainingType) => t.code.length < 5);
+          setAllTrainigs(filteredData);
+        }
+      }
+      )
+      .catch((error) => {
+        console.log(error);
+      }
+      );
+  }
 
   useEffect(() => {
     fetchAllActiveProjects();
@@ -81,7 +82,7 @@ export const DasHomePage = () => {
           {[
             { title: "Projets Actifs", value: allProjects?.length },
             { title: "Projets Archivés", value: archiveProjects?.length },
-            { title: "Projets de formation", value: trainings?.length ?? 0 },
+            { title: "Projets de formation", value: allTrainings?.length ?? 0 },
           ].map((stat, index) => (
             <motion.div
               key={index}

@@ -12,7 +12,7 @@ import { useEffect } from "react";
 type Props = {};
 
 export default function Home({}: Props) {
-  const { getToken, isLoaded, isSignedIn } = useAuth();
+  const { getToken } = useAuth();
   const { user } = useUser();
   LOCAL_STORAGE.save("username", user?.firstName);
   // console.log("user", user);

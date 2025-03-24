@@ -37,6 +37,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
     await fetchApiData(Route.marketRequest, marketId)
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data); 
           setCurrentMarket(response.data);
           setIsLoading(false);
           return;
@@ -103,7 +104,7 @@ export default function ReceiptDetails(props: { params: TProps }) {
   };
 
   return (
-    <LayoutDashboardTemplate title="Market details">
+    <LayoutDashboardTemplate title="Details du Marché">
       <div className="flex justify-between pb-4 pt-2 px-6 w-3/4">
         <h1 className="text-xl font-semibold">
           <Link
@@ -125,9 +126,6 @@ export default function ReceiptDetails(props: { params: TProps }) {
               }
             />
           </CustomHoverCard>
-          {/* <CustomHoverCard content="Share project">
-            <UserPlus className="hover:cursor-pointer" />
-          </CustomHoverCard> */}
           <CustomHoverCard content="Delete Project">
             <Trash2
               onClick={() => setDeleteMarket((prev) => !prev)}
