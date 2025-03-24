@@ -54,7 +54,7 @@ export default function Agriculture() {
         data.producer_payment_proof?.length !== 0 ? (
           <div className="flex justify-center gap-2 flex-wrap">
             {data.producer_payment_proof?.map((url, index) =>
-              preview(url, index)
+              preview(url)
             )}
           </div>
         ) : (
@@ -65,7 +65,7 @@ export default function Agriculture() {
       first_buyer_proof:
         data.first_buyer_proof?.length !== 0 ? (
           <div className="flex justify-center gap-2 flex-wrap">
-            {data.first_buyer_proof?.map((url, index) => preview(url, index))}
+            {data.first_buyer_proof?.map((url, index) => preview(url))}
           </div>
         ) : (
           <div className="flex justify-center gap-2 flex-wrap">
@@ -113,7 +113,6 @@ export default function Agriculture() {
   const valueToDisplay = (args: differentialDisplayProps[]) => {
     return args?.map((data) => ({
       id: data.id ?? "",
-      // company_id: data.company_id,
       producer_payment_proof: data.producer_payment_proof,
       first_buyer_proof: data.first_buyer_proof,
     }));
@@ -129,20 +128,6 @@ export default function Agriculture() {
 
   const deleteDifferential = () => {
     console.log("Delete sustanability differential");
-    // if (differentialSelected.length !== 0) {
-    //   const allDifferential = LOCAL_STORAGE.get("differentials");
-    //   const idSelecteds = differentialSelected.map((objet) => objet.id);
-    //   const restDifferential: incomeAndSharedResponsabilityDBProps[] = [];
-
-    //   allDifferential.map((item: incomeAndSharedResponsabilityDBProps) => {
-    //     if (!idSelecteds.includes(item.id ?? "")) {
-    //       restDifferential.push(item);
-    //     }
-    //   });
-    //   LOCAL_STORAGE.save("differentials", restDifferential);
-
-    //   toast.success("Accounts are deleted successfull");
-    // }
   };
 
   const stateActivity: DashboardStatPanelData[] = [
