@@ -1,6 +1,6 @@
 "use client";
 
-import { useApiOps } from "@/lib/api-provider";
+import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
 import {
   AUTHENTICATED,
@@ -9,11 +9,11 @@ import {
   HAS_COMPANY,
   NOT_HAS_COMPANY,
 } from "@/lib/session-statut";
-import { ApiDataResponse, CompanyType, UserType } from "@/types/api-types";
 import { SessionStatusType } from "@/types/type-tools";
-import { fetchApiData } from "@/utiles/services/queries";
+import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { useAuth } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { ScreenSpinner } from "../atoms/spinner/screen-spinner";
 
 interface Props {
@@ -23,88 +23,47 @@ interface Props {
 
 export const Session = ({ children, sessionStatus }: Props) => {
   const router = useRouter();
-  const {
-    refetch,
-    isLoading: authUserIsLoading,
-    data: authUser,
-  } = useApiOps<UserType, ApiDataResponse<UserType>>({
-    fn: () => fetchApiData(Route.user, "current"),
-    route: Route.user,
+  const { value: isLoading, setValue: setIsLoading } = useToggle({
+    initial: true,
   });
 
-  // FETCH COMPANY
-  const { isLoading: loadingCompany, data: company } = useApiOps<
-    CompanyType,
-    ApiDataResponse<CompanyType>
-  >({
-    fn: () => fetchApiData(Route.companies, "current"),
-    route: Route.companies,
-  });
+  console.log("Token from session:", LOCAL_STORAGE.get("token"));
 
-  if (sessionStatus === GUEST && !authUserIsLoading) {
-    if (!authUser) {
-      return <>{children}</>;
-    } else {
-      console.log("authUser ::::", authUser);
+  const { userId } = useAuth();
+  const company = LOCAL_STORAGE.get("company");
 
-      router.push(Route.dashboard);
+  console.log("company", company);
+
+  const routeTo = () => {
+    if (sessionStatus === GUEST && userId) return Route.dashboard;
+    if (sessionStatus === AUTHENTICATED && !userId) return Route.signIn;
+    if (sessionStatus === HAS_COMPANY) {
+      if (!userId) return Route.signIn;
+      if (!company) return Route.createCompany;
     }
-  }
+    if (sessionStatus === NOT_HAS_COMPANY) {
+      console.log(userId);
 
-  if (sessionStatus === AUTHENTICATED && !authUserIsLoading) {
-    if (authUser) {
-      return <>{children}</>;
-    } else {
-      router.push(Route.signIn);
+      if (!userId) return Route.signIn;
+      if (company) return Route.dashboard;
     }
-  }
-
-  if (sessionStatus === HAS_COMPANY && !loadingCompany) {
-    if (company) {
-      return <>{children}</>;
-    } else {
-      router.push(Route.createCompany);
+    if (sessionStatus === COMPANY_DISABLED) {
+      if (!userId) return Route.signIn;
+      if (!company) return Route.createCompany;
+      if (company.status !== "INACTIVE") return Route.dashboard;
     }
-  }
+    return "";
+  };
 
-  if (sessionStatus === HAS_COMPANY && !loadingCompany) {
-    if (company) {
-      return <>{children}</>;
-    } else {
-      router.push(Route.createCompany);
+  useEffect(() => {
+    const nextRoute = routeTo();
+    if (sessionStatus && nextRoute.length !== 0) {
+      router.push(nextRoute);
     }
-  }
+    setIsLoading(false); // Met à jour après la redirection
+  }, [sessionStatus, userId, company, router]); // Ajout des dépendances pour bien réagir aux changements
 
-  if (sessionStatus === NOT_HAS_COMPANY && !loadingCompany) {
-    if (!company) {
-      return <>{children}</>;
-    } else {
-      router.push(Route.dashboard);
-    }
-  }
+  if (isLoading) return <ScreenSpinner />;
 
-  if (
-    sessionStatus === COMPANY_DISABLED &&
-    !authUserIsLoading &&
-    !loadingCompany
-  ) {
-    if (authUser) {
-      if (company) {
-        if (company.status == "INACTIVE") {
-          return <>{children}</>;
-        }
-      } else {
-        router.push(Route.createCompany);
-      }
-      router.push(Route.dashboard);
-    } else {
-      router.push(Route.signIn);
-    }
-  }
-
-  if (!sessionStatus && !authUserIsLoading) {
-    return <>{children}</>;
-  }
-
-  return <ScreenSpinner />;
+  return <>{children}</>;
 };
