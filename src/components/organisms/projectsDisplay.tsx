@@ -1,9 +1,8 @@
 "use client";
-import { Archive, Trash2, UserPlus } from "lucide-react";
 
+import { Archive, Trash2, UserPlus } from "lucide-react";
 import { useState } from "react";
 import CustomHoverCard from "./hoverCard";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import ActionComponent from "../molecules/actionComponent";
 import { ProjectType } from "@/types/api-types";
@@ -28,8 +27,6 @@ export default function ProjectDisplay({
   const [archiveProject, setArchiveProiect] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedProjects, setSelectedProjects] = useState<ProjectType[]>();
-
-  // const company = useCompanyStore((state) => state.company);
 
   const handleSelectedProjects = (projects: ProjectType[]) => {
     setSelectedProjects(projects);
@@ -57,9 +54,6 @@ export default function ProjectDisplay({
               }}
               className={
                 selectedProjects?.length ? "hover:cursor-not-allowed " : ""
-                // selectedProjects?.length
-                //   ? "hover:cursor-pointer text-black"
-                //   : ""
               }
             />
           </CustomHoverCard>

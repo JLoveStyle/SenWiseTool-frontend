@@ -96,12 +96,9 @@ export default function ProofOfPaiement() {
         );
         const dataFormated: ProofOfPaiementDisplayProps[] = [];
 
-        console.log("result => ", result);
-
         if (result.status === 200) {
           setIsLoading(false);
           if (Array.isArray(result.data)) {
-            console.log("if condition");
             result.data.forEach((res: incomeAndSharedResponsabilityDBProps) => {
               dataFormated.push(formatedDataFromDBToDisplay(res));
             });

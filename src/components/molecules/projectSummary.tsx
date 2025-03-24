@@ -59,15 +59,14 @@ export default function ProjectSummary({
             projectObject?.id
           )
             .then((response) => {
-              console.log("project deployed", response);
               setIsLoading((prev) => !prev);
               if (response.status <= 205) {
-                toast.success("Project deployed", {
+                toast.success("Projet déployer", {
                   transition: Bounce,
                   autoClose: 3000,
                 });
               } else {
-                toast.error("Something went wrong. Try again", {
+                toast.error("Une erreur est survenue. Veillez réessayer", {
                   autoClose: 3000,
                   transition: Bounce,
                 });
@@ -76,7 +75,7 @@ export default function ProjectSummary({
             .catch((error) => {
               console.log("could not update project", error);
               setIsLoading(false);
-              toast.error("Something went wrong. Try again", {
+              toast.error("Une erreur est survenue. Veillez réessayer", {
                 autoClose: 3000,
                 transition: Bounce,
               });

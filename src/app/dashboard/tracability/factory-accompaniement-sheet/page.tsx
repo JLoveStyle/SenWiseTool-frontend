@@ -17,8 +17,8 @@ import { AssigneeType, MarketDBProps } from "@/types/api-types";
 import { FactoryAccompaniementSheetDisplayProps } from "@/types/tracability/market";
 import { statPanelDatas } from "@/utiles/services/constants";
 import { fetchApiData } from "@/utiles/services/queries";
-import { marketData } from "@/utiles/tracability.const/market";
 import { useEffect, useState } from "react";
+import { marketData } from "@/utiles/tracability.const/market";
 
 export default function FactoryAccompaniementSheet() {
   const [isLoading, setIsLoading] = useState(true);

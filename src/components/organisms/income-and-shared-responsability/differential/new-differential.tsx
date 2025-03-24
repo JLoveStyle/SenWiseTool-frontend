@@ -3,7 +3,6 @@
 import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
 import { UpdateFilesToS3 } from "@/lib/s3";
-import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import {
   differentialFormProps,
@@ -13,10 +12,10 @@ import { mutateApiData } from "@/utiles/services/mutations";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewDifferentialForm } from "./new-differential-form";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 interface Props {
   endpoint: string;
@@ -28,10 +27,7 @@ export function NewDifferential({ endpoint }: Props) {
   const [URLs, setURLs] = useState<
     Partial<incomeAndSharedResponsabilityDBProps>
   >({});
-  const [closeModal, setCloseModal] = useState<boolean>(false);
-
-  const router = useRouter();
-
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
   const [formData, setFormData] = useState<differentialFormProps>({
     first_buyer_proof: [],
     producer_payment_proof: [],
@@ -64,15 +60,12 @@ export function NewDifferential({ endpoint }: Props) {
     // CREATE AGRICULTURAL ACTIVITY
     await mutateApiData(endpoint, dataToDB)
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           toast.success("Activity created successfully");
           setIsLoading(false);
 
           // closeModal
-          setCloseModal(false);
-          router.refresh();
-          // router.push(Route.agriculture);
+          setIsDialogOpen(!isDialogOpen);
           return;
         } else if (response.message === "Internal Server Error") {
           toast.error("Internal Server Error");

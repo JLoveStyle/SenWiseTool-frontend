@@ -11,10 +11,9 @@ import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
-import { dbCreateAgent } from "../create-multiple-account/new-form-multiple-agent";
 import { FormUniqAgent } from "./form-uniq-agent";
 import { mutateApiData } from "@/utiles/services/mutations";
-import { ProjectType } from "@/types/api-types";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 interface Props {
   projects?: any[];
@@ -22,11 +21,12 @@ interface Props {
 
 export function NewFormUniqAgent({ projects }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
-  const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
 
   const router = useRouter();
 
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
+  
   const [formData, setFormData] = useState<AgentProps>({
     id: "",
     fullName: "",
@@ -71,12 +71,6 @@ export function NewFormUniqAgent({ projects }: Props) {
     for (const code of formData.projectCodes) {
       formatProjectcode.push(code.value);
     }
-    console.log("=>\n", {
-      company_id: company?.id,
-      projectCodes: formatProjectcode,
-      agentCode: formData.agentCode,
-      fullName: formData.fullName,
-    });
 
     // assigne a project or multiple projects to an agent
     await mutateApiData(Route.assigne, {
@@ -86,7 +80,6 @@ export function NewFormUniqAgent({ projects }: Props) {
       fullName: formData.fullName,
     })
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           setIsLoading(false);
           toast.success("Success", {
@@ -94,6 +87,7 @@ export function NewFormUniqAgent({ projects }: Props) {
             autoClose: 3000,
           });
           // close modal
+          setIsDialogOpen(!isDialogOpen)
 
           router.refresh();
         } else if (response.status === 409) {

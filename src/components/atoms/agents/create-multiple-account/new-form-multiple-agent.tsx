@@ -4,19 +4,18 @@ import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
 import { Route } from "@/lib/route";
 import { useCompanyStore } from "@/lib/stores/companie-store";
-import { DBAgentProps, MultipleFormAgentProps } from "@/types/agent-props";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { MultipleFormAgentProps } from "@/types/agent-props";
 import { generateUniqueCode } from "@/utils/generate-uniq-code";
 import { arrayNumber } from "@/utils/tool";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FormMultipleAgent } from "./form-multiple-agent";
-import { AssigneeType, ProjectType } from "@/types/api-types";
+import { AssigneeType } from "@/types/api-types";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 interface Props {
   projects?: any[];
@@ -26,8 +25,6 @@ export function NewFormMiltipleAgent({ projects }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
 
-  const router = useRouter();
-
   const [formData, setFormData] = useState<MultipleFormAgentProps>({
     id: "",
     accountNumber: 0,
@@ -36,6 +33,8 @@ export function NewFormMiltipleAgent({ projects }: Props) {
 
   // load company state
   const company = useCompanyStore((state) => state.company);
+  
+  const {isDialogOpen, setIsDialogOpen} = useDialogControl()
 
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: MultipleFormAgentProps) => {
@@ -55,17 +54,14 @@ export function NewFormMiltipleAgent({ projects }: Props) {
       };
       assignees.push(dataToDB);
     });
-    console.log("Array", assignees);
-
+    
     await mutateApiData(Route.assigne + "/bulkCreate", assignees)
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           toast.success("Success");
           setIsLoading(false);
-          // closeDialog();
-          router.refresh();
-          router.push(Route.agents);
+          // closeDialog()
+          setIsDialogOpen(!isDialogOpen)
           return;
         } else if (response.status === 409) {
           setIsLoading(false);
@@ -96,7 +92,6 @@ export function NewFormMiltipleAgent({ projects }: Props) {
       if (!isValid) {
         setErrors(errors);
         toast.error("Something is wrong");
-        console.log(errors);
         setIsLoading(false);
         return;
       }
@@ -124,10 +119,3 @@ export function NewFormMiltipleAgent({ projects }: Props) {
     </form>
   );
 }
-
-export const dbCreateAgent = async (data: DBAgentProps) => {
-  const agents = LOCAL_STORAGE.get("agents") || [];
-  const id = agents.length != 0 ? agents.length + 1 : 1;
-  LOCAL_STORAGE.save("agents", [...agents, { id: id, ...data }]);
-  return { response: "creation successfull", status: "success" };
-};

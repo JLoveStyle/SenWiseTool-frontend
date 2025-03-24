@@ -19,6 +19,7 @@ import { fetchApiData } from "@/utiles/services/queries";
 import { ApiDataResponse } from "@/types/api-types";
 import { NewActivityAgriculture } from "@/components/organisms/agriculture-activities/new-activity";
 import { DashboardStatPanelData } from "@/types/app-link";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 export default function social() {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,14 +27,6 @@ export default function social() {
   const [socualSelected, setSocialSelected] = useState<ActivityDisplayProps[]>(
     []
   );
-
-  const { value: openModal, toggle: toggleOpenModel } = useToggle({
-    initial: false,
-  });
-
-  const closeDialog = () => {
-    toggleOpenModel();
-  };
 
   const columns = columnTable<ActivityDisplayProps>(
     {
@@ -49,7 +42,6 @@ export default function social() {
   const formatedDataFromDBToDisplay = (data: ActivityProps) => {
     return {
       id: data.id ?? "",
-      // company_id: data.company_id,
       activity_title: data.activity_title,
       pictures_url: data.pictures_url ? (
         <FaCheck color="green" />
@@ -94,7 +86,6 @@ export default function social() {
   const valueToDisplay = (args: ActivityDisplayProps[]) => {
     return args?.map((data) => ({
       id: data.id ?? "",
-      // company_id: data.company_id,
       activity_title: data.activity_title,
       pictures_url: data.pictures_url,
       documents_url: data.documents_url,

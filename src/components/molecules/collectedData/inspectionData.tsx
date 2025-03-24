@@ -19,7 +19,7 @@ import {
   overallStatistics,
 } from "@/utiles/services/Data-analysis/single-inspection-analysis";
 import { Button } from "@/components/ui/button";
-import { downloadInspectionDataAsCsv, inspectionDataAsCsv } from "./downloadCsv";
+import { downloadInspectionDataAsCsv } from "./downloadCsv";
 
 const DisplayInspectionAnalysis = dynamic(
   () => import("../inspection-data-statistics/displayInspectionAnalysis"),
@@ -50,19 +50,14 @@ export default function InspectionData({ project_id, projectName }: Props) {
 
   // fetch all projects with answers by type. this will come from project_audit table
   async function fetchAllInpectionData(id: string) {
-    // setIsLoading((prev) => !prev);
     await fetchApiData(Route.inspectionData + `/${id}`, "current")
       .then((response) => {
         if (response.status === 201) {
-          console.log("response =>", response.data);
           setData(response.data);
           setIsLoading(false);
           return;
-
-          // setInspectionDatas(response.data);
         } else {
           setIsLoading(false);
-          // toast.error("Could not fetch inspection data of this project");
           return;
         }
       })
@@ -91,8 +86,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
               <span className=" font-semibold">{projectName}</span>
             </h2>
             <Button
-              // onClick={() => downloadInspectionDataAsCsv([], data)}
-              onClick={() => inspectionDataAsCsv(data)}
+              onClick={() => downloadInspectionDataAsCsv([], data)}
               className="bg-tertiary hover:bg-tertiary hover:opacity-90 my-auto"
             >
               Export

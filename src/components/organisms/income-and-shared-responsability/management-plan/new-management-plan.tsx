@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewActivityForm } from "./new-management-plan-form";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 interface Props {
   endpoint: string;
@@ -27,8 +28,7 @@ export function NewManagementPlan({ endpoint }: Props) {
   const [URLs, setURLs] = useState<
     Partial<incomeAndSharedResponsabilityDBProps>
   >({});
-  const [closeModal, setCloseModal] = useState<boolean>(false);
-
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
   const router = useRouter();
 
   const [formData, setFormData] = useState<ManagementPlanFormProps>({
@@ -37,7 +37,6 @@ export function NewManagementPlan({ endpoint }: Props) {
 
   // load company state
   const company = useCompanyStore((state) => state.company);
-  const currentCampain = useCampaignStore((state) => state.currentCampaign);
 
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: ManagementPlanFormProps) => {
@@ -59,27 +58,15 @@ export function NewManagementPlan({ endpoint }: Props) {
       producer_payment_proof: [""]
     };
 
-    console.log(dataToDB);
-
-    // Sauvegarde de l'activité
-    // const existingActivities = LOCAL_STORAGE.get("agricultures") ?? [];
-    // LOCAL_STORAGE.save("agricultures", [
-    //   ...existingActivities,
-    //   { id: existingActivities.length + 1, ...dataToDB },
-    // ]);
-
     // CREATE AGRICULTURAL ACTIVITY
     await mutateApiData(endpoint, dataToDB)
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           toast.success("Management plan created successfully");
           setIsLoading(false);
 
           // closeModal
-          setCloseModal(false);
-          router.refresh();
-          // router.push(Route.agriculture);
+          setIsDialogOpen(!isDialogOpen);
           return;
         } else if (response.message === "Internal Server Error") {
           toast.error("Internal Server Error");
@@ -133,18 +120,6 @@ export function NewManagementPlan({ endpoint }: Props) {
     try {
       setIsLoading(true);
       e.preventDefault();
-
-      // const { isValid, errors } = await validatorForm(formData, {
-      //   activity_title: "required",
-      // });
-
-      // if (!isValid) {
-      //   setErrors(errors);
-      //   toast.error("Something is wrong");
-      //   console.log(errors);
-      //   setIsLoading(false);
-      //   return;
-      // }
 
       const uploadedURLs = await handleAllUploads(formData);
 

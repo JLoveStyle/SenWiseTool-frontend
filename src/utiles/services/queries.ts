@@ -13,9 +13,7 @@ const apiCall = new ApiCall()
  */
 export const fetchApiData = async <T = any>(route: string, valueTofetch?: string, ...args: any[]): Promise<T> => {
 
-  console.log("resource: ", route);
   const data = await apiCall.GET(`${API_URL}/${route}/${valueTofetch}`);
-  console.log("from query function: ", data);
   return data;
 }
 

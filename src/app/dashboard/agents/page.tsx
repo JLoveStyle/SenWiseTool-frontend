@@ -1,7 +1,6 @@
 "use client";
 
 import { Route } from "@/lib/route";
-
 import {
   Archive,
   ListOrdered,
@@ -11,8 +10,6 @@ import {
   Trash2,
 } from "lucide-react";
 import { RiUserStarLine } from "react-icons/ri";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
-
 import { NewFormMiltipleAgent } from "@/components/atoms/agents/create-multiple-account/new-form-multiple-agent";
 import { NewFormUniqAgent } from "@/components/atoms/agents/create-uniq-account/new-form-uniq-agent";
 import { UpdateProjectCodeAgent } from "@/components/atoms/agents/update-project-code-agent";
@@ -30,11 +27,9 @@ import {
 } from "@/components/ui/dialog";
 import { useToggle } from "@/hooks/use-toggle";
 import {
-  AgentProps,
   AgentPropsFromDB,
   CodeProjectProps,
 } from "@/types/agent-props";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -60,7 +55,6 @@ export default function Receipt() {
   const { value: openModal, toggle: toggleOpenModel } = useToggle({
     initial: false,
   });
-  // const projectCodeSeparator = " ";
 
   const closeDialog = () => {
     toggleOpenModel();
@@ -91,7 +85,6 @@ export default function Receipt() {
       .then((response) => {
         if (response.status === 200) {
           setMarketsCodes(response.data);
-          console.log("These are markets codes", response);
         }
       })
       .catch((error) => {
@@ -101,7 +94,6 @@ export default function Receipt() {
 
   // get all company's project per campain
   async function getAllProjectCodesPerCompnanyAndCampain() {
-    console.log("fetching all project codes");
     await fetchApiData<ApiDataResponse<ProjectType[]>>(
       Route.projects,
       `company_projectCode?campaign_id=${currentCampaign?.id}`
@@ -109,7 +101,6 @@ export default function Receipt() {
       .then((response) => {
         if (response.status === 200) {
           setProjects(response.data);
-          console.log("AllprojectsCode\n", response.data);
           return;
         }
       })
@@ -120,7 +111,6 @@ export default function Receipt() {
 
   async function getAllSubAccounts() {
     // TODO: add company_id in the query of this function
-    console.log("fetching data with company_id", company?.id);
 
     await fetchApiData(Route.assigne, `perCompany?company_id=${company?.id}`)
       .then((response) => {
@@ -133,7 +123,6 @@ export default function Receipt() {
           }
           setAgentDatas(returnedProject);
           setIsLoading(false);
-          console.log("from useEffect", response);
           return;
         }
       })
@@ -181,7 +170,6 @@ export default function Receipt() {
       agentSelected[0]?.agentCode
     )
       .then((response) => {
-        console.log(response);
         if (response?.status === 204) {
           toast.success("Sous compte supprimé");
           setIsUpdating((prev) => !prev);
@@ -234,7 +222,6 @@ export default function Receipt() {
       agentSelected[0]?.id
     )
       .then((response) => {
-        console.log(response);
         if (response.status === 204) {
           toast.success("Projet assigner avec success.");
           setIsUpdating((prev) => !prev);

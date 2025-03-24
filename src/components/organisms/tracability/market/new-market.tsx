@@ -14,9 +14,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewMarketForm } from "./new-market-form";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 export function NewMarket() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
+
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
+
   const [errors, setErrors] = useState({});
 
   const router = useRouter();
@@ -40,8 +44,8 @@ export function NewMarket() {
   };
 
   const handleCreateMarket = async (formData: Partial<MarketDBProps>) => {
+    setIsLoading(true);
     // CREATE MARKET
-    console.log("market payload", formData);
     await mutateApiData(Route.marketRequest, {
       location: formData.location,
       price_of_theday: formData.price_of_theday,
@@ -55,48 +59,29 @@ export function NewMarket() {
       end_date: new Date(formData.end_date as string).toISOString(),
     })
       .then((response) => {
-        console.log("response", response);
         if (response.status === 201) {
-          toast.success("Market created successfull");
+          toast.success("Marché créé avec succès");
           setIsLoading(false);
-          // closeDialog();
+          setIsDialogOpen(!isDialogOpen)
           router.refresh();
           router.push(Route.markets);
           return;
         } else if (response.message === "Internal Server Error") {
-          toast.error("Internal Server Error");
+          toast.error("Une erreur est survenue au setveur");
+          setIsLoading(false);
         }
         setIsLoading(false);
         return;
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Something went wrong");
+        toast.error("Une erreur s'est produite. Veuillez réessayer");
         setIsLoading(false);
         return;
       });
-
-    // const serverResponse = await db_create_market(formData);
-    // const serverResponse = await db_create_training(dataToDB);
-
-    // console.log("daaaaata:::::::::", serverResponse);
-
-    // if (serverResponse.status === "error") {
-    //   toast.error("Creating market failed");
-    //   setIsLoading(false);
-    //   return;
-    // }
-
-    // toast.success("Your market are created successfull");
-    // setIsLoading(false);
-    // closeDialog();
-    // router.refresh();
-    // router.push(Route.markets);
-    // return;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // closeDialog();
     try {
       setIsLoading(true);
       e.preventDefault();
@@ -111,16 +96,10 @@ export function NewMarket() {
 
       if (!isValid) {
         setErrors(errors);
-        toast.error("Something is wrong");
-        console.log(errors);
+        toast.error("Une erreur est survenue");
         setIsLoading(false);
         return;
       }
-      console.log("formData from handleSubmit", {
-        ...formData,
-        company_id: company?.id,
-        campaign_id: currentCampain?.id,
-      });
       handleCreateMarket({
         ...formData,
         company_id: company?.id,
@@ -142,7 +121,7 @@ export function NewMarket() {
         isLoading={isLoading}
         icon={{ icon: Plus }}
       >
-        Create
+        Créer
       </ButtonUI>
     </form>
   );

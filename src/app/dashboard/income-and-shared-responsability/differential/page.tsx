@@ -11,7 +11,6 @@ import CustomHoverCard from "@/components/organisms/hoverCard";
 import { NewDifferential } from "@/components/organisms/income-and-shared-responsability/differential/new-differential";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { useToggle } from "@/hooks/use-toggle";
 import { DashboardStatPanelData } from "@/types/app-link";
 import {
   differentialDisplayProps,
@@ -20,6 +19,7 @@ import {
 import { fetchApiData } from "@/utiles/services/queries";
 import { useEffect, useState } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 export default function Agriculture() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,12 +29,9 @@ export default function Agriculture() {
   const [differentialSelected, setDifferentialSelected] = useState<
     differentialDisplayProps[]
   >([]);
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
 
-  const { value: openModal, toggle: toggleOpenModel } = useToggle({
-    initial: false,
-  });
-
-  const preview = (url: string, index: number) => {
+  const preview = (url: string) => {
     return <FilePreview url={url} variant="button" />;
   };
 
@@ -57,7 +54,7 @@ export default function Agriculture() {
         data.producer_payment_proof?.length !== 0 ? (
           <div className="flex justify-center gap-2 flex-wrap">
             {data.producer_payment_proof?.map((url, index) =>
-              preview(url, index)
+              preview(url)
             )}
           </div>
         ) : (
@@ -68,7 +65,7 @@ export default function Agriculture() {
       first_buyer_proof:
         data.first_buyer_proof?.length !== 0 ? (
           <div className="flex justify-center gap-2 flex-wrap">
-            {data.first_buyer_proof?.map((url, index) => preview(url, index))}
+            {data.first_buyer_proof?.map((url, index) => preview(url))}
           </div>
         ) : (
           <div className="flex justify-center gap-2 flex-wrap">
@@ -116,7 +113,6 @@ export default function Agriculture() {
   const valueToDisplay = (args: differentialDisplayProps[]) => {
     return args?.map((data) => ({
       id: data.id ?? "",
-      // company_id: data.company_id,
       producer_payment_proof: data.producer_payment_proof,
       first_buyer_proof: data.first_buyer_proof,
     }));
@@ -132,20 +128,6 @@ export default function Agriculture() {
 
   const deleteDifferential = () => {
     console.log("Delete sustanability differential");
-    // if (differentialSelected.length !== 0) {
-    //   const allDifferential = LOCAL_STORAGE.get("differentials");
-    //   const idSelecteds = differentialSelected.map((objet) => objet.id);
-    //   const restDifferential: incomeAndSharedResponsabilityDBProps[] = [];
-
-    //   allDifferential.map((item: incomeAndSharedResponsabilityDBProps) => {
-    //     if (!idSelecteds.includes(item.id ?? "")) {
-    //       restDifferential.push(item);
-    //     }
-    //   });
-    //   LOCAL_STORAGE.save("differentials", restDifferential);
-
-    //   toast.success("Accounts are deleted successfull");
-    // }
   };
 
   const stateActivity: DashboardStatPanelData[] = [
