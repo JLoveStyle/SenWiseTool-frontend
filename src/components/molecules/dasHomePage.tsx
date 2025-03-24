@@ -16,7 +16,8 @@ export const DasHomePage = () => {
     await fetchApiData(Route.projects, "?status=DEPLOYED", "")
       .then((response) => {
         if (response.status === 200 && response.data.length) {
-          setAllProjects(response.data);
+          const filteredData = response.data.filter((p: ProjectType) => p.code.length < 5);
+          setAllProjects(filteredData);
         }
       })
       .catch((error) => {
@@ -26,7 +27,8 @@ export const DasHomePage = () => {
     await fetchApiData(Route.projects, "?status=ARCHIVED", "")
       .then((response) => {
         if (response.status === 200 && response.data.length) {
-          setArchiveProjects(response.data);
+          const filteredData = response.data.filter((p: ProjectType) => p.code.length < 5);
+          setArchiveProjects(filteredData);
         }
       })
       .catch((error) => {
