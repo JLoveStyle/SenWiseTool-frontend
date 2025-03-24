@@ -1,6 +1,7 @@
 "use client";
 
 import { useToggle } from "@/hooks/use-toggle";
+import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
 import {
   AUTHENTICATED,
@@ -10,16 +11,13 @@ import {
   NOT_HAS_COMPANY,
 } from "@/lib/session-statut";
 import { useCompanyStore } from "@/lib/stores/companie-store";
+import { ApiDataResponse, UserType } from "@/types/api-types";
 import { SessionStatusType } from "@/types/type-tools";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { fetchApiData } from "@/utiles/services/queries";
 import { useAuth } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { ScreenSpinner } from "../atoms/spinner/screen-spinner";
-import { useApiOps } from "@/lib/api-provider";
-import { fetchApiData } from "@/utiles/services/queries";
-import { ApiDataResponse, UserType } from "@/types/api-types";
-import { useCompanyStore } from "@/lib/stores/companie-store";
 
 interface Props {
   children: React.ReactNode;
@@ -65,15 +63,12 @@ export const Session = ({ children, sessionStatus }: Props) => {
 
   useEffect(() => {
     refetch(); // Récupère les données de l'utilisateur
-  }, [userId]);
 
-  useEffect(() => {
     const nextRoute = routeTo();
-    if (sessionStatus && nextRoute.length !== 0) {
-      router.push(nextRoute);
-    }
+    if (sessionStatus && nextRoute.length !== 0) router.push(nextRoute);
+
     setIsLoading(false); // Met à jour après la redirection
-  }, [sessionStatus, userId, company, router]); // Ajout des dépendances pour bien réagir aux changements
+  }, [userId]);
 
   if (isLoading) return <ScreenSpinner />;
 
