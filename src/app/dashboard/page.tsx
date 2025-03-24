@@ -34,7 +34,7 @@ export default function Home({}: Props) {
 
   useEffect(() => {
     fetchData();
-    refetch();
+    // refetch();
   }, []);
 
   return (

@@ -15,6 +15,10 @@ import { useAuth } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { ScreenSpinner } from "../atoms/spinner/screen-spinner";
+import { useApiOps } from "@/lib/api-provider";
+import { fetchApiData } from "@/utiles/services/queries";
+import { ApiDataResponse, UserType } from "@/types/api-types";
+import { useCompanyStore } from "@/lib/stores/companie-store";
 
 interface Props {
   children: React.ReactNode;
@@ -27,12 +31,13 @@ export const Session = ({ children, sessionStatus }: Props) => {
     initial: true,
   });
 
-  console.log("Token from session:", LOCAL_STORAGE.get("token"));
-
   const { userId } = useAuth();
-  const company = LOCAL_STORAGE.get("company");
+  const company = useCompanyStore((state) => state.company);
 
-  console.log("company", company);
+  const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
+    fn: () => fetchApiData(Route.user, "current"),
+    route: Route.user,
+  });
 
   const routeTo = () => {
     if (sessionStatus === GUEST && userId) return Route.dashboard;
@@ -54,6 +59,10 @@ export const Session = ({ children, sessionStatus }: Props) => {
     }
     return "";
   };
+
+  useEffect(() => {
+    refetch(); // Récupère les données de l'utilisateur
+  }, [userId]);
 
   useEffect(() => {
     const nextRoute = routeTo();
