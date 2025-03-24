@@ -9,6 +9,7 @@ import {
   HAS_COMPANY,
   NOT_HAS_COMPANY,
 } from "@/lib/session-statut";
+import { useCompanyStore } from "@/lib/stores/companie-store";
 import { SessionStatusType } from "@/types/type-tools";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useAuth } from "@clerk/clerk-react";
@@ -22,6 +23,9 @@ interface Props {
 }
 
 export const Session = ({ children, sessionStatus }: Props) => {
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
+  const companys = useCompanyStore((state) => state.company);
+
   const router = useRouter();
   const { value: isLoading, setValue: setIsLoading } = useToggle({
     initial: true,
@@ -42,9 +46,8 @@ export const Session = ({ children, sessionStatus }: Props) => {
       if (!company) return Route.createCompany;
     }
     if (sessionStatus === NOT_HAS_COMPANY) {
-      console.log(userId);
-
       if (!userId) return Route.signIn;
+      console.log("companys :::::::::::1", companys);
       if (company) return Route.dashboard;
     }
     if (sessionStatus === COMPANY_DISABLED) {
