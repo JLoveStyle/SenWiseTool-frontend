@@ -31,7 +31,9 @@ export const Session = ({ children, sessionStatus }: Props) => {
     initial: true,
   });
 
-  const { userId } = useAuth();
+  console.log("Token from session:", LOCAL_STORAGE.get("token"));
+
+  const { userId, getToken } = useAuth();
   const company = useCompanyStore((state) => state.company);
 
   const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
@@ -59,10 +61,6 @@ export const Session = ({ children, sessionStatus }: Props) => {
     }
     return "";
   };
-
-  useEffect(() => {
-    refetch(); // Récupère les données de l'utilisateur
-  }, [userId]);
 
   useEffect(() => {
     const nextRoute = routeTo();

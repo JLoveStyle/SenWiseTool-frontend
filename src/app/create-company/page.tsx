@@ -169,7 +169,7 @@ export default function Home({}: Props) {
             router.push(Route.dashboard);
             return;
           } else if (response.status === 409) {
-            return toast.error("Company already exist");
+            return toast.error("Companie exists déjà");
           } else if (response.statusCode === 401) {
             return toast.error("Une erreur est survenu veillez recharger la page");
           } else if (!response.status.toString().startWith("2")) {
@@ -256,7 +256,7 @@ export default function Home({}: Props) {
 
   return (
     <Session
-      sessionStatus={NOT_HAS_COMPANY}
+      // sessionStatus={NOT_HAS_COMPANY}
     >
       <div className="h-full">
         <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">

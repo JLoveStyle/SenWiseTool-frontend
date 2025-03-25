@@ -124,7 +124,6 @@ export default function ProofOfPaiement() {
   const valueToDisplay = (args: ProofOfPaiementDisplayProps[]) => {
     return args?.map((data) => ({
       id: data.id ?? "",
-      // company_id: data.company_id,
       agreement_pv: data.agreement_pv,
       proof_of_paiement: data.proof_of_paiement,
       proof_of_expenses: data.proof_of_expenses,

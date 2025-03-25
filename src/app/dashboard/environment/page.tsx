@@ -66,7 +66,6 @@ export default function environment() {
           ""
         );
         const dataFormated: ActivityDisplayProps[] = [];
-        console.log(result);
 
         if (result.status === 200) {
           setIsLoading(false)
@@ -91,7 +90,6 @@ export default function environment() {
   const valueToDisplay = (args: ActivityDisplayProps[]) => {
     return args?.map((data) => ({
       id: data.id ?? "",
-      // company_id: data.company_id,
       activity_title: data.activity_title,
       pictures_url: data.pictures_url,
       documents_url: data.documents_url,

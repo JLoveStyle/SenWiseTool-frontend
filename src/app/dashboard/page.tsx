@@ -17,13 +17,6 @@ export default function Home({}: Props) {
   const { getToken } = useAuth();
   const { user } = useUser();
   LOCAL_STORAGE.save("username", user?.firstName);
-  // console.log("user", user);
-
-  // fetch user and set him to the store
-  const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
-    fn: () => fetchApiData(Route.user, "current"),
-    route: Route.user,
-  });
 
   async function fetchData() {
     const token = await getToken();
@@ -32,9 +25,16 @@ export default function Home({}: Props) {
     }
   }
 
+  // fetch user and set him to the store
+  const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
+    fn: () => fetchApiData(Route.user, "current"),
+    route: Route.user,
+  });
+
+
   useEffect(() => {
     fetchData();
-    // refetch();
+    refetch();
   }, []);
 
   return (
