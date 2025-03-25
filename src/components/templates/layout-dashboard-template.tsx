@@ -2,7 +2,6 @@
 import { useToggle } from "@/hooks/use-toggle";
 import { useApiOps } from "@/lib/api-provider";
 import { Route } from "@/lib/route";
-import { HAS_COMPANY } from "@/lib/session-statut";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { ApiDataResponse, CampaignType, CompanyType } from "@/types/api-types";
 import {
@@ -27,9 +26,7 @@ import Navbar from "../atoms/dashboard/navbar";
 import Sidebar from "../atoms/dashboard/sidebar";
 import StatPanel from "../atoms/dashboard/stat-panel";
 import FloatingButton from "../atoms/disign-system/floating-button";
-import { Footer } from "../molecules/footer";
 import { FeaturesMenu } from "../organisms/navigationMenu";
-import { Session } from "../templates/session";
 
 interface Props {
   children: React.ReactNode;
@@ -134,50 +131,45 @@ export default function LayoutDashboardTemplate({
     useToggle({ initial: newForms || statPanelDatas ? true : false });
 
   return (
-    <Session sessionStatus={HAS_COMPANY}>
-      <div className="flex w-screen h-screen overflow-hidden">
-        <div className="fixed top-0 left-0 h-full w-[90px] p-2 bg-tertiary border-r-2 text-white">
-          <Sidebar options={dashboardSidebarOptions} />
+    <div className="flex w-screen h-screen overflow-hidden">
+      <div className="fixed top-0 left-0 h-full w-[90px] p-2 bg-tertiary border-r-2 text-white">
+        <Sidebar options={dashboardSidebarOptions} />
+      </div>
+      <div className="ml-[90px] w-[calc(100vw-90px)]">
+        <div className="fixed top-0 left-[90px] w-[calc(100vw-90px)] z-10">
+          <Navbar title={title} />
         </div>
-        <div className="ml-[90px] w-[calc(100vw-90px)]">
-          <div className="fixed top-0 left-[90px] w-[calc(100vw-90px)] z-10">
-            <Navbar title={title} />
-          </div>
-          <div className="mt-[64px] flex">
-            {displayCloseSideNav && (
-              <div className="fixed top-[64px] left-[90px] z-10">
-                <StatPanel
-                  isCloseModal={isCloseModal}
-                  newForms={newForms}
-                  statPanelDatas={statPanelDatas}
-                  formParams={formParams}
-                />
-              </div>
-            )}
-            <div className="w-full pl-[10px] pt-[64px]">
-              <div className="fixed top-[64px] left-[calc(400px)] z-10 w-full">
-                <FeaturesMenu />
-              </div>
-              <div className="overflow-y-auto h-[calc(100vh-64px)] scrool-bar-hidden mb-10">
-                {children}
-              </div>
+        <div className="mt-[64px] flex">
+          {displayCloseSideNav && (
+            <div className="fixed top-[64px] left-[90px] z-10">
+              <StatPanel
+                isCloseModal={isCloseModal}
+                newForms={newForms}
+                statPanelDatas={statPanelDatas}
+                formParams={formParams}
+              />
+            </div>
+          )}
+          <div className="w-full pl-[10px] pt-[64px]">
+            <div className="fixed top-[64px] left-[calc(400px)] z-10 w-full">
+              <FeaturesMenu />
+            </div>
+            <div className="overflow-y-auto h-[calc(100vh-64px)] scrool-bar-hidden mb-10">
+              {children}
             </div>
           </div>
         </div>
-        {(newForms || statPanelDatas) && (
-          <FloatingButton
-            className="rounded-full bg-white text-black"
-            positionLeft={70}
-            positionTop={480}
-            action={toggleDisplayCloseSideNav}
-          >
-            <HiViewGridAdd />
-          </FloatingButton>
-        )}
       </div>
-      {/* <div className="w-[calc(100vw-90px)] ml-[90px]">
-        <Footer />
-      </div> */}
-    </Session>
+      {(newForms || statPanelDatas) && (
+        <FloatingButton
+          className="rounded-full bg-white text-black"
+          positionLeft={70}
+          positionTop={480}
+          action={toggleDisplayCloseSideNav}
+        >
+          <HiViewGridAdd />
+        </FloatingButton>
+      )}
+    </div>
   );
 }

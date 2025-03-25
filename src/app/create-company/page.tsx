@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 // import { createCompany } from "@/utiles/services/queries";
 import { Spinner } from "@/components/atoms/spinner/spinner";
-import { Session } from "@/components/templates/session";
 import {
   Dialog,
   DialogContent,
@@ -24,7 +23,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Route } from "@/lib/route";
 import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
-import { NOT_HAS_COMPANY } from "@/lib/session-statut";
 import { businessActivity } from "@/utiles/services/constants";
 import { createOrganization } from "@/utiles/services/createOrg";
 import { mutateApiData } from "@/utiles/services/mutations";
@@ -50,7 +48,7 @@ export default function Home({}: Props) {
   const [selectedCountryObject, setSelectedCountryObject] = useState<{
     [key: string]: string;
   }>({});
-  const [bucketName, setBucketName] = useState<string>("")
+  const [bucketName, setBucketName] = useState<string>("");
   const [formData, setFormData] = useState<FormData>({
     companyEmail: "",
     companyName: "",
@@ -72,9 +70,9 @@ export default function Home({}: Props) {
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
 
-    const bucketName = uniqueString()
-    LOCAL_STORAGE.save("bucketName", bucketName)
-    setBucketName(prev => prev = bucketName);
+    const bucketName = uniqueString(formData.companyName);
+
+    setBucketName(bucketName);
 
     const { data, error } = await CreateBucketToS3({
       bucketName,
@@ -83,16 +81,23 @@ export default function Home({}: Props) {
     if (error) {
       toast.error("Erreur lors de la creation du bucket");
       setIsLoading(false);
+
+      console.error(error);
       throw new Error("Erreur lors de la creation du bucket");
     }
 
     //upload company logo
     if (companyLogo && companyLogo.length !== 0) {
-      const { data, error } = await UpdateFilesToS3({ files: companyLogo });
+      const { data, error } = await UpdateFilesToS3({
+        files: companyLogo,
+        bucketName: bucketName,
+      });
 
       if (error) {
         toast.error("Erreur lors de l'upload du logo");
         setIsLoading(false);
+
+        console.error(error);
         throw new Error("Error lors de l'upload du logo");
       }
       return data.URLs[0] as string;
@@ -116,9 +121,12 @@ export default function Home({}: Props) {
 
     // Head office email and company email must not be the same
     if (formData.headOfficeEmail === formData.companyEmail) {
-      toast.warning("L'email du sierge social doit être different de l'email de la company", {
-        autoClose: 4000,
-      });
+      toast.warning(
+        "L'email du sierge social doit être different de l'email de la company",
+        {
+          autoClose: 4000,
+        }
+      );
       return;
     }
 
@@ -141,7 +149,7 @@ export default function Home({}: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        company_bucket: bucketName
+        company_bucket: bucketName,
       });
       // setIsLoading(false);
       // return;
@@ -158,7 +166,7 @@ export default function Home({}: Props) {
         phone_number: formData.phone,
         address: formData.address,
         description: formData.description,
-        company_bucket: bucketName
+        company_bucket: bucketName,
       })
         .then((response) => {
           if (response.status === 201) {
@@ -171,7 +179,9 @@ export default function Home({}: Props) {
           } else if (response.status === 409) {
             return toast.error("Company already exist");
           } else if (response.statusCode === 401) {
-            return toast.error("Une erreur est survenu veillez recharger la page");
+            return toast.error(
+              "Une erreur est survenu veillez recharger la page"
+            );
           } else if (!response.status.toString().startWith("2")) {
             return toast.error(`Une erreur est survenu au serveur`);
           }
@@ -255,173 +265,171 @@ export default function Home({}: Props) {
   };
 
   return (
-    <Session
-      sessionStatus={NOT_HAS_COMPANY}
-    >
-      <div className="h-full">
-        <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
-          <div className="flex justify-center ">
-            <Link href={Route.home}>
-              <Image
-                src="/images/logo.png"
-                height={150}
-                width={150}
-                alt="SenWiseTool logo"
-                loading="lazy"
-              />
-            </Link>
-          </div>
-          <h3 className="font-semibold text-2xl text-center pb-7">
-            Bienvenu sur Senwisetool
-            <br />
-            Enregistrer votre entreprise
-          </h3>
-          <form className="" onSubmit={handleSubmit}>
-            <InputField
-              label="Nom de l'entreprise"
-              inputName="companyName"
-              type="text"
-              value={formData.companyName}
-              onChange={(e) => handleInputChange(e)}
+    // <Session
+    //   sessionStatus={NOT_HAS_COMPANY}
+    // >
+    <div className="h-full">
+      <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
+        <div className="flex justify-center ">
+          <Link href={Route.home}>
+            <Image
+              src="/images/logo.png"
+              height={150}
+              width={150}
+              alt="SenWiseTool logo"
+              loading="lazy"
             />
-            <InputField
-              label="Email de l'entreprise"
-              inputName="companyEmail"
-              placeholder="Exemple@gmail.com"
-              type="email"
-              value={formData?.companyEmail}
-              onChange={(e) => handleInputChange(e)}
-            />
-            <InputField
-              label="Siege social"
-              inputName="headOfficeEmail"
-              type="email"
-              placeholder="Exemple@gamil.com"
-              value={formData.headOfficeEmail}
-              onChange={(e) => handleInputChange(e)}
-            />
-            <InputField
-              label="Address"
-              inputName="address"
-              type="text"
-              placeholder="Yaounde, Cameroon"
-              value={formData.address}
-              onChange={(e) => handleInputChange(e)}
-            />
-            <InputField
-              label="Numero de telephone de l'entreprise"
-              inputName="phone"
-              placeholder="(+237) 6 00 00 00 00"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => handleInputChange(e)}
-            />
-
-            <CustomSelectTag
-              selectName="country"
-              onChange={(e) => handleInputChange(e)}
-              label="Pays"
-              arrayOfItems={countries}
-              value={formData.country}
-            />
-            <CustomSelectTag
-              selectName="state"
-              onChange={(e) => handleInputChange(e)}
-              label="Region"
-              arrayOfItems={state}
-              value={formData.state}
-            />
-            <CustomSelectTag
-              selectName="city"
-              onChange={(e) => handleInputChange(e)}
-              label="Ville"
-              arrayOfItems={city}
-              value={formData.city}
-            />
-            <label className="font-semibold" htmlFor="activity">
-              Business activity
-              <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="activity"
-              value={formData.businessActivity}
-              name="businessActivity"
-              required
-              onChange={(event) => handleInputChange(event)}
-              className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
-            >
-              <option selected>-- Select --</option>
-              {businessActivity?.map((item: any, index) => (
-                <option key={index} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            {hasOtherBusiness && (
-              <input
-                type="text"
-                required
-                value={formData.otherBusiness}
-                name="otherBusiness"
-                placeholder="Autre secteur d'activité"
-                onChange={(e) => handleInputChange(e)}
-                className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
-              />
-            )}
-            <div className="pb-6 flex flex-col">
-              <label htmlFor="logo" className="font-semibold">
-                Entrer le logo
-              </label>
-              <input
-                type="file"
-                accept=".png, .jpeg, .jpg"
-                placeholder="logo de l'entreprise"
-                onChange={(e) => handleFileChange(e)}
-              />
-            </div>
-            <label className="font-semibold" htmlFor="description">
-              Description<span className="text-red-500">*</span>
-            </label>
-            <Textarea
-              className="w-full p-2 mb-3"
-              value={formData.description}
-              name="description"
-              onChange={(e) => handleInputChange(e)}
-            />
-            <CheckBox onChange={() => handleOnCheck()} />
-            {hasAgree && (
-              <span className="text-red-500">
-                Accepter les condition d'utilisation
-              </span>
-            )}
-
-            <div className="flex flex-col gap-3 pt-3 ">
-              <Button
-                className={
-                  isLoading ? "hover:cursor-not-allowed opacity-70" : ""
-                }
-                type="submit"
-              >
-                {isLoading ? <Spinner /> : "Continuer"}
-              </Button>
-            </div>
-          </form>
+          </Link>
         </div>
-        <Dialog
-          onOpenChange={() => setIsModalOpen((prev) => !prev)}
-          open={isModalOpen}
-        >
-          <DialogContent>
-            <VisuallyHidden.Root>
-              <DialogHeader>
-                <DialogTitle></DialogTitle>
-                <DialogDescription></DialogDescription>
-              </DialogHeader>
-            </VisuallyHidden.Root>
-            <CancelModal onClose={handleCloseModal} />
-          </DialogContent>
-        </Dialog>
+        <h3 className="font-semibold text-2xl text-center pb-7">
+          Bienvenu sur Senwisetool
+          <br />
+          Enregistrer votre entreprise
+        </h3>
+        <form className="" onSubmit={handleSubmit}>
+          <InputField
+            label="Nom de l'entreprise"
+            inputName="companyName"
+            type="text"
+            value={formData.companyName}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
+            label="Email de l'entreprise"
+            inputName="companyEmail"
+            placeholder="Exemple@gmail.com"
+            type="email"
+            value={formData?.companyEmail}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
+            label="Siege social"
+            inputName="headOfficeEmail"
+            type="email"
+            placeholder="Exemple@gamil.com"
+            value={formData.headOfficeEmail}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
+            label="Address"
+            inputName="address"
+            type="text"
+            placeholder="Yaounde, Cameroon"
+            value={formData.address}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <InputField
+            label="Numero de telephone de l'entreprise"
+            inputName="phone"
+            placeholder="(+237) 6 00 00 00 00"
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => handleInputChange(e)}
+          />
+
+          <CustomSelectTag
+            selectName="country"
+            onChange={(e) => handleInputChange(e)}
+            label="Pays"
+            arrayOfItems={countries}
+            value={formData.country}
+          />
+          <CustomSelectTag
+            selectName="state"
+            onChange={(e) => handleInputChange(e)}
+            label="Region"
+            arrayOfItems={state}
+            value={formData.state}
+          />
+          <CustomSelectTag
+            selectName="city"
+            onChange={(e) => handleInputChange(e)}
+            label="Ville"
+            arrayOfItems={city}
+            value={formData.city}
+          />
+          <label className="font-semibold" htmlFor="activity">
+            Business activity
+            <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="activity"
+            value={formData.businessActivity}
+            name="businessActivity"
+            required
+            onChange={(event) => handleInputChange(event)}
+            className="border flex flex-col mt-1 mb-7 p-1 w-[95%] md:w-full bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+          >
+            <option selected>-- Select --</option>
+            {businessActivity?.map((item: any, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+          {hasOtherBusiness && (
+            <input
+              type="text"
+              required
+              value={formData.otherBusiness}
+              name="otherBusiness"
+              placeholder="Autre secteur d'activité"
+              onChange={(e) => handleInputChange(e)}
+              className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
+            />
+          )}
+          <div className="pb-6 flex flex-col">
+            <label htmlFor="logo" className="font-semibold">
+              Entrer le logo
+            </label>
+            <input
+              type="file"
+              accept=".png, .jpeg, .jpg"
+              placeholder="logo de l'entreprise"
+              onChange={(e) => handleFileChange(e)}
+            />
+          </div>
+          <label className="font-semibold" htmlFor="description">
+            Description<span className="text-red-500">*</span>
+          </label>
+          <Textarea
+            className="w-full p-2 mb-3"
+            value={formData.description}
+            name="description"
+            onChange={(e) => handleInputChange(e)}
+          />
+          <CheckBox onChange={() => handleOnCheck()} />
+          {hasAgree && (
+            <span className="text-red-500">
+              Accepter les condition d'utilisation
+            </span>
+          )}
+
+          <div className="flex flex-col gap-3 pt-3 ">
+            <Button
+              className={isLoading ? "hover:cursor-not-allowed opacity-70" : ""}
+              type="submit"
+            >
+              {isLoading ? <Spinner /> : "Continuer"}
+            </Button>
+          </div>
+        </form>
       </div>
-    </Session>
+      <Dialog
+        onOpenChange={() => setIsModalOpen((prev) => !prev)}
+        open={isModalOpen}
+      >
+        <DialogContent>
+          <VisuallyHidden.Root>
+            <DialogHeader>
+              <DialogTitle></DialogTitle>
+              <DialogDescription></DialogDescription>
+            </DialogHeader>
+          </VisuallyHidden.Root>
+          <CancelModal onClose={handleCloseModal} />
+        </DialogContent>
+      </Dialog>
+    </div>
+    // {/* </Session> */}
   );
 }

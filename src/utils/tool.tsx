@@ -10,7 +10,9 @@ export const arrayNumber = (n: number) => {
 };
 
 export const uniqueString = (string?: string): string => {
-  const cleanString = string?.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+  const cleanString = string
+    ? string.replace(/[^a-zA-Z0-9]/g, "").toLowerCase()
+    : "";
 
   // Générer la chaîne unique
   return `${Date.now()}${Math.random()
@@ -18,9 +20,8 @@ export const uniqueString = (string?: string): string => {
     .substring(2, 15)}${cleanString}`;
 };
 
-
 export const getStorageData = (key: string) => {
   if (typeof window !== "undefined") {
     return JSON.parse(localStorage.getItem(key) || "").toString();
   }
-}
+};
