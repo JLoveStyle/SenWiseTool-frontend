@@ -2,20 +2,17 @@
 
 import { ButtonUI } from "@/components/atoms/disign-system/button-ui";
 import { useToggle } from "@/hooks/use-toggle";
-import { Route } from "@/lib/route";
 import { UpdateFilesToS3 } from "@/lib/s3";
-import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ActivityFormProps, ActivityProps } from "@/types/activity";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewActivityForm } from "./new-activity-form";
 import { mutateApiData } from "@/utiles/services/mutations";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 interface Props {
   endpoint: string;
@@ -25,9 +22,7 @@ export function NewActivityAgriculture({ endpoint }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
   const [URLs, setURLs] = useState<Partial<ActivityProps>>({});
-  const [closeModal, setCloseModal] = useState<boolean>(false);
-
-  const router = useRouter();
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
 
   const [formData, setFormData] = useState<ActivityFormProps>({
     activity_title: "",
@@ -38,7 +33,6 @@ export function NewActivityAgriculture({ endpoint }: Props) {
 
   // load company state
   const company = useCompanyStore((state) => state.company);
-  const currentCampain = useCampaignStore((state) => state.currentCampaign);
 
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: ActivityFormProps) => {
@@ -55,15 +49,6 @@ export function NewActivityAgriculture({ endpoint }: Props) {
       company_id: company?.id,
     };
 
-    console.log(dataToDB);
-
-    // Sauvegarde de l'activité
-    // const existingActivities = LOCAL_STORAGE.get("agricultures") ?? [];
-    // LOCAL_STORAGE.save("agricultures", [
-    //   ...existingActivities,
-    //   { id: existingActivities.length + 1, ...dataToDB },
-    // ]);
-
     // CREATE AGRICULTURAL ACTIVITY
     await mutateApiData(endpoint, dataToDB)
       .then((response) => {
@@ -73,9 +58,7 @@ export function NewActivityAgriculture({ endpoint }: Props) {
           setIsLoading(false);
 
           // closeModal
-          setCloseModal(false);
-          router.refresh();
-          // router.push(Route.agriculture);
+          setIsDialogOpen(!isDialogOpen);
           return;
         } else if (response.message === "Internal Server Error") {
           toast.error("Internal Server Error");
@@ -156,7 +139,6 @@ export function NewActivityAgriculture({ endpoint }: Props) {
         pictures_url,
         documents_url,
       };
-
     } catch (error) {
       console.error("Erreur pendant l'upload des fichiers:", error);
       toast.error("Erreur lors de l'upload des fichiers");

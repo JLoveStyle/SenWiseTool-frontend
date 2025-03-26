@@ -1,9 +1,7 @@
 "use client";
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
-import { Project } from "@/types/gestion";
 import { mutateUpApiData } from "@/utiles/services/mutations";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import {
   ChevronRight,
   ClipboardType,
@@ -37,13 +35,13 @@ export default function ProjectSummary({
   const lienRapide: { [key: string]: any } = [
     {
       firstIcon: <ClipboardType />,
-      text: "Data collected",
+      text: "Données collectés",
       secondIcon: <ChevronRight />,
       function: () => showData(true),
     },
     {
       firstIcon: <Rocket />,
-      text: "Deploy project",
+      text: "Deployer projet",
       secondIcon: (
         <div className="flex gap-6">
           {isLoading ? <Spinner size="small" /> : ""}
@@ -60,15 +58,14 @@ export default function ProjectSummary({
             projectObject?.id
           )
             .then((response) => {
-              console.log("project deployed", response);
               setIsLoading((prev) => !prev);
               if (response.status <= 205) {
-                toast.success("Project deployed", {
+                toast.success("Projet déployer", {
                   transition: Bounce,
                   autoClose: 3000,
                 });
               } else {
-                toast.error("Something went wrong. Try again", {
+                toast.error("Une erreur est survenu. Veillez réessayer", {
                   autoClose: 3000,
                   transition: Bounce,
                 });
@@ -77,7 +74,7 @@ export default function ProjectSummary({
             .catch((error) => {
               console.log("could not update project", error);
               setIsLoading(false);
-              toast.error("Something went wrong. Try again", {
+              toast.error("Une erreur est survenu. Veillez réessayer", {
                 autoClose: 3000,
                 transition: Bounce,
               });
@@ -112,11 +109,11 @@ export default function ProjectSummary({
   return (
     <div className="bg-[#f3f4f6] p-6 md:w-full flex justify-between gap-10 h-full">
       <div className="md:w-[70%]">
-        <p className="">Project details</p>
+        <p className="">Details du projet de Mapping</p>
         <div className="bg-white md:w-full p-5 shadow">
           {/* project title */}
           <div className="flex gap-4 justify-center items-baseline m-auto py-4 border-b">
-            <span className="text-sm text-gray-500 ">Title: </span>
+            <span className="text-sm text-gray-500 ">Titre: </span>
             {isDataLoading ? (
               <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
             ) : (
@@ -132,7 +129,9 @@ export default function ProjectSummary({
             {isDataLoading ? (
               <div className="h-3 animate-pulse bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
             ) : (
-              <p className="font-semibold">{projectObject?.description ?? ""} </p>
+              <p className="font-semibold">
+                {projectObject?.description ?? ""}{" "}
+              </p>
             )}
           </div>
           <div className="flex justify-between md:w-full py-4 border-b ">
@@ -144,9 +143,10 @@ export default function ProjectSummary({
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
-                <span className="text-sm text-gray-500 ">Creation date</span>
+                <span className="text-sm text-gray-500 ">Date de création</span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
-                  {projectObject && dayjs(projectObject?.created_at).toString().slice(0, -4)}
+                  {projectObject &&
+                    dayjs(projectObject?.created_at).toString().slice(0, -4)}
                 </span>
               </div>
             </div>
@@ -155,22 +155,24 @@ export default function ProjectSummary({
             <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-center text-gray-500 ">
-                  Last update
+                  Dernière mise à jour
                 </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {/* {dayjs(projectObject?.updated_at).toString().slice(0, -4)} */}
-                  {projectObject && (projectObject?.updated_at as string).includes("1969")
+                  {projectObject &&
+                  (projectObject?.updated_at as string).includes("1969")
                     ? "--"
                     : dayjs(projectObject?.updated_at).toString().slice(0, -4)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-center text-gray-500 ">
-                  Last deployment
+                  Date de deploiment
                 </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {/* {dayjs(projectObject?.updated_at).toString().slice(0, -4)} */}
-                  {projectObject && (projectObject?.deployed_at as string).includes("1969")
+                  {projectObject &&
+                  (projectObject?.deployed_at as string).includes("1969")
                     ? "--"
                     : dayjs(projectObject?.deployed_at).toString().slice(0, -4)}
                 </span>
@@ -181,7 +183,7 @@ export default function ProjectSummary({
             <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-center text-gray-500 ">
-                  Country
+                  Pays
                 </span>
                 <span className=" text-sm text-center rounded-lg font-semibold">
                   {projectObject?.country ?? ""}
@@ -202,7 +204,7 @@ export default function ProjectSummary({
 
       {/* RAPID LINKS */}
       <div className="md:w-[30%]">
-        <p className="">Links</p>
+        <p className="">Liens</p>
         <div className="bg-white px-5 shadow">
           {lienRapide.map((link: any, index: number) => (
             <div

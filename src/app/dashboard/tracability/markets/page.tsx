@@ -13,13 +13,8 @@ import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Button } from "@/components/ui/button";
 import { useToggle } from "@/hooks/use-toggle";
-import { useCampaignStore } from "@/lib/stores/campaign-store";
-import { useCompanyStore } from "@/lib/stores/companie-store";
-import { ApiDataResponse, MarketDBProps } from "@/types/api-types";
 import { MarketDisplayProps } from "@/types/tracability/market";
-import { statPanelDatas } from "@/utiles/services/constants";
 import { fetchApiData } from "@/utiles/services/queries";
-import { marketData } from "@/utiles/tracability.const/market";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
@@ -36,7 +31,7 @@ export default function Market() {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [deleteMarket, setDeleteMarket] = useState<boolean>(false);
   const [closeMarket, setCloseMarket] = useState<boolean>(false);
-  const { value: openModal, toggle: toggleOpenModel } = useToggle({
+  const { toggle: toggleOpenModel } = useToggle({
     initial: false,
   });
 
@@ -62,72 +57,61 @@ export default function Market() {
     );
   };
 
-  // Load company object from store
-  const company = useCompanyStore((state) => state.company);
-  // console.log('company', company)
-
   // load current campain object from store
   const currentCampain = LOCAL_STORAGE.get("currentCampain");
-  // console.log('currentCampain', currentCampain);
+
+  const copyText = (text: string) => {
+    return (
+      <p
+        className="cursor-pointer hover:underline"
+        onClick={() => {
+          navigator.clipboard.writeText(text);
+          toast.success("Copié");
+        }}
+      >
+        {text}
+      </p>
+    );
+  };
 
   const columns = columnTable<MarketDisplayProps>(
     {
       id: "id",
       code: "code",
       campagne: "campagne",
-      location: "location",
-      price_of_theday: "Price of the day",
-      supplier: "Supplier",
-      start_date: "Start date",
-      end_date: "End date",
-      status: "Status",
-      sale_slip: "Sale slip",
-      store_entry_voucher: "Store entry voucher",
+      location: "Address",
+      price_of_theday: "Prix du jour",
+      supplier: "Fournisseur",
+      start_date: "Date de debut",
+      end_date: "Date de fin",
+      status: "Statut",
+      sale_slip: "Bordoreau de vente",
+      store_entry_voucher: "Bon d'entrer en magazin",
     },
     Route.markets
     // false
   );
 
-  const formatedDataFromDBToDisplay = (data: MarketDBProps) => {
-    return {
-      id: data.id,
-      code: data.code,
-      campagne: data.campaign_id,
-      location: data.location,
-      price_of_theday: data.price_of_theday,
-      supplier: data.supplier,
-      start_date: data.start_date,
-      end_date: data.end_date,
-      status: data.status,
-      sale_slip: data.sale_slip ? (
-        preview(data.sale_slip)
-      ) : (
-        <span className="text-slate-500">Indisponible</span>
-      ),
-      store_entry_voucher: data.store_entry_voucher ? (
-        preview(data.store_entry_voucher)
-      ) : (
-        <span className="text-slate-500">Indisponible</span>
-      ),
-    };
-  };
-
   async function getAllMarket() {
-    // console.log("here is company", currentCampain?.id);
     await fetchApiData(
       Route.marketRequest + `/?campaign_id=${currentCampain?.id}`,
       ""
     )
       .then((response) => {
         if (response.status === 400 || response.status === 404) {
-          toast.warning("No market created yet");
+          toast.warning("Aucun marché trouvé");
           setIsLoading(false);
           return;
         } else if (response.status === 200) {
           setIsLoading(false);
-          setmarketDatas(response.data);
+          for (const m of response.data) {
+            if (m.code.length < 5) {
+              setmarketDatas((prev) => [...prev, m]);
+            }
+          }
         } else {
           setIsLoading(false);
+          
         }
       })
       .catch((error) => {
@@ -138,37 +122,12 @@ export default function Market() {
 
   useEffect(() => {
     getAllMarket();
-    const fetchData = async () => {
-      try {
-        // const result = await db_get_markets();
-        const result = await marketData;
-        const dataFormated: MarketDisplayProps[] = [];
-
-        if (result) {
-          if (Array.isArray(result)) {
-            result.forEach((res) => {
-              dataFormated.push(formatedDataFromDBToDisplay(res));
-            });
-          } else {
-            dataFormated.push(formatedDataFromDBToDisplay(result));
-          }
-
-          setmarketDatas(dataFormated);
-        }
-      } catch (err) {
-        console.error("Error fetching markets: ", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    // fetchData();
   }, []);
 
   const valueToDisplay = (args: MarketDisplayProps[]) => {
     return args?.map((markets) => ({
       id: markets?.id ?? "",
-      code: markets?.code,
+      code: copyText(String(markets?.code ?? "")),
       location: markets?.location,
       price_of_theday: markets?.price_of_theday,
       supplier: markets?.supplier,
@@ -181,12 +140,6 @@ export default function Market() {
     }));
   };
 
-  useEffect(() => {
-    // refetch();
-    // const company = useCompanyStore((state) => state.company);
-    // console.log("compagny", company);
-  }, [marketDatas]);
-
   const formParams = {
     trigger_btn_label_form: "Nouveau marché",
     construct_form_btn_label: "Nouvaux formulaire",
@@ -198,25 +151,24 @@ export default function Market() {
   // delete created market
   async function handleDeletemarket() {
     setIsDeleting((prev) => !prev);
-    // const allId: string[] = [];
+
     for (const item of marketSelected) {
-      // allId.push(item?.id);
       await mutateDelApiData(Route.marketRequest, item?.id)
         .then((response: any) => {
           if (response.status === 204) {
             toast.success("Market deleted");
             setIsDeleting((prev) => !prev);
-            setDeleteMarket((prev) => !prev)
+            setDeleteMarket((prev) => !prev);
             return;
           } else {
-            toast.error("Something went wrong. Please try again")
+            toast.error("Une erreur s'est produite. Veuillez réessayer");
             setIsDeleting((prev) => !prev);
-            setDeleteMarket((prev) => !prev)
+            setDeleteMarket((prev) => !prev);
           }
         })
         .catch((error) => {
           console.log(error);
-          toast.error("something went wrong. please try again");
+          toast.error("Une erreur s'est produite. Veuillez réessayer");
         });
     }
   }
@@ -226,14 +178,13 @@ export default function Market() {
     for (const item of marketSelected) {
       await mutateUpApiData(Route.marketRequest, { status: "CLOSED" }, item?.id)
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
             toast.success("Market closed");
             setIsDeleting((prev) => !prev);
             setCloseMarket((prev) => !prev);
           } else {
-            toast.error("Something went wrong. Please try again")
-            setCloseMarket((prev) => !prev)
+            toast.error("Une erreur s'est produite. Veuillez réessayer");
+            setCloseMarket((prev) => !prev);
             setIsDeleting((prev) => !prev);
           }
         })
@@ -255,7 +206,7 @@ export default function Market() {
         return marketDatas.length;
       },
     },
-  ]
+  ];
 
   return (
     <LayoutDashboardTemplate
@@ -265,7 +216,7 @@ export default function Market() {
           form: <NewMarket />,
         },
       ]}
-      title="Gestion du marché"
+      title="Gestion des marchés"
       formParams={formParams}
       statPanelDatas={stateMarket}
     >

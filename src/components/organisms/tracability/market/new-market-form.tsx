@@ -30,9 +30,7 @@ export const NewMarketForm = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     let { name, value } = e.target;
-    console.log(value);
     if (name === "price_of_theday") {
-      console.log({ name: +value });
       setFormData((prev) => ({ ...prev, [name]: +value }));
     } else setFormData((prev) => ({ ...prev, [name]: value }));
 
@@ -53,9 +51,9 @@ export const NewMarketForm = ({
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Location"
+          label="Address"
           id="location"
-          placeholder="Enter location"
+          placeholder="Entrer une adresse"
           isLoading={isLoading}
           errors={errors}
           required
@@ -63,10 +61,10 @@ export const NewMarketForm = ({
           onChange={handleChange}
         />
         <InputUI
-          label="Price of the day (in XAF)"
+          label="Prix du jour (in XAF)"
           id="price_of_theday"
           type="number"
-          placeholder="Price of the day"
+          placeholder="Prix du jour"
           isLoading={isLoading}
           errors={errors}
           required
@@ -76,9 +74,9 @@ export const NewMarketForm = ({
       </div>
       <div className="grid items-center gap-4">
         <InputUI
-          label="Supplier name"
+          label="Nom du fournisseur"
           id="supplier"
-          placeholder="Enter supplier name"
+          placeholder="Nom du fournisseur"
           isLoading={isLoading}
           errors={errors}
           required
@@ -88,7 +86,7 @@ export const NewMarketForm = ({
       </div>
       <div className="grid grid-cols-2 items-center gap-4">
         <InputUI
-          label="Market start date"
+          label="Date de debut du marché"
           id="start_date"
           type="datetime-local"
           isLoading={isLoading}
@@ -99,7 +97,7 @@ export const NewMarketForm = ({
         />
 
         <InputUI
-          label="Market end day"
+          label="Date de fin du marché"
           id="end_date"
           type="datetime-local"
           isLoading={isLoading}

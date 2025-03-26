@@ -1,6 +1,6 @@
 export interface MarketDisplayProps {
   id: string;
-  code?: string | null;
+  code?: React.ReactNode;
   location: string;
   price_of_theday: number;
   supplier: string;

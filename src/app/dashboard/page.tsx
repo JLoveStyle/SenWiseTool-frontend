@@ -14,16 +14,9 @@ import { useEffect } from "react";
 type Props = {};
 
 export default function Home({}: Props) {
-  const { getToken, isLoaded, isSignedIn } = useAuth();
+  const { getToken } = useAuth();
   const { user } = useUser();
   LOCAL_STORAGE.save("username", user?.firstName);
-  // console.log("user", user);
-
-  // fetch user and set him to the store
-  const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
-    fn: () => fetchApiData(Route.user, "current"),
-    route: Route.user,
-  });
 
   async function fetchData() {
     const token = await getToken();
@@ -31,6 +24,13 @@ export default function Home({}: Props) {
       LOCAL_STORAGE.save("token", token);
     }
   }
+
+  // fetch user and set him to the store
+  const { refetch } = useApiOps<UserType, ApiDataResponse<UserType>>({
+    fn: () => fetchApiData(Route.user, "current"),
+    route: Route.user,
+  });
+
 
   useEffect(() => {
     fetchData();

@@ -22,7 +22,7 @@ export default function CheckBox({ onChange }: Props) {
             htmlFor="terms1"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            Accept terms and conditions
+            Accepter les termes et condidtions d'utilisation
           </label>
           <div className="text-sm text-muted-foreground flex gap-2 align-baseline">
             <p>

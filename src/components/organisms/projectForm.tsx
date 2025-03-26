@@ -1,7 +1,6 @@
 import { ProjectType } from "@/types/api-types";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import Image from "next/image";
 import { Route } from "@/lib/route";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { Bounce, toast } from "react-toastify";
@@ -20,7 +19,6 @@ export default function ProjectForm({ projectObject }: Props) {
   const [personalInfo, setPersonalInfo] = useState({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const company = useCompanyStore((state) => state.company);
-  console.log('company object', company)
 
   const jsonString = JSON.stringify(projectObject?.project_structure);
   const finalJson = JSON.parse(jsonString);
@@ -43,7 +41,7 @@ export default function ProjectForm({ projectObject }: Props) {
   // DEPLOY PROJECT
   async function deployProject() {
     if (projectObject?.status === "DEPLOYED") {
-      toast.warning('Project deployed already')
+      toast.warning('Projet deja deployé')
       return
     }
     setIsLoading((prev) => !prev);
@@ -55,14 +53,14 @@ export default function ProjectForm({ projectObject }: Props) {
       .then((response) => {
         console.log(response);
         if (response.status <= 204) {
-          toast.success("Project deployed", {
+          toast.success("Projet deployé", {
             transition: Bounce,
             autoClose: 3000,
           });
           setIsLoading(false)
         }
         if (response.statusCode >= 205) {
-          toast.error(`Sorry something went wrong`, {
+          toast.error(`Une erreur est survenue au serveur`, {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -70,7 +68,7 @@ export default function ProjectForm({ projectObject }: Props) {
       })
       .catch((error) => {
         console.log("An error occured", error);
-        toast.error("Fail to deploy. Try again", {
+        toast.error("Echec de déploiment. Veillez réessayer", {
           transition: Bounce,
           autoClose: 1000,
         });

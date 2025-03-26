@@ -5,7 +5,7 @@ type Props = {}
 
 export default function page({}: Props) {
   return (
-    <LayoutDashboardTemplate title='MANAGEMENT PLAN'>
+    <LayoutDashboardTemplate title='Plan de Management'>
       <p>management-plan</p>
     </LayoutDashboardTemplate>
   )

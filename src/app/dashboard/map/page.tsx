@@ -5,7 +5,7 @@ type Props = {}
 
 export default function Home({}: Props) {
   return (
-    <LayoutDashboardTemplate title='MAP'>
+    <LayoutDashboardTemplate title='Carte'>
       <p>maps</p>
     </LayoutDashboardTemplate>
   )

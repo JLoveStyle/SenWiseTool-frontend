@@ -58,7 +58,6 @@ export default function MappingData({ project_id }: Props) {
           // setInspectionDatas(response.data);
         } else if (response.status === 404) {
           setIsLoading(false);
-          toast.warning("Aucune donnée trouvée");
           return;
         } else {
           setIsLoading(false);
@@ -76,7 +75,7 @@ export default function MappingData({ project_id }: Props) {
 
   // FETCH DATA OF SINGLE MAPPING PROJECT
   useEffect(() => {
-    fetchAllMappingData("cm40i54dg0004j6p8l5jspca2");
+    fetchAllMappingData(project_id);
   }, []);
 
   return (
@@ -118,7 +117,7 @@ export default function MappingData({ project_id }: Props) {
                     <td className="px-2 border">{item.village}</td>
                     <td className="px-2 border">{item.collector_name}</td>
                     <td className="px-2 border">{item.date}</td>
-                    <td className="px-2 border">{item.estimated_area}</td>
+                    <td className="px-2 border">{item.estimated_area ?? '-'}</td>
                     <td className="px-2 border">
                       {typeof item !== "undefined"
                         ? item.plantation_photos?.map((photo, idx) => (
@@ -135,8 +134,6 @@ export default function MappingData({ project_id }: Props) {
                                       ? item.farmer_name
                                       : ""
                                   }
-                                  // height={100}
-                                  // width={100}
                                 />
                                 <div className="w-[200px] hover:underline truncate text-blue-500">
                                   {photo}
@@ -162,8 +159,6 @@ export default function MappingData({ project_id }: Props) {
                                       ? item.farmer_name
                                       : ""
                                   }
-                                  // height={100}
-                                  // width={100}
                                 />
                                 <div className="w-[200px] hover:underline truncate text-blue-500">
                                   {typeof item !== "undefined"

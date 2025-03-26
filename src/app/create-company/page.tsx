@@ -127,7 +127,7 @@ export default function Home({ }: Props) {
 
     // Head office email and company email must not be the same
     if (formData.headOfficeEmail === formData.companyEmail) {
-      toast.warning("Head office email must be different from company email", {
+      toast.warning("L'email du sierge social doit être different de l'email de la company", {
         autoClose: 4000,
       });
       return;
@@ -173,21 +173,21 @@ export default function Home({ }: Props) {
       })
         .then((response) => {
           if (response.status === 201) {
-            toast.success(`Success! routing to dashboard`, {
+            toast.success(`Success!`, {
               transition: Bounce,
               autoClose: 3000,
             });
             router.push(Route.dashboard);
             return;
           } else if (response.status === 409) {
-            return toast.error("Company already exist");
+            return toast.error("Companie exists déjà");
           } else if (response.statusCode === 401) {
-            return toast.error("Something went wrong. Please refresh");
+            return toast.error("Une erreur est survenu veillez recharger la page");
           } else if (!response.status.toString().startWith("2")) {
-            return toast.error(`Sorry something went wrong`);
+            return toast.error(`Une erreur est survenu au serveur`);
           }
           if (response.status === 201) {
-            toast.success(`Success! routing to dashboard`, {
+            toast.success(`Success!`, {
               transition: Bounce,
               autoClose: 3000,
             });
@@ -196,7 +196,7 @@ export default function Home({ }: Props) {
           }
         })
         .catch((error) => {
-          toast.error("An error occured. Please try again later", {
+          toast.error("Une erreur est survenu au serveur. Veillez réessayer", {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -267,7 +267,7 @@ export default function Home({ }: Props) {
 
   return (
     <Session
-      sessionStatus={NOT_HAS_COMPANY}
+      // sessionStatus={NOT_HAS_COMPANY}
     >
       <div className="h-full">
         <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
@@ -280,33 +280,34 @@ export default function Home({ }: Props) {
                 alt="SenWiseTool logo"
                 loading="lazy"
               />
-              {/* <Logo size="very-large"/> */}
             </Link>
           </div>
           <h3 className="font-semibold text-2xl text-center pb-7">
-            Welcome to Senwisetool
+            Bienvenu sur Senwisetool
             <br />
-            Register your company
+            Enregistrer votre entreprise
           </h3>
           <form className="" onSubmit={handleSubmit}>
             <InputField
-              label="Company name"
+              label="Nom de l'entreprise"
               inputName="companyName"
               type="text"
               value={formData.companyName}
               onChange={(e) => handleInputChange(e)}
             />
             <InputField
-              label="Company email"
+              label="Email de l'entreprise"
               inputName="companyEmail"
+              placeholder="Exemple@gmail.com"
               type="email"
               value={formData?.companyEmail}
               onChange={(e) => handleInputChange(e)}
             />
             <InputField
-              label="Head office email"
+              label="Siege social"
               inputName="headOfficeEmail"
               type="email"
+              placeholder="Exemple@gamil.com"
               value={formData.headOfficeEmail}
               onChange={(e) => handleInputChange(e)}
             />
@@ -314,12 +315,14 @@ export default function Home({ }: Props) {
               label="Address"
               inputName="address"
               type="text"
+              placeholder="Yaounde, Cameroon"
               value={formData.address}
               onChange={(e) => handleInputChange(e)}
             />
             <InputField
-              label="Company phone"
+              label="Numero de telephone de l'entreprise"
               inputName="phone"
+              placeholder="(+237) 6 00 00 00 00"
               type="tel"
               value={formData.phone}
               onChange={(e) => handleInputChange(e)}
@@ -328,7 +331,7 @@ export default function Home({ }: Props) {
             <CustomSelectTag
               selectName="country"
               onChange={(e) => handleInputChange(e)}
-              label="Country"
+              label="Pays"
               arrayOfItems={countries}
               value={formData.country}
             />
@@ -342,7 +345,7 @@ export default function Home({ }: Props) {
             <CustomSelectTag
               selectName="city"
               onChange={(e) => handleInputChange(e)}
-              label="City"
+              label="Ville"
               arrayOfItems={city}
               value={formData.city}
             />
@@ -371,19 +374,19 @@ export default function Home({ }: Props) {
                 required
                 value={formData.otherBusiness}
                 name="otherBusiness"
-                placeholder="Enter the business"
+                placeholder="Autre secteur d'activité"
                 onChange={(e) => handleInputChange(e)}
                 className="border mt-1 mb-7 p-1 w-[95%] md:w-[500px] bg-transparent outline-none focus:border-primary shadow-sm rounded-md"
               />
             )}
             <div className="pb-6 flex flex-col">
               <label htmlFor="logo" className="font-semibold">
-                Enter company logo
+                Entrer le logo
               </label>
               <input
                 type="file"
                 accept=".png, .jpeg, .jpg"
-                placeholder="Enter logo"
+                placeholder="logo de l'entreprise"
                 onChange={(e) => handleFileChange(e)}
               />
             </div>
@@ -399,7 +402,7 @@ export default function Home({ }: Props) {
             <CheckBox onChange={() => handleOnCheck()} />
             {hasAgree && (
               <span className="text-red-500">
-                Please agree to the Terms of service
+                Accepter les condition d'utilisation
               </span>
             )}
 
@@ -410,15 +413,8 @@ export default function Home({ }: Props) {
                 }
                 type="submit"
               >
-                {isLoading ? <Spinner /> : "Register"}
+                {isLoading ? <Spinner /> : "Continuer"}
               </Button>
-              {/* 
-            <Button
-              className="text-red-500 bg-white border border-red-500 hover:bg-[#ef44441e]"
-              onClick={handleCancel}
-            >
-              Skip
-            </Button> */}
             </div>
           </form>
         </div>
