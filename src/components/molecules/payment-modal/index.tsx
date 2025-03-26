@@ -1,13 +1,14 @@
 // src/components/molecules/PaymentModal.tsx
 import React from 'react';
 import NokashPaymentForm from '@/components/molecules/payment-modal/components/nokash-payment-form.tsx';
+import { PricePlanType } from '@/types/api-types';
 
 interface PaymentModalProps {
     isOpen: boolean;
     onClose: () => void;
     amount: number;
     planType: string;
-    currentPricePlan?: string;
+    currentPricePlanID?: string;
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({
@@ -15,7 +16,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     onClose,
     amount,
     planType,
-    currentPricePlan
+    currentPricePlanID
 }) => {
     if (!isOpen) return null;
 
@@ -65,7 +66,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                     <div className="max-h-[calc(100vh-8rem)] overflow-y-auto">
                         <NokashPaymentForm
                             amount={amount}
-                            currentPlan={currentPricePlan}
+                            currentPlanId={currentPricePlanID as string}
                         />
                     </div>
                 </div>

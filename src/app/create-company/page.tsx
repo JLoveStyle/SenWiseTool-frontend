@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 // import { createCompany } from "@/utiles/services/queries";
 import { Spinner } from "@/components/atoms/spinner/spinner";
+import { Session } from "@/components/templates/session";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Route } from "@/lib/route";
 import { CreateBucketToS3, UpdateFilesToS3 } from "@/lib/s3";
+import { NOT_HAS_COMPANY } from "@/lib/session-statut";
 import { businessActivity } from "@/utiles/services/constants";
 import { createOrganization } from "@/utiles/services/createOrg";
 import { mutateApiData } from "@/utiles/services/mutations";
@@ -69,21 +71,25 @@ export default function Home({}: Props) {
 
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
-
     const bucketName = uniqueString(formData.companyName);
 
     setBucketName(bucketName);
 
-    const { data, error } = await CreateBucketToS3({
-      bucketName,
-    });
+    // check if there is a company already created
+    const hasCompany = JSON.parse(localStorage.getItem("company") || "{}");
+
+    if (hasCompany?.id) {
+      router.push(Route.dashboard);
+    }
+
+    const { data, error } = await CreateBucketToS3({ bucketName });
 
     if (error) {
-      toast.error("Erreur lors de la creation du bucket");
+      toast.error(`Erreur lors de la creation du bucket: ${error.message}`);
       setIsLoading(false);
 
       console.error(error);
-      throw new Error("Erreur lors de la creation du bucket");
+      throw new Error(`Erreur lors de la creation du bucket: ${error.message}`);
     }
 
     //upload company logo
@@ -94,11 +100,11 @@ export default function Home({}: Props) {
       });
 
       if (error) {
-        toast.error("Erreur lors de l'upload du logo");
+        toast.error(`Erreur lors de l'upload du logo: ${error.message}`);
         setIsLoading(false);
 
         console.error(error);
-        throw new Error("Error lors de l'upload du logo");
+        throw new Error(`Error lors de l'upload du logo: ${error.message}`);
       }
       return data.URLs[0] as string;
     }
@@ -177,7 +183,7 @@ export default function Home({}: Props) {
             router.push(Route.dashboard);
             return;
           } else if (response.status === 409) {
-            return toast.error("Company already exist");
+            return toast.error("Companie exists déjà");
           } else if (response.statusCode === 401) {
             return toast.error(
               "Une erreur est survenu veillez recharger la page"
@@ -265,21 +271,34 @@ export default function Home({}: Props) {
   };
 
   return (
-    // <Session
-    //   sessionStatus={NOT_HAS_COMPANY}
-    // >
-    <div className="h-full">
-      <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
-        <div className="flex justify-center ">
-          <Link href={Route.home}>
-            <Image
-              src="/images/logo.png"
-              height={150}
-              width={150}
-              alt="SenWiseTool logo"
-              loading="lazy"
+    <Session sessionStatus={NOT_HAS_COMPANY}>
+      <div className="h-full">
+        <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
+          <div className="flex justify-center ">
+            <Link href={Route.home}>
+              <Image
+                src="/images/logo.png"
+                height={150}
+                width={150}
+                alt="SenWiseTool logo"
+                loading="lazy"
+              />
+            </Link>
+          </div>
+          <h3 className="font-semibold text-2xl text-center pb-7">
+            Bienvenu sur Senwisetool
+            <br />
+            Enregistrer votre entreprise
+          </h3>
+          <form className="" onSubmit={handleSubmit}>
+            <InputField
+              label="Nom de l'entreprise"
+              inputName="companyName"
+              type="text"
+              value={formData.companyName}
+              onChange={(e) => handleInputChange(e)}
             />
-          </Link>
+          </form>
         </div>
         <h3 className="font-semibold text-2xl text-center pb-7">
           Bienvenu sur Senwisetool
@@ -429,7 +448,7 @@ export default function Home({}: Props) {
           <CancelModal onClose={handleCloseModal} />
         </DialogContent>
       </Dialog>
-    </div>
+    </Session>
     // {/* </Session> */}
   );
 }

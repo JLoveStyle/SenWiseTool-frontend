@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function PaymentSuccessPage() {
   return (
     <SuccessPage
-      headText="Payment Successfull"
-      paragraphText="Congrats to your purchase! Please check your email for further instructions"
+      headText="Payment reussi"
+      paragraphText="Felicitation pour votre payment. Veuillez consulter votre mail pour information supplementaire."
     />
   );
 }
