@@ -4,8 +4,9 @@ import { allRequirements } from "@/utils/requirements";
 import { Archive, FilePenLine, Rocket } from "lucide-react";
 import { receiptStatData } from "../tracability.const/statistics";
 
-// export const BASE_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL || 'http://192.168.237.144:3000';
-export const BASE_URL = "https://wsflnurjpk6y4rfu66vtm2uz4q.srv.us";
+// export const BASE_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL || 'http://localhost:3000';
+// export const BASE_URL = "https://wsflnurjpk6y4rfu66vtm2uz4q.srv.us";
+export const BASE_URL = "https://senwisetool.com";
 // process.env.NEXT_PUBLIC_SENWISETOOL_URL;
 
 export const API_URL = process.env.NEXT_PUBLIC_SERVER_API_URL;
