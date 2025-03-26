@@ -27,7 +27,7 @@ import PaymentModal from "@/components/molecules/payment-modal";
 
 type TProps = Promise<{ typeOfOffer: string }>;
 
-export default function page(props: { params: TProps }) {
+export default function CheckoutPage(props: { params: TProps }) {
   const router = useRouter();
   // const { typeOfOffer } = useParams();
   const params = use(props.params);
@@ -101,7 +101,9 @@ export default function page(props: { params: TProps }) {
   const [chapterChoosed, setChapterChoosed] = useState(null);
 
   return (
-    <Session sessionStatus="company_disabled">
+    <Session
+    // sessionStatus="company_disabled"
+    >
       <main className="">
         <div className="flex justify-between shadow-md md:px-[80px] px-[20px]">
           <div
@@ -219,7 +221,7 @@ export default function page(props: { params: TProps }) {
                 onClose={() => setIsPaymentModalOpen(false)}
                 amount={annualPricing ? currentOffer?.annualPricing as number : currentOffer?.biannualPricing as number}
                 planType={`${typeOfOffer} ${annualPricing ? 'Annual' : 'Biannual'} Plan`}
-                currentPricePlan={pricePlan?.id}
+                currentPricePlanID={pricePlan?.id}
               />
             </div>
           </div>

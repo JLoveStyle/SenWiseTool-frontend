@@ -19,15 +19,15 @@ export default function CancelPage(props: ICancelPageProps) {
 
           <div className=" mt-3 text-center sm:mt-5  w-full">
             <h3 className=" text-lg leading-6 font-medium mt-2">
-              Payment Cancelled
+              Payment annulé.
             </h3>
             <p className=" mt-2 text-sm text-muted-foreground">
-              Something went wrong with your payment.{" "}
-              <span className="font-semibold">You have not been charged</span>
+              Erreur s'est produite pendant votre payment.{" "}
+              <span className="font-semibold">Vous n'avez pas été débité.</span>
             </p>
 
             <Button className=" mt-5 sm:mt-6 w-full">
-              <Link href={"/"}>Back to Home Page</Link>
+              <Link href={"/"}>Retour a la page d'accueil</Link>
             </Button>
           </div>
         </div>

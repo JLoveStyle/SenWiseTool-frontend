@@ -35,7 +35,7 @@ import { Bounce, toast } from "react-toastify";
 
 type Props = {};
 
-export default function Home({}: Props) {
+export default function Home({ }: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const countries: any[] = Country.getAllCountries();
@@ -69,12 +69,23 @@ export default function Home({}: Props) {
 
   const { user } = useUser();
 
-  const createCompanyStorage = async () => {
-    // create bucket company S3 bucket
-
+  useEffect(() => {
     const bucketName = uniqueString()
     LOCAL_STORAGE.save("bucketName", bucketName)
     setBucketName(prev => prev = bucketName);
+
+    // check if there is a company already created
+    const hasCompany = JSON.parse(localStorage.getItem("company") || "{}");
+
+    if (hasCompany?.id) {
+      router.push(Route.dashboard);
+    }
+  }, []);
+
+  const createCompanyStorage = async () => {
+    // create bucket company S3 bucket
+
+
 
     const { data, error } = await CreateBucketToS3({
       bucketName,

@@ -33,7 +33,7 @@ export default function SuccessPage({
 
             <Button className=" mt-5 sm:mt-6 w-full">
               <Link href={"/"}>
-                Back to Home Page
+                Continuer vers le votre espace de travail.
               </Link>
             </Button>
           </div>

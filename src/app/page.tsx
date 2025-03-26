@@ -6,6 +6,7 @@ import { Pricing } from "@/components/molecules/pricing";
 import { Services } from "@/components/molecules/services";
 import { Layout } from "@/components/templates/layout";
 import React from "react";
+import CheckoutPage from "./checkout/[typeOfOffer]/page";
 
 export default function Home() {
   const sectionPages = [HeroTop, AboutUs, Features, Pricing, Services, Footer];
