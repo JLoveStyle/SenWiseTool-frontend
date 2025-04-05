@@ -33,8 +33,6 @@ export const Session = ({ children, sessionStatus }: Props) => {
     initial: true,
   });
 
-  console.log("Token from session:", LOCAL_STORAGE.get("token"));
-
   const { userId, getToken } = useAuth();
   const company = useCompanyStore((state) => state.company);
 
