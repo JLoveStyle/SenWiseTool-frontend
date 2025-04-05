@@ -33,7 +33,7 @@ import { Bounce, toast } from "react-toastify";
 
 type Props = {};
 
-export default function Home({ }: Props) {
+export default function Home({}: Props) {
   const router = useRouter();
   const { getToken, isLoaded } = useAuth();
   const countries: any[] = Country.getAllCountries();
@@ -68,6 +68,7 @@ export default function Home({ }: Props) {
   const { user } = useUser();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   useEffect(() => {
     const bucketName = uniqueString()
     LOCAL_STORAGE.save("bucketName", bucketName)
@@ -80,6 +81,13 @@ export default function Home({ }: Props) {
 
     setBucketName(bucketName);
 >>>>>>> c3fcec2 (update create company process)
+=======
+  const createCompanyStorage = async () => {
+    // create bucket company S3 bucket
+    const bucketName = uniqueString(formData.companyName);
+
+    setBucketName(bucketName);
+>>>>>>> main
 
     // check if there is a company already created
     const hasCompany = JSON.parse(localStorage.getItem("company") || "{}");
@@ -87,23 +95,19 @@ export default function Home({ }: Props) {
     if (hasCompany?.id) {
       router.push(Route.dashboard);
     }
-  }, []);
 
-  const createCompanyStorage = async () => {
-    // create bucket company S3 bucket
-
-
-
-    const { data, error } = await CreateBucketToS3({
-      bucketName,
-    });
+    const { data, error } = await CreateBucketToS3({ bucketName });
 
     if (error) {
-      toast.error("Erreur lors de la creation du bucket");
+      toast.error(`Erreur lors de la creation du bucket: ${error.message}`);
       setIsLoading(false);
 
       console.error(error);
+<<<<<<< HEAD
       throw new Error("Erreur lors de la creation du bucket");
+=======
+      throw new Error(`Erreur lors de la creation du bucket: ${error.message}`);
+>>>>>>> main
     }
 
     //upload company logo
@@ -114,11 +118,15 @@ export default function Home({ }: Props) {
       });
 
       if (error) {
-        toast.error("Erreur lors de l'upload du logo");
+        toast.error(`Erreur lors de l'upload du logo: ${error.message}`);
         setIsLoading(false);
 
         console.error(error);
+<<<<<<< HEAD
         throw new Error("Error lors de l'upload du logo");
+=======
+        throw new Error(`Error lors de l'upload du logo: ${error.message}`);
+>>>>>>> main
       }
       return data.URLs[0] as string;
     }
@@ -286,9 +294,13 @@ export default function Home({ }: Props) {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Session
       // sessionStatus={NOT_HAS_COMPANY}
     >
+=======
+    <Session sessionStatus={NOT_HAS_COMPANY}>
+>>>>>>> main
       <div className="h-full">
         <div className=" sm:w-[550px] p-6 flex justify-center flex-col rounded-[12px] shadow-xl my-20 border mx-auto">
           <div className="flex justify-center ">
@@ -330,7 +342,11 @@ export default function Home({ }: Props) {
               loading="lazy"
 >>>>>>> c3fcec2 (update create company process)
             />
+<<<<<<< HEAD
           </Link>
+=======
+          </form>
+>>>>>>> main
         </div>
         <h3 className="font-semibold text-2xl text-center pb-7">
           Bienvenu sur Senwisetool
@@ -480,7 +496,11 @@ export default function Home({ }: Props) {
           <CancelModal onClose={handleCloseModal} />
         </DialogContent>
       </Dialog>
+<<<<<<< HEAD
     </div>
+=======
+    </Session>
+>>>>>>> main
     // {/* </Session> */}
   );
 }
