@@ -99,7 +99,6 @@ export default function Market() {
     )
       .then((response) => {
         if (response.status === 400 || response.status === 404) {
-          toast.warning("Aucun marché trouvé");
           setIsLoading(false);
           return;
         } else if (response.status === 200) {

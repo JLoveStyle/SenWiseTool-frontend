@@ -52,7 +52,6 @@ export const Session = ({ children, sessionStatus }: Props) => {
     }
     if (sessionStatus === NOT_HAS_COMPANY) {
       if (!userId) return Route.signIn;
-      console.log("companys :::::::::::1", companys);
       if (company) return Route.dashboard;
     }
     if (sessionStatus === COMPANY_DISABLED) {

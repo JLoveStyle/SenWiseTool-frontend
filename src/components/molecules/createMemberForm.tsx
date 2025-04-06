@@ -30,7 +30,6 @@ export default function CreateMemeberForm({ closeModal }: Props) {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log(formData)
   };
 
   return (

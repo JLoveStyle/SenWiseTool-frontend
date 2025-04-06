@@ -20,7 +20,6 @@ export default function Home(props: { params: Props }) {
   const [farmer, setFarmer] = useState<FarmerType>();
 
   async function fetchSingleFarmer(farmerId: string) {
-    console.log("farmerId =>", farmerId);
     const result = await fetchApiData<ApiDataResponse<FarmerType>>(
       Route.famerRequest + `/${id}`,
       ""
@@ -30,7 +29,6 @@ export default function Home(props: { params: Props }) {
     } else {
       toast.error("Could not fetch single farmer. Please refresh")
     }
-    console.log("farmerObject\n", result);
   }
 
   useEffect(() => {

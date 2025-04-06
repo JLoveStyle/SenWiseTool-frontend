@@ -124,9 +124,9 @@ export default function LayoutDashboard({
     fn: () => fetchApiData(Route.campaign, ""),
     route: Route.campaign,
   });
+
   useEffect(() => {
     refetch();
-    console.log("layoudashboard component rendered in useEffect");
   }, [session?.id]);
 
   const { value: displayCloseSideNav, toggle: toggleDisplayCloseSideNav } =

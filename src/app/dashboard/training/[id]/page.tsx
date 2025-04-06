@@ -59,7 +59,6 @@ export default function TrainingDetails(props: { params: TProps }) {
           setIsLoading((prev) => !prev);
           return;
         }
-        console.log("this are training =>", response);
         setDbCurrentTrainingData(response.data as TrainingType);
 
         setCurrentTrainingData({

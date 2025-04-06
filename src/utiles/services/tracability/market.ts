@@ -8,12 +8,8 @@ import {
 } from "@/utiles/services/mutations";
 import ApiCall from "../httpClients";
 import { fetchApiData } from "../queries";
-import { Bounce, toast } from "react-toastify";
-// import { LOCAL_STORAGE } from "./storage";
 
 export const db_create_market = async (data: Partial<MarketDBProps>) => {
-  console.log('marketdata =>', data)
-  console.log(Route.marketRequest)
 
   return await mutateApiData(Route.marketRequest, data)
     .then((response) => {

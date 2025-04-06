@@ -14,7 +14,6 @@ type Props = {
 };
 
 export default function Inspectionconclusion({ conclusionData }: Props) {
-  console.log("conclusionData =>", conclusionData);
   return (
     <div className="">
       <h1 className="font-semibold text-center">

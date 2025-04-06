@@ -103,6 +103,7 @@ export const FormMultipleAgent = ({
           id="accountNumber"
           placeholder="Nombres de comptes"
           required
+          type="number"
           isLoading={isLoading}
           errors={errors}
           value={formData.accountNumber}
@@ -148,7 +149,7 @@ export const FormMultipleAgent = ({
       <div className="">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Code de projets ?</AccordionTrigger>
+            <AccordionTrigger className="hover:cursor-pointer">Code de projets ?</AccordionTrigger>
             <div className="max-h-[200px] overflow-y-scroll pr-4">
             <AccordionContent className="flex justify-between ">
                 <Table>

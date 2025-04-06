@@ -24,7 +24,6 @@ export async function POST(request: NextRequest) {
       files.push(formData.get(`files[${i}]`) as File);
       i++;
     }
-    console.log("directory....", directory);
 
     const bucket_name = bucketName
       ? bucketName
@@ -59,7 +58,6 @@ export async function POST(request: NextRequest) {
 
     const uploadedURLs = await Promise.all(uploadPromises);
     URLs.push(...uploadedURLs);
-    console.log("URLs Files Uploaded: ", URLs);
 
     return NextResponse.json(
       { message: "s3 RESPONSE", URLs: URLs },

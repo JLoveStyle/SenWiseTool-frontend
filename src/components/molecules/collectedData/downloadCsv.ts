@@ -221,7 +221,7 @@ const generateExcel = (data: ExcellDataType[]): void => {
   XLSX.utils.book_append_sheet(wb, ws, 'Inspection Data');
 
   // Write Excel file and trigger download
-  XLSX.writeFile(wb, 'Inspection_Data.xlsx');
+  XLSX.writeFile(wb, "Donnees_d'inspection.xlsx");
 };
 
 // DOWNLOAD ALL INSPECTION DATA OF SINGLE PROJECT
@@ -254,10 +254,8 @@ export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: I
     }
   }
 
-  // Trigger Excel file generation
+  // Trigger first Excel file generation
   generateExcel(formatedData);
-
-
 
   let data = []
   for (const item of incomingData) {
@@ -329,6 +327,6 @@ export function downloadInspectionDataAsCsv(mappingDatas: any[], incomingData: I
   });
 
   // Write the workbook to a file
-  XLSX.writeFile(wb, "output.xlsx");
+  XLSX.writeFile(wb, "Fiche-d'inspection.xlsx");
 
 }

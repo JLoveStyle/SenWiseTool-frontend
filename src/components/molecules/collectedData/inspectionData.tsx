@@ -69,7 +69,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
   }
 
   useEffect(() => {
-    fetchAllInpectionData("cm3lgtlxd000b124xckbu2muw");
+    fetchAllInpectionData(project_id);
   }, [project_id]);
 
   return (
@@ -106,9 +106,7 @@ export default function InspectionData({ project_id, projectName }: Props) {
                     <th className="p-2  border">Date inspection</th>
                     <th className="p-2  border">Année de certification</th>
                     <th className="p-2  border">Weed application</th>
-                    <th className="p-2  border">
-                      Qté angrais (kg/ha)
-                    </th>
+                    <th className="p-2  border">Qté angrais (kg/ha)</th>
                     <th className="p-2  border">Photo planteur</th>
                   </tr>
                 </thead>
@@ -224,7 +222,9 @@ export default function InspectionData({ project_id, projectName }: Props) {
           </div>
         </div>
       ) : (
-        <div className="flex justify-center mx-auto">Aucune donnée collectée</div>
+        <h1 className="text-center pb-5 font-semibold text-lg flex justify-center">
+          Données collectée sur le terrain
+        </h1>
       )}
     </div>
   );

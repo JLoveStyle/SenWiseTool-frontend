@@ -50,7 +50,6 @@ export default function page({}: Props) {
       projectData?.id
     )
       .then((response) => {
-        console.log(response);
         setIsLoading((prev) => !prev);
         if (response.status <= 204) {
           toast.success("Projet deployé", {
@@ -97,11 +96,13 @@ export default function page({}: Props) {
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
         <div className="flex items-baseline justify-between py-2 mx-auto">
           {/* COMPANY LOGO */}
-          <img
-            src={company.logo}
-            alt="company logo"
-            className="h-[70px] w-[100px]"
-          />
+          {company?.logo && (
+            <img
+              src={company.logo}
+              alt="company logo"
+              className="h-[70px] w-[100px]"
+            />
+          )}
 
           <img
             src="/images/logo_forest.jpg"
@@ -170,7 +171,7 @@ export default function page({}: Props) {
 
         {/* INSPECTION CONCLUSION */}
         <div className="">
-          <InspectionConclusion/>
+          <InspectionConclusion />
         </div>
       </div>
     </PrintContent>

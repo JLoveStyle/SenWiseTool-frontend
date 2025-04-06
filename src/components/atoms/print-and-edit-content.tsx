@@ -14,7 +14,7 @@ interface Props {
   deployProject: () => void;
   filename: string;
   handleExitPage?: () => void;
-  isDeploying: boolean;
+  isDeploying?: boolean;
   showBackBtn?: boolean
 }
 
@@ -24,7 +24,7 @@ const PrintContent: React.FC<Props> = (props) => {
   const [isPrinting, setIsPrinting] = useState<boolean>(false);
 
   const handlePrint = async () => {
-    setIsPrinting(prev => !prev);
+    setIsPrinting(true);
 
     const element = formRef.current;
     let options = {
@@ -40,8 +40,8 @@ const PrintContent: React.FC<Props> = (props) => {
     };
     if (element) {
       await html2pdf().set(options).from(element).save();
-      setIsPrinting(prev => !prev);
-    }
+      setIsPrinting(false);
+    } else setIsPrinting(false)
   };
 
   return (

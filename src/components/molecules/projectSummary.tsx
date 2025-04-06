@@ -1,7 +1,6 @@
 "use client";
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
-import { Project } from "@/types/gestion";
 import { mutateUpApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import {
@@ -16,6 +15,7 @@ import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { Spinner } from "../atoms/spinner/spinner";
 import dayjs from "dayjs";
+import { mapToProjectType } from "@/utils/projects-mapper";
 
 type Props = {
   projectObject: ProjectType | undefined;
@@ -73,7 +73,7 @@ export default function ProjectSummary({
               }
             })
             .catch((error) => {
-              console.log("could not update project", error);
+              console.log(error);
               setIsLoading(false);
               toast.error("Une erreur est survenue. Veillez réessayer", {
                 autoClose: 3000,
@@ -135,23 +135,23 @@ export default function ProjectSummary({
             <div className="flex md:w-full justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
-                <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
+                <span className="bg-green-200 font-semibold text-center border border-black text-sm px-2 rounded-lg">
                   {projectObject?.status}
                 </span>
               </div>
 
-              <div className="flex flex-col gap-2 py-2">
+              <div className="flex flex-col gap-2 py-2 ">
                 <span className="text-sm text-gray-500 ">N° de Questions</span>
                 {projectObject?.project_structure && (
-                  <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
+                  <span className="font-semibold w-fit p-1 items-center flex justify-center border border-black text-sm rounded-lg">
                     {JSON.parse(jsonString).requirements.length}
                   </span>
                 )}
               </div>
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Type de projet</span>
-                <span className="bg-green-200 font-semibold text-center text-sm px-2 rounded-lg">
-                  {projectObject?.type}
+                <span className="bg-green-200 font-semibold border border-black  text-center text-sm px-2 rounded-lg">
+                  {mapToProjectType(projectObject?.type)}
                 </span>
               </div>
             </div>

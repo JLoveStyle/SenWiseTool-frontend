@@ -93,7 +93,7 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
         className="font-semibold hover:underline hover:cursor-pointer"
         onClick={() => {
           navigator.clipboard.writeText(row.getValue("code"));
-          toast.success('Code copied')
+          toast.success('Code copié')
         }}
       >
         {row.getValue("code")}
@@ -170,7 +170,7 @@ export const columnListProjects: ColumnDef<ProjectType>[] = [
               <DropdownMenuItem
                 onClick={() => LOCAL_STORAGE.save("projectId", project.id)}
               >
-                Details
+                Détails
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem

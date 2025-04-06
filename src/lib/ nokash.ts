@@ -1,12 +1,7 @@
 import { NokashPaymentRequest, NokashCallback } from "@/types/nokash-type";
 import { API_URL, PAYMENT_API_URL } from "@/utiles/services/constants";
-import { mutateApiData } from "@/utiles/services/mutations";
-import { Route } from "@/lib/route";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 // import { toast } from "sonner";
-import { getStorageData } from "@/utils/tool";
 
-console.log("\n\n token in storage: ", getStorageData('token'));
 
 export class NokashPaymentService {
     private baseUrl = PAYMENT_API_URL;
@@ -22,8 +17,6 @@ export class NokashPaymentService {
     async initiatePayment(
         paymentDetails: Omit<NokashPaymentRequest, "i_space_key" | "app_space_key">
     ) {
-        console.log("\n\n initiate payment for \n\n", paymentDetails);
-
         const user_email = paymentDetails.user_data?.user_email;
         delete paymentDetails.user_data?.user_email;
         // remove user email from the payment details
@@ -50,7 +43,6 @@ export class NokashPaymentService {
 
     // check payment status from payment api
     async checkStatus(transactionId: string) {
-        console.log("\n\n Check payment status for id \n\n", transactionId);
 
         try {
             const response = await fetch(
@@ -80,8 +72,6 @@ export class NokashPaymentService {
             return console.error("No current price or token Identifier provided");
         }
 
-        console.log("\n\n data to store with token: ", paymentDetails, token);
-
         const maxRetries = 3;
         const baseDelay = 1000; // 1 second initial delay
         let retries = 0;
@@ -107,7 +97,6 @@ export class NokashPaymentService {
                     );
                 }
 
-                console.log("\n\n response of storage payment: ", response);
                 return await response.json();
             } catch (error) {
                 console.error(
@@ -122,7 +111,6 @@ export class NokashPaymentService {
 
                 // Exponential backoff with jitter
                 const delay = baseDelay * Math.pow(2, retries) + Math.random() * 1000;
-                console.log(`Retrying in ${Math.round(delay / 1000)} seconds...`);
                 await new Promise((resolve) => setTimeout(resolve, delay));
 
                 retries++;
@@ -135,8 +123,6 @@ export class NokashPaymentService {
         if (!current_price_id || !token) {
             return console.error("No current price or token Identifier provided");
         }
-
-        console.log("\n\n data to store with token: ", paymentDetails, token);
 
         const maxRetries = 3;
         const baseDelay = 1000; // 1 second initial delay
@@ -162,8 +148,6 @@ export class NokashPaymentService {
                         `API responded with status ${response.status}: ${errorText}`
                     );
                 }
-
-                console.log("\n\n response of alerting for faled payment: ", response);
                 return await response.json();
             } catch (error) {
                 console.error(

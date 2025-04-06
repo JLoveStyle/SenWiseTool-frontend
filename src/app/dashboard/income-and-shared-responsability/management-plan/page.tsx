@@ -83,12 +83,10 @@ export default function ManagementPlan() {
         if (result.status === 200) {
           setIsLoading(false);
           if (Array.isArray(result.data)) {
-            console.log("if condition");
             result.data.forEach((res: incomeAndSharedResponsabilityDBProps) => {
               dataFormated.push(formatedDataFromDBToDisplay(res));
             });
           } else {
-            console.log("if else condition");
             dataFormated.push(formatedDataFromDBToDisplay(result.data));
           }
           setManagementPlanDatas(dataFormated);

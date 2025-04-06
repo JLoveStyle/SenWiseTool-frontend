@@ -51,8 +51,6 @@ export function NewFormReceipt() {
 
     const serverResponse = await db_create_training(dataToDB);
 
-    console.log("daaaaata:::::::::", serverResponse);
-
     if (serverResponse.status === "error") {
       toast.error("Updating training failed");
       setIsLoading(false);

@@ -51,7 +51,7 @@ export const DeleteTraining = ({ training, header, trainingId }: Props) => {
       })
       .catch((error) => {
         setIsLoading((prev) => !prev);
-        console.log("Hello");
+        console.log(error);
       });
 
     // toast.success("Your project are updated successfull");

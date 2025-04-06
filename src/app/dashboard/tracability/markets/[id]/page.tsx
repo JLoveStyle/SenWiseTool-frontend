@@ -37,7 +37,6 @@ export default function ReceiptDetails(props: { params: TProps }) {
     await fetchApiData(Route.marketRequest, marketId)
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data); 
           setCurrentMarket(response.data);
           setIsLoading(false);
           return;

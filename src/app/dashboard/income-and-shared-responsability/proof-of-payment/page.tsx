@@ -143,10 +143,8 @@ export default function ProofOfPaiement() {
     if (proofOfPaiementSelected.length !== 0) {
       setIsDeleting(true);
       for (const item of proofOfPaiementSelected) {
-        console.log("deleted id => ", item?.id);
         await mutateDelApiData(Route.revenuEtResponsabilite, item?.id)
           .then((response: any) => {
-            console.log(response);
             if (response.status == 204) {
               toast.success("Deleted");
               setIsDeleting((prev) => !prev);
@@ -179,7 +177,7 @@ export default function ProofOfPaiement() {
     <LayoutDashboardTemplate
       newForms={[
         {
-          title: "New Proof",
+          title: "Nouveau",
           form: <NewProofOfPaiement endpoint={Route.revenuEtResponsabilite} />,
         },
       ]}

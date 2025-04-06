@@ -33,7 +33,9 @@ export default function ActionComponent({
   const allId: string[] = [];
 
   for (const project of projects) {
-    allId.push(project.id as string);
+    if (project.status !== "ARCHIVED") {
+      allId.push(project.id as string);
+    }
   }
 
   // DELETE PROJECT
@@ -54,7 +56,6 @@ export default function ActionComponent({
 
             setIsLoading((prev) => !prev);
           } else {
-            console.log("Deleted Project failed", res);
             toast.error("Something went wrong", {
               transition: Bounce,
               autoClose: 3000,
@@ -77,13 +78,15 @@ export default function ActionComponent({
   // SHARE PROJECT
   async function handleShareProject() {
     setIsLoading((prev) => !prev);
-    console.log("share pro");
   }
 
   // ARCHIVE PROJECT
   async function handleArchiveProject() {
-    console.log(projects);
-    console.log(allId);
+    if (!allId.length) {
+      toast.warning('Projet(s) deja archivé')
+      closeDialog(false)
+      return
+    }
     setIsLoading((prev) => !prev);
 
     await mutateUpApiData(
@@ -96,7 +99,6 @@ export default function ActionComponent({
     )
       .then((res) => {
         if (res.status <= 205) {
-          console.log("archived successfully", res);
           closeDialog(false);
           toast.success("Project archived", {
             transition: Bounce,
@@ -104,7 +106,6 @@ export default function ActionComponent({
           });
           setIsLoading(false);
         } else {
-          console.log(res);
           toast.error("Something went wrong.", {
             transition: Bounce,
             autoClose: 3000,

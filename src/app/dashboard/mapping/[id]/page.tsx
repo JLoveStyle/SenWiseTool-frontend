@@ -24,14 +24,14 @@ export default function Home(props: {params: Props}) {
           setProjectObject(response.data);
           return
         }
-        toast.error("Something went wrong", {
+        toast.error("Une erreur est survenu au serveur. Veiller réessayer", {
           transition: Bounce,
           autoClose: 3000,
         });
       })
       .catch((error) => {
         setIsLoading((prev) => !prev);
-        toast.error("Something went wrong. Please try again", {
+        toast.error("Une erreur est survenu au serveur. Veiller réessayer", {
           transition: Bounce,
           autoClose: 3000,
         });

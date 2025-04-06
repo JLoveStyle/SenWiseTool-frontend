@@ -190,7 +190,6 @@ export default function NokashPaymentForm({
         }
     };
 
-    console.log('\n\n current price plan and token inside index: ', { accessToken, currentPricePlanId, currentPlanId });
     // Automatic polling of payment status after initiation
     const pollPaymentStatus = async (id: string, pricePlanId: string) => {
 
@@ -204,8 +203,6 @@ export default function NokashPaymentForm({
             });
 
             const result = await response.json();
-            console.log("\n\n response from api storage: ", result);
-
 
             if (!result) {
                 setError(`Payment ${result.data.status.toLowerCase().split('_').join(' ')}`);
@@ -229,7 +226,6 @@ export default function NokashPaymentForm({
         try {
             const response = await fetch('/api/nokash/payment_response?orderId=' + orderId);
             const result = await response.json();
-            console.log(`Response of payment status check:`, result);
             if (result && result?.status === 'SUCCESS') {
                 setTransactionId(null);
                 toast.success('Payment successful');
@@ -241,7 +237,6 @@ export default function NokashPaymentForm({
                     current_price_id: currentPricePlanId as string,
                     token: accessToken
                 })
-                console.log("Data to return:", data?.data);
                 if (data?.data) {
                     return router.replace(BASE_URL + '/payment/success');
                 }

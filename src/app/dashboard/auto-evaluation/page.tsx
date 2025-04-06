@@ -54,7 +54,6 @@ export default function Home({}: Props) {
   }
 
   useEffect(() => {
-    console.log("Auto-evaluation");
     fetchAllAutoEvaluationProject();
   }, [currentCampaign?.id]);
 
@@ -121,7 +120,6 @@ export default function Home({}: Props) {
           form: (
             <ProjectDetailsForm
               typeOfProject={"AUTO_EVALUATION"}
-              closeModal={() => console.log("close modal")}
             />
           ),
         },

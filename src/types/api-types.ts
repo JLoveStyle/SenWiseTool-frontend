@@ -13,7 +13,7 @@ const PRODUCTSTATUS = {
   EXPIRED: "EXPIRED",
 } as const;
 
-const PROJECTTYPE = {
+export const PROJECTTYPE = {
   INTERNAL_INSPECTION: "INTERNAL_INSPECTION",
   INITIAL_INSPECTION: "INITIAL_INSPECTION",
   AUTO_EVALUATION: "AUTO_EVALUATION",
@@ -40,32 +40,32 @@ export type ProjectsType = ObjectValue<typeof PROJECTTYPE>;
 export type ProjectStatus = ObjectValue<typeof PROJECT_STATUS>;
 
 export interface MappingProjectData {
-  collector_name: string,
-  village: string
-  location: string
-  plantation_photos: string[]
-  farmer_photos: string[]
-  date: string
-  farmer_status: string
-  farmer_name: string
-  farmer_contact: string
-  farmer_ID_card_number: string
-  plantation_creation_date: string
-  estimated_area: string
+  collector_name: string;
+  village: string;
+  location: string;
+  plantation_photos: string[];
+  farmer_photos: string[];
+  date: string;
+  farmer_status: string;
+  farmer_name: string;
+  farmer_contact: string;
+  farmer_ID_card_number: string;
+  plantation_creation_date: string;
+  estimated_area: string;
   coordinates: {
-    longitude: number,
-    latitude: number
-  }[]
+    longitude: number;
+    latitude: number;
+  }[];
 }
 export interface MappingDataType {
-  id: string
-  collected_at: string
-  project_id: string
-  updated_at: string
+  id: string;
+  collected_at: string;
+  project_id: string;
+  updated_at: string;
   project_data: {
-    project_id: string
-    project_data: MappingProjectData
-  }
+    project_id: string;
+    project_data: MappingProjectData;
+  };
 }
 export interface Answer {
   num: string;
@@ -85,61 +85,60 @@ export interface AnalysisProps {
 
 export interface InspectionDataType {
   total_A: number;
-  chapter1: { C: number; NC: number; NA: number, TA: number };
-  chapter2: { C: number; NC: number; NA: number, TA: number };
-  chapter3: { C: number; NC: number; NA: number, TA: number };
-  chapter4: { C: number; NC: number; NA: number, TA: number };
-  chapter5: { C: number; NC: number; NA: number, TA: number };
-  chapter6: { C: number; NC: number; NA: number, TA: number };
+  chapter1: { C: number; NC: number; NA: number; TA: number };
+  chapter2: { C: number; NC: number; NA: number; TA: number };
+  chapter3: { C: number; NC: number; NA: number; TA: number };
+  chapter4: { C: number; NC: number; NA: number; TA: number };
+  chapter5: { C: number; NC: number; NA: number; TA: number };
+  chapter6: { C: number; NC: number; NA: number; TA: number };
 }
-
 
 export interface InspectionConclusionDataType {
   metadata: {
-    nextYearRecom: string,
-    agent_signature: string,
-    farmer_signature: string
-  },
+    nextYearRecom: string;
+    agent_signature: string;
+    farmer_signature: string;
+  };
   nonConformityRecom: {
-    comment: string,
-    deadline: string,
-    req_number: string
-  }[]
+    comment: string;
+    deadline: string;
+    req_number: string;
+  }[];
 }
 export interface InspectionFieldDatatype {
   metaData: {
-    certification_year?: string,
-    farmer_ID_card_number?: string,
-    farmer_contact?: string,
-    farmer_name?: string,
-    farmer_photos?: string[],
-    inspection_date?: string,
-    inspector_contact?: string,
-    inspector_name?: string,
-    pesticide_quantity?: string,
-    pesticide_used?: string,
-    village?: string,
-    weed_application?: string,
-    weed_application_quantity?: string
-  },
-  inspectionConclusions: InspectionConclusionDataType
+    certification_year?: string;
+    farmer_ID_card_number?: string;
+    farmer_contact?: string;
+    farmer_name?: string;
+    farmer_photos?: string[];
+    inspection_date?: string;
+    inspector_contact?: string;
+    inspector_name?: string;
+    pesticide_quantity?: string;
+    pesticide_used?: string;
+    village?: string;
+    weed_application?: string;
+    weed_application_quantity?: string;
+  };
+  inspectionConclusions: InspectionConclusionDataType;
   requirements: {
-    comment: string,
-    status: string,
-    req_number: string
-  }[]
+    comment: string;
+    status: string;
+    req_number: string;
+  }[];
 }
 export interface ProjectData {
-  company_id: string,
-  project_id: string,
-  project_data: InspectionFieldDatatype
+  company_id: string;
+  project_id: string;
+  project_data: InspectionFieldDatatype;
 }
 export interface InspectionDataPops {
-  collected_at: string,
-  id: string,
-  updated_at: string,
-  project_id: string,
-  project_data: ProjectData
+  collected_at: string;
+  id: string;
+  updated_at: string;
+  project_id: string;
+  project_data: ProjectData;
 }
 
 export type PricePlanType = {
@@ -257,10 +256,16 @@ export type ProjectType = {
   deployed_at: string;
 };
 
+export enum CompanyStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  EXPIRED = "EXPIRED",
+}
+
 export type CompanyType = {
   id: string;
   name: string;
-  status: "ACTIVE" | "INACTIVE" | "EXPIRED";
+  status: CompanyStatus;
   slug: string;
   country: string;
   email: string;
@@ -280,6 +285,18 @@ export type CompanyType = {
   updated_at: string;
 };
 
+export enum UseRole {
+  ADG = "ADG",
+  PDG = "PDG",
+  AUDITOR = "AUDITOR",
+}
+
+export enum UseStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  BANNED = "BANNED",
+}
+
 export type UserType = {
   id: string;
   name: string;
@@ -293,8 +310,8 @@ export type UserType = {
   last_name: string | null;
   phone_number: string | null;
   profileUrls: string | null;
-  role: "ADG" | "PDG" | "AUDITOR";
-  status: "ACTIVE" | "INACTIVE" | "BANNED";
+  role: UseRole;
+  status: UseStatus;
   updated_at: Date;
   username: string | null;
 };
@@ -348,7 +365,13 @@ export type OmitStrict<T, K extends keyof T> = Omit<T, K>;
 
 export type TrainingTableDisplayType = Pick<
   TrainingType,
-  "id" | "title" | "start_date" | "end_date" | "location" | "code" | "created_at"
+  | "id"
+  | "title"
+  | "start_date"
+  | "end_date"
+  | "location"
+  | "code"
+  | "created_at"
 >;
 
 export interface RequirementType {
@@ -368,12 +391,46 @@ export type ChapterMetaDataType = {
 };
 
 export type BordereauxVenteType = {
-  id: string
-  code: string
-  campagne_id: string
-  sale_slip_title: string
-  sale_slip_description: string
-  sale_slip_url: string
+  id: string;
+  code: string;
+  campagne_id: string;
+  sale_slip_title: string;
+  sale_slip_description: string;
+  sale_slip_url: string;
+};
+
+export enum MarketType {
+  COCOA = "COCOA",
+  COFFEE = "COFFEE",
+  BANANA = "BANANA",
+  WOOD = "WOOD",
+  OTHER = "OTHER",
+}
+
+export enum MarketStatus {
+  OPEN = "OPEN",
+  CLOSED = "CLOSED",
+}
+
+export interface MarketTransaction {
+  id: string;
+  market_id: string;
+  date: string;
+  level_of_traceability: string;
+  driver_name: string;
+  quantity: string;
+  humidity: string;
+  net_weight_declared_in_Ton: string;
+  humidity_level_of_product: string;
+  total_quantity_in_bags: number;
+  receiver_name: string;
+  sender_signature: string[];
+  driver_signature: string[];
+  product_quantity: string;
+  vehicule_immatriculation_number: string;
+  min_con_verif_agent_name_and_sig: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export type MarketDBProps = {
@@ -384,8 +441,8 @@ export type MarketDBProps = {
   start_date: Date | string;
   end_date: Date | string;
   description?: string;
-  type_of_market?: "COCOA" | "COFFEE" | "BANANA" | "WOOD" | "OTHER";
-  status?: "OPEN" | "CLOSED";
+  type_of_market?: MarketType;
+  status?: MarketStatus;
   code?: string | null;
   product_quantity: number;
   created_at?: Date | string;
@@ -394,26 +451,7 @@ export type MarketDBProps = {
   company_id?: string;
   company: string;
   market_audit: []; // market_audit object[]: to be defined
-  transaction: {
-    id: string,
-    market_id: string,
-    date: string,
-    level_of_traceability: string,
-    driver_name: string,
-    quantity: string,
-    humidity: string,
-    net_weight_declared_in_Ton: string,
-    humidity_level_of_product: string,
-    total_quantity_in_bags: number,
-    receiver_name: string,
-    sender_signature: string[],
-    driver_signature: string[],
-    product_quantity: string,
-    vehicule_immatriculation_number: string,
-    min_con_verif_agent_name_and_sig: string,
-    created_at: string,
-    updated_at: string
-  }[]
+  transaction: MarketTransaction[];
   receipts?: []; // receipt object[]: to be defined
   sale_slip: string | null;
 
@@ -433,8 +471,8 @@ export type MarketDBProps = {
   quantity_product: number | null;
 
   store_entry_voucher: string | null;
-  transmission_url: string | null
-  accompanying_url: string | null
-  bon_entree_magazin_url: string | null
-  bordereau_vente_url: string | null
+  transmission_url: string | null;
+  accompanying_url: string | null;
+  bon_entree_magazin_url: string | null;
+  bordereau_vente_url: string | null;
 };

@@ -77,7 +77,6 @@ export function DataTable<TData, TValue>({
 
   useEffect(() => {
     const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
-      // console.log(pro.original);
       return pro.original;
     });
     onSelecteItem(selectedPro);

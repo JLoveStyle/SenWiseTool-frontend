@@ -7,7 +7,6 @@ import { UpdateFilesToS3 } from "@/lib/s3";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ActivityFormProps, ActivityProps } from "@/types/activity";
-import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
@@ -145,27 +144,6 @@ export function NewActivitySocial() {
         pictures_url,
         documents_url,
       };
-
-      console.log("Tous les fichiers ont été téléchargés avec succès");
-
-      // Files updated
-      console.table([
-        {
-          Action: "Uploaded PV",
-          Status: URLs.pv_url ? "Successfull..." : "unavailable...",
-          URLs: URLs.pv_url || "-",
-        },
-        {
-          Action: "Uploaded Pictures",
-          Status: URLs.pictures_url ? "Successfull..." : "unavailable...",
-          URLs: URLs.pictures_url || "-",
-        },
-        {
-          Action: "Uploaded Documents",
-          Status: "Successfull...",
-          URLs: URLs.documents_url || "-",
-        },
-      ]);
     } catch (error) {
       console.error("Erreur pendant l'upload des fichiers:", error);
       toast.error("Erreur lors de l'upload des fichiers");

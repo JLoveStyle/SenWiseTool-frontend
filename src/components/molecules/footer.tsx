@@ -18,7 +18,6 @@ export const Footer: React.FC = () => {
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value);
     // Logique pour appliquer les changements de langue (ex: i18n)
-    console.log("Langue sélectionnée :", e.target.value);
   };
 
   return (

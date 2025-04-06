@@ -31,7 +31,6 @@ export default function CreateAdgForm({ closeModal }: Props) {
 
   async function handleSubmit (event: any) {
     event.preventDefault();
-    console.log(formData);
   };
 
   return (

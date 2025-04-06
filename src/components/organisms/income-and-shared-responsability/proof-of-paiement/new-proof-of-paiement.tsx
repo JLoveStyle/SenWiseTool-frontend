@@ -17,6 +17,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewProofOfPaiementForm } from "./new-proof-of-paiement-form";
 import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   endpoint: string;
@@ -28,7 +29,7 @@ export function NewProofOfPaiement({ endpoint }: Props) {
   const [URLs, setURLs] = useState<
     Partial<incomeAndSharedResponsabilityDBProps>
   >({});
-  const {isDialogOpen, setIsDialogOpen} = useDialogControl()
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
 
   const router = useRouter();
 
@@ -57,7 +58,7 @@ export function NewProofOfPaiement({ endpoint }: Props) {
       type: "PAYMENT_JUSTIFICATION",
       producer_payment_proof: [""],
       first_buyer_proof: [""],
-      management_plan: [""]
+      management_plan: [""],
     };
 
     // CREATE AGRICULTURAL ACTIVITY
@@ -162,6 +163,7 @@ export function NewProofOfPaiement({ endpoint }: Props) {
     } catch (error) {
       console.error("Erreur pendant l'upload des fichiers:", error);
       toast.error("Erreur lors de l'upload des fichiers");
+      return
     }
   };
 
@@ -187,14 +189,19 @@ export function NewProofOfPaiement({ endpoint }: Props) {
         errors={errors}
         isLoading={isLoading}
       />
-      <ButtonUI
-        type="submit"
-        className={clsx("bg-green-600 hover:bg-green-500 mt-2")}
-        isLoading={isLoading}
-        icon={{ icon: Plus }}
-      >
-        Créer
-      </ButtonUI>
+
+      <div className="flex items-baseline space-x-2">
+        <p className="flex-1"></p>
+
+        <ButtonUI
+          type="submit"
+          className={clsx("bg-black hover:bg-black mt-2 flex justify-end")}
+          isLoading={isLoading}
+          icon={{ icon: Plus }}
+        >
+          Créer
+        </ButtonUI>
+      </div>
     </form>
   );
 }

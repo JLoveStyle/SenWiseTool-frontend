@@ -53,8 +53,6 @@ export function UpdateMarket() {
     const serverResponse = await db_create_market(dataToDB);
     // const serverResponse = await db_create_training(dataToDB);
 
-    console.log("daaaaata:::::::::", serverResponse);
-
     if (serverResponse.status === "error") {
       toast.error("Creating market failed");
       setIsLoading(false);

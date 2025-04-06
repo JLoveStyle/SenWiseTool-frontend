@@ -43,7 +43,7 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
   useEffect(() => {
     if (!isSubmitting && metaData.length) {
       LOCAL_STORAGE.save("formMetadata", metaData);
-      toast.success("Metadata saved", {
+      toast.success("Meta données enregisté", {
         transition: Bounce,
         autoClose: 1000,
       });
@@ -61,8 +61,8 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
 
   return (
     <div className="py-5">
-      <h1 className="font-semibold uppercase pb-2">Metadata</h1>
-      <div className="flex gap-3">
+      <h1 className="font-semibold uppercase pb-2">Meta données</h1>
+      <div className="flex gap-3 pb-3">
         <input
           id="select-all"
           type="checkbox"
@@ -70,10 +70,11 @@ export default function AddFormFromLibrary({ isSubmitting }: Props) {
           onChange={(e) => handleCheckbox(e)}
         />
         <label htmlFor={"select-all"}>
-          <strong>Select all</strong>
+          <strong>Tout selectionner</strong>
         </label>
       </div>
-      <fieldset className="flex gap-2 justify-between leading-loose">
+      <hr></hr>
+      <fieldset className="flex gap-2 justify-between pt-3 leading-loose">
         <div className="w-1/2">
           {firstHalfMetaData.map((item, index) => (
             <div key={index} className="flex gap-3">

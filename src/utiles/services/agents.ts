@@ -63,7 +63,6 @@ export const db_get_agents = async (companyId?: string, id?: string) => {
     if (agents) {
       try {
         const parsedAgents = JSON.parse(agents);
-        console.log("agents", parsedAgents);
       } catch (error) {
         console.error("Erreur lors du parsing de agents:", error);
       }
@@ -77,23 +76,6 @@ export const db_get_agents = async (companyId?: string, id?: string) => {
   return LOCAL_STORAGE.get("agents");
 
   // end Local datas ******************************
-
-  const db = new ApiCall();
-
-  return await fetchApiData<ApiDataResponse<TrainingType[] | TrainingType>>(
-    Route.training,
-    companyId
-  )
-    .then((response) => {
-      if (typeof response != "undefined") {
-        return response.data;
-      }
-    })
-    .catch((error) => {
-      console.error("Erreur lors de l'envoi des données :", error);
-      if (!companyId) return [] as TrainingType[];
-      return null;
-    });
 };
 
 export const db_delete_agent = async (id: string) => {

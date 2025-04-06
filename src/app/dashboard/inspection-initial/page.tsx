@@ -27,7 +27,6 @@ export default function Home({}: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const company = useCompanyStore((state) => state.company);
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
-  // console.log(currentCampaign?.id)
 
   // Fetch all projects with type "INITIAL_INSPECTION" and pass it as props to Layout
   async function fetchAllInitialInspectionProject() {
@@ -38,7 +37,6 @@ export default function Home({}: Props) {
       company?.id
     )
       .then((response) => {
-        console.log("all initial_inspection projects", response);
         setIsLoading(false);
         const filteredProjects = []
         for (const data of response.data) {
@@ -108,7 +106,6 @@ export default function Home({}: Props) {
 
   useEffect(() => {
     fetchAllInitialInspectionProject();
-    console.log("initial_inspection");
   }, [currentCampaign?.id, company?.id]);
 
   return (
@@ -123,7 +120,6 @@ export default function Home({}: Props) {
           form: (
             <ProjectDetailsForm
               typeOfProject={"INITIAL_INSPECTION"}
-              closeModal={() => console.log('')}
             />
           ),
         },

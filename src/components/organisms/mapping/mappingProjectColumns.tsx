@@ -12,6 +12,7 @@ import {
 import { Route } from "@/lib/route";
 import { ProjectType } from "@/types/api-types";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
+import { mapToProjectStatus } from "@/utils/projects-mapper";
 import { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
@@ -66,6 +67,7 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
   {
     accessorKey: "status",
     header: "Status",
+    cell: ({ row }) => <div className="uppercase">{mapToProjectStatus(row.getValue("status"))}</div>,
   },
   {
     accessorKey: "created_at",
@@ -121,14 +123,14 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
                 });
               }}
             >
-              Copy project code
+              Copier code
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Link href={Route.mapping + `/${project.id}`}>
               <DropdownMenuItem
                 onClick={() => LOCAL_STORAGE.save("projectId", project.id)}
               >
-                View project details
+                Détails
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem
@@ -142,7 +144,7 @@ export const mappingColumnListProjects: ColumnDef<ProjectType>[] = [
               }}
               className="text-red-500"
             >
-              Delete project
+              Supprimer
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

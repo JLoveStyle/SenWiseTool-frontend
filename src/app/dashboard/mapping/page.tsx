@@ -1,11 +1,9 @@
 "use client";
-import LayoutDashboard from "@/components/organisms/layoutDashboard";
 import { mappingColumnListProjects } from "@/components/organisms/mapping/mappingProjectColumns";
 import ProjectDetailsForm from "@/components/organisms/projectFormDetails/createForm";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
-import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ProjectType } from "@/types/api-types";
 import { DashboardStatPanelData } from "@/types/app-link";
 import { fetchApiData } from "@/utiles/services/queries";
@@ -27,7 +25,6 @@ export default function Home({}: Props) {
   const [allMappingProjects, setAllMappingProjects] =
     useState<Partial<ProjectType[]>>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isModalClose, setIsModalClose] = useState<boolean>(false);
   const company = LOCAL_STORAGE.get("company")
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
@@ -37,7 +34,6 @@ export default function Home({}: Props) {
     setIsLoading((prev) => !prev);
     await fetchApiData(Route.projects, "?type=MAPPING", currentCampaign?.id)
       .then((response) => {
-        console.log("all mapping projects", response);
         setIsLoading((prev) => !prev);
         const filteredProjects = [];
         for (const data of response.data) {
@@ -52,9 +48,6 @@ export default function Home({}: Props) {
         setIsLoading((prev) => !prev);
       });
   }
-
-  // const mappingProjects = LOCAL_STORAGE.get("mappingProjects").slice(2, 50)
-  // console.log(mappingProjects)
 
   useEffect(() => {
     fetchAllMappingProjects();
@@ -112,15 +105,9 @@ export default function Home({}: Props) {
     },
   ];
 
-  const closeModal = (value: boolean) => {
-    console.log("from mapping page", value);
-    setIsModalClose((prev) => (prev = value));
-  };
-
   return (
     <LayoutDashboardTemplate
       title="MAPPING"
-      isCloseModal={isModalClose}
       formParams={formParams}
       statPanelDatas={stateInspection}
       newForms={[
@@ -129,7 +116,6 @@ export default function Home({}: Props) {
           form: (
             <ProjectDetailsForm
               typeOfProject={"MAPPING"}
-              closeModal={closeModal}
             />
           ),
         },

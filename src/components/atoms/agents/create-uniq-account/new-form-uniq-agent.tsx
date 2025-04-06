@@ -8,12 +8,12 @@ import { AgentProps } from "@/types/agent-props";
 import { validatorForm } from "@/utils/validator-form";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { FormUniqAgent } from "./form-uniq-agent";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
+import revalidatePath from "@/utils/server-actions";
 
 interface Props {
   projects?: any[];
@@ -23,10 +23,8 @@ export function NewFormUniqAgent({ projects }: Props) {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
   const [errors, setErrors] = useState({});
 
-  const router = useRouter();
-
   const { isDialogOpen, setIsDialogOpen } = useDialogControl();
-  
+
   const [formData, setFormData] = useState<AgentProps>({
     id: "",
     fullName: "",
@@ -87,9 +85,10 @@ export function NewFormUniqAgent({ projects }: Props) {
             autoClose: 3000,
           });
           // close modal
-          setIsDialogOpen(!isDialogOpen)
+          setIsDialogOpen(!isDialogOpen);
 
-          router.refresh();
+          // revalidate the page
+          revalidatePath("/dashboard/agents");
         } else if (response.status === 409) {
           setIsLoading(false);
           toast.warning(`Code ${formData.agentCode} existe déjà`, {
@@ -118,14 +117,18 @@ export function NewFormUniqAgent({ projects }: Props) {
         errors={errors}
         isLoading={isLoading}
       />
-      <ButtonUI
-        type="submit"
-        className={clsx("bg-green-600 hover:bg-green-500 mt-2")}
-        isLoading={isLoading}
-        icon={{ icon: Plus }}
-      >
-        Create
-      </ButtonUI>
+      <div className="flex items-baseline space-x-2">
+        <p className="flex-1"></p>
+
+        <ButtonUI
+          type="submit"
+          className={clsx("bg-black hover:bg-black mt-2 flex justify-end")}
+          isLoading={isLoading}
+          icon={{ icon: Plus }}
+        >
+          Créer
+        </ButtonUI>
+      </div>
     </form>
   );
 }
