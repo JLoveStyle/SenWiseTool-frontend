@@ -1,12 +1,10 @@
 "use client";
 import { Archive, Trash2, UserPlus } from "lucide-react";
-
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
-import { Project } from "@/types/gestion";
 import CustomHoverCard from "../hoverCard";
 
 import { DataTable } from "@/components/molecules/projectsTable";
 import { ColumnDef } from "@tanstack/react-table";
+import { ProjectType } from "@/types/api-types";
 
 type User = {
   id: number;
@@ -14,42 +12,8 @@ type User = {
   email: string;
 };
 
-const data: User[] = [
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-  { id: 1, name: "John Doe", email: "john@example.com" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com" },
-];
-
-const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-];
-
 type Props = {
-  projects: Project[];
+  projects: ProjectType[];
 };
 
 export default function HomeProjectLayout({ projects }: Props) {

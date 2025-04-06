@@ -1,8 +1,6 @@
 "use client";
 import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
 import { OrganizationSwitcher, useSession } from "@clerk/nextjs";
-import { ClipboardType } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "../atoms/logo";
@@ -14,9 +12,7 @@ import { ApiDataResponse, CompanyType } from "@/types/api-types";
 type Props = {};
 
 export default function NavDashboard({}: Props) {
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>();
   const [id, setId] = useState<string | undefined | null>("");
-  const { session } = useSession();
   const pathname = usePathname();
 
   // FETCH CURRENT company
