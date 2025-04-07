@@ -81,7 +81,6 @@ export function downlaodSingleKml(
     ],
   };
   const resKml = tokml(geoJsonData);
-  console.log(resKml)
   return resKml
    
 }

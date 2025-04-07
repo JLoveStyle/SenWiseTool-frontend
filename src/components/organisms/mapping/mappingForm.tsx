@@ -1,4 +1,3 @@
-import Print from "@/components/atoms/print";
 import PrintContent from "@/components/atoms/print-and-edit-content";
 import { Input } from "@/components/ui/input";
 import { MappingTableColumns } from "@/utiles/services/constants";
@@ -11,7 +10,12 @@ export default function MappingForm({}: Props) {
     Array.from({ length: 7 }, () => "")
   );
   return (
-    <Print fileName="Mapping-form" onClick={() => {}} deployProject={() => {}}>
+    <PrintContent
+      filename="Mapping-form"
+      showBackBtn={false}
+      onClick={() => console.log("Back")}
+      deployProject={() => console.log("Deploying...")}
+    >
       <div className="px-6 mt-4">
         <table style={{ borderCollapse: "collapse", width: "100%" }}>
           <thead>
@@ -37,6 +41,6 @@ export default function MappingForm({}: Props) {
           </tbody>
         </table>
       </div>
-    </Print>
+    </PrintContent>
   );
 }

@@ -29,7 +29,6 @@ const Print: React.FC<Props> = (props) => {
       const imgWidth = pdf.internal.pageSize.getWidth() - 10;
       const imgHeight = pdf.internal.pageSize.getHeight() - 10;
       pdf.addImage(imgData, "PNG", xOffset, yOffset, imgWidth, imgHeight);
-      console.log({imgHeight, imgWidth})
       pdf.save(`${props.fileName}.pdf`);
     });
   };

@@ -1,7 +1,6 @@
 "use client";
 
 import { Route } from "@/lib/route";
-import { Project } from "@/types/gestion";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";

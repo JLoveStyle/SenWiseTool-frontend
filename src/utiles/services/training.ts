@@ -66,7 +66,6 @@ export const db_get_trainings = async (training_id?: string) => {
   )
     .then((response) => {
       if (typeof response != "undefined") {
-        console.log('Key training', response)
         return response.data;
       }
     })

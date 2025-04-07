@@ -79,8 +79,6 @@ export default function CheckoutPage(props: { params: TProps }) {
     route: Route.pricing,
   });
 
-  console.log("\n\n current price plan: ", pricePlan);
-
   const currentOffer = cardDataPricing.find(
     (offer) => offer.type === typeOfOffer
   );

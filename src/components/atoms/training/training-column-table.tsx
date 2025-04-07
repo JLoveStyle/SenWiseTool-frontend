@@ -125,7 +125,7 @@ export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
                 });
               }}
             >
-              Copy training code
+              Copier Code
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Link href={Route.trainingProject + `/${project.id}`}>
@@ -134,11 +134,11 @@ export const trainingColumnTable: ColumnDef<TrainingTableDisplayType>[] = [
                   LOCAL_STORAGE.save("currentTrainingProject", project)
                 }
               >
-                View training details
+                Détails
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem className="text-red-500">
-              Delete training
+              Supprimer
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,8 +1,5 @@
 "use client";
-import { Project } from "@/types/gestion";
 import { OrganizationSwitcher } from "@clerk/nextjs";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
 import { Logo } from "../logo";
 import Link from "next/link";
 import { Route } from "@/lib/route";
@@ -13,10 +10,6 @@ interface Props {
 }
 
 export default function Navbar({ title, className }: Props) {
-  const [selectedProject, setSelectedProject] = useState<Project | undefined>();
-  const [id, setId] = useState<string | undefined | null>("");
-  const pathname = usePathname();
-
   return (
     <nav
       className={` bg-tertiary  text-white z-50 flex justify-between ${className}`}

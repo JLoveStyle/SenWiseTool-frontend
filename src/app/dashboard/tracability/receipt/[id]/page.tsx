@@ -8,15 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Route } from "@/lib/route";
 import { ReceiptProps } from "@/types/tracability/receipt";
 import { db_get_receipts } from "@/utiles/services/tracability/receipt";
-// import dayjs from "dayjs";
 import { Archive, MoveLeft, Trash2, UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
 import { PiPrinterFill } from "react-icons/pi";
-interface Props {
-  displayForm: boolean;
-}
 
 type TProps =  Promise<{id: string}>;
 
@@ -47,10 +43,6 @@ export default function ReceiptDetails(props: {params: TProps}) {
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    // console.log("ddddddddddd", currentReceipt);
-  }, [currentReceipt]);
 
   const [isOpen, setIsOpen] = useState(false);
 

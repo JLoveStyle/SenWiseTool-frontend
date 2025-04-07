@@ -9,7 +9,7 @@ export default function RiskAssessmentTools() {
   const trigger = <Button>Ajouter</Button>;
 
   const onSubmit = (formData: AttachedFilesProps) => {
-    console.log("formData :::::::: ", formData);
+    console.log("formData :::::::: ");
   };
 
   return (

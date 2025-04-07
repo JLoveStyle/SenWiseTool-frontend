@@ -33,8 +33,8 @@ export function NewFormMiltipleAgent({ projects }: Props) {
 
   // load company state
   const company = useCompanyStore((state) => state.company);
-  
-  const {isDialogOpen, setIsDialogOpen} = useDialogControl()
+
+  const { isDialogOpen, setIsDialogOpen } = useDialogControl();
 
   // Fonction de gestion pour la mise à jour des données du formulaire
   const handleUpdatedFormData = (updatedFormData: MultipleFormAgentProps) => {
@@ -54,14 +54,13 @@ export function NewFormMiltipleAgent({ projects }: Props) {
       };
       assignees.push(dataToDB);
     });
-    
+
     await mutateApiData(Route.assigne + "/bulkCreate", assignees)
       .then((response) => {
         if (response.status === 201) {
           toast.success("Success");
           setIsLoading(false);
-          // closeDialog()
-          setIsDialogOpen(!isDialogOpen)
+          setIsDialogOpen(!isDialogOpen);
           return;
         } else if (response.status === 409) {
           setIsLoading(false);
@@ -77,7 +76,6 @@ export function NewFormMiltipleAgent({ projects }: Props) {
         console.log(error);
         toast.error("Something went wrong. Please try again");
       });
-
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -108,14 +106,18 @@ export function NewFormMiltipleAgent({ projects }: Props) {
         isLoading={isLoading}
         projects={projects as any[]}
       />
-      <ButtonUI
-        type="submit"
-        className={clsx("bg-green-600 hover:bg-green-500 mt-2")}
-        isLoading={isLoading}
-        icon={{ icon: Plus }}
-      >
-        Generer
-      </ButtonUI>
+      <div className="flex items-baseline space-x-2">
+        <p className="flex-1"></p>
+
+        <ButtonUI
+          type="submit"
+          className={clsx("bg-black hover:bg-black mt-2 flex justify-end")}
+          isLoading={isLoading}
+          icon={{ icon: Plus }}
+        >
+          Generer
+        </ButtonUI>
+      </div>
     </form>
   );
 }

@@ -33,7 +33,6 @@ const PrintContent: React.FC<Props> = (props) => {
       // Attendre que toutes les images soient chargées
       Promise.all(loadPromises)
         .then(() => {
-          console.log("Toutes les images sont chargées, génération du PDF...");
           // Générer le PDF après le chargement des images
           html2pdf().from(element).save();
         })

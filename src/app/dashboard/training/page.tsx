@@ -8,13 +8,10 @@ import {
   TrainingType,
 } from "@/types/api-types";
 import { fetchApiData } from "@/utiles/services/queries";
-
-import { Archive, ListOrdered, PenLine, Trash2, UserPlus } from "lucide-react";
-
+import { ListOrdered, PenLine } from "lucide-react";
 import { NewTraining } from "@/components/atoms/training/new-trainer";
 import { trainingColumnTable } from "@/components/atoms/training/training-column-table";
 import { DataTable } from "@/components/molecules/projectsTable";
-import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
 import { useCompanyStore } from "@/lib/stores/companie-store";
@@ -24,9 +21,6 @@ import { useState } from "react";
 
 export default function Training() {
   const [data, setData] = useState<TrainingProps[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  const [trainingDatas, setTrainingDatas] = useState<TrainingType[]>([]);
-
   // Load company from store
   const company = useCompanyStore((state) => state.company);
 
@@ -35,7 +29,6 @@ export default function Training() {
 
   const {
     data: trainings,
-    refetch,
     isLoading: isLoading,
   } = useApiOps<TrainingType[], ApiDataResponse<TrainingType[]>>({
     fn: () => fetchApiData<ApiDataResponse<TrainingType[]>>(Route.training, ""),
@@ -63,10 +56,6 @@ export default function Training() {
       location: training.location,
       code: training.code,
       created_at: training.created_at,
-      // modules: training.modules.map((module: string, index: number) => ({
-      //   id: index,
-      //   value: module,
-      // })),
     }));
   };
 
@@ -105,17 +94,6 @@ export default function Training() {
     >
       <div className="flex justify-between pb-4 pt-2 px-6">
         <h1 className="text-xl font-semibold">Projets</h1>
-        {/* <div className="flex gap-4 text-gray-500">
-          <CustomHoverCard content="archive project">
-            <Archive className="hover:cursor-pointer" />
-          </CustomHoverCard>
-          <CustomHoverCard content="Share project">
-            <UserPlus className="hover:cursor-pointer" />
-          </CustomHoverCard>
-          <CustomHoverCard content="Delete Project">
-            <Trash2 className="hover:cursor-pointer" />
-          </CustomHoverCard>
-        </div> */}
       </div>
       <div className="px-6">
         <DataTable<TrainingTableDisplayType, any>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import InputField from "../../molecules/inputField";
-import { Project } from "@/types/gestion";
 import CustomSelectTag from "../../molecules/select";
 import { City, Country, State } from "country-state-city";
 import { Button } from "../../ui/button";
@@ -93,7 +92,6 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
       id
     )
       .then((response) => {
-        console.log("successfully updated project", response);
         onClick(closeEditForm); // close the modal after edititng
         toast("Project Edited", {
           transition: Bounce,
@@ -103,9 +101,6 @@ export default function EditProjectFormDatails({ onClick, project }: Props) {
       .catch((error) => {
         console.log("unable to edit project", error);
       });
-    // console.log(projectData);
-    // LOCAL_STORAGE.save("fakeProject", projectData);
-    // LOCAL_STORAGE.save("project_data", projectData);
   }
 
   useEffect(() => {

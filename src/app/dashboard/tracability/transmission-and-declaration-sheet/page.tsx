@@ -83,7 +83,7 @@ export default function FactoryAccompaniementSheet() {
       company?.id
     )
       .then((response) => {
-        console.log("from useEffecte", response);
+        console.log("from useEffecte");
       })
       .catch((error) => {
         console.log(error);
@@ -135,12 +135,6 @@ export default function FactoryAccompaniementSheet() {
       quantity_product: markets.quantity_product,
     }));
   };
-
-  useEffect(() => {
-    // refetch();
-    // const company = useCompanyStore((state) => state.company);
-    // console.log("compagny", company);
-  }, [marketDatas]);
 
   const formParams = {
     trigger_btn_label_form: "Nouvaux marché",

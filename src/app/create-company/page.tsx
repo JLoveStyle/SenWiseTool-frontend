@@ -33,11 +33,9 @@ import { uniqueString } from "@/utils/tool";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Bounce, toast } from "react-toastify";
 
-type Props = {};
-
-export default function Home({ }: Props) {
+export default function Home() {
   const router = useRouter();
-  const { getToken, isLoaded } = useAuth();
+  const { getToken } = useAuth();
   const countries: any[] = Country.getAllCountries();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [hasAgree, setHasAgree] = useState<boolean>(false);
@@ -84,9 +82,6 @@ export default function Home({ }: Props) {
 
   const createCompanyStorage = async () => {
     // create bucket company S3 bucket
-
-
-
     const { data, error } = await CreateBucketToS3({
       bucketName,
     });
@@ -138,25 +133,7 @@ export default function Home({ }: Props) {
     const [URLCompanyLogo] = await Promise.all([createCompanyStorage()]);
 
     if (user?.id) {
-      const res = await createOrganization(formData, user.id);
-      // console.log(res);
-      console.log("formData", {
-        email: formData.companyEmail,
-        name: formData.companyName,
-        head_office_email: formData.headOfficeEmail,
-        country: formData.country,
-        region: formData.state,
-        city: formData.city,
-        sector_of_activity: activity,
-        logo: URLCompanyLogo,
-        phone_number: formData.phone,
-        address: formData.address,
-        description: formData.description,
-        company_bucket: bucketName
-      });
-      // setIsLoading(false);
-      // return;
-
+      await createOrganization(formData, user.id);
       await mutateApiData(Route.companies, {
         email: formData.companyEmail,
         name: formData.companyName,
@@ -251,7 +228,6 @@ export default function Home({ }: Props) {
 
   const fetchToken = async () => {
     const token = await getToken();
-    // console.log(token);
     LOCAL_STORAGE.save("token", token);
   };
 

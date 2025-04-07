@@ -2,11 +2,9 @@
 
 import { Route } from "@/lib/route";
 import {
-  Archive,
   ListOrdered,
   LucideBlinds,
   LucideX,
-  Rocket,
   Trash2,
 } from "lucide-react";
 import { RiUserStarLine } from "react-icons/ri";
@@ -134,7 +132,7 @@ export default function Receipt() {
 
   // join both marketCodes and project codes
   let joinedCodes: any[] = [];
-  if (projects.length && marketsCodes.length)
+  if (projects.length || marketsCodes.length)
     joinedCodes = projects.concat(marketsCodes as any[]);
 
   useEffect(() => {

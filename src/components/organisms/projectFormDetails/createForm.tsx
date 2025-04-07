@@ -2,9 +2,7 @@ import { Spinner } from "@/components/atoms/spinner/spinner";
 import { Route } from "@/lib/route";
 import { UpdateFilesToS3 } from "@/lib/s3";
 import { useCampaignStore } from "@/lib/stores/campaign-store";
-import { useCompanyStore } from "@/lib/stores/companie-store";
 import { ApiDataResponse, ProjectsType, ProjectType } from "@/types/api-types";
-import { Project } from "@/types/gestion";
 import { businessActivity } from "@/utiles/services/constants";
 import { mutateApiData } from "@/utiles/services/mutations";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
@@ -14,18 +12,16 @@ import React, { useEffect, useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import InputField from "../../molecules/inputField";
 import CustomSelectTag from "../../molecules/select";
-import CardLayout from "../../templates/cardLayout";
 import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 type Props = {
   typeOfProject: ProjectsType;
-  closeModal: (value: boolean) => void;
 };
 
 export default function ProjectDetailsForm({
   typeOfProject,
-  closeModal,
 }: Props) {
   const countries: any[] = Country.getAllCountries();
   const router = useRouter();
@@ -38,6 +34,7 @@ export default function ProjectDetailsForm({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorDate, setErrorDate] = useState<string>("");
   const [otherLogo, setOtherLogo] = useState<File[]>([]);
+  const { setIsDialogOpen}  = useDialogControl()
   const [projectData, setProjectData] = useState<Partial<ProjectType>>({
     title: "",
     sector_activity: "",
@@ -93,7 +90,6 @@ export default function ProjectDetailsForm({
     if (!otherLogo.length) {
       return "";
     } else {
-      console.log("otherLogo =>", otherLogo);
       const { data, error } = await UpdateFilesToS3({
         bucketName,
         files: otherLogo,
@@ -125,21 +121,6 @@ export default function ProjectDetailsForm({
       setIsLoading((prev) => !prev);
       return;
     }
-    console.log("payload =>", {
-      type: projectData.type,
-      company_id: company?.id,
-      title: projectData.title,
-      description: projectData.description,
-      sector_activity: projectData.sector_activity,
-      country: projectData.country,
-      city: projectData.city,
-      region: projectData.region,
-      status: projectData.status,
-      another_logo: URLOtherLogo,
-      start_date: new Date(projectData.start_date as string).toISOString(),
-      end_date: new Date(projectData.end_date as string).toISOString(),
-      campaign_id: currentCampain?.id,
-    });
 
     setErrorDate("");
     // CREATE NEW RECORD IN THE PROJECTS TABLE
@@ -166,9 +147,7 @@ export default function ProjectDetailsForm({
             autoClose: 3000,
           });
           if (pathname.includes("mapping")) {
-            // CLOSE MODAL
-            closeModal(false);
-            router.push(Route.mapping);
+            setIsDialogOpen(false);
             return;
           }
           router.push(Route.editProject + `/${res.data.id}`);
@@ -312,6 +291,14 @@ export default function ProjectDetailsForm({
         onChange={(e) => handleChangeEvent(e)}
       />
       <div className="flex justify-end py-2 gap-4">
+        <Button
+          variant="outline"
+          type="button"
+          className="bg-secondary hover:bg-secondary"
+          onClick={() => setIsDialogOpen(false)}
+        >
+          ANNULER
+        </Button>
         <Button
           type="submit"
           className={

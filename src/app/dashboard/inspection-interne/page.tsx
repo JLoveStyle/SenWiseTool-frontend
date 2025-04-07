@@ -39,7 +39,6 @@ export default function Home({}: Props) {
       ""
     )
       .then((response) => {
-        console.log("all internal_inspection projects", response);
         if (response.status === 200) {
           const filteredProjects = [];
           for (const data of response.data) {
@@ -125,7 +124,6 @@ export default function Home({}: Props) {
           form: (
             <ProjectDetailsForm
               typeOfProject={"INTERNAL_INSPECTION"}
-              closeModal={() => console.log('')}
             />
           ),
         },

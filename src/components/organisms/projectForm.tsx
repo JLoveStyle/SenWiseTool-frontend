@@ -51,7 +51,6 @@ export default function ProjectForm({ projectObject }: Props) {
       projectObject?.id
     )
       .then((response) => {
-        console.log(response);
         if (response.status <= 204) {
           toast.success("Projet deployé", {
             transition: Bounce,
@@ -98,7 +97,7 @@ export default function ProjectForm({ projectObject }: Props) {
         {/* DIFFERENT LOGOS (COMPANY AND RAINFOREST LOGO) */}
         <div className="flex items-baseline justify-between py-2 mx-auto">
           {/* COMPANY LOGO */}
-          {company && (
+          {company?.logo && (
             <img
               src={company?.logo}
               alt="company logo"

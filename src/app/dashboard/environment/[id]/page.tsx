@@ -27,7 +27,6 @@ export default function EnvironmentDetails(props: {params: TProps}) {
       const activities = await fetchApiData(Route.environmentRequest + `/${id}`, "")
 
       if (activities.status === 200) {
-        console.log("enviro activity => ", activities);
         setIsLoading(prev => !prev);
         setCurrentActivity(activities.data);
       }

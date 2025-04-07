@@ -25,9 +25,6 @@ export default function PrintableFormTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const answer = table.getSelectedRowModel();
-  console.log("ans =>", answer);
-
   return (
     <div className="">
       <table>

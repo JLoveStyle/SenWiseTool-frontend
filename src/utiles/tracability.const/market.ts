@@ -1,4 +1,4 @@
-import { MarketDBProps } from "@/types/api-types";
+import { MarketDBProps, MarketStatus, MarketType } from "@/types/api-types";
 
 export const marketData: MarketDBProps[] = [
   {
@@ -8,8 +8,8 @@ export const marketData: MarketDBProps[] = [
     start_date: "2024-10-01",
     end_date: "2024-10-31",
     description: "Cocoa market with premium quality products",
-    type_of_market: "COCOA",
-    status: "OPEN",
+    type_of_market: MarketType.COCOA,
+    status: MarketStatus.OPEN,
     code: "COC-001",
     product_quantity: 1000,
     created_at: "2024-10-01",
@@ -49,8 +49,8 @@ export const marketData: MarketDBProps[] = [
     start_date: "2024-10-01",
     end_date: "2024-10-30",
     description: "Coffee market with a focus on sustainability",
-    type_of_market: "COFFEE",
-    status: "CLOSED",
+    type_of_market: MarketType.COFFEE,
+    status: MarketStatus.OPEN,
     code: "COF-002",
     product_quantity: 750,
     created_at: "2024-09-15",
@@ -88,8 +88,8 @@ export const marketData: MarketDBProps[] = [
     price_of_theday: 300,
     start_date: "2024-10-05",
     end_date: "2024-10-20",
-    type_of_market: "BANANA",
-    status: "OPEN",
+    type_of_market: MarketType.BANANA,
+    status: MarketStatus.CLOSED,
     code: "COF-003",
     product_quantity: 500,
     created_at: "2024-10-01",

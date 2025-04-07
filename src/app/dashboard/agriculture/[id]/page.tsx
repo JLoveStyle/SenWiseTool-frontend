@@ -27,7 +27,6 @@ export default function AgricultureDetails(props: { params: TProps }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("fetching data")
       setIsLoading((prev) => !prev);
       const activities = await fetchApiData(
         Route.agricultureRequest + `/${id}`,
@@ -42,7 +41,6 @@ export default function AgricultureDetails(props: { params: TProps }) {
       }
 
       if (activities.status === 200) {
-        console.log("agricultural activity => ", activities);
         setIsLoading((prev) => !prev);
         setCurrentActivity(activities.data);
       }

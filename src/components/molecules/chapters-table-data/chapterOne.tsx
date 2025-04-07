@@ -74,11 +74,9 @@ export function ChaptersRequirements<TData, TValue>({
   });
 
   useEffect(() => {
-    let prev = LOCAL_STORAGE.get(key2localStorage);
     const selectedPro = table.getSelectedRowModel().flatRows.map((pro) => {
       return pro.original;
     });
-    // console.log("selPro", selectedPro)
     if (selectedPro.length) LOCAL_STORAGE.save(key2localStorage, selectedPro);
   }, [rowSelection]);
 

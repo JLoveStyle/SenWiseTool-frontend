@@ -15,6 +15,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { NewMarketForm } from "./new-market-form";
 import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
+import revalidatePath from "@/utils/server-actions";
 
 export function NewMarket() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
@@ -62,7 +63,8 @@ export function NewMarket() {
         if (response.status === 201) {
           toast.success("Marché créé avec succès");
           setIsLoading(false);
-          setIsDialogOpen(!isDialogOpen)
+          setIsDialogOpen(!isDialogOpen);
+          revalidatePath("/dashboard/tracability/markets");
           router.refresh();
           router.push(Route.markets);
           return;
@@ -115,14 +117,18 @@ export function NewMarket() {
         errors={errors}
         isLoading={isLoading}
       />
-      <ButtonUI
-        type="submit"
-        className={clsx("bg-green-600 hover:bg-green-500 mt-2")}
-        isLoading={isLoading}
-        icon={{ icon: Plus }}
-      >
-        Créer
-      </ButtonUI>
+      <div className="flex items-baseline space-x-2">
+        <p className="flex-1"></p>
+
+        <ButtonUI
+          type="submit"
+          className={clsx("bg-black hover:bg-black mt-2 flex justify-end")}
+          isLoading={isLoading}
+          icon={{ icon: Plus }}
+        >
+          Créer
+        </ButtonUI>
+      </div>
     </form>
   );
 }

@@ -53,7 +53,7 @@ export const columnTable = <T extends Record<string, any>>(
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            <div className="capitalize">
+            <div className="">
               {columnName[Object.keys(columnName)[1] as keyof T]}
             </div>
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -61,7 +61,7 @@ export const columnTable = <T extends Record<string, any>>(
         );
       },
       cell: ({ row }) => (
-        <div className="capitalize">
+        <div className="">
           {row.getValue(Object.keys(columnName)[1])}
         </div>
       ),
@@ -71,9 +71,9 @@ export const columnTable = <T extends Record<string, any>>(
       .slice(2)
       .map(([key, header]) => ({
         accessorKey: key as string,
-        header: () => <div className="capitalize">{header}</div>,
+        header: () => <div className="">{header}</div>,
         cell: ({ row }: CellContext<T, unknown>) => (
-          <div className="capitalize">{row.getValue(key)}</div>
+          <div className="">{row.getValue(key)}</div>
         ),
       })),
   ];

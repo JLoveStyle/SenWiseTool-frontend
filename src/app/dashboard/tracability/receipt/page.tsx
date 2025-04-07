@@ -36,8 +36,6 @@ export default function Receipt() {
     const fetchData = async () => {
       db_get_receipts()
         .then((result) => {
-          console.log("data training: ", result);
-
           setReceiptDatas(result as ReceiptProps[]);
           setIsLoading(false);
         })
@@ -58,8 +56,6 @@ export default function Receipt() {
       quantity_in_bags: receipt.quantity_in_bags,
       buyer: receipt.buyer,
     }));
-    console.log("toto", toto);
-
     return toto;
   };
 

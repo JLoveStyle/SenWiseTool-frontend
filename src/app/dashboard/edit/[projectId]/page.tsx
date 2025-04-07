@@ -88,7 +88,7 @@ export default function page(props: { params: Props }) {
   };
 
   async function handleProjectSave() {
-    console.log(projectData);
+    console.log('projectData');
     // router.push();
   }
 
@@ -98,7 +98,7 @@ export default function page(props: { params: Props }) {
 
     // Check if user has tick metadata
     if (!metaData?.length) {
-      toast.warning("Please choose form metadata");
+      toast.warning("Veillez choisir les meta données du formulaire");
       setOpenSheet(true);
       return;
     }
@@ -170,7 +170,7 @@ export default function page(props: { params: Props }) {
           router.push(Route.editProject + `/${projectId}/pdf`);
           setIsSaving((prev) => !prev);
         } else {
-          toast.error("Something went wrong. Please try again", {
+          toast.error("Une erreur est survenu au serveur. Veillez reessayer", {
             transition: Bounce,
             autoClose: 3000,
           });
@@ -178,12 +178,11 @@ export default function page(props: { params: Props }) {
         }
       })
       .catch((error) => {
-        toast.error("Something went wrong. Please try again", {
+        toast.error("Une erreur est survenu au serveur. Veillez reessayer", {
           transition: Bounce,
           autoClose: 3000,
         });
         setIsSaving((prev) => !prev);
-        console.log("An error occured", error);
       });
   }
 

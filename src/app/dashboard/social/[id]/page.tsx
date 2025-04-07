@@ -7,12 +7,9 @@ import CustomHoverCard from "@/components/organisms/hoverCard";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
 import { Route } from "@/lib/route";
 import { ActivityProps } from "@/types/activity";
-import { ApiDataResponse } from "@/types/api-types";
-import { mutateDelApiData } from "@/utiles/services/mutations";
 import { fetchApiData } from "@/utiles/services/queries";
 import { Archive, Delete, MoveLeft, UserPlus } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 
 type TProps = Promise<{id: string}>
@@ -30,7 +27,6 @@ export default function SocialDetails(props: {params: TProps}) {
       setIsLoading((prev) => !prev);
       const activities = await fetchApiData(Route.socialRequest + `/${id}`, "");
       if (activities.status === 200) {
-        console.log("social activity => ", activities);
         setIsLoading(false);
         setCurrentActivity(activities.data);
       }
@@ -53,19 +49,6 @@ export default function SocialDetails(props: {params: TProps}) {
       return false;
     }
   };
-
-  async function handleDelete() {
-    await mutateDelApiData<ApiDataResponse<ActivityProps>>(
-      Route.socialRequest,
-      currentActivity?.id
-    )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
 
   return (
     <LayoutDashboardTemplate title="Social - Détails de l'activité N°{id}">

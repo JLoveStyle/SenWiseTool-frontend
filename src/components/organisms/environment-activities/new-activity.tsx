@@ -117,7 +117,6 @@ export function NewActivityEnvironment() {
   // Nouvelle fonction pour gérer tous les uploads
   const handleAllUploads = async (formData: ActivityFormProps) => {
     try {
-      console.log(formData);
       const [pv_url, pictures_url, documents_url] = await Promise.all([
         handleUploadPV(formData),
         handleUploadPictures(formData),
@@ -125,7 +124,6 @@ export function NewActivityEnvironment() {
       ]);
 
       if (pv_url && pictures_url && documents_url) {
-        console.log({ pv_url, pictures_url, documents_url });
         setIsLoading((prev) => !prev);
         return {
           pv_url,
@@ -135,9 +133,7 @@ export function NewActivityEnvironment() {
       } else {
         toast.error('Could not upload files. Please try again')
       }
-
-      console.log("Tous les fichiers ont été téléchargés avec succès\n", URLs);
-
+      
       // Files updated
       console.table([
         {

@@ -52,11 +52,9 @@ export function NewActivityAgriculture({ endpoint }: Props) {
     // CREATE AGRICULTURAL ACTIVITY
     await mutateApiData(endpoint, dataToDB)
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           toast.success("Activity created successfully");
           setIsLoading(false);
-
           // closeModal
           setIsDialogOpen(!isDialogOpen);
           return;
@@ -179,14 +177,18 @@ export function NewActivityAgriculture({ endpoint }: Props) {
         errors={errors}
         isLoading={isLoading}
       />
-      <ButtonUI
-        type="submit"
-        className={clsx("bg-green-600 hover:bg-green-500 mt-2")}
-        isLoading={isLoading}
-        icon={{ icon: Plus }}
-      >
-        Créer
-      </ButtonUI>
+      <div className="flex items-baseline space-x-2">
+        <p className="flex-1"></p>
+
+        <ButtonUI
+          type="submit"
+          className={clsx("bg-black hover:bg-black mt-2 flex justify-end")}
+          isLoading={isLoading}
+          icon={{ icon: Plus }}
+        >
+          Créer
+        </ButtonUI>
+      </div>
     </form>
   );
 }

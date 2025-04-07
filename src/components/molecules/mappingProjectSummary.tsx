@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Bounce, toast } from "react-toastify";
 import { Spinner } from "../atoms/spinner/spinner";
 import dayjs from "dayjs";
+import { mapToProjectType } from "@/utils/projects-mapper";
 
 type Props = {
   projectObject: ProjectType | undefined;
@@ -30,7 +31,6 @@ export default function ProjectSummary({
 }: Props) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  console.log("projectObject", projectObject);
 
   const lienRapide: { [key: string]: any } = [
     {
@@ -72,7 +72,7 @@ export default function ProjectSummary({
               }
             })
             .catch((error) => {
-              console.log("could not update project", error);
+              console.log(error);
               setIsLoading(false);
               toast.error("Une erreur est survenu. Veillez réessayer", {
                 autoClose: 3000,
@@ -138,8 +138,8 @@ export default function ProjectSummary({
             <div className="flex md:w-[500px] justify-between">
               <div className="flex flex-col gap-2 py-2">
                 <span className="text-sm text-gray-500 ">Status</span>
-                <span className="bg-green-200 font-semibold text-sm px-2 rounded-lg">
-                  {projectObject?.status ?? ""}
+                <span className="bg-green-200 font-semibold text-center border border-black text-sm px-2 rounded-lg">
+                  {mapToProjectType(projectObject?.status)}
                 </span>
               </div>
               <div className="flex flex-col gap-2 py-2">

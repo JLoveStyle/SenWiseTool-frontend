@@ -14,11 +14,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { ButtonUI } from "../disign-system/button-ui";
 import { FormTraining } from "./form-training";
+import { useDialogControl } from "@/lib/stores/useDialog-coontrol";
 
 export function NewTraining() {
   const { value: isLoading, setValue: setIsLoading } = useToggle();
-  const { value: openModal, toggle: toggleOpenModal } = useToggle();
   const [errors, setErrors] = useState({});
+  const { setIsDialogOpen } = useDialogControl();
 
   const router = useRouter();
 
@@ -57,15 +58,11 @@ export function NewTraining() {
       modules: trainingModules,
     })
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           toast.success("Formation créer, Rafraichir");
-          // close modal
           setIsLoading(false);
-          toggleOpenModal();
+          setIsDialogOpen(false)
           router.refresh();
-          router.push(Route.trainingProject);
-
           return;
         } else if (response.message === "Internal Server Error") {
           setIsLoading(false);
@@ -81,15 +78,6 @@ export function NewTraining() {
         toast.error("Something went wrong. Please try again");
         setIsLoading(false);
       });
-
-    const dataToDB = {
-      title: formData.title,
-      start_date: new Date(formData.start_date).toISOString(),
-      end_date: new Date(formData.end_date).toISOString(),
-      location: formData.location,
-      company_id: company?.id,
-      modules: formData.modules.map((item) => item.value),
-    };
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -119,14 +107,18 @@ export function NewTraining() {
         errors={errors}
         isLoading={isLoading}
       />
-      <ButtonUI
-        type="submit"
-        className={clsx("bg-green-600 hover:bg-green-500 mt-2")}
-        isLoading={isLoading}
-        icon={{ icon: Plus }}
-      >
-        Créer
-      </ButtonUI>
+      <div className="flex items-baseline space-x-2">
+        <p className="flex-1"></p>
+
+        <ButtonUI
+          type="submit"
+          className={clsx("bg-black hover:bg-black mt-2 flex justify-end")}
+          isLoading={isLoading}
+          icon={{ icon: Plus }}
+        >
+          Créer
+        </ButtonUI>
+      </div>
     </form>
   );
 }

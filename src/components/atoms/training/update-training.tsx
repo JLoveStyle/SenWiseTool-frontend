@@ -26,7 +26,6 @@ export function UpdateTraining({ currentTaining, header, trainingId }: Props) {
   const [errors, setErrors] = useState({});
   const company = useCompanyStore((state) => state.company);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  console.log("edit", currentTaining);
 
   const initialize = {
     id: currentTaining.id,
@@ -62,7 +61,6 @@ export function UpdateTraining({ currentTaining, header, trainingId }: Props) {
       trainingId
     )
       .then((response) => {
-        console.log(response);
         setIsLoading((prev) => !prev);
         if (response.status === 204) {
           toast.success("Training updated");

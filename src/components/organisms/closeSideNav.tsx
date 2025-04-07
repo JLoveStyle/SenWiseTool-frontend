@@ -96,7 +96,6 @@ export default function CloseSiveNav({
             </VisuallyHidden.Root>
             {showProjectDetailsForm && (
               <ProjectDetailsForm
-                closeModal={closeModal}
                 typeOfProject={typeOfProject}
               />
             )}

@@ -3,18 +3,13 @@
 import { Route } from "@/lib/route";
 
 import { Archive, ListOrdered, Trash2 } from "lucide-react";
-// import { columnListProjects } from "../atoms/colums-of-tables/listOfProjects";
 import { FaCheck, FaHandHoldingDollar } from "react-icons/fa6";
-
 import { DataTable } from "@/components/molecules/projectsTable";
 import CustomHoverCard from "@/components/organisms/hoverCard";
-// import { Newagriculture } from "@/components/organisms/tracability/agriculture/new-agriculture";
 import { NewActivityAgriculture } from "@/components/organisms/agriculture-activities/new-activity";
 import { columnTable } from "@/components/templates/column-table";
 import LayoutDashboardTemplate from "@/components/templates/layout-dashboard-template";
-import { useToggle } from "@/hooks/use-toggle";
 import { ActivityDisplayProps, ActivityProps } from "@/types/activity";
-import { statPanelDatas } from "@/utiles/services/constants";
 import { LOCAL_STORAGE } from "@/utiles/services/storage";
 import { useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
@@ -95,7 +90,6 @@ export default function Agriculture() {
   const valueToDisplay = (args: ActivityDisplayProps[]) => {
     return args?.map((data) => ({
       id: data.id ?? "",
-      // company_id: data.company_id,
       activity_title: data.activity_title,
       pictures_url: data.pictures_url,
       documents_url: data.documents_url,

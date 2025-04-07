@@ -74,7 +74,7 @@ export default function Sidebar({ options }: Props) {
                           {opt.details.map((detail, indx) => (
                             <DropdownMenuItem
                               key={indx}
-                              onClick={() => console.log(detail.id)}
+                              onClick={() => console.log('')}
                             >
                               {detail.icon && (
                                 <detail.icon className="mr-2 h-4 w-4" />

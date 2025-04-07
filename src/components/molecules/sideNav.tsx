@@ -35,7 +35,6 @@ export default function SideNav({ options }: Props) {
   const currentCampaign = useCampaignStore((state) => state.currentCampaign);
 
   async function handleCampagneObject(currentCampaign: CampaignType) {
-    console.log("current campaign: ", currentCampaign);
     setCurrentCampaign(currentCampaign);
     setShowDropDown((prev) => !prev);
   }
@@ -77,7 +76,7 @@ export default function SideNav({ options }: Props) {
                         {opt.details.map((detail, indx) => (
                           <DropdownMenuItem
                             key={indx}
-                            onClick={() => console.log(detail.id)}
+                            onClick={() => console.log('detail.id')}
                           >
                             {detail.icon && (
                               <detail.icon className="mr-2 h-4 w-4" />
